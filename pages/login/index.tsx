@@ -10,7 +10,8 @@ function Login() {
   function loginGGClick() {
     const baseURL =
       process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000";
-    const googleLoginURL = `${baseURL}/api/v1/auth/google`;
+    const webURL = process.env.NEXT_PUBLIC_WEB_URL || "http://localhost:3000";
+    const googleLoginURL = `${baseURL}/api/v1/auth/google?url=${webURL}/login/cb`;
     const newWindow = window.open(
       googleLoginURL,
       "_blank",
