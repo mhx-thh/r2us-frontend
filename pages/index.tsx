@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 
 import { useAppSelector } from "redux/hooks";
 import { selectToken, selectStatus } from "redux/userSlice";
+import ClassDocument from "components/class";
 
 const TogglePage: FC = () => {
   const token = useAppSelector(selectToken);
@@ -19,6 +20,7 @@ const TogglePage: FC = () => {
       </Link>
       {status === "logined" && <div>{token}</div>}
     </React.Fragment>
+    // <ClassDocument />
   );
 };
 
