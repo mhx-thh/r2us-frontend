@@ -7,8 +7,8 @@ const ClassDocument = function () {
   return (
     <div>
       <Header />
-      {/* <Information /> */}
-      <Document />
+      <Information />
+      {/* <Document /> */}
     </div>
   );
 };

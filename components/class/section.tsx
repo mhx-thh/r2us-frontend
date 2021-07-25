@@ -21,9 +21,12 @@ const Section = function () {
 
   return (
     <div>
-      <div className="mt-20 items-center">
+      <div className="mt-20 items-center list-group">
         {data.map((document) => (
-          <li className="bg-gray-50 border" key={document.name}>
+          <li
+            className="flex-column bg-gray-50 border list-group-item"
+            key={document.name}
+          >
             {document.name}
           </li>
         ))}
