@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 function InputField(props) {
-  const { handleSubmit, control, reset } = useForm();
+  const { handleSubmit } = useForm();
   const [data, setData] = useState("a");
   const [isActive, setIsActive] = useState(false);
-  const onSubmit = (data) => {
+  const onSubmit = () => {
     setIsActive(!!!isActive);
     // Push Api
   };
