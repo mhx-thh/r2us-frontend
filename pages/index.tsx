@@ -18,6 +18,9 @@ const TogglePage: FC = () => {
       <Link href="/user">
         <a>User </a>
       </Link>
+      <Link href="/class">
+        <a>Class </a>
+      </Link>
       {status === "logined" && <div>{token}</div>}
     </React.Fragment>
     // <ClassDocument />

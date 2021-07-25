@@ -31,7 +31,7 @@ function InputField(props) {
           )}
         />
         {props?.editable ? (
-          <button className="p-2 hover:bg-gray-50" type="submit">
+          <button className="p-2 bg-gray-400 hover:bg-gray-200" type="submit">
             {isActive ? "Submit" : "Edit"}
           </button>
         ) : undefined}
