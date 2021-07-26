@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import Document from "./document";
+import React from "react";
 import Header from "./header/header";
 import Information from "./information";
+import Preview from "./preview";
 
 const ClassDocument = function () {
   return (
     <div>
       <Header />
       <Information />
-      {/* <Document /> */}
+      <Preview />
     </div>
   );
 };
