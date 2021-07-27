@@ -37,7 +37,7 @@ function Header() {
           <div className="mt-0 inline-flex flex-auto w-max m-20 max-auto">
             <div className="mt-0 hover:bg-blue-100 hover:text-blue-500 rounded pl-6 py-3 font-semibold p-14">
               <button className="text -sm font-semibold flex items-center  focus:outline-none">
-                <Link href="/class/info">Thông tin</Link>
+                <Link href="/class/">Thông tin</Link>
               </button>
             </div>
             <div className="mt-0 hover:bg-blue-100 hover:text-blue-500 rounded pl-6 py-3 font-semibold p-14">
