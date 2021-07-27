@@ -23,8 +23,8 @@ const Information = function () {
     <div>
       <div className="mt-20 items-center">
         <InputField name="Tên môn học" editable />
-        <InputField name="Môn học" />
-        <InputField name="Tên giáo viên" />
+        <InputField name="Môn học" editable={false} />
+        <InputField name="Tên giáo viên" editable={false} />
         <InputField name="Mô tả" editable />
       </div>
     </div>

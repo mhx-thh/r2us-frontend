@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Section from "./section";
 
 type documentinfo = {
   name: string;
@@ -16,9 +15,7 @@ const Document = function () {
 
   return (
     <div>
-      <div className="mt-20 items-center">
-        <Section />
-      </div>
+      <div className="mt-20 items-center"></div>
     </div>
   );
 };

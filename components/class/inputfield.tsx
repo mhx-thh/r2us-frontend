@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
-function InputField(props) {
+function InputField(props: { name: string; editable: boolean }) {
   const { handleSubmit } = useForm();
   const [data, setData] = useState("a");
   const [isActive, setIsActive] = useState(false);
   const onSubmit = () => {
     setIsActive(!!!isActive);
+    console.log(data);
     // Push Api
   };
   const handleChange = (e) => {
