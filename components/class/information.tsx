@@ -9,24 +9,33 @@ type classInfo = {
   //   Note: Có thể sẽ để description là list để hiện nhiều dòng
 };
 
-const Information = function () {
-  const [data, setData] = useState({
-    name: "A",
-    subject: "B",
-    teacher: "C",
-    description: "D",
-  });
-
-  console.log(data);
-
+const Information = function (props: {
+  name: string;
+  subject: string;
+  teacher: string;
+  description: string;
+}) {
   return (
     <div>
-      <div className="mt-20 items-center">
-        <InputField name="Tên môn học" editable />
-        <InputField name="Môn học" editable={false} />
-        <InputField name="Tên giáo viên" editable={false} />
-        <InputField name="Mô tả" editable />
-      </div>
+      <InputField
+        name="Tên môn học"
+        editable
+        data={props.name}
+        multiline={false}
+      />
+      <InputField
+        name="Môn học"
+        editable={false}
+        data={props.subject}
+        multiline={false}
+      />
+      <InputField
+        name="Tên giáo viên"
+        editable={false}
+        data={props.teacher}
+        multiline={false}
+      />
+      <InputField name="Mô tả" editable data={props.description} multiline />
     </div>
   );
 };

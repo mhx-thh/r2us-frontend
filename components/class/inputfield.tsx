@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
-function InputField(props: { name: string; editable: boolean }) {
+function InputField(props: {
+  name: string;
+  editable: boolean;
+  data: string;
+  multiline: boolean;
+}) {
   const { handleSubmit } = useForm();
-  const [data, setData] = useState("a");
+  const [data, setData] = useState(props.data);
   const [isActive, setIsActive] = useState(false);
   const onSubmit = () => {
     setIsActive(!!!isActive);
@@ -36,6 +41,8 @@ function InputField(props: { name: string; editable: boolean }) {
             id={props?.name}
             type="text"
             disabled={!!!isActive}
+            value={!!!isActive ? data : undefined}
+            defaultValue={isActive ? data : undefined}
             onChange={handleChange}
           />
         </div>

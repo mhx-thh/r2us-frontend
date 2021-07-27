@@ -1,8 +1,8 @@
-import ClassDocument from "components/class";
+import DocumentPage from "components/class/documentpage";
 import React from "react";
 
 const Item = function () {
   // Get params
-  return <ClassDocument />;
+  return <DocumentPage />;
 };
 export default Item;

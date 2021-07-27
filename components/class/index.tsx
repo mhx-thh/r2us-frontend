@@ -5,8 +5,12 @@ import Information from "./information";
 const ClassDocument = function () {
   return (
     <div>
+      {/* Get data from params
+      Push data to Information */}
       <Header />
-      <Information />
+      <div className="container items-center pt-40">
+        <Information name="A" subject="B" teacher="C" description="D" />
+      </div>
     </div>
   );
 };
