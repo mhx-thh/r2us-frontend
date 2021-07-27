@@ -1,13 +1,11 @@
-import Link from "next/link";
 import React from "react";
-import Header from "./Header/header";
-import SideBar from "./SideBar";
-
+import Header from "../../components/Header/header";
+import SideBar from "../../components/SideBar";
 const Item = function () {
   return (
     <div>
-      <Header />
       <SideBar />
+      <Header />
     </div>
   );
 };
