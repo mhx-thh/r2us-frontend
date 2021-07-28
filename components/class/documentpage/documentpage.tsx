@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
+import Header from "../header/header";
 import Document from "./document";
-import Header from "./header/header";
 
 type documentinfo = {
   name: string;
@@ -21,19 +21,20 @@ const DocumentPage = function () {
     <div>
       <Header />
       <div className="container items-center pt-40">
-        <div className="flex mt-5">
-          <div className="w-full rounded overflow-hidden shadow-lg my-2 py-4 border border-gray-300 inline-flex">
-            <Document />
-            <Document />
-            <Document />
-            <Document />
-            <Document />
-            <Document />
-            <Document />
-            <Document />
-            <Document />
-            <Document />
-          </div>
+        <div className="flex flex-row-reverse">
+          <button className="border p-3">A</button>
+        </div>
+        <div className="flex flex-wrap items-center justify-center px-16 py-8">
+          <Document />
+          <Document />
+          <Document />
+          <Document />
+          <Document />
+          <Document />
+          <Document />
+          <Document />
+          <Document />
+          <Document />
         </div>
       </div>
     </div>

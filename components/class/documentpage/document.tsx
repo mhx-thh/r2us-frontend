@@ -23,16 +23,16 @@ const Document = function () {
   console.log(data);
 
   return (
-    <div className="w-36 h-48 flex flex-wrap p-2">
+    <div className="w-48 h-56 border">
       <div className="rounded cursor-pointer" onClick={ClickpopupDoc}>
         <img
-          className="w-32 h-32 items-center justify-center flex-center object-cover"
+          className="w-48 h-48 object-cover"
           src="https://64.media.tumblr.com/8de6a8b665f42a8bf32d7deb8284122b/tumblr_n4g7k2KxDh1s64yzgo1_500.gifv"
           alt="Tên tài liệu"
         />
-        <div className="px-2 py-2 ">
+
+        <div className="text-center">
           <div className="font-semibold text-sm mb-2">Blank Report</div>
-          <p className="font-semibold text-gray-400 text-xs">Data Studio</p>
         </div>
       </div>
       {openDoc === 1 && (
