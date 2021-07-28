@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
-function InputField(props: {
+const InputField = function (props: {
   name: string;
   editable: boolean;
   data: string;
