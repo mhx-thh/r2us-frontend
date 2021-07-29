@@ -61,6 +61,6 @@ const InputField = function (props: {
       </div>
     </form>
   );
-}
+};
 
 export default InputField;
