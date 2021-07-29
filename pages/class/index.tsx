@@ -1,8 +1,8 @@
-import ClassDocument from "components/class";
+import Information from "components/class/information/information";
 import React from "react";
 
 const Item = function () {
   // Get params
-  return <ClassDocument />;
+  return <Information name="A" subject="B" teacher="C" description="D"/>;
 };
 export default Item;

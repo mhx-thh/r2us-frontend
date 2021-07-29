@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Header from "../header/header";
 import InputField from "./inputfield";
 
 type classInfo = {
@@ -17,25 +18,28 @@ const Information = function (props: {
 }) {
   return (
     <div>
-      <InputField
-        name="Tên môn học"
-        editable
-        data={props.name}
-        multiline={false}
-      />
-      <InputField
-        name="Môn học"
-        editable={false}
-        data={props.subject}
-        multiline={false}
-      />
-      <InputField
-        name="Tên giáo viên"
-        editable={false}
-        data={props.teacher}
-        multiline={false}
-      />
-      <InputField name="Mô tả" editable data={props.description} multiline />
+      <Header />
+      <div className="container items-center pt-40">
+        <InputField
+          name="Tên môn học"
+          editable
+          data={props.name}
+          multiline={false}
+        />
+        <InputField
+          name="Môn học"
+          editable={false}
+          data={props.subject}
+          multiline={false}
+        />
+        <InputField
+          name="Tên giáo viên"
+          editable={false}
+          data={props.teacher}
+          multiline={false}
+        />
+        <InputField name="Mô tả" editable data={props.description} multiline />
+      </div>
     </div>
   );
 };

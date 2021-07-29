@@ -45,13 +45,14 @@ const DocumentPage = function () {
           <Document />
           <Document />
         </div>
+
+        {/*        */}
+        {addDoc === 1 && (
+          <PopUp closepopup={setAddDoc}>
+            <AddDoc />
+          </PopUp>
+        )}
       </div>
-      {/*        */}
-      {addDoc === 1 && (
-        <PopUp closepopup={setAddDoc}>
-          <AddDoc />
-        </PopUp>
-      )}
     </div>
   );
 };
