@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "./header/header";
-import Information from "./information";
+import Information from "./information/information";
 
 const ClassDocument = function () {
   return (

@@ -1,10 +1,9 @@
-import React, { FC } from "react";
 import Link from "next/link";
-import { isMobile } from "react-device-detect";
-import Swal from "sweetalert2";
-
+import React, { FC } from "react";
 import { useAppSelector } from "redux/hooks";
-import { selectToken, selectStatus } from "redux/userSlice";
+import { selectStatus, selectToken } from "redux/userSlice";
+import Header from "../components/Header/header";
+import SideBar from "../components/SideBar";
 
 const TogglePage: FC = () => {
   const token = useAppSelector(selectToken);
@@ -21,6 +20,7 @@ const TogglePage: FC = () => {
         <a>Class </a>
       </Link>
       {status === "logined" && <div>{token}</div>}
+
     </React.Fragment>
   );
 };

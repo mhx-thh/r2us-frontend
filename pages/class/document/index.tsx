@@ -1,4 +1,4 @@
-import DocumentPage from "components/class/documentpage";
+import DocumentPage from "components/class/documentpage/documentpage";
 import React from "react";
 
 const Item = function () {

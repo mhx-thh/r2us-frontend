@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import PopUp from "./PopUp/popup";
-import DocForm from "./ShowDoc/DocForm";
+import PopUp from "../PopUp/popup";
+import DocForm from "../ShowDoc/DocForm";
 
 type documentinfo = {
   name: string;
