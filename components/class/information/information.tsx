@@ -19,7 +19,7 @@ const Information = function (props: {
   return (
     <div>
       <Header />
-      <div className="container items-center pt-40">
+      <div className="container items-center pt-44">
         <InputField
           name="Tên môn học"
           editable

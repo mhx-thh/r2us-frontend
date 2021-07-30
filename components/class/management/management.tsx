@@ -6,7 +6,7 @@ const Management = function () {
   return (
     <div>
       <Header />
-      <div className="container items-center pt-40">
+      <div className="container items-center pt-44">
         <Section name="Đề thi" />
         <Section name="Tài liệu" />
         <Section name="Đề cương môn học" />

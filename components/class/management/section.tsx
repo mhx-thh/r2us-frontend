@@ -23,7 +23,7 @@ const Section = function (props: { name: string }) {
         <div>
           <hr className="my-2"></hr>
           <div>
-            <div className="flex flex-wrap   items-center justify-center px-16 py-8">
+            <div className="flex flex-wrap items-center justify-center px-16 py-8">
               <Document />
               <Document />
               <Document />
