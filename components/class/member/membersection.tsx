@@ -13,7 +13,18 @@ const MemberSection = function (props: { name: string }) {
       <p>{props.name}</p>
 
       {/* Content */}
-      <Member />
+      <div className="flex flex-wrap items-center justify-center px-16 py-8">
+        <Member />
+        <Member />
+        <Member />
+        <Member />
+        <Member />
+        <Member />
+        <Member />
+        <Member />
+        <Member />
+        <Member />
+      </div>
     </div>
   );
 };

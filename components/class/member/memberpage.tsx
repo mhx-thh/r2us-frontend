@@ -7,7 +7,9 @@ const MemberPage = function () {
     <div>
       <Header />
       <div className="container items-center pt-44">
-        <MemberSection name="A" />
+        <MemberSection name="Quản lý" />
+        <MemberSection name="Thành viên" />
+        <MemberSection name="Phê duyệt" />
       </div>
     </div>
   );

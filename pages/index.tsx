@@ -2,8 +2,6 @@ import Link from "next/link";
 import React, { FC } from "react";
 import { useAppSelector } from "redux/hooks";
 import { selectStatus, selectToken } from "redux/userSlice";
-import Header from "../components/Header/header";
-import SideBar from "../components/SideBar";
 
 const TogglePage: FC = () => {
   const token = useAppSelector(selectToken);
@@ -20,7 +18,6 @@ const TogglePage: FC = () => {
         <a>Class </a>
       </Link>
       {status === "logined" && <div>{token}</div>}
-
     </React.Fragment>
   );
 };

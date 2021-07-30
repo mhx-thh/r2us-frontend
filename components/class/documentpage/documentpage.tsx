@@ -21,6 +21,7 @@ const DocumentPage = function () {
   const ClickpopupDoc = () => {
     setAddDoc(1);
   };
+  const user = "admin";
 
   console.log(data);
 
@@ -29,10 +30,15 @@ const DocumentPage = function () {
       <Header />
       <div className="container items-center pt-40">
         <div className="flex flex-row-reverse">
-          <button className="border p-3" onClick={ClickpopupDoc}>
-            A
-          </button>
+          {user === "admin" ? (
+            <button className="border p-3" onClick={ClickpopupDoc}>
+              Thêm tài liệu
+            </button>
+          ) : (
+            <button className="p-4">{" "}</button>
+          )}
         </div>
+
         <div className="flex flex-wrap items-center justify-center px-16 py-8">
           <Document />
           <Document />

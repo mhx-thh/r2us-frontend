@@ -17,17 +17,17 @@ const Member = function () {
 
   return (
     <div className="">
-      <div className="w-60 h-32 border inline-flex space-x-4">
-        <div className="rounded flex-1">
+      <div className="w-80 h-32 border inline-flex space-x-4 rounded">
+        <div className=" flex-1">
           <img
             className="w-32 h-32 object-cover"
             src="https://64.media.tumblr.com/8de6a8b665f42a8bf32d7deb8284122b/tumblr_n4g7k2KxDh1s64yzgo1_500.gifv"
             alt="Tên tài liệu"
           />
-
-          <div className="flex-1">
-            <div className="font-semibold text-sm mb-2">Blank Report</div>
-          </div>
+        </div>
+        <div className="flex-1 items-center flex-center justify-center">
+          <div className="font-semibold text-sm mb-2 text-center">Họ tên</div>
+          <div className="text-center">Chức vị</div>
         </div>
       </div>
     </div>
