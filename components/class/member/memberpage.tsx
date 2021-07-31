@@ -5,7 +5,7 @@ import MemberSection from "./membersection";
 const MemberPage = function () {
   return (
     <div>
-      <Header />
+      <Header param="member" />
       <div className="container items-center pt-44">
         <MemberSection name="Quản lý" />
         <MemberSection name="Thành viên" />

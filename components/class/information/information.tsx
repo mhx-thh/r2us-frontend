@@ -18,7 +18,7 @@ const Information = function (props: {
 }) {
   return (
     <div>
-      <Header />
+      <Header param="" />
       <div className="container items-center pt-44">
         <InputField
           name="Tên môn học"

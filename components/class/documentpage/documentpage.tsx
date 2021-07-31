@@ -27,7 +27,7 @@ const DocumentPage = function () {
 
   return (
     <div>
-      <Header />
+      <Header param="document" />
       <div className="container items-center pt-40">
         <div className="flex flex-row-reverse">
           {user === "admin" ? (
@@ -35,7 +35,7 @@ const DocumentPage = function () {
               Thêm tài liệu
             </button>
           ) : (
-            <button className="p-4">{" "}</button>
+            <button className="p-4"> </button>
           )}
         </div>
 
