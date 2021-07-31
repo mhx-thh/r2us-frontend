@@ -9,7 +9,7 @@ const ClassDocument = function () {
     <div>
       {/* Get data from params
       Push data to Information */}
-      <Header />
+      <Header param="" />
       <div className="container items-center pt-40">
         {/* <Information name="A" subject="B" teacher="C" description="D" /> */}
         <Management />
