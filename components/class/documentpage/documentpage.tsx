@@ -27,10 +27,7 @@ const DocumentPage = function () {
 
   return (
     <div>
-<<<<<<< HEAD
-=======
       <Header param="document" />
->>>>>>> 5a84f2a7b5eab36dd89865a5364fbdd2ad54dc01
       <div className="container items-center pt-40">
         <div className="flex flex-row-reverse">
           {user === "admin" ? (
