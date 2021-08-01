@@ -18,6 +18,10 @@ const Information = function (props: {
 }) {
   return (
     <div>
+<<<<<<< HEAD
+=======
+      <Header param="" />
+>>>>>>> 5a84f2a7b5eab36dd89865a5364fbdd2ad54dc01
       <div className="container items-center pt-44">
         <InputField
           name="Tên lớp"
