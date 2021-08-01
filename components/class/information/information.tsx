@@ -18,10 +18,9 @@ const Information = function (props: {
 }) {
   return (
     <div>
-      <Header />
       <div className="container items-center pt-44">
         <InputField
-          name="Tên môn học"
+          name="Tên lớp"
           editable
           data={props.name}
           multiline={false}

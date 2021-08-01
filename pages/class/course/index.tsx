@@ -1,4 +1,4 @@
-import Information from "components/class/information/information";
+import ReviewPage from "components/class/ReviewCourse/RevCoursePage";
 import LayoutClass from "components/layout/layoutClass";
 import React from "react";
 
@@ -10,7 +10,7 @@ const Item = function () {
       desc="ClassPage"
       icon="/icons/mhx-logo.svg"
     >
-      <Information name="A" subject="B" teacher="C" description="D" />;
+      <ReviewPage />
     </LayoutClass>
   );
 };

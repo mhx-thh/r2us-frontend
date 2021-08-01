@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from "react";
-import AddDoc from "../AddDoc/AddDoc";
-import Header from "../header/header";
+import React, { useState } from "react";
+import AddReview from "../AddReviewCourse/AddReview";
 import PopUp from "../PopUp/popup";
-import Document from "./document";
+import ReviewCourse from "./RevCourse";
 
-type documentinfo = {
+type Reviewinfo = {
   name: string;
   src: string;
   description: string;
 };
 
-const DocumentPage = function () {
+const ReviewPage = function () {
   const [data, setData] = useState({
     name: "A",
     src: "B",
@@ -31,7 +30,7 @@ const DocumentPage = function () {
         <div className="flex flex-row-reverse">
           {user === "admin" ? (
             <button className="border p-3" onClick={ClickpopupDoc}>
-              Thêm tài liệu
+              Tạo review môn học
             </button>
           ) : (
             <button className="p-4"> </button>
@@ -39,22 +38,22 @@ const DocumentPage = function () {
         </div>
 
         <div className="flex flex-wrap items-center justify-center px-16 py-8">
-          <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document />
+          <ReviewCourse />
+          <ReviewCourse />
+          <ReviewCourse />
+          <ReviewCourse />
+          <ReviewCourse />
+          <ReviewCourse />
+          <ReviewCourse />
+          <ReviewCourse />
+          <ReviewCourse />
+          <ReviewCourse />
+          <ReviewCourse />
         </div>
 
-        {/*        */}
         {addDoc === 1 && (
           <PopUp closepopup={setAddDoc}>
-            <AddDoc />
+            <AddReview />
           </PopUp>
         )}
       </div>
@@ -62,4 +61,4 @@ const DocumentPage = function () {
   );
 };
 
-export default DocumentPage;
+export default ReviewPage;

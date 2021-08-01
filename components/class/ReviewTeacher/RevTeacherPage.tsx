@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import AddDoc from "../AddDoc/AddDoc";
-import Header from "../header/header";
+import AddReview from "../AddReviewCourse/AddReview";
+import AddTeacherReview from "../AddReviewTeacher/AddReview";
 import PopUp from "../PopUp/popup";
-import Document from "./document";
+import TeacherForm from "../ShowTeacher/TeacherForm";
+import Review from "./RevTeacher";
 
-type documentinfo = {
+type Reviewinfo = {
   name: string;
   src: string;
   description: string;
 };
 
-const DocumentPage = function () {
+const ReviewTeacherPage = function () {
   const [data, setData] = useState({
     name: "A",
     src: "B",
@@ -31,7 +33,7 @@ const DocumentPage = function () {
         <div className="flex flex-row-reverse">
           {user === "admin" ? (
             <button className="border p-3" onClick={ClickpopupDoc}>
-              Thêm tài liệu
+              Tạo cảm nhận
             </button>
           ) : (
             <button className="p-4"> </button>
@@ -39,22 +41,22 @@ const DocumentPage = function () {
         </div>
 
         <div className="flex flex-wrap items-center justify-center px-16 py-8">
-          <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document />
+          <Review />
+          <Review />
+          <Review />
+          <Review />
+          <Review />
+          <Review />
+          <Review />
+          <Review />
+          <Review />
+          <Review />
+          <Review />
         </div>
 
-        {/*        */}
         {addDoc === 1 && (
           <PopUp closepopup={setAddDoc}>
-            <AddDoc />
+            <AddTeacherReview />
           </PopUp>
         )}
       </div>
@@ -62,4 +64,4 @@ const DocumentPage = function () {
   );
 };
 
-export default DocumentPage;
+export default ReviewTeacherPage;

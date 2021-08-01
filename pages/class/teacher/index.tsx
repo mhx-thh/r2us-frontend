@@ -1,5 +1,6 @@
 import DocumentPage from "components/class/documentpage/documentpage";
-import LayoutClass from "components/class/layoutClass/layout";
+import ReviewTeacherPage from "components/class/ReviewTeacher/RevTeacherPage";
+import LayoutClass from "components/layout/layoutClass";
 import React from "react";
 
 const Item = function () {
@@ -10,7 +11,7 @@ const Item = function () {
       desc="ClassPage"
       icon="/icons/mhx-logo.svg"
     >
-      <DocumentPage />
+      <ReviewTeacherPage />
     </LayoutClass>
   );
 };

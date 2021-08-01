@@ -4,8 +4,8 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import { useAppDispatch } from "redux/hooks";
 import { getInfoAsync } from "redux/userSlice";
-import Header from "../header/header";
-import Footer from "../footer/footer";
+import Header from "../class/header/header";
+import Footer from "../class/footer/footer";
 
 interface Props {
   title: string;

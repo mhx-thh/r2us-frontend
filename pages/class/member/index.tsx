@@ -1,4 +1,4 @@
-import LayoutClass from "components/class/layoutClass/layout";
+import LayoutClass from "components/layout/layoutClass";
 import MemberPage from "components/class/member/memberpage";
 import React from "react";
 

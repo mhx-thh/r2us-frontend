@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { useAppSelector } from "redux/hooks";
-import { selectStatus } from "redux/userSlice";
+import { selectStatus, selectUser } from "redux/userSlice";
 import styled from "styled-components";
 
 interface Props {
@@ -47,6 +47,10 @@ function Header({ param }: Props) {
       Link: "/class/teacher",
     },
     {
+      Title: "Môn học",
+      Link: "/class/course",
+    },
+    {
       Title: "Thành viên",
       Link: "/class/member",
     },
@@ -55,6 +59,7 @@ function Header({ param }: Props) {
       Link: "/class/manager",
     },
   ];
+
   const [active, setActive] = useState(
     param === "/class" ? SideBarData[0].Link : param
   );
