@@ -1,44 +1,56 @@
-import React, { useState } from "react";
-import Header from "../header/header";
-import InputField from "./inputfield";
+import React, { useEffect, useState } from "react";
+import InputField from "components/class/information/inputfield";
 
 type classInfo = {
-  name: string;
-  subject: string;
-  teacher: string;
-  description: string;
-  //   Note: Có thể sẽ để description là list để hiện nhiều dòng
+  data: {
+    className: string;
+    courseId: {
+      courseName: string;
+    };
+    instructorId: {
+      instructorName: string;
+    };
+  };
 };
 
-const Information = function (props: {
-  name: string;
-  subject: string;
-  teacher: string;
-  description: string;
-}) {
+const Information = function (data: classInfo) {
+  const [classInfo, setClassInfo] = useState(data.data);
+  console.log(classInfo);
+
+  const editNameClass = () => {
+    const newClassInfo = { ...classInfo, className: "newName" };
+    setClassInfo(newClassInfo);
+    // Call Api
+  };
+
+  const editDescriptionClass = () => {
+    const newClassInfo = { ...classInfo, description: "newDescription" };
+    setClassInfo(newClassInfo);
+  };
+
   return (
     <div>
-      <Header param="" />
       <div className="container items-center pt-44">
+        <button onClick={editNameClass}>A</button>
         <InputField
           name="Tên lớp"
           editable
-          data={props.name}
+          data={classInfo.className}
           multiline={false}
         />
         <InputField
           name="Môn học"
           editable={false}
-          data={props.subject}
+          data={classInfo.courseId.courseName}
           multiline={false}
         />
         <InputField
           name="Tên giáo viên"
           editable={false}
-          data={props.teacher}
+          data={classInfo.instructorId.instructorName}
           multiline={false}
         />
-        <InputField name="Mô tả" editable data={props.description} multiline />
+        <InputField name="Mô tả" editable data="" multiline />
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
-const InputField = function (props: {
+function InputField(props: {
   name: string;
   editable: boolean;
   data: string;
@@ -32,19 +32,24 @@ const InputField = function (props: {
           </label>
         </div>
         <div className="md:w-2/3">
-          <input
-            className={
-              isActive
-                ? "appearance-none border-2 outline-none bg-white border-purple-500 rounded w-5/6 py-2 px-4 text-gray-700 leading-tight"
-                : "bg-gray-200 appearance-none border-2 border-gray-200 rounded w-5/6 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-            }
-            id={props?.name}
-            type="text"
-            disabled={!!!isActive}
-            value={!!!isActive ? data : undefined}
-            defaultValue={isActive ? data : undefined}
-            onChange={handleChange}
-          />
+          {isActive ? (
+            <input
+              className="appearance-none border-2 outline-none bg-white border-purple-500 rounded w-5/6 py-2 px-4 text-gray-700 leading-tight"
+              id={props?.name}
+              type="text"
+              defaultValue={data}
+              onChange={handleChange}
+            />
+          ) : (
+            <input
+              className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-5/6 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+              id={props?.name}
+              type="text"
+              disabled
+              value={data}
+              defaultValue={isActive ? data : undefined}
+            />
+          )}
         </div>
         <div>
           {props?.editable ? (
@@ -61,6 +66,6 @@ const InputField = function (props: {
       </div>
     </form>
   );
-};
+}
 
 export default InputField;

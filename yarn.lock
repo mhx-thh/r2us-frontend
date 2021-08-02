@@ -3758,6 +3758,11 @@
   optionalDependencies:
     "sharp" "0.26.2"
 
+"nextjs@^0.0.3":
+  "integrity" "sha1-T00daiV76SDZuWSdTZUixySk5UM="
+  "resolved" "https://registry.npmjs.org/nextjs/-/nextjs-0.0.3.tgz"
+  "version" "0.0.3"
+
 "node-abi@^2.7.0":
   "integrity" "sha512-9xZrlyfvKhWme2EXFKQhZRp1yNWT/uI1luYPr3sFl+H4keYY4xR+1jO7mvTTijIsHf1M+QDe9uWuKeEpLInIlg=="
   "resolved" "https://registry.npmjs.org/node-abi/-/node-abi-2.19.3.tgz"
