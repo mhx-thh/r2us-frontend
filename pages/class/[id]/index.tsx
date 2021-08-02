@@ -13,7 +13,27 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   return { props: { status: res.status, data: res.data.data } };
 };
 
-const Item = function (props: { status: string; data: unknown }) {
+const Item = function (props: {
+  status: string;
+  data: {
+    className: string;
+    courseId: {
+      courseName: string;
+    };
+    instructorId: {
+      instructorName: string;
+    };
+  };
+}) {
+  const newData = {
+    className: props.data.className,
+    courseiD: {
+      courseName: props.data.courseId.courseName,
+    },
+    instructoriD: {
+      instructorName: props.data.instructorId.instructorName,
+    },
+  };
   return (
     <LayoutClass
       title="MHX 2021 - Tin học hóa"
