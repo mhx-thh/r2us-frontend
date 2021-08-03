@@ -13,7 +13,7 @@ export default Post;
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   return {
     props: {
-      param: params.id,
+      param: params.slug,
     },
   };
 };

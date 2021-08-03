@@ -14,9 +14,6 @@ const TogglePage: FC = () => {
       <Link href="/login">
         <a>Login </a>
       </Link>
-      <Link href="/user">
-        <a>User </a>
-      </Link>
       {status === "logined" && <div>{token}</div>}
     </React.Fragment>
   );
