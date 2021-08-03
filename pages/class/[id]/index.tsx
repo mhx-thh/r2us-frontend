@@ -1,4 +1,4 @@
-import Information from "components/class/information/information";
+import InformationPage from "components/class/information/InformationPage";
 import LayoutClass from "components/layout/layoutClass";
 import React from "react";
 import { GetServerSideProps } from "next";
@@ -23,6 +23,9 @@ const Item = function (props: {
     instructorId: {
       instructorName: string;
     };
+    academicId: {
+      schoolyear: string;
+    };
   };
 }) {
   const newData = {
@@ -33,6 +36,9 @@ const Item = function (props: {
     instructoriD: {
       instructorName: props.data.instructorId.instructorName,
     },
+    academicId: {
+      schoolyear: props.data.academicId.schoolyear,
+    },
   };
   return (
     <LayoutClass
@@ -40,8 +46,9 @@ const Item = function (props: {
       desc="ClassPage"
       icon="/icons/mhx-logo.svg"
     >
-      <Information data={props.data} />;
+      <InformationPage data={props.data} />;
     </LayoutClass>
   );
 };
+
 export default Item;

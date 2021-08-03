@@ -1,0 +1,97 @@
+.Grid{
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    width: 100%;
+}
+.Title{
+    height: 175px;
+}
+.Title_Up{
+    height: 135px;
+    display: flex;
+}
+.Title_Up_Left{
+    grid-column: span 5;
+    display: flex;
+    align-items: center;
+}
+.Title_Up_Left_Image{
+    padding-right: 23px;
+}
+.Title_Up_Left_Text{
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 36px;
+    color: #6366F1;
+}
+.Title_Up_Right{
+    display: flex;
+    grid-column: 9 / span 4;
+    align-items: center;
+    justify-content: flex-end;
+}
+.Title_Up_Right_Image{
+    padding-right: 23px;
+}
+.Title_Up_Right_Button{
+    width: 140px;
+    height: 32px;
+    border-radius: 6px;
+    border-style: solidcolor;
+    border-width: 1px;
+    border-color: #6366F1;
+}
+.Title_Up_Right_Text{
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    color: #6366F1;
+}
+.Title_Down{
+    display: flex;
+}
+.Title_Down_Information{
+    display: flex;
+}
+.Title_Down_Information_Group{
+    display: flex;
+    padding-right: 15px;
+    grid-column: span 2;
+}
+.Title_Down_Information_Group_First{
+    display: flex;
+    padding-right: 15px;
+    grid-column: 1 / span 2;
+}
+.Title_Down_Information_Image{
+    padding-right: 10px;
+}
+
+.Title_Down_Right{
+    display: flex;
+    grid-column: 9 / span 4;
+    justify-content: flex-end;
+}
+.Title_Down_Right_Text{
+    display: flex;
+}
+.Title_Down_Right_TextHighlight{
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 14px;
+    color: #3B82F6;
+    padding-right: 10px;
+}
+.Title_Down_Right_TextNonHightlight{
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 14px;
+}
