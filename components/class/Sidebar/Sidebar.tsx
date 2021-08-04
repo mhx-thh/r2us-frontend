@@ -2,6 +2,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { useAppSelector } from "redux/hooks";
 import { selectStatus, selectUser } from "redux/userSlice";
+import style from "./style.module.css";
 
 interface Props {
   param: string;
@@ -48,7 +49,7 @@ function Sidebar(props: { param: string; id: string }) {
   ];
 
   return (
-    <div className="items-center text-center justify-center w-full fixed inline-flex">
+    <div className={style.SideBar}>
       {SideBarData.map((val) => (
         <button
           key={val.Title}
