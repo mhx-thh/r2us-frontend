@@ -1,11 +1,19 @@
-import React, { useEffect } from "react";
-
-type AppProps = {
-  query: string;
-};
+import React, { useState } from "react";
+import Layout from "components/search/Layout/Layout";
 
 const LoginSuccess = ({ query }: AppProps) => {
-  return <div>Search</div>;
+  const [documents, setDocuments] = useState([]);
+
+  const getDocuments = (value) => {
+    console.log(value);
+    setDocuments(value);
+  };
+
+  return (
+    <Layout getData={getDocuments}>
+      <h1>Document here</h1>
+    </Layout>
+  );
 };
 
 export default LoginSuccess;
