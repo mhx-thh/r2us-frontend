@@ -4,7 +4,7 @@ type typeSelectOption = {
   options: any;
   defaultValue: any;
   register: any;
-  // onHanleChange: func;
+  onHanleChange: any;
   placeholder: string;
   name: string;
 };

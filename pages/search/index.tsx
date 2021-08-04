@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import Layout from "components/search/Layout/Layout";
+interface AppProps {
+  query: string;
+}
 
 const LoginSuccess = ({ query }: AppProps) => {
   const [documents, setDocuments] = useState([]);
