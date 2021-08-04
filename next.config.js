@@ -5,7 +5,6 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 
 module.exports = withBundleAnalyzer({
   target: "serverless",
-  distDir: "build",
   publicRuntimeConfig: {
     // add your public runtime environment variables here with NEXT_PUBLIC_*** prefix
   },

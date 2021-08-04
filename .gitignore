@@ -1,6 +1,7 @@
 node_modules/
 build/
 out/
+.next
 .DS_STORE
 .github/
 .vscode/
