@@ -46,7 +46,7 @@ const Item = function (props: {
     <LayoutClass
       title="MHX 2021 - Tin học hóa"
       desc="ClassPage"
-      icon="/icons/mhx-logo.svg"
+      icon="icons/logo.svg"
     >
       <Sidebar param={path} id={props.data.slug} />
       <InformationPage data={props} />;
