@@ -1,7 +1,8 @@
 import React from "react";
 const Feature = () => {
   return (
-    <div className="w-96 h-40 bg-indigo-300">
+    <div className="w-96 h-40 bg-indigo-300 rounded-2xl mr-8 pt-2 px-3.5">
+      <div className="p-0 mb-2 flex justify-start">
       <svg
         width="52"
         height="52"
@@ -17,9 +18,11 @@ const Feature = () => {
           />
         </g>
       </svg>
-      <p className="text-2xl leading-7 font-bold text-white">
+   
+      <p className="text-2xl leading-7 font-bold text-white ml-1.5">
         Giao diện thân thiện
       </p>
+      </div>
       <p className="text-sm leading-5 font-medium text-black">
         Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo
         ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis
