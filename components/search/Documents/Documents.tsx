@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import CardDocument from "../CardDocument/CardDocument";
 import Loading from "../Loading/Loading";
-import Modal from "../Modal/Modal";
+// import Modal from "../Modal/Modal";
 
 function Documents(props) {
   const { documents, loading } = props;
@@ -35,9 +35,9 @@ function Documents(props) {
         ))}
       </div>
       <div>
-        {activeModal && (
+        {/* {activeModal && (
           <Modal infoDocument={infoDocument} setActiveModal={setActiveModal} />
-        )}
+        )} */}
       </div>
     </div>
   );

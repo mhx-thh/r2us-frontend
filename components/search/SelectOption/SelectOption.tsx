@@ -2,9 +2,9 @@ import React, { Component } from "react";
 
 type typeSelectOption = {
   options: any;
-  defaultValue: any;
+  defaultValue?: any;
   register: any;
-  onHanleChange: any;
+  onHandleChange: any;
   placeholder: string;
   name: string;
 };

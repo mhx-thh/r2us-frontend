@@ -2,7 +2,6 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { useAppSelector } from "redux/hooks";
 import { selectStatus, selectUser } from "redux/userSlice";
-import styled from "styled-components";
 
 interface Props {
   param: string;

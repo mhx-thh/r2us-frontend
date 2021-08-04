@@ -5,3 +5,4 @@ out/
 .github/
 .vscode/
 .env.local
+package-lock.json

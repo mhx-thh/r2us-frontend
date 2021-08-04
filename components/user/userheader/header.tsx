@@ -2,30 +2,29 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { useAppSelector } from "redux/hooks";
 import { selectStatus } from "redux/userSlice";
-import styled from "styled-components";
-
+// import styled from "styled-components";
 
 interface Props {
   param: string;
 }
 
 function UserHeader({ param }: Props) {
-  const Button = styled.button`
-    color: black;
-    background-color: #A5B4FC;
-    border: 1px solid #D1D5DB;
-    box-sizing: border-box;
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
-    border-radius: 6px;
-  `;
-  const ButtonToggle = styled(Button)`
-    opacity: 0.4;
-    ${({ active }) =>
-      active &&
-      `
-    opacity: 1;
-  `}
-  `;
+  // const Button = styled.button`
+  //   color: black;
+  //   background-color: #A5B4FC;
+  //   border: 1px solid #D1D5DB;
+  //   box-sizing: border-box;
+  //   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+  //   border-radius: 6px;
+  // `;
+  // const ButtonToggle = styled(Button)`
+  //   opacity: 0.4;
+  //   ${({ active }) =>
+  //     active &&
+  //     `
+  //   opacity: 1;
+  // `}
+  // `;
   const status = useAppSelector(selectStatus);
   const SideBarData = [
     {
@@ -48,23 +47,23 @@ function UserHeader({ param }: Props) {
   const [active, setActive] = useState(
     param === "/user" ? SideBarData[0].Link : param
   );
-  function SideBar() {
-    return (
-      <div className="items-center text-center  w-full fixed inline-flex bg-indigo-50 pt-40">
-        {SideBarData.map((val) => (
-          <ButtonToggle
-            key={val}
-            className="text -2xl font-semibold flex items-center focus:outline-none m-2 mt-0 hover:bg-blue-100 hover:text-blue-500 rounded pl-3 py-3 font-semibold p-11"
-            active={active === val.Link}
-          >
-            <Link href={val.Link}>
-              <a>{val.Title}</a>
-            </Link>
-          </ButtonToggle>
-        ))}
-      </div>
-    );
-  }
+  // function SideBar() {
+  //   return (
+  //     <div className="items-center text-center  w-full fixed inline-flex bg-indigo-50 pt-40">
+  //       {SideBarData.map((val) => (
+  //         <ButtonToggle
+  //           key={val}
+  //           className="text -2xl font-semibold flex items-center focus:outline-none m-2 mt-0 hover:bg-blue-100 hover:text-blue-500 rounded pl-3 py-3 font-semibold p-11"
+  //           active={active === val.Link}
+  //         >
+  //           <Link href={val.Link}>
+  //             <a>{val.Title}</a>
+  //           </Link>
+  //         </ButtonToggle>
+  //       ))}
+  //     </div>
+  //   );
+  // }
   return (
     <header className="bg-white shadow-sm w-full fixed z-10 top-0 ">
       <div className="max-auto px-8 py-2 bg-white flex justify-between">
@@ -102,7 +101,7 @@ function UserHeader({ param }: Props) {
         </div>
       </div>
       <div className="bg-indigo-300">
-        <SideBar />
+        {/* <SideBar /> */}
         <style
           dangerouslySetInnerHTML={{
             __html: "\n    body{\n      background-color:white;\n    }\n  ",

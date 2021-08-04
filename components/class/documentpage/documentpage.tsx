@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import AddDoc from "../AddDoc/AddDoc";
-import Header from "../header/header";
 import PopUp from "../PopUp/popup";
 import Document from "./document";
 
@@ -27,7 +26,6 @@ const DocumentPage = function () {
 
   return (
     <div>
-      <Header param="document" />
       <div className="container items-center pt-40">
         <div className="flex flex-row-reverse">
           {user === "admin" ? (

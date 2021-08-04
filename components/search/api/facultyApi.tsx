@@ -1,9 +1,9 @@
 import axiosClient from "./axiosClient";
 
 const facultyApi = {
-  getAll(params) {
+  getAll() {
     const url = "/academic/faculties";
-    return axiosClient.get(url, { params });
+    return axiosClient.get(url);
   },
 
   get(id) {
