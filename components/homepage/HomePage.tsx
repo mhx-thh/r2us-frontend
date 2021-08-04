@@ -1,4 +1,7 @@
 import React from "react";
+interface AppProps {
+  query: string;
+}
 
 const HomePageComponent = ({ query }: AppProps) => {
   return (
