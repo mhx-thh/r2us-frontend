@@ -5,6 +5,7 @@ import { GetServerSideProps } from "next";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Sidebar from "components/class/Sidebar/Sidebar";
+import Title from "components/class/Title/Title";
 
 // export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 //   const baseURL = process.env.NEXT_PUBLIC_SERVER_URL;
@@ -51,10 +52,24 @@ const Item = function (props: {
       academicId: {
         schoolyear: "string",
       },
-      slug: "string",
+      slug: "A",
     },
-    URL: "A",
+    URL: "http://localhost:3000/group/A",
   };
+
+  const newDataTitle = {
+    academicId: {
+      schoolyear: newProps.data.academicId.schoolyear,
+    },
+    courseId: {
+      courseName: newProps.data.courseId.courseName,
+    },
+    className: newProps.data.className,
+    instructorId: {
+      instructorName: newProps.data.instructorId.instructorName,
+    },
+  };
+
   console.log(props.data);
   const router = useRouter();
   const path = router.asPath;
@@ -65,7 +80,9 @@ const Item = function (props: {
       desc="ClassPage"
       icon="/icons/mhx-logo.svg"
     >
+      <Title data={newDataTitle} />
       <Sidebar param={path} id={newProps.data.slug} />
+      <hr></hr>
       <InformationPage data={newProps} />;
     </LayoutClass>
   );

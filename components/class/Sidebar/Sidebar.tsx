@@ -45,10 +45,8 @@ function Sidebar(props: { param: string; id: string }) {
       Link: `/group/${props.id}/member`,
       Borderright: false,
     },
-  
   ];
-  const router = useRouter();
-  const path = router.asPath;
+
   return (
     <div className={style.SideBar}>
       {SideBarData.map((val) => (

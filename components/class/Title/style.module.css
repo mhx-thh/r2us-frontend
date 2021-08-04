@@ -5,6 +5,8 @@
 }
 .Title{
     height: 175px;
+    width: 100%;
+    background-color: #EEF2FF
 }
 .Title_Up{
     height: 135px;

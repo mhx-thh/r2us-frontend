@@ -32,6 +32,6 @@
     color: #6366F1;
 }
 .VerticalLine{
-    border-left: 1px solid #000;
-    height: 24px;
+    border-left: 2px solid #000;
+    height: 30px;
 }
