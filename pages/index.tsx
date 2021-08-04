@@ -13,7 +13,7 @@ import Document from "components/homepage/Document";
 import Review from "components/homepage/Review";
 import LgBage from "components/homepage/LgBage";
 import SmBage from "components/homepage/SmBage";
-import NewClassAPI from "./pages/api/NewClass";
+import NewClassAPI from "pages/api/NewClassAPI";
 
 const TogglePage: FC = () => {
   const token = useAppSelector(selectToken);
