@@ -5,5 +5,3 @@ out/
 .github/
 .vscode/
 .env.local
-yarn.lock
-package-lock.json
