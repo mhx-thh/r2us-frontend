@@ -9,56 +9,71 @@ interface Props {
 }
 
 function Sidebar(props: { param: string; id: string }) {
-  console.log("ID: ", props.id);
   const SideBarData = [
     {
       Title: "Thông tin",
-      Link: `/groups/${props.id}`,
+      Link: `/group/${props.id}`,
       Borderright: true,
     },
     {
       Title: "Đề thi",
-      Link: `/groups/${props.id}/exam`,
+      Link: `/group/${props.id}/exam`,
       Borderright: false,
     },
     {
       Title: "Tài liệu",
-      Link: `/groups/${props.id}/document`,
+      Link: `/group/${props.id}/document`,
       Borderright: false,
     },
     {
       Title: "Đề cương môn học",
-      Link: `/groups/${props.id}/outline`,
+      Link: `/group/${props.id}/outline`,
       Borderright: true,
     },
     {
       Title: "Giáo viên",
-      Link: `/groups/${props.id}/teacher`,
+      Link: `/group/${props.id}/teacher`,
       Borderright: false,
     },
     {
       Title: "Môn học",
-      Link: `/groups/${props.id}/course`,
+      Link: `/group/${props.id}/course`,
       Borderright: true,
     },
     {
       Title: "Thành viên",
-      Link: `/groups/${props.id}/member`,
+      Link: `/group/${props.id}/member`,
       Borderright: false,
     },
+  
   ];
-
+  const router = useRouter();
+  const path = router.asPath;
   return (
     <div className={style.SideBar}>
       {SideBarData.map((val) => (
-        <button
-          key={val.Title}
-          className="text  -sm font-semibold flex items-center focus:outline-none m-2 mt-0 hover:bg-blue-100 hover:text-blue-500 rounded pl-3 py-3 font-semibold p-11"
-        >
-          <Link href={val.Link}>
-            <a>{val.Title}</a>
-          </Link>
-        </button>
+        <div key={val.Title} className="flex">
+          <button
+            className={
+              props.param === val.Link
+                ? style.Button_Highlight
+                : style.Button_Nonhighlight
+            }
+          >
+            <Link href={val.Link}>
+              <a
+                className={
+                  props.param === val.Link
+                    ? style.ButtonText_Highlight
+                    : style.ButtonText_Nonhighlight
+                }
+              >
+                {val.Title}
+              </a>
+            </Link>
+          </button>
+          <div className={val.Borderright ? style.VerticalLine : undefined} />
+        </div>
       ))}
     </div>
   );

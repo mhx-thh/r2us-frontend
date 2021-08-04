@@ -4,8 +4,6 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import { useAppDispatch } from "redux/hooks";
 import { getInfoAsync } from "redux/userSlice";
-import Header from "../class/header/header";
-import Footer from "../class/footer/footer";
 import Sidebar from "components/class/Sidebar/Sidebar";
 
 interface Props {
@@ -54,7 +52,6 @@ const LayoutClass = ({ title, desc, icon, children }: Props) => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       {children}
-      {/* <Footer /> */}
     </React.Fragment>
   );
 };

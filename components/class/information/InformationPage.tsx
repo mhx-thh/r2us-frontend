@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import InputField from "components/class/information/inputfield";
 import style from "./style.module.css";
-import Title from "components/class/Title/Title";
 import TitleField from "./titlefield";
 
 type classInfo = {
@@ -18,6 +17,7 @@ type classInfo = {
       academicId: {
         schoolyear: string;
       };
+      slug: string;
     };
     URL: string;
   };
@@ -52,7 +52,6 @@ const InformationPage = function (data: classInfo) {
 
   return (
     <div className={style.Page}>
-      <Title data={initData} />
       <div className={style.InformationPage}>
         <div className={style.Grid}>
           {/* Information field */}
