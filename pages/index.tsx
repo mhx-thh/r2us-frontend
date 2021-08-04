@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Link from "next/link";
 import { isMobile } from "react-device-detect";
 import Swal from "sweetalert2";
@@ -13,10 +13,25 @@ import Document from "components/homepage/Document";
 import Review from "components/homepage/Review";
 import LgBage from "components/homepage/LgBage";
 import SmBage from "components/homepage/SmBage";
+import NewClassAPI from "./pages/api/NewClass";
 
 const TogglePage: FC = () => {
   const token = useAppSelector(selectToken);
   const status = useAppSelector(selectStatus);
+  const [newClass, setNewClass] = useState([]);
+  useEffect(() => {
+    async function fetchNewClass() {
+      try {
+        const res = await NewClassAPI.get();
+        const data = res?.data?.data?.result;
+        setNewClass(data.splice(4));
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    fetchNewClass();
+  }, []);
+
   return (
     <React.Fragment>
       <Link href="/login">
@@ -151,48 +166,72 @@ const TogglePage: FC = () => {
           </div>
         </div>
       </div>
-      <div className="relative mt-36 w-full pb-20 bg-indigo-50 px-28 mb-24">
-        <div className="px-5 h-16 py-14 bg-white rounded-full shadow-xl absolute text-center right-2/4 -top-6 inline-block">
-          <p className="text-indigo-500 text-2xl leading-7 font-bold ">
-            Các nhóm vừa mở
-          </p>
+      <div className="relative mt-24 w-full bg-indigo-50">
+        <div className="absolute -top-8 left-2/4 w-80 h-20 pl-6 pt-12 rounded-full mb-14 shadow-xl">
+          <p className="text-2xl leading-7 font-bold">Các Lớp Mới mở</p>
         </div>
-        <div className="p-0 flex justify-between items-center mt-14">
-          <Group />
-          <Group />
-          <Group />
+        <div className="w-full ml-24 mb-20 flex">
+          <div className="relative py-0 h-60 w-72">
+            <div className="absoulute flex justify-center bottom-0 right-0 bg-white shadow-lg w-64 h-52 rounded-xl">
+              <p className=" absolute text-sm leading-5 font-normal mt-16">
+                detail
+              </p>
+            </div>
+            <div className="absolute flex justify-center items-center top-0 left-0 w-64 h-16 bg-indigo-500 rounded-xl">
+              <p className="text-lg leading-7 font-semibold">Tên lớp học</p>
+            </div>
+          </div>
         </div>
       </div>
-      <div className="relative mt-28 rounded-br-3xl rounded-tr-3xl bg-indigo-100 my-0 w-56 py-14 px-28">
-        <div className="absolute px-4 top-12">
-          <div className="relative rounded-xl px-14 py-5">
-            <p className="text-2xl leading-7 font-bold">Tài liệu mới nhất</p>
-            <div className="absolute -top-2.5 left-36">
+      <div className="relative w-56 h-2/6 pt-11 mt-16 rounded-br-3xl rounded-tr-3xl bg-indigo-100  ">
+        <div className="p-0 absolute left-28 mb-24">
+          <div className="relative w-80 h-16 bg-indigo-500 pl-14 pt-5 mb-10 shadow-base">
+            <p className="text-2xl leading-7 font-bold">Tài Liệu mới nhất</p>
+            <div className="absolute -bottom-4 left-72">
               <LgBage>Xem thêm</LgBage>
             </div>
           </div>
-          <div className="flex justify-center items-center p-0">
-            <Document />
-            <Document />
-            <Document />
+          <div className="flex">
+            <div className="relative w-64 h-40 rounded-2xl bg-white border-indigo-500 shadow-lg mr-12 ">
+              <p className="text-black text-lg leading-7 font-semibold p-0 mb-0 mx-6 mt-4">
+                Tên tài liệu
+              </p>
+              <p className="text-black text-sm leading-8 font-normal flex justify-center items-center">
+                <p>Detail</p>
+              </p>
+              <div className="absolute -top-2.5 left-36">
+                <SmBage>Đề thi</SmBage>
+              </div>
+              <div className="absolute bottom-5 rigth-5">yaricon</div>
+            </div>
           </div>
         </div>
-        <div className="absolute px-4 bottom-24">
-          <div className="relative rounded-br-3xl rounded-tr-3xl px-14 py-5">
+        <div className="p-0 absolute left-28 ">
+          <div className="relative w-80 h-16 bg-indigo-500 pl-14 pt-5 mb-10 shadow-base">
             <p className="text-2xl leading-7 font-bold">Cảm nhận mới nhất</p>
-            <div className="absolute -top-2.5 left-36">
+            <div className="absolute -bottom-4 left-72">
               <LgBage>Xem thêm</LgBage>
             </div>
           </div>
-          <div className="flex justify-center items-center p-0">
-            <Review />
-            <Review />
-            <Review />
+          <div>
+            <div className="flex">
+              <div className="relative w-64 h-32 rounded-2xl bg-white border-indigo-500 shadow-lg mr-12  ">
+                <p className="text-black text-lg leading-7 font-semibold p-0 mb-0 mx-6 mt-4">
+                  Cảm nhận về gì đó
+                </p>
+                <p className="text-black text-sm leading-8 font-normal w-64 text-center ">
+                  <p>Detail</p>
+                </p>
+                <div className="absolute -top-2.5 left-36">
+                  <SmBage>Lớp học</SmBage>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    
-        <Footer />
+
+      <Footer />
     </React.Fragment>
   );
 };
