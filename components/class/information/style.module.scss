@@ -1,0 +1,85 @@
+.Page{
+    padding-left: 100px;
+    padding-right: 100px;
+}
+.InformationPage{
+    height: 600px;
+}
+.Grid{
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+}
+.InformationField{
+    grid-column: 2 / span 6;
+    display: flex;
+}
+.InformationField_M{
+    flex-grow: 1;
+    padding-top: 120px;
+}
+.InformationField_Text{
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    color: #6366F1;
+}
+.InformationField_Input{
+    display: flex;
+    padding-bottom: 20px;
+}
+.InformationField_Input_Unactive{
+    background: rgba(238, 242, 255, 1);
+    border: 1px solid #6366F1;
+    box-sizing: border-box;
+    border-radius: 8px;
+    width: 100%;
+    padding-right: 10px;
+    resize: none;
+}
+.InformationField_Input_Active{
+    background: #ffffff;
+    border: 1px solid #6366F1;
+    box-sizing: border-box;
+    border-radius: 8px;
+    width: 100%;
+    padding-right: 10px;
+    resize: none;
+}
+
+.TitleField{
+    grid-column: 8 / span 4;
+    padding-top: 147px;
+}
+.TitleField_Input{
+    display: flex;
+    justify-content: center;
+    padding-bottom: 20px;
+}
+.TitleField_Image{
+    padding-right: 20px;
+}
+
+.PButton{
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+.Button{
+    background: #6366F1;
+    border: 1px solid #6366F1;
+    box-sizing: border-box;
+    border-radius: 8px;
+    width: 125px;
+    height: 44px;
+}
+.Button_Text{
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 28px;
+    color: #EEF2FF;
+}
