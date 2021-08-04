@@ -10,13 +10,13 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const baseURL = process.env.NEXT_PUBLIC_SERVER_URL;
   const URL = `${baseURL}/api/v1/groups/class/${params.slug}`;
   const res = await axios.get(URL);
-  const tempURL = `${process.env.NEXT_PUBLIC_WEB_URL}/groups/class/${params.slug}`;
+  const tempURL = `${process.env.NEXT_PUBLIC_WEB_URL}/groups/${params.slug}`;
   return {
     props: {
       status: res.status,
       data: res.data.data,
       URL: tempURL,
-      id: params.slug,
+      slug: params.slug,
     },
   };
 };
@@ -34,21 +34,21 @@ const Item = function (props: {
     academicId: {
       schoolyear: string;
     };
-    id: string;
+    slug: string;
   };
   URL: string;
 }) {
   console.log(props.data);
   const router = useRouter();
   const path = router.asPath;
-  console.log(path);
+  console.log("Props: ", props);
   return (
     <LayoutClass
       title="MHX 2021 - Tin học hóa"
       desc="ClassPage"
       icon="/icons/mhx-logo.svg"
     >
-      <Sidebar param={path} id={props.data.id} />
+      <Sidebar param={path} id={props.data.slug} />
       <InformationPage data={props} />;
     </LayoutClass>
   );

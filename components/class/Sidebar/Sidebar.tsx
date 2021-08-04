@@ -9,40 +9,41 @@ interface Props {
 }
 
 function Sidebar(props: { param: string; id: string }) {
+  console.log("ID: ", props.id);
   const SideBarData = [
     {
       Title: "Thông tin",
-      Link: `/groups/class/${props.id}`,
+      Link: `/groups/${props.id}`,
       Borderright: true,
     },
     {
       Title: "Đề thi",
-      Link: `/groups/class/${props.id}/exam`,
+      Link: `/groups/${props.id}/exam`,
       Borderright: false,
     },
     {
       Title: "Tài liệu",
-      Link: `/groups/class/${props.id}/document`,
+      Link: `/groups/${props.id}/document`,
       Borderright: false,
     },
     {
       Title: "Đề cương môn học",
-      Link: `/groups/class/${props.id}/outline`,
+      Link: `/groups/${props.id}/outline`,
       Borderright: true,
     },
     {
       Title: "Giáo viên",
-      Link: `/groups/class/${props.id}/teacher`,
+      Link: `/groups/${props.id}/teacher`,
       Borderright: false,
     },
     {
       Title: "Môn học",
-      Link: `/groups/class/${props.id}/course`,
+      Link: `/groups/${props.id}/course`,
       Borderright: true,
     },
     {
       Title: "Thành viên",
-      Link: `/groups/class/${props.id}/member`,
+      Link: `/groups/${props.id}/member`,
       Borderright: false,
     },
   ];
