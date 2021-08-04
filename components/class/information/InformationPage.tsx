@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import InputField from "components/class/information/inputfield";
-import style from "./style.module.scss";
+import style from "./style.module.css";
 import Title from "components/class/Title/Title";
 import TitleField from "./titlefield";
 

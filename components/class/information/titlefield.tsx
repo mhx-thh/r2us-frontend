@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import style from "./style.module.scss";
+import style from "./style.module.css";
 
 function TitleField(props: { name: string; data: string }) {
   return (
