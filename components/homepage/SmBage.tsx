@@ -11,6 +11,6 @@ function SmBage({ children }: AppProps) {
       </p>
     </div>
   );
-};
+}
 
 export default SmBage;

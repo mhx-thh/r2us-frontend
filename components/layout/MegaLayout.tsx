@@ -39,7 +39,11 @@ const MetaLayout = ({ title, desc, icon, children }: Props) => {
       <Head>
         <title>{title}</title>
         <meta name="description" property="og:description" content={desc} />
-        <meta name="image" property="og:image" content={`${url}/home.png`} />
+        <meta
+          name="image"
+          property="og:image"
+          content={`${url}/thumbnail.png`}
+        />
         <link rel="icon" type="image/svg+xml" href={icon} />
         <link rel="mask-icon" href={icon} />
         <meta property="og:type" content="website" />

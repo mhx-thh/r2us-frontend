@@ -11,9 +11,9 @@ const Review = () => {
       </p>
       <div className="absolute -top-2.5 rigth-5">
         <SmBage>
-        <p className="text-indigo-800 text-xs leading-4 font-medium ">
-          loại cảm nhận
-        </p>
+          <p className="text-indigo-800 text-xs leading-4 font-medium ">
+            loại cảm nhận
+          </p>
         </SmBage>
       </div>
     </div>

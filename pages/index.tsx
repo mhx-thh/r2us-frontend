@@ -72,10 +72,7 @@ const TogglePage: FC = () => {
             </button>
           </div>
         </div>
-        <img
-          src="public\Picture\Human_Resource_Management__Converted.png"
-          alt=""
-        />
+        <img src="picture/home.png" alt="home picture" />
       </div>
       <div className="relative -mt-16 py-0 px-28 w-full text-center">
         <div className="border w-8/12 h-72 inline-block bg-white shadow-xl mb-0 rounded-3xl">

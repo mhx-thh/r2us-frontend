@@ -15,11 +15,11 @@ const Document = () => {
         </span>
       </p>
       <div className="absolute -top-2.5 rigth-5">
-       <SmBage>
-        <p className=" text-indigo-800 text-xs leading-4 font-medium ">
-          loại tài liệu
-        </p>
-      </SmBage>
+        <SmBage>
+          <p className=" text-indigo-800 text-xs leading-4 font-medium ">
+            loại tài liệu
+          </p>
+        </SmBage>
       </div>
       <div className="absolute bottom-5 rigth-5">icon</div>
     </div>

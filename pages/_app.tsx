@@ -22,9 +22,9 @@ const App: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
   return (
     <Provider store={store}>
       <MegaLayout
-        title="MHX 2021 - Tin học hóa"
+        title="R2us - Nền tảng chia sẻ tài liệu và cảm nhận dành riêng cho trường ĐH KHTN HCM"
         desc="Mùa hè xanh 2021 - Đội hình Tin học hóa with hearts"
-        icon="/icons/mhx-logo.svg"
+        icon="icons/logo.svg"
       >
         <Component {...pageProps} />
       </MegaLayout>
