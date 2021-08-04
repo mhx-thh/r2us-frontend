@@ -3,13 +3,12 @@ import LayoutClass from "components/layout/layoutClass";
 import React from "react";
 import { GetServerSideProps } from "next";
 import axios from "axios";
-import { data } from "jquery";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const baseURL = process.env.NEXT_PUBLIC_SERVER_URL;
-  const URL = `${baseURL}/api/v1/classes/${params.id}`;
+  const URL = `${baseURL}/api/v1/groups/class/${params.id}`;
   const res = await axios.get(URL);
-
+  console.log(res.data.data);
   return { props: { status: res.status, data: res.data.data } };
 };
 
@@ -28,18 +27,6 @@ const Item = function (props: {
     };
   };
 }) {
-  const newData = {
-    className: props.data.className,
-    courseiD: {
-      courseName: props.data.courseId.courseName,
-    },
-    instructoriD: {
-      instructorName: props.data.instructorId.instructorName,
-    },
-    academicId: {
-      schoolyear: props.data.academicId.schoolyear,
-    },
-  };
   return (
     <LayoutClass
       title="MHX 2021 - Tin học hóa"
