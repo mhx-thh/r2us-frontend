@@ -40,6 +40,9 @@ const TogglePage: FC = () => {
       <Link href="/user">
         <a>User </a>
       </Link>
+      <Link href="/class">
+        <a>Class </a>
+      </Link>
       {status === "logined" && <div>{token}</div>}
       <div className="w-full flex items-center px-28 py-24 bg-indigo-50">
         <div>
@@ -236,6 +239,7 @@ const TogglePage: FC = () => {
 
       <Footer />
     </React.Fragment>
+    // <ClassDocument />
   );
 };
 
