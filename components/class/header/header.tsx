@@ -9,6 +9,7 @@ interface Props {
 }
 
 function Header({ param }: Props) {
+  console.log(param);
   const Button = styled.button`
     color: black;
     background-color: #9baea4;

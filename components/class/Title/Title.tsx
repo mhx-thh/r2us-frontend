@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import InputField from "components/class/information/inputfield";
 import style from "./style.module.scss";
-import { title } from "process";
 
 type classInfo = {
   data: {
@@ -20,7 +18,6 @@ type classInfo = {
 
 const Title = function (data: classInfo) {
   const [classInfo, setClassInfo] = useState(data.data);
-  console.log(classInfo);
   const editNameClass = () => {
     const newClassInfo = { ...classInfo, className: "newName" };
     setClassInfo(newClassInfo);
