@@ -3,7 +3,7 @@ import { apiV1, config, get } from "api/generic";
 
 const NewClassAPI = {
   get: function () {
-    const url = "/group/class";
+    const url = `${apiV1}/group/class`;
     return get(url, "");
   },
 };
