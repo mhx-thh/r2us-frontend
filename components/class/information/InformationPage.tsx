@@ -5,21 +5,18 @@ import TitleField from "./titlefield";
 
 type classInfo = {
   data: {
-    status: string;
-    data: {
-      className: string;
-      courseId: {
-        courseName: string;
-      };
-      instructorId: {
-        instructorName: string;
-      };
-      academicId: {
-        schoolyear: string;
-      };
-      slug: string;
-    };
-    URL: string;
+    className: string;
+    ratingsAverage: number;
+    ratingsQuantity: number;
+    nStudents: number;
+    _id: string;
+    courseId: string;
+    academicId: string;
+    instructorId: string;
+    createdAt: string;
+    updatedAt: string;
+    slug: string;
+    __v: 0;
   };
 };
 
@@ -38,15 +35,15 @@ const InformationPage = function (data: classInfo) {
   };
 
   const initData = {
-    className: data.data.data.className,
+    className: data.data.className,
     courseId: {
-      courseName: data.data.data.courseId.courseName,
+      courseName: data.data.courseId,
     },
     instructorId: {
-      instructorName: data.data.data.instructorId.instructorName,
+      instructorName: data.data.instructorId,
     },
     academicId: {
-      schoolyear: data.data.data.academicId.schoolyear,
+      schoolyear: data.data.academicId,
     },
   };
 
@@ -60,13 +57,13 @@ const InformationPage = function (data: classInfo) {
             <InputField
               name="Tên nhóm"
               editable
-              data={data.data.data.className}
+              data={data.data.className}
               multiline={false}
             />
             <InputField
               name="Đường dẫn"
               editable={false}
-              data={data.data.URL}
+              data={data.data.slug}
               multiline={false}
             />
             <InputField name="Mô tả" editable data="a" multiline={true} />
@@ -146,10 +143,7 @@ const InformationPage = function (data: classInfo) {
                 />
               </svg>
             </div>
-            <TitleField
-              name="Năm học"
-              data={data.data.data.academicId.schoolyear}
-            />
+            <TitleField name="Năm học" data={data.data.academicId} />
           </div>
 
           {/* Môn học */}
@@ -168,10 +162,7 @@ const InformationPage = function (data: classInfo) {
                 />
               </svg>
             </div>
-            <TitleField
-              name="Môn học"
-              data={data.data.data.courseId.courseName}
-            />
+            <TitleField name="Môn học" data={data.data.courseId} />
           </div>
 
           {/* Nhóm học */}
@@ -190,7 +181,7 @@ const InformationPage = function (data: classInfo) {
                 />
               </svg>
             </div>
-            <TitleField name="Nhóm học" data={data.data.data.className} />
+            <TitleField name="Nhóm học" data={data.data.className} />
           </div>
 
           {/* Giáo viên */}
@@ -209,10 +200,7 @@ const InformationPage = function (data: classInfo) {
                 />
               </svg>
             </div>
-            <TitleField
-              name="Giáo viên"
-              data={data.data.data.instructorId.instructorName}
-            />
+            <TitleField name="Giáo viên" data={data.data.instructorId} />
           </div>
 
           <div className={style.PButton}>
