@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Layout from "components/search/Layout/Layout";
+import Documents from "components/search/Documents/Documents";
 interface AppProps {
   query: string;
 }
@@ -14,7 +15,7 @@ const LoginSuccess = ({ query }: AppProps) => {
 
   return (
     <Layout getData={getDocuments}>
-      <h1>Document here</h1>
+      <Documents />
     </Layout>
   );
 };

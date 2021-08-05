@@ -4,6 +4,7 @@ import "../global.css";
 import { store } from "redux/store";
 import { Provider } from "react-redux";
 import MegaLayout from "components/layout/MegaLayout";
+import HeaderComponent from "components/header/HeaderComponent";
 // import { useRouter } from 'next/dist/client/router';
 // import * as gtag from '../lib/gtag';
 
@@ -26,6 +27,7 @@ const App: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
         desc="Mùa hè xanh 2021 - Đội hình Tin học hóa with hearts"
         icon="icons/logo.svg"
       >
+        <HeaderComponent />
         <Component {...pageProps} />
       </MegaLayout>
     </Provider>
