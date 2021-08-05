@@ -1,3 +1,7 @@
+.Page{
+    padding-left: 100px;
+    padding-right: 100px;
+}
 .Grid{
     display: grid;
     grid-template-columns: repeat(12, 1fr);

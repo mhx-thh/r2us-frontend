@@ -1,5 +1,7 @@
 .SideBar{
     display: flex;
+    padding-left: 100px;
+    padding-right: 100px;
 }
 .Button_Nonhighlight{
     padding-right: 36px;

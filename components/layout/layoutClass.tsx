@@ -4,8 +4,6 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import { useAppDispatch } from "redux/hooks";
 import { getInfoAsync } from "redux/userSlice";
-import Sidebar from "components/class/Sidebar/Sidebar";
-import style from "./style.module.css";
 
 interface Props {
   title: string;
@@ -52,7 +50,7 @@ const LayoutClass = ({ title, desc, icon, children }: Props) => {
         <link rel="canonical" href={`${url}${path}`} />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <div className={style.Page}>{children}</div>
+      {children}
     </React.Fragment>
   );
 };
