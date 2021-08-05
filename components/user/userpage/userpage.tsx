@@ -1,43 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InputField from "components/user/userpage/inputfield";
-
-type classInfo = {
-  name: string;
-  subject: string;
-  teacher: string;
-  description: string;
-  //   Note: Có thể sẽ để description là list để hiện nhiều dòng
-};
+import style from "./style.module.css";
 
 const UserPage = function () {
-  const props = {
-    name: "A",
-    email: "B",
-    id: "C",
-    description: "D",
+  const initData = {
+    className: "A",
+    courseId: {
+      courseName: "B",
+    },
+    instructorId: {
+      instructorName: "C",
+    },
+    academicId: {
+      schoolyear: "D",
+    },
   };
+
   return (
-    <div>
-      <div className="container items-center pt-44">
-        <InputField name="Tên" editable data={props.name} multiline={false} />
-        <InputField
-          name="Email"
-          editable
-          data={props.email}
-          multiline={false}
-        />
-        <InputField
-          name="Mã số sinh viên"
-          editable
-          data={props.id}
-          multiline={false}
-        />
-        <InputField
-          name="Tiểu sử"
-          editable
-          data={props.description}
-          multiline
-        />
+    <div className={style.UserPage}>
+      <div className={style.Grid}>
+        {/* User field */}
+        <div className={style.UserInput}>
+          <div className={style.UserInput_M}>
+            <InputField name="Tên" editable data="A" multiline={false} />
+            <InputField name="Biệt danh" editable data="B" multiline={false} />
+            <InputField name="MSSV" editable data="C" multiline={false} />
+            <InputField name="Email" editable data="C" multiline={false} />
+            <InputField name="Mô tả" editable data="C" multiline={true} />
+          </div>
+        </div>
       </div>
     </div>
   );

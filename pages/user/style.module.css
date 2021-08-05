@@ -1,0 +1,9 @@
+.Page{
+    padding-left: 100px;
+    padding-right: 100px;
+}
+.Title{
+    height: 175px;
+    display: flex;
+    background-color: #EEF2FF;
+}
