@@ -20,8 +20,6 @@ const Document = function () {
     setOpenDoc(1);
   };
 
-  console.log(data);
-
   return (
     <div className="w-48 h-56 border">
       <div className="rounded cursor-pointer" onClick={ClickpopupDoc}>

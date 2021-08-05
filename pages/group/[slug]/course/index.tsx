@@ -47,8 +47,6 @@ type propApi = {
 const Item = function (props: propApi) {
   const initProps = props.data;
 
-  console.log("Props: ", props);
-
   const initTitle = {
     academicId: {
       schoolyear: initProps.academicId,
@@ -64,7 +62,6 @@ const Item = function (props: propApi) {
 
   const router = useRouter();
   const path = router.asPath;
-  console.log(props);
   return (
     <LayoutClass
       title="MHX 2021 - Tin học hóa"

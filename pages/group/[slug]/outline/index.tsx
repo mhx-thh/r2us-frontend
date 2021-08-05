@@ -47,8 +47,6 @@ type propApi = {
 const Item = function (props: propApi) {
   const initProps = props.data;
 
-  console.log("Props: ", props);
-
   const initTitle = {
     academicId: {
       schoolyear: initProps.academicId,
