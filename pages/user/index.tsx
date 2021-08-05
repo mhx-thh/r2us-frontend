@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import style from "./style.module.css";
-import UserPage from "components/user/userpage/userPage";
+import UserPage from "components/user/userpage/userpage";
 import MetaLayout from "components/layout/MegaLayout";
 import Sidebar from "components/user/Sidebar/UserSidebar";
 
