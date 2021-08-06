@@ -1,19 +1,14 @@
-import React, { FC, useEffect, useState } from "react";
-import Link from "next/link";
-import { isMobile } from "react-device-detect";
-import Swal from "sweetalert2";
-// import pic from "./public/Picture/";
-
-import { useAppSelector } from "redux/hooks";
-import { selectToken, selectStatus } from "redux/userSlice";
-import Feature from "components/homepage/Feature";
-import Footer from "components/footer/FooterComponent";
-import Group from "components/homepage/Group";
-import Document from "components/homepage/Document";
-import Review from "components/homepage/Review";
-import LgBage from "components/homepage/LgBage";
-import SmBage from "components/homepage/SmBage";
 import NewClassAPI from "api/NewClassAPI";
+import Footer from "components/footer/FooterComponent";
+import Document from "components/homepage/Document";
+import Group from "components/homepage/Group";
+import LgBage from "components/homepage/LgBage";
+import Review from "components/homepage/Review";
+import Link from "next/link";
+import React, { FC, useEffect, useState } from "react";
+import { useAppSelector } from "redux/hooks";
+import { selectStatus, selectToken } from "redux/userSlice";
+import style from "./style.module.css";
 
 const TogglePage: FC = () => {
   const token = useAppSelector(selectToken);
@@ -23,8 +18,11 @@ const TogglePage: FC = () => {
     async function fetchNewClass() {
       try {
         const res = await NewClassAPI.get();
+        console.log(res);
         const data = res?.data?.data?.result;
-        setNewClass(data.splice(4));
+        const mydata = data.splice(0, 4);
+        console.log(mydata);
+        setNewClass(mydata);
       } catch (error) {
         console.log(error.message);
       }
@@ -64,14 +62,19 @@ const TogglePage: FC = () => {
         </div>
         <img src="picture/home.png" alt="home picture" />
       </div>
+      {/* phần đặc điểm nổi bật */}
       <div className="relative -mt-16 py-0 px-28 w-full text-center">
-        <div className="border w-8/12 h-72 inline-block bg-white shadow-xl mb-0 rounded-3xl">
-          <p className="text-indigo-500 text-2xl leading-7 font-bold indigo-500 text-center">
-            Đặc điểm nổi bật
+        {/* // chữ đặc điểm nổi bật và cái khung */}
+        <div className="border w-8/12 h-96 inline-block bg-white shadow-xl mb-0 rounded-3xl">
+          <p className="text-indigo-500 text-2xl leading-7 font-bold indigo-500 text-center pt-14">
+            ĐẶC ĐIỂM NỔI BẬT
           </p>
         </div>
+        {/* toàn thể 3 đặc điểm */}
         <div className="py-0 px-0 absolute bottom-14 flex justify-between items-center">
+          {/* đaẹđiểm thứ nhất */}
           <div className="py-0 flex justify-around items-center">
+            {/* //đặc điểm thứ nhất */}
             <div className="w-9/12 h-40 bg-indigo-300 rounded-2xl mr-8 pt-2 px-3.5">
               <div className="p-0 mb-2 flex justify-start">
                 <svg
@@ -90,7 +93,7 @@ const TogglePage: FC = () => {
                   </g>
                 </svg>
 
-                <p className="text-2xl leading-7 font-bold text-white ml-1.5">
+                <p className="text-2xl leading-7 font-bold text-white ml-1.5 pt-2">
                   Giao diện thân thiện
                 </p>
               </div>
@@ -100,6 +103,7 @@ const TogglePage: FC = () => {
                 penatibus et magnis dis parturient montes{" "}
               </p>
             </div>
+            {/* đặc điểm thứ 2 */}
             <div className="w-9/12 h-40 bg-indigo-300 rounded-2xl mr-8 pt-2 px-3.5">
               <div className="p-0 mb-2 flex justify-start">
                 <svg
@@ -118,7 +122,7 @@ const TogglePage: FC = () => {
                   </g>
                 </svg>
 
-                <p className="text-2xl leading-7 font-bold text-white ml-1.5">
+                <p className="text-2xl leading-7 font-bold text-white ml-1.5 pt-2">
                   Giao diện thân thiện
                 </p>
               </div>
@@ -146,7 +150,7 @@ const TogglePage: FC = () => {
                   </g>
                 </svg>
 
-                <p className="text-2xl leading-7 font-bold text-white ml-1.5">
+                <p className="text-2xl leading-7 font-bold text-white ml-1.5 pt-2">
                   Giao diện thân thiện
                 </p>
               </div>
@@ -159,67 +163,56 @@ const TogglePage: FC = () => {
           </div>
         </div>
       </div>
-      <div className="relative mt-24 w-full bg-indigo-50">
-        <div className="absolute -top-8 left-2/4 w-80 h-20 pl-6 pt-12 rounded-full mb-14 shadow-xl">
-          <p className="text-2xl leading-7 font-bold">Các Lớp Mới mở</p>
-        </div>
-        <div className="w-full ml-24 mb-20 flex">
-          <div className="relative py-0 h-60 w-72">
-            <div className="absoulute flex justify-center bottom-0 right-0 bg-white shadow-lg w-64 h-52 rounded-xl">
-              <p className=" absolute text-sm leading-5 font-normal mt-16">
-                detail
-              </p>
-            </div>
-            <div className="absolute flex justify-center items-center top-0 left-0 w-64 h-16 bg-indigo-500 rounded-xl">
-              <p className="text-lg leading-7 font-semibold">Tên lớp học</p>
-            </div>
+      {/* //Các lớp mới mở */}
+      <div className="relative mt-24 w-full flex bg-indigo-50 pt-14 justify-center items-center">
+        <div className="absolute -top-8 w-80 h-20 flex justify-center items-center rounded-full mb-5 shadow-xl bg-white text-center">
+          <div className="text-2xl leading-7 font-bold text-indigo-500">
+            CÁC NHÓM VỪA MỞ
           </div>
+        </div>
+        <div className="w-full grid grid-cols-4 gap-11 ml-24 justify-around mb-20">
+          {newClass.map((data, index) => (
+            <Group key={index} agroup={data} />
+          ))}
+          {/* <Group /> */}
         </div>
       </div>
-      <div className="relative w-56 h-2/6 pt-11 mt-16 rounded-br-3xl rounded-tr-3xl bg-indigo-100  ">
-        <div className="p-0 absolute left-28 mb-24">
-          <div className="relative w-80 h-16 bg-indigo-500 pl-14 pt-5 mb-10 shadow-base">
-            <p className="text-2xl leading-7 font-bold">Tài Liệu mới nhất</p>
+      {/* tài liệu mới nhâts và cảm nhận mới nhất*/}
+      <div className={style.Later}>
+        {/* tài liệu mới nhất */}
+        <div className="p-0 absolute left-28 pt-11 mb-96">
+          <div className="relative w-80 h-16 bg-indigo-500 pl-14 pt-5 mb-14 shadow-base rounded-xl ml-5">
+            <p className="text-2xl leading-7 font-bold text-white">
+              Tài liệu mới nhất
+            </p>
             <div className="absolute -bottom-4 left-72">
               <LgBage>Xem thêm</LgBage>
             </div>
           </div>
-          <div className="flex">
-            <div className="relative w-64 h-40 rounded-2xl bg-white border-indigo-500 shadow-lg mr-12 ">
-              <p className="text-black text-lg leading-7 font-semibold p-0 mb-0 mx-6 mt-4">
-                Tên tài liệu
-              </p>
-              <p className="text-black text-sm leading-8 font-normal flex justify-center items-center">
-                <p>Detail</p>
-              </p>
-              <div className="absolute -top-2.5 left-36">
-                <SmBage>Đề thi</SmBage>
-              </div>
-              <div className="absolute bottom-5 rigth-5">yaricon</div>
-            </div>
+          <div className="-pl-10 grid grid-cols-4 gap-x-80">
+            <Document />
+            <Document />
+            <Document />
+            <Document />
           </div>
         </div>
-        <div className="p-0 absolute left-28 ">
-          <div className="relative w-80 h-16 bg-indigo-500 pl-14 pt-5 mb-10 shadow-base">
-            <p className="text-2xl leading-7 font-bold">Cảm nhận mới nhất</p>
+        {/* cảm nhận mới nhất */}
+        <div className="p-0 absolute left-28 mt-96">
+          <div className="relative w-80 h-16 bg-indigo-500 pl-14 pt-5 mb-14 shadow-base rounded-xl ml-5">
+            <p className="text-2xl leading-7 font-bold text-white">
+              Cảm nhận mới nhất
+            </p>
             <div className="absolute -bottom-4 left-72">
               <LgBage>Xem thêm</LgBage>
             </div>
           </div>
-          <div>
-            <div className="flex">
-              <div className="relative w-64 h-32 rounded-2xl bg-white border-indigo-500 shadow-lg mr-12  ">
-                <p className="text-black text-lg leading-7 font-semibold p-0 mb-0 mx-6 mt-4">
-                  Cảm nhận về gì đó
-                </p>
-                <p className="text-black text-sm leading-8 font-normal w-64 text-center ">
-                  <p>Detail</p>
-                </p>
-                <div className="absolute -top-2.5 left-36">
-                  <SmBage>Lớp học</SmBage>
-                </div>
-              </div>
-            </div>
+
+          <div className="-pl-10 grid grid-cols-4 gap-x-80 ">
+            {/* cảm nhận 1 */}
+            <Review />
+            <Review />
+            <Review />
+            <Review />
           </div>
         </div>
       </div>

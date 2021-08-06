@@ -1,0 +1,17 @@
+
+
+.Later{
+  position: relative;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  width: 219px;
+  height: 753px;
+  border-radius: 0px 52px 52px 0px;
+  background-color: #E0E7FF;
+  margin-top: 4rem;
+  grid-template-rows: repeat(1, 1fr);
+  grid-row-gap: 340px;
+  padding-top: 3rem;
+  
+}
