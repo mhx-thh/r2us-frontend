@@ -18,8 +18,9 @@ const TogglePage: FC = () => {
     async function fetchNewClass() {
       try {
         const res = await NewClassAPI.get();
-        const data = res?.data?.result;
-        const mydata = data.splice(4);
+        console.log(res);
+        const data = res?.data?.data?.result;
+        const mydata = data.splice(0, 4);
         console.log(mydata);
         setNewClass(mydata);
       } catch (error) {
@@ -74,8 +75,8 @@ const TogglePage: FC = () => {
       {/* phần đặc điểm nổi bật */}
       <div className="relative -mt-16 py-0 px-28 w-full text-center">
         {/* // chữ đặc điểm nổi bật và cái khung */}
-        <div className="border w-8/12 h-72 inline-block bg-white shadow-xl mb-0 rounded-3xl">
-          <p className="text-indigo-500 text-2xl leading-7 font-bold indigo-500 text-center">
+        <div className="border w-8/12 h-96 inline-block bg-white shadow-xl mb-0 rounded-3xl">
+          <p className="text-indigo-500 text-2xl leading-7 font-bold indigo-500 text-center pt-14">
             ĐẶC ĐIỂM NỔI BẬT
           </p>
         </div>
