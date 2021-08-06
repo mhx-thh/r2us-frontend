@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
 import Button from "components/search/Button/Button";
-import InputText from "components/search/InputText/InputText";
+import SearchBar from "components/search/SearchBar/SearchBar";
 import SelectOption from "components/search/SelectOption/SelectOption";
 import { useForm } from "react-hook-form";
 import facultyApi from "components/search/api/facultyApi";
@@ -125,61 +124,32 @@ function FilterBar({ getData }) {
   };
 
   return (
-    <div>
-      <div>
+    <div className="w-full mt-0.5">
+      <div className="w-full h-64 flex items-center bg-indigo-50 justify-center flex-col">
+        <p className="text-3xl leading-9 font-semibold text-indigo-500">
+          Tìm kiếm dễ dàng
+        </p>
+        <p className="text-xl leading-8 font-semibold">
+          Chúng tôi mang đến cho bạn không gian tìm kiếm đơn giản nhất
+        </p>
+      </div>
+      <div className="-mt-8">
         <form onSubmit={handleSubmit(handleSubmitFilter)}>
           {/* Row 1 */}
-          <div className="flex items-center space-x-2 mb-1.5">
-            <Link href="/">
-              <a>
-                <div
-                  className="hover:bg-gray-200 p-3 cursor-pointer"
-                  style={{ borderRadius: "50%" }}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                    />
-                  </svg>
-                </div>
-              </a>
-            </Link>
-            <div className="flex-1">
-              <InputText
-                register={register}
-                name="search"
-                placeholder="Type here to search"
-              />
-            </div>
-            <div className="hover:bg-gray-200 p-3 cursor-pointer rounded-full">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
-                />
-              </svg>
-            </div>
+          <div className="flex w-full items-center justify-center">
+            <SearchBar
+              register={register}
+              name="search"
+              placeholder="Tìm kiếm..."
+            />
+          </div>
+
+          <div className="w-full flex justify-center mt-5 mb-14">
+            <p className="text-xl leading-8 font-semibold">Gợi ý: <span className="text-lg text-indigo-500 leading-7 font-normal">Đề cương Toán ứng dụng thống kê</span></p>
           </div>
 
           {/* Row 2 */}
-          <div className="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 gap-2">
+          <div className="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 gap-12 px-24">
             <SelectOption
               name="uni"
               register={register}
@@ -208,14 +178,14 @@ function FilterBar({ getData }) {
               options={typeList}
               placeholder="Chọn Loại Tài Liệu"
             />
-            <Button type="submit" value="Search" />
+            <Button type="submit" value="Áp dụng" />
           </div>
         </form>
       </div>
 
       <hr className="mt-5 mb-10" />
 
-      <div className="flex justify-between items-center flex-wrap">
+      <div className="flex justify-between items-center flex-wrap px-24">
         <div className="flex items-center mb-2 sm:mb-0">
           <div
             className="mr-2"
