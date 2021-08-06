@@ -2,22 +2,20 @@ import React, { useEffect, useState } from "react";
 import style from "./style.module.css";
 
 type classInfo = {
-  data: {
-    academicId: {
-      schoolyear: string;
-    };
-    courseId: {
-      courseName: string;
-    };
-    className: string;
-    instructorId: {
-      instructorName: string;
-    };
+  academicId: {
+    schoolyear: string;
+  };
+  courseId: {
+    courseName: string;
+  };
+  className: string;
+  instructorId: {
+    instructorName: string;
   };
 };
 
-const Title = function (data: classInfo) {
-  const [classInfo, setClassInfo] = useState(data.data);
+const Title = function (props: { data: classInfo }) {
+  const [classInfo, setClassInfo] = useState(props.data);
   const editNameClass = () => {
     const newClassInfo = { ...classInfo, className: "newName" };
     setClassInfo(newClassInfo);
@@ -30,8 +28,8 @@ const Title = function (data: classInfo) {
   };
 
   return (
-    <div className={style.Page}>
-      <div className={style.Title}>
+    <div className={style.Title}>
+      <div className={style.Page}>
         <div className={style.Title_Up}>
           <div className={style.Grid}>
             <div className={style.Title_Up_Left}>
@@ -53,7 +51,7 @@ const Title = function (data: classInfo) {
               </div>
               {/* Chữ của môn */}
               <div className={style.Title_Up_Left_Text}>
-                {data.data.className}
+                {props.data.className}
               </div>
             </div>
 
@@ -91,7 +89,6 @@ const Title = function (data: classInfo) {
             </div>
           </div>
         </div>
-
         <div className={style.Title_Down}>
           {/* Thông tin lớp */}
           <div className={style.Grid}>
@@ -174,7 +171,7 @@ const Title = function (data: classInfo) {
                   </defs>
                 </svg>
               </div>
-              {data.data.academicId.schoolyear}
+              {props.data.academicId.schoolyear}
             </div>
 
             {/* Môn học */}
@@ -193,7 +190,7 @@ const Title = function (data: classInfo) {
                   />
                 </svg>
               </div>
-              {data.data.courseId.courseName}
+              {props.data.courseId.courseName}
             </div>
 
             {/* Nhóm học */}
@@ -212,7 +209,7 @@ const Title = function (data: classInfo) {
                   />
                 </svg>
               </div>
-              {data.data.className}
+              {props.data.className}
             </div>
 
             {/* Giáo viên */}
@@ -231,7 +228,7 @@ const Title = function (data: classInfo) {
                   />
                 </svg>
               </div>
-              {data.data.instructorId.instructorName}
+              {props.data.instructorId.instructorName}
             </div>
 
             <div className={style.Title_Down_Right}>

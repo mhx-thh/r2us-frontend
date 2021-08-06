@@ -8,42 +8,23 @@ interface Props {
   param: string;
 }
 
-function Sidebar(props: { param: string; id: string }) {
+function Sidebar(props: { param: string }) {
   const SideBarData = [
     {
       Title: "Thông tin",
-      Link: `/group/${props.id}`,
-      Borderright: true,
-    },
-    {
-      Title: "Đề thi",
-      Link: `/group/${props.id}/exam`,
-      Borderright: false,
+      Link: "/user",
     },
     {
       Title: "Tài liệu",
-      Link: `/group/${props.id}/document`,
-      Borderright: false,
+      Link: "/user/document",
     },
     {
-      Title: "Đề cương môn học",
-      Link: `/group/${props.id}/outline`,
-      Borderright: true,
+      Title: "Cảm nhận",
+      Link: "/user/review",
     },
     {
-      Title: "Giáo viên",
-      Link: `/group/${props.id}/teacher`,
-      Borderright: false,
-    },
-    {
-      Title: "Môn học",
-      Link: `/group/${props.id}/course`,
-      Borderright: true,
-    },
-    {
-      Title: "Thành viên",
-      Link: `/group/${props.id}/member`,
-      Borderright: false,
+      Title: "Nhóm lớp của tôi",
+      Link: "/user/myclass",
     },
   ];
 
@@ -70,7 +51,6 @@ function Sidebar(props: { param: string; id: string }) {
               </a>
             </Link>
           </button>
-          <div className={val.Borderright ? style.VerticalLine : undefined} />
         </div>
       ))}
     </div>

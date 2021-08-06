@@ -1,55 +1,89 @@
 import InformationPage from "components/class/information/InformationPage";
 import LayoutClass from "components/layout/layoutClass";
-import React from "react";
-import { GetServerSideProps } from "next";
-import axios from "axios";
-import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import Sidebar from "components/class/Sidebar/Sidebar";
+import Title from "components/class/Title/Title";
+import NewClassAPI from "api/NewClassAPI";
+import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
+import style from "./style.module.css";
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const baseURL = process.env.NEXT_PUBLIC_SERVER_URL;
-  const URL = `${baseURL}/api/v1/groups/class/${params.slug}`;
-  const res = await axios.get(URL);
-  const tempURL = `${process.env.NEXT_PUBLIC_WEB_URL}/groups/${params.slug}`;
+export const getServerSideProps: GetServerSideProps = async (params) => {
+  const temp = params.params.slug.toString();
+  const res = await NewClassAPI.getGroup(temp);
+
   return {
     props: {
-      status: res.status,
+      status: res.data.status,
       data: res.data.data,
-      URL: tempURL,
-      slug: params.slug,
     },
   };
 };
 
-const Item = function (props: {
+type propApi = {
   status: string;
   data: {
     className: string;
-    courseId: {
-      courseName: string;
-    };
+    ratingsAverage: number;
+    ratingsQuantity: number;
+    nStudents: number;
+    _id: string;
     instructorId: {
+      _id: string;
       instructorName: string;
+      id: string;
     };
     academicId: {
       schoolyear: string;
+      semester: number;
     };
+    courseId: {
+      courseName: string;
+      _id: string;
+      facultyId: {
+        facultyName: string;
+        _id: string;
+      };
+    };
+    createdAt: string;
+    updatedAt: string;
     slug: string;
+    __v: number;
   };
-  URL: string;
-}) {
-  console.log(props.data);
+};
+
+const Item = function (props: propApi) {
+  const initProps = props.data;
+  console.log(props);
+
+  const initTitle = {
+    academicId: {
+      schoolyear: initProps.academicId.schoolyear,
+    },
+    courseId: {
+      courseName: initProps.courseId.courseName,
+    },
+    className: initProps.className,
+    instructorId: {
+      instructorName: initProps.instructorId.instructorName,
+    },
+  };
+
   const router = useRouter();
   const path = router.asPath;
-  console.log("Props: ", props);
+
   return (
     <LayoutClass
       title="MHX 2021 - Tin học hóa"
       desc="ClassPage"
-      icon="icons/logo.svg"
+      icon="/icons/mhx-logo.svg"
     >
-      <Sidebar param={path} id={props.data.slug} />
-      <InformationPage data={props} />;
+      <Title data={initTitle} />
+      <Sidebar param={path} id={initProps.slug} />
+      <hr></hr>
+      <div className={style.Page}>
+        <InformationPage data={props.data} />;
+      </div>
     </LayoutClass>
   );
 };

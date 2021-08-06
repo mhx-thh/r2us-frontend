@@ -1,4 +1,3 @@
-import axios from "axios";
 import { apiV1, config, get } from "api/generic";
 
 const userApi = {

@@ -13,12 +13,10 @@ function InputField(props: {
   const [isActive, setIsActive] = useState(false);
   const onSubmit = () => {
     setIsActive(!!!isActive);
-    console.log(data);
     // Push Api
   };
   const handleChange = (e) => {
     setData(e.target.value);
-    console.log(data);
   };
 
   return (
@@ -76,6 +74,7 @@ function InputField(props: {
                 strokeLinejoin="round"
               />
             </svg>
+            {/* <img src="public\icons\edit_pencil.svg" alt="edit-pencil" /> */}
           </button>
         ) : (
           <button disabled>

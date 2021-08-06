@@ -1,0 +1,67 @@
+.Page{
+    padding-left: 100px;
+    padding-right: 100px;
+}
+.UserPage{
+    height: 425px;
+}
+.M{
+    padding-bottom: 20px;
+}
+.Grid{
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+}
+.UserInput{
+    padding-top: 64px;
+    grid-column: 2 / span 5;
+    display: flex;
+}
+.UserInput_M{
+    flex-grow: 1;
+}
+.UserInput_Grid{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+}
+.UserInput_TitleText{
+    grid-column: 1;
+    display: flex;
+
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    color: #6366F1;
+}
+.UserInput_Input{
+    grid-column: 2 / span 5;
+    display: flex;
+}
+.UserInput_Field_Unactive{
+    background: rgba(238, 242, 255, 1);
+    border: 1px solid #6366F1;
+    box-sizing: border-box;
+    border-radius: 8px;
+    width: 100%;
+    padding-right: 10px;
+    resize: none;
+}
+.UserInput_Field_Active{
+    background: #ffffff;
+    border: 1px solid #6366F1;
+    box-sizing: border-box;
+    border-radius: 8px;
+    width: 100%;
+    padding-right: 10px;
+    resize: none;
+}
+.UserInput_Field_Text{
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: #000000;
+}

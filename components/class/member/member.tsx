@@ -13,8 +13,6 @@ const Member = function () {
     description: "C",
   });
 
-  console.log(data);
-
   return (
     <div className="">
       <div className="w-80 h-32 border inline-flex space-x-4 rounded">

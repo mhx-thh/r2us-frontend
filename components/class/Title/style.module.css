@@ -1,3 +1,7 @@
+.Page{
+    padding-left: 100px;
+    padding-right: 100px;
+}
 .Grid{
     display: grid;
     grid-template-columns: repeat(12, 1fr);
@@ -5,6 +9,8 @@
 }
 .Title{
     height: 175px;
+    width: 100%;
+    background-color: #EEF2FF
 }
 .Title_Up{
     height: 135px;
