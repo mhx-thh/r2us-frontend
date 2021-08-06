@@ -8,8 +8,8 @@ function Login() {
   const dispatch = useAppDispatch();
   const status = useAppSelector(selectStatus);
   function loginGGClick() {
-    const baseURL = "https://r2us.herokuapp.com";
-    // process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000";
+    const baseURL =
+      process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000";
     const webURL = process.env.NEXT_PUBLIC_WEB_URL || "http://localhost:3000";
     const googleLoginURL = `${baseURL}/api/v1/auth/google?url=${webURL}/login/cb`;
     const newWindow = window.open(

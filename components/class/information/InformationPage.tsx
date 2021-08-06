@@ -10,13 +10,27 @@ type classInfo = {
     ratingsQuantity: number;
     nStudents: number;
     _id: string;
-    courseId: string;
-    academicId: string;
-    instructorId: string;
+    instructorId: {
+      _id: string;
+      instructorName: string;
+      id: string;
+    };
+    academicId: {
+      schoolyear: string;
+      semester: number;
+    };
+    courseId: {
+      courseName: string;
+      _id: string;
+      facultyId: {
+        facultyName: string;
+        _id: string;
+      };
+    };
     createdAt: string;
     updatedAt: string;
     slug: string;
-    __v: 0;
+    __v: number;
   };
 };
 
@@ -63,7 +77,8 @@ const InformationPage = function (data: classInfo) {
             <InputField
               name="Đường dẫn"
               editable={false}
-              data={data.data.slug}
+              // data={`${process.env.NEXT_PUBLIC_WEB_URL}/group/${data.data.slug}`}
+              data={`localhost:3000/group/${data.data.slug}`}
               multiline={false}
             />
             <InputField name="Mô tả" editable data="a" multiline={true} />
@@ -143,7 +158,7 @@ const InformationPage = function (data: classInfo) {
                 />
               </svg>
             </div>
-            <TitleField name="Năm học" data={data.data.academicId} />
+            <TitleField name="Năm học" data={data.data.academicId.schoolyear} />
           </div>
 
           {/* Môn học */}
@@ -162,7 +177,7 @@ const InformationPage = function (data: classInfo) {
                 />
               </svg>
             </div>
-            <TitleField name="Môn học" data={data.data.courseId} />
+            <TitleField name="Môn học" data={data.data.courseId.courseName} />
           </div>
 
           {/* Nhóm học */}
@@ -200,7 +215,10 @@ const InformationPage = function (data: classInfo) {
                 />
               </svg>
             </div>
-            <TitleField name="Giáo viên" data={data.data.instructorId} />
+            <TitleField
+              name="Giáo viên"
+              data={data.data.instructorId.instructorName}
+            />
           </div>
 
           <div className={style.PButton}>
