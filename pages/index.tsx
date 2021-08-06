@@ -1,27 +1,23 @@
 import NewClassAPI from "api/NewClassAPI";
 import Footer from "components/footer/FooterComponent";
-import Document from "components/homepage/Document";
-import Group from "components/homepage/Group";
+import ResourceItem from "components/Resource/ResourceItem";
+import GroupItem from "components/Group/GroupItem";
 import LgBage from "components/homepage/LgBage";
-import Review from "components/homepage/Review";
+import ReviewItem from "components/Review/ReviewItem";
 import Link from "next/link";
 import React, { FC, useEffect, useState } from "react";
-import { useAppSelector } from "redux/hooks";
-import { selectStatus, selectToken } from "redux/userSlice";
 import style from "./style.module.css";
 
 const TogglePage: FC = () => {
-  const token = useAppSelector(selectToken);
-  const status = useAppSelector(selectStatus);
   const [newClass, setNewClass] = useState([]);
   useEffect(() => {
     async function fetchNewClass() {
       try {
         const res = await NewClassAPI.get();
-        console.log(res);
+        // console.log(res);
         const data = res?.data?.data?.result;
         const mydata = data.splice(0, 4);
-        console.log(mydata);
+        // console.log(mydata);
         setNewClass(mydata);
       } catch (error) {
         console.log(error.message);
@@ -38,21 +34,24 @@ const TogglePage: FC = () => {
             R2US
           </p>
           <p className="text-black text-xl leading-8 font-semibold">
-            Nền tảng chia sẻ tài liệu và cảm nhận
+            Nền tảng chia sẻ tài liệu và cảm nhận dành riêng cho SV trường ĐH
+            KHTN HCM
           </p>
-          <p className="w-96 h-50 text-black text-base leading-6 font-normal">
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
-            commodo ligula eget dolor. Aenean massa. Cum sociis natoque
-            penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-            Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.
-            Nulla consequat massa quis enim. Donec pede justo, fringilla vel,
+          <p className="w-96 h-50 text-black text-base leading-6 font-normal pt-3">
+            Với nhu cầu về tìm kiếm và liên kết tài liệu học tập lớn như hiện
+            nay, R2US là nơi tổng hợp các tài liệu và cảm nhận về những môn học
+            của sinh viên các trường đại học nói chung hay trường đại học Khoa
+            học Tự nhiên, ĐHQG-HCM nói riêng giúp các bạn sinh viên có thể tìm
+            kiếm tài liệu đơn giản nhất.
           </p>
           <div className="flex justify-between items-center w-96 mt-3.5 p-0">
-            <button className="w-48 h-10 bg-indigo-500 rounded-xl flex justify-center items-center mr-5">
-              <p className="text-lg text-white leading-6 font-semibold tracking-wider uppercase">
-                Tìm kiếm
-              </p>
-            </button>
+            <Link href="/search">
+              <button className="w-48 h-10 bg-indigo-500 rounded-xl flex justify-center items-center mr-5">
+                <p className="text-lg text-white leading-6 font-semibold tracking-wider uppercase">
+                  Tìm kiếm
+                </p>
+              </button>
+            </Link>
             <button className="w-48 h-10 bg-indigo-500 rounded-xl flex justify-center items-center">
               <p className="text-lg text-white leading-6 font-semibold tracking-wider uppercase">
                 Chia sẻ
@@ -73,7 +72,7 @@ const TogglePage: FC = () => {
         {/* toàn thể 3 đặc điểm */}
         <div className="py-0 px-0 absolute bottom-14 flex justify-between items-center">
           {/* đaẹđiểm thứ nhất */}
-          <div className="py-0 flex justify-around items-center">
+          <div className="py-0 flex justify-around items-center mr-24">
             {/* //đặc điểm thứ nhất */}
             <div className="w-9/12 h-40 bg-indigo-300 rounded-2xl mr-8 pt-2 px-3.5">
               <div className="p-0 mb-2 flex justify-start">
@@ -170,9 +169,9 @@ const TogglePage: FC = () => {
             CÁC NHÓM VỪA MỞ
           </div>
         </div>
-        <div className="w-full grid grid-cols-4 gap-11 ml-24 justify-around mb-20">
+        <div className="w-full grid grid-cols-4 gap-11 ml-24 justify-around mb-20 mr-20">
           {newClass.map((data, index) => (
-            <Group key={index} agroup={data} />
+            <GroupItem key={index} agroup={data} />
           ))}
           {/* <Group /> */}
         </div>
@@ -189,11 +188,11 @@ const TogglePage: FC = () => {
               <LgBage>Xem thêm</LgBage>
             </div>
           </div>
-          <div className="-pl-10 grid grid-cols-4 gap-x-80">
-            <Document />
-            <Document />
-            <Document />
-            <Document />
+          <div className="-pl-10 grid grid-cols-4 gap-x-80 mr-24">
+            <ResourceItem />
+            <ResourceItem />
+            <ResourceItem />
+            <ResourceItem />
           </div>
         </div>
         {/* cảm nhận mới nhất */}
@@ -209,10 +208,10 @@ const TogglePage: FC = () => {
 
           <div className="-pl-10 grid grid-cols-4 gap-x-80 ">
             {/* cảm nhận 1 */}
-            <Review />
-            <Review />
-            <Review />
-            <Review />
+            <ReviewItem />
+            <ReviewItem />
+            <ReviewItem />
+            <ReviewItem />
           </div>
         </div>
       </div>

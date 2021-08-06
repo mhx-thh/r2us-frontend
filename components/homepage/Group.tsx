@@ -9,7 +9,7 @@ function Group({ agroup }: AppProps) {
     <div className="py-0 flex justify-around">
       <div className="relative py-0 h-60 w-72 mb-12">
         {/* thông tin */}
-        <div className="absoulute flex grid grid-rows-4 mt-14 gap-y-px bottom-0 pt-14 right bg-white shadow-lg w-72 h-52 pb-3 rounded-xl text-left tracking-normal">
+        <div className="absoulute flex grid grid-rows-4 mt-14 gap-y-px bottom-0 pt-14 right bg-white shadow-lg w-64 h-52 pb-3 rounded-xl text-left tracking-normal">
           {/* thông tin 1 */}
           <div className="p-0 flex justify-start pl-10">
             <svg
@@ -137,7 +137,7 @@ function Group({ agroup }: AppProps) {
           </div>
         </div>
         {/* //tên lớp học */}
-        <div className="absolute flex justify-center items-center top-10 -left-5 w-72 h-16 bg-indigo-500 rounded-xl text-left tracking-normal pl-3">
+        <div className="absolute flex justify-center items-center top-10 -left-5 w-64 h-16 bg-indigo-500 rounded-xl text-left tracking-normal pl-3">
           <p className="text-lg leading-7 font-semibold text-white">
             {agroup.className}
           </p>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import CardDocument from "../CardDocument/CardDocument";
+import CardDocument from "components/Resource/ResourceItem";
 import Loading from "../Loading/Loading";
 import Pagination from "../Pagination/Pagination";
 
