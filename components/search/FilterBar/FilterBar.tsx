@@ -124,7 +124,7 @@ function FilterBar({ getData }) {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full mt-0.5">
       <div className="w-full h-64 flex items-center bg-indigo-50 justify-center flex-col">
         <p className="text-3xl leading-9 font-semibold text-indigo-500">
           Tìm kiếm dễ dàng
@@ -183,9 +183,9 @@ function FilterBar({ getData }) {
         </form>
       </div>
 
-      {/* <hr className="mt-5 mb-10" /> */}
+      <hr className="mt-5 mb-10" />
 
-      {/* <div className="flex justify-between items-center flex-wrap">
+      <div className="flex justify-between items-center flex-wrap px-24">
         <div className="flex items-center mb-2 sm:mb-0">
           <div
             className="mr-2"
@@ -210,7 +210,7 @@ function FilterBar({ getData }) {
             <option value="Giảng Viên">Giảng Viên</option>
           </select>
         </div>
-      </div> */}
+      </div>
 
       <hr className="mt-5 mb-10" />
     </div>

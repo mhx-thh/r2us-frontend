@@ -4,11 +4,14 @@ import { useAppSelector } from "redux/hooks";
 import IconSearch from "./IconSearch";
 import Logo from "./Logo";
 import { selectStatus } from "redux/userSlice";
+import { useRouter } from "next/router";
 
 const HeaderComponent: FC = () => {
-  let status = useAppSelector(selectStatus);
+  const status = useAppSelector(selectStatus);
   // status = "logined";
   console.log(status);
+
+  const router = useRouter();
 
   return (
     <div className="bg-blue-200">
@@ -18,26 +21,46 @@ const HeaderComponent: FC = () => {
         {/* navbar */}
         <div className="ml-24 flex items-center flex-1">
           <Link href="/">
-            <div className="mr-6 flex items-center cursor-pointer">
+            <div
+              className={
+                "mr-6 flex items-center cursor-pointer px-1.5 py-1 hover:bg-indigo-100 rounded-lg" +
+                (router.pathname == "/" ? " bg-indigo-100" : "")
+              }
+            >
               <p className="text-lg mr-1 leading-8 font-semibold">Home</p>
             </div>
           </Link>
 
-          <Link href="/">
-            <div className="mr-6 flex items-center cursor-pointer">
+          <Link href="/about">
+            <div
+              className={
+                "mr-6 flex items-center cursor-pointer px-1.5 py-1 hover:bg-indigo-100 rounded-lg" +
+                (router.pathname == "/about" ? " bg-indigo-100" : "")
+              }
+            >
               <p className="text-lg leading-8 font-semibold">Chúng tôi</p>
             </div>
           </Link>
 
           <Link href="/search">
-            <div className="mr-6 flex items-center cursor-pointer">
+            <div
+              className={
+                "mr-6 flex items-center cursor-pointer px-1.5 py-1 hover:bg-indigo-100 rounded-lg" +
+                (router.pathname == "/search" ? " bg-indigo-100" : "")
+              }
+            >
               <p className="text-lg mr-1 leading-8 font-semibold">Tìm kiếm</p>
               <IconSearch />
             </div>
           </Link>
 
-          <Link href="/">
-            <div className="mr-6 flex items-center cursor-pointer">
+          <Link href="/sv5t">
+            <div
+              className={
+                "mr-6 flex items-center cursor-pointer px-1.5 py-1 hover:bg-indigo-100 rounded-lg" +
+                (router.pathname == "sv5t/" ? " bg-indigo-100" : "")
+              }
+            >
               <p className="text-lg mr-1 leading-8 font-semibold">SV5T</p>
             </div>
           </Link>

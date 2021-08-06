@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import CardDocument from "../CardDocument/CardDocument";
 import Loading from "../Loading/Loading";
-// import Modal from "../Modal/Modal";
+import Pagination from "../Pagination/Pagination";
 
 function Documents(props) {
   // const { documents, loading } = props;
@@ -19,9 +19,19 @@ function Documents(props) {
   //   setActiveModal(true);
   // };
 
+  const [pagination, setPagination] = useState({
+    _limit: 10,
+    _page: 1,
+    _totalRows: 50,
+  });
+
+  const handlePageChange = (new_page) => {
+    console.log(new_page);
+  };
+
   return (
     <div>
-      <div className="grid lg:grid-cols-4 gap-12 md:grid-cols-3 sm:grid-cols-2 px-24">
+      <div className="grid lg:grid-cols-4 gap-12 md:grid-cols-3 sm:grid-cols-2 px-24 py-10">
         {/* {documents.map((doc) => (
           <CardDocument
             key={doc.id}
@@ -53,11 +63,8 @@ function Documents(props) {
         <CardDocument />
         <CardDocument />
       </div>
-      <div>
-        {/* {activeModal && (
-          <Modal infoDocument={infoDocument} setActiveModal={setActiveModal} />
-        )} */}
-      </div>
+
+      <Pagination pagination={pagination} onPageChange={handlePageChange} />
     </div>
   );
 }

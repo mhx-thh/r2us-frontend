@@ -16,7 +16,7 @@ function InputText(props: typeInputText) {
           {...register(name)}
           type="text"
           id="search"
-          className="rounded-lg border-transparent w-full appearance-none border border-gray-300 py-4 pl-16 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+          className="rounded-full border-transparent w-full appearance-none border border-gray-300 py-4 pl-16 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
           placeholder={placeholder}
         />
 

@@ -12,7 +12,7 @@ function CardDocument(props) {
   };
 
   return (
-    <div className="w-64 h-44 px-6 py-3.5 rounded-3xl border border-indigo-500 cursor-pointer relative">
+    <div className="transition duration-300 ease-in-out transform w-64 h-44 px-6 py-3.5 rounded-3xl border border-indigo-500 cursor-pointer relative hover:scale-110 shadow-lg">
       <div className="absolute -top-4 right-3 rounded-3xl border border-indigo-500 bg-white">
         <div className="px-2 py-0.5 text-center">
           <p>Đề cương</p>
