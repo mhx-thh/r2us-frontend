@@ -22,8 +22,6 @@ const DocumentPage = function () {
   };
   const user = "admin";
 
-  console.log(data);
-
   return (
     <div>
       <div className="container items-center pt-40">

@@ -19,7 +19,7 @@ const Feature = () => {
           </g>
         </svg>
 
-        <p className="text-2xl leading-7 font-bold text-white ml-1.5">
+        <p className="text-2xl leading-7 font-bold text-white ml-1.5 pt-2">
           Giao diện thân thiện
         </p>
       </div>

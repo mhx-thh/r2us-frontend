@@ -1,6 +1,8 @@
 import axios from "axios";
+// export const baseURL = "https://greensummer2021-r2us.herokuapp.com";
 export const baseURL =
   process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000";
+
 export const apiV1 = `${baseURL}/api/v1`;
 
 export const config = function (token: string) {

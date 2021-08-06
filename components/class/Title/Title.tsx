@@ -28,8 +28,8 @@ const Title = function (props: { data: classInfo }) {
   };
 
   return (
-    <div className={style.Page}>
-      <div className={style.Title}>
+    <div className={style.Title}>
+      <div className={style.Page}>
         <div className={style.Title_Up}>
           <div className={style.Grid}>
             <div className={style.Title_Up_Left}>
@@ -89,7 +89,6 @@ const Title = function (props: { data: classInfo }) {
             </div>
           </div>
         </div>
-
         <div className={style.Title_Down}>
           {/* Thông tin lớp */}
           <div className={style.Grid}>

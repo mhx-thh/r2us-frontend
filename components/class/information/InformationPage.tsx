@@ -5,21 +5,32 @@ import TitleField from "./titlefield";
 
 type classInfo = {
   data: {
-    status: string;
-    data: {
-      className: string;
-      courseId: {
-        courseName: string;
-      };
-      instructorId: {
-        instructorName: string;
-      };
-      academicId: {
-        schoolyear: string;
-      };
-      slug: string;
+    className: string;
+    ratingsAverage: number;
+    ratingsQuantity: number;
+    nStudents: number;
+    _id: string;
+    instructorId: {
+      _id: string;
+      instructorName: string;
+      id: string;
     };
-    URL: string;
+    academicId: {
+      schoolyear: string;
+      semester: number;
+    };
+    courseId: {
+      courseName: string;
+      _id: string;
+      facultyId: {
+        facultyName: string;
+        _id: string;
+      };
+    };
+    createdAt: string;
+    updatedAt: string;
+    slug: string;
+    __v: number;
   };
 };
 
@@ -38,15 +49,15 @@ const InformationPage = function (data: classInfo) {
   };
 
   const initData = {
-    className: data.data.data.className,
+    className: data.data.className,
     courseId: {
-      courseName: data.data.data.courseId.courseName,
+      courseName: data.data.courseId,
     },
     instructorId: {
-      instructorName: data.data.data.instructorId.instructorName,
+      instructorName: data.data.instructorId,
     },
     academicId: {
-      schoolyear: data.data.data.academicId.schoolyear,
+      schoolyear: data.data.academicId,
     },
   };
 
@@ -60,13 +71,14 @@ const InformationPage = function (data: classInfo) {
             <InputField
               name="Tên nhóm"
               editable
-              data={data.data.data.className}
+              data={data.data.className}
               multiline={false}
             />
             <InputField
               name="Đường dẫn"
               editable={false}
-              data={data.data.URL}
+              // data={`${process.env.NEXT_PUBLIC_WEB_URL}/group/${data.data.slug}`}
+              data={`localhost:3000/group/${data.data.slug}`}
               multiline={false}
             />
             <InputField name="Mô tả" editable data="a" multiline={true} />
@@ -146,10 +158,7 @@ const InformationPage = function (data: classInfo) {
                 />
               </svg>
             </div>
-            <TitleField
-              name="Năm học"
-              data={data.data.data.academicId.schoolyear}
-            />
+            <TitleField name="Năm học" data={data.data.academicId.schoolyear} />
           </div>
 
           {/* Môn học */}
@@ -168,10 +177,7 @@ const InformationPage = function (data: classInfo) {
                 />
               </svg>
             </div>
-            <TitleField
-              name="Môn học"
-              data={data.data.data.courseId.courseName}
-            />
+            <TitleField name="Môn học" data={data.data.courseId.courseName} />
           </div>
 
           {/* Nhóm học */}
@@ -190,7 +196,7 @@ const InformationPage = function (data: classInfo) {
                 />
               </svg>
             </div>
-            <TitleField name="Nhóm học" data={data.data.data.className} />
+            <TitleField name="Nhóm học" data={data.data.className} />
           </div>
 
           {/* Giáo viên */}
@@ -211,7 +217,7 @@ const InformationPage = function (data: classInfo) {
             </div>
             <TitleField
               name="Giáo viên"
-              data={data.data.data.instructorId.instructorName}
+              data={data.data.instructorId.instructorName}
             />
           </div>
 
