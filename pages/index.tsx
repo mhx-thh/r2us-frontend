@@ -1,19 +1,15 @@
-import React, { FC, useEffect, useState } from "react";
-import Link from "next/link";
-import { isMobile } from "react-device-detect";
-import Swal from "sweetalert2";
-
-import { useAppSelector } from "redux/hooks";
-import { selectToken, selectStatus } from "redux/userSlice";
-import Feature from "components/homepage/Feature";
-import Footer from "components/footer/FooterComponent";
-import Group from "components/homepage/Group";
-import Document from "components/homepage/Document";
-import Review from "components/homepage/Review";
-import LgBage from "components/homepage/LgBage";
-import SmBage from "components/homepage/SmBage";
 import NewClassAPI from "api/NewClassAPI";
+import Footer from "components/footer/FooterComponent";
+import Document from "components/homepage/Document";
+import Group from "components/homepage/Group";
+import LgBage from "components/homepage/LgBage";
+import Review from "components/homepage/Review";
+import Link from "next/link";
+import React, { FC, useEffect, useState } from "react";
+import { useAppSelector } from "redux/hooks";
+import { selectStatus, selectToken } from "redux/userSlice";
 import style from "./style.module.css";
+
 const TogglePage: FC = () => {
   const token = useAppSelector(selectToken);
   const status = useAppSelector(selectStatus);
@@ -22,8 +18,10 @@ const TogglePage: FC = () => {
     async function fetchNewClass() {
       try {
         const res = await NewClassAPI.get();
-        const data = res?.data?.data?.result;
-        setNewClass(data.splice(4));
+        const data = res?.data?.result;
+        const mydata = data.splice(4);
+        console.log(mydata);
+        setNewClass(mydata);
       } catch (error) {
         console.log(error.message);
       }
@@ -104,7 +102,7 @@ const TogglePage: FC = () => {
                   </g>
                 </svg>
 
-                <p className="text-2xl leading-7 font-bold text-white ml-1.5">
+                <p className="text-2xl leading-7 font-bold text-white ml-1.5 pt-2">
                   Giao diện thân thiện
                 </p>
               </div>
@@ -133,7 +131,7 @@ const TogglePage: FC = () => {
                   </g>
                 </svg>
 
-                <p className="text-2xl leading-7 font-bold text-white ml-1.5">
+                <p className="text-2xl leading-7 font-bold text-white ml-1.5 pt-2">
                   Giao diện thân thiện
                 </p>
               </div>
@@ -161,7 +159,7 @@ const TogglePage: FC = () => {
                   </g>
                 </svg>
 
-                <p className="text-2xl leading-7 font-bold text-white ml-1.5">
+                <p className="text-2xl leading-7 font-bold text-white ml-1.5 pt-2">
                   Giao diện thân thiện
                 </p>
               </div>
@@ -182,10 +180,10 @@ const TogglePage: FC = () => {
           </div>
         </div>
         <div className="w-full grid grid-cols-4 gap-11 ml-24 justify-around mb-20">
-          <Group />
-          <Group />
-          <Group />
-          <Group />
+          {newClass.map((data, index) => (
+            <Group key={index} agroup={data} />
+          ))}
+          {/* <Group /> */}
         </div>
       </div>
       {/* tài liệu mới nhâts và cảm nhận mới nhất*/}
@@ -220,58 +218,10 @@ const TogglePage: FC = () => {
 
           <div className="-pl-10 grid grid-cols-4 gap-x-80 ">
             {/* cảm nhận 1 */}
-            <div className="flex">
-              <div className="relative border border-indigo-500 w-64 h-32 rounded-2xl bg-white border-indigo-500 shadow-lg mr-12  ">
-                <p className="text-black text-lg leading-7 font-semibold p-0 mb-0 mx-6 mt-4">
-                  Cảm nhận về gì đó
-                </p>
-                <p className="text-black text-sm leading-8 font-normal w-64 text-center ">
-                  <p>Detail</p>
-                </p>
-                <div className="absolute -top-2.5 left-36">
-                  <SmBage>Lớp học</SmBage>
-                </div>
-              </div>
-            </div>
-            <div className="flex">
-              <div className="relative border border-indigo-500w-64 h-32 rounded-2xl bg-white border-indigo-500 shadow-lg mr-12  ">
-                <p className="text-black text-lg leading-7 font-semibold p-0 mb-0 mx-6 mt-4">
-                  Cảm nhận về gì đó
-                </p>
-                <p className="text-black text-sm leading-8 font-normal w-64 text-center ">
-                  <p>Detail</p>
-                </p>
-                <div className="absolute -top-2.5 left-36">
-                  <SmBage>Lớp học</SmBage>
-                </div>
-              </div>
-            </div>
-            <div className="flex">
-              <div className="relative border border-indigo-500 w-64 h-32 rounded-2xl bg-white border-indigo-500 shadow-lg mr-12  ">
-                <p className="text-black text-lg leading-7 font-semibold p-0 mb-0 mx-6 mt-4">
-                  Cảm nhận về gì đó
-                </p>
-                <p className="text-black text-sm leading-8 font-normal w-64 text-center ">
-                  <p>Detail</p>
-                </p>
-                <div className="absolute -top-2.5 left-36">
-                  <SmBage>Lớp học</SmBage>
-                </div>
-              </div>
-            </div>
-            <div className="flex">
-              <div className="relative border border-indigo-500 w-64 h-32 rounded-2xl bg-white border-indigo-500 shadow-lg mr-12  ">
-                <p className="text-black text-lg leading-7 font-semibold p-0 mb-0 mx-6 mt-4">
-                  Cảm nhận về gì đó
-                </p>
-                <p className="text-black text-sm leading-8 font-normal w-64 text-center ">
-                  <p>Detail</p>
-                </p>
-                <div className="absolute -top-2.5 left-36">
-                  <SmBage>Lớp học</SmBage>
-                </div>
-              </div>
-            </div>
+            <Review />
+            <Review />
+            <Review />
+            <Review />
           </div>
         </div>
       </div>
