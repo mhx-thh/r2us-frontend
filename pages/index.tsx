@@ -34,16 +34,6 @@ const TogglePage: FC = () => {
 
   return (
     <React.Fragment>
-      <Link href="/login">
-        <a>Login </a>
-      </Link>
-      <Link href="/user">
-        <a>User </a>
-      </Link>
-      <Link href="/class">
-        <a>Class </a>
-      </Link>
-      {status === "logined" && <div>{token}</div>}
       <div className="w-full flex items-center px-28 py-24 bg-indigo-50">
         <div>
           <p className="text-indigo-500 text-5xl leading-none font-extrabold tracking-tight">
