@@ -1,0 +1,47 @@
+.circle{
+    position: relative;
+   bottom:30px;
+   left:40%;
+    background: #456BD9;
+    border: 0.1875em solid #0F1C3F;
+    border-radius: 50%;
+    height:8em;
+    width: 8em;
+margin-left: 150px;
+margin-right:150px;
+}
+
+.BG{
+    width: full;
+ background: #EEF2FF;
+ padding-top:50px ;
+}
+
+.Name{
+    padding-left: 50px;
+    display:inline-block;
+    position: relative;
+    bottom:40px;
+}
+
+.text1{
+    font-family: Inter;
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 28px;
+/* identical to box height, or 140% */
+color: #111827;
+
+}
+
+.text2{
+    font-family: Inter;
+font-style: normal;
+font-weight: normal;
+font-size: 16px;
+line-height: 24px;
+/* identical to box height, or 150% */
+color: #000000;
+margin-top: 20px;
+}

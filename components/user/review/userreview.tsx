@@ -26,7 +26,6 @@ const ReviewUser = function () {
     <div>
       <div className={style.teacher}>teacher</div>
       <div className={style.review}>
-
         <div className="rounded cursor-pointer  wrap" onClick={ClickpopupDoc}>
           <div className="text-center">
             <div className={style.text}>cảm nhận </div>
@@ -39,13 +38,15 @@ const ReviewUser = function () {
             <div className={style.class} >
               KTLT</div>
           </div>
+          {openDoc === 1 && (
+            <PopUp closepopup={setOpenDoc}>
+              <CourseForm />
+            </PopUp>
+          )}
         </div>
-        {openDoc === 1 && (
-          <PopUp closepopup={setOpenDoc}>
-            <CourseForm />
-          </PopUp>
-        )}
+
       </div>
+
     </div>
   );
 };
