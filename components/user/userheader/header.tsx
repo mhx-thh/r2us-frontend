@@ -2,6 +2,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { useAppSelector } from "redux/hooks";
 import { selectStatus } from "redux/userSlice";
+import style from "./style.module.css";
 // import styled from "styled-components";
 
 interface Props {
@@ -47,23 +48,35 @@ function UserHeader({ param }: Props) {
   const [active, setActive] = useState(
     param === "/user" ? SideBarData[0].Link : param
   );
-  // function SideBar() {
-  //   return (
-  //     <div className="items-center text-center  w-full fixed inline-flex bg-indigo-50 pt-40">
-  //       {SideBarData.map((val) => (
-  //         <ButtonToggle
-  //           key={val}
-  //           className="text -2xl font-semibold flex items-center focus:outline-none m-2 mt-0 hover:bg-blue-100 hover:text-blue-500 rounded pl-3 py-3 font-semibold p-11"
-  //           active={active === val.Link}
-  //         >
-  //           <Link href={val.Link}>
-  //             <a>{val.Title}</a>
-  //           </Link>
-  //         </ButtonToggle>
-  //       ))}
-  //     </div>
-  //   );
-  // }
+  function SideBar() {
+    return (
+      <div className={style.BG}>
+        <div className="wrap">
+          <div className="inline-block">
+            <img className={style.circle} src='https://img4.thuthuatphanmem.vn/uploads/2020/08/27/anh-dai-dien-shiba-chibi-de-thuong_052908671.jpg'></img>
+          </div>
+          <div className={style.Name}>
+            <div className={style.text1}>tên người</div>
+            <div className={style.text2}> MSSV</div>
+            <div className={style.text2}>email</div>
+          </div>
+        </div>
+        <div className="items-center text-center   inline-flex ">
+
+          {SideBarData.map((val) => (
+            <button
+              className="text-xl font-semibold flex items-center focus:outline-none m-2 mt-0 hover:bg-blue-100 hover:text-blue-500 rounded pl-3 py-3 font-semibold p-11"
+
+            >
+              <Link href={val.Link}>
+                <a>{val.Title}</a>
+              </Link>
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
   return (
     <header className="bg-white shadow-sm w-full fixed z-10 top-0 ">
       <div className="max-auto px-8 py-2 bg-white flex justify-between">
@@ -101,7 +114,8 @@ function UserHeader({ param }: Props) {
         </div>
       </div>
       <div className="bg-indigo-300">
-        {/* <SideBar /> */}
+
+        <SideBar />
         <style
           dangerouslySetInnerHTML={{
             __html: "\n    body{\n      background-color:white;\n    }\n  ",

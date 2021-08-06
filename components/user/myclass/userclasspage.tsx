@@ -25,17 +25,11 @@ const UserClassPage = function () {
   return (
     <div>
       <div className="container items-center pt-40">
-        <div className="flex flex-wrap items-center justify-center px-16 py-8">
+        <div className="flex flex-wrap items-center justify-center px-16 py-8 pt-40">
           <UserDocument />
           <UserDocument />
           <UserDocument />
-          <UserDocument />
-          <UserDocument />
-          <UserDocument />
-          <UserDocument />
-          <UserDocument />
-          <UserDocument />
-          <UserDocument />
+
         </div>
         {/*        */}
       </div>
