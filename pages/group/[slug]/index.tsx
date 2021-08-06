@@ -71,13 +71,9 @@ const Item = function (props: propApi) {
 
   const router = useRouter();
   const path = router.asPath;
-
+  const title = `R2US - ${initProps.className}`;
   return (
-    <LayoutClass
-      title="MHX 2021 - Tin học hóa"
-      desc="ClassPage"
-      icon="/icons/mhx-logo.svg"
-    >
+    <LayoutClass title={title} desc="ClassPage" icon="icons/logo.svg">
       <Title data={initTitle} />
       <Sidebar param={path} id={initProps.slug} />
       <hr></hr>

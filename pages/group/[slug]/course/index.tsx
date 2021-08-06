@@ -81,7 +81,7 @@ const Item = function (props: propApi) {
       <Title data={initTitle} />
       <Sidebar param={path} id={initProps.slug} />
       <hr></hr>
-      <div className={style.Page}></div>
+      <div className="px-24"></div>
     </LayoutClass>
   );
 };
