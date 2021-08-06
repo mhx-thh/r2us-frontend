@@ -1,7 +1,7 @@
 import PopUp from "components/class/PopUp/popup";
 import CourseForm from "components/class/ShowCourse/CourseForm";
 import React, { useState } from "react";
-import style from './style.module.css'
+import style from "./style.module.css";
 type documentinfo = {
   name: string;
   src: string;

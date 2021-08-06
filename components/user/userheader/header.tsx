@@ -77,52 +77,13 @@ function UserHeader({ param }: Props) {
       </div>
     );
   }
-  return (
-    <header className="bg-white shadow-sm w-full fixed z-10 top-0 ">
-      <div className="max-auto px-8 py-2 bg-white flex justify-between">
-        <div className="logo flex items-center space-x-4 mr-10">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            className="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full"
-            viewBox="0 0 24 24"
-          >
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-          </svg>
-          <div className="text font-semibold -sm text-2xl focus:outline-none">
-            <button>
-              <Link href="/">R2US</Link>
-            </button>
-          </div>
-        </div>
-        <div className=" menu flex justify-end  items-center  flex-1 space-x-4">
-          {status !== "logined" ? (
-            <Link href="/login">
-              <a>Login</a>
-            </Link>
-          ) : (
-            <img
-              className="h-8"
-              src="https://www.gstatic.com/analytics-suite/header/suite/v2/ic_data_studio.svg"
-              alt="Name"
-            />
-          )}
-        </div>
-      </div>
-      <div className="bg-indigo-300">
-
-        <SideBar />
-        <style
-          dangerouslySetInnerHTML={{
-            __html: "\n    body{\n      background-color:white;\n    }\n  ",
-          }}
-        />
-      </div>
-    </header>
+  return (<>
+    <SideBar />
+    <style
+      dangerouslySetInnerHTML={{
+        __html: "\n    body{\n      background-color:white;\n    }\n  ",
+      }}
+    />
   );
 }
 

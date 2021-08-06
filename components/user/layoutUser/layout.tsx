@@ -6,6 +6,7 @@ import { useAppDispatch } from "redux/hooks";
 import { getInfoAsync } from "redux/userSlice";
 import UserHeader from "../userheader/header";
 import Footer from "components/user/footer/footer";
+import Sidebar from "../Sidebar/UserSidebar";
 
 interface Props {
   title: string;
@@ -52,9 +53,10 @@ const LayoutUser = ({ title, desc, icon, children }: Props) => {
         <link rel="canonical" href={`${url}${path}`} />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <UserHeader param={path} />
+      {/* <UserHeader param={path} /> */}
+      <Sidebar param="asfd" />
       {children}
-      <Footer />
+      {/* <Footer /> */}
     </React.Fragment>
   );
 };

@@ -1,7 +1,7 @@
 import { apiV1, config, get } from "api/generic";
 
 const NewClassAPI = {
-  get: function () {= `https://greensummer2021-r2us.herokuapp.com/api/v1/groups/class`;
+  get: function () {
     const url = `${apiV1}/groups/class`;
     return get(url, "");
   },
