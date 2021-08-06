@@ -64,10 +64,7 @@ function UserHeader({ param }: Props) {
         <div className="items-center text-center   inline-flex ">
 
           {SideBarData.map((val) => (
-            <button
-              className="text-xl font-semibold flex items-center focus:outline-none m-2 mt-0 hover:bg-blue-100 hover:text-blue-500 rounded pl-3 py-3 font-semibold p-11"
-
-            >
+            <button className="text-xl font-semibold flex items-center focus:outline-none m-2 mt-0 hover:bg-blue-100 hover:text-blue-500 rounded pl-3 py-3 p-11">
               <Link href={val.Link}>
                 <a>{val.Title}</a>
               </Link>
@@ -77,14 +74,7 @@ function UserHeader({ param }: Props) {
       </div>
     );
   }
-  return (<>
-    <SideBar />
-    <style
-      dangerouslySetInnerHTML={{
-        __html: "\n    body{\n      background-color:white;\n    }\n  ",
-      }}
-    />
-  );
+  return <SideBar />;
 }
 
 export default UserHeader;

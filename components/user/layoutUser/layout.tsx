@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import { useAppDispatch } from "redux/hooks";
 import { getInfoAsync } from "redux/userSlice";
-import UserHeader from "../userheader/header";
+// import UserHeader from "../userheader/header";
 import Footer from "components/user/footer/footer";
 import Sidebar from "../Sidebar/UserSidebar";
 
