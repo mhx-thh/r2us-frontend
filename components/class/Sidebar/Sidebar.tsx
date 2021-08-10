@@ -48,29 +48,29 @@ function Sidebar(props: { param: string; id: string }) {
   ];
 
   return (
-    <div className={style.SideBar}>
+    <div className={style.sidebar}>
       {SideBarData.map((val) => (
         <div key={val.Title} className="flex">
           <button
             className={
               props.param === val.Link
-                ? style.Button_Highlight
-                : style.Button_Nonhighlight
+                ? style.button_highlight
+                : style.button_normal
             }
           >
             <Link href={val.Link}>
               <a
                 className={
                   props.param === val.Link
-                    ? style.ButtonText_Highlight
-                    : style.ButtonText_Nonhighlight
+                    ? style.button__text_highlight
+                    : style.button__text_normal
                 }
               >
                 {val.Title}
               </a>
             </Link>
           </button>
-          <div className={val.Borderright ? style.VerticalLine : undefined} />
+          <div className={val.Borderright ? style.line : undefined} />
         </div>
       ))}
     </div>

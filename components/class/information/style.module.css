@@ -1,85 +1,97 @@
-.Page{
+.page{
+    height: 600px;
     padding-left: 100px;
     padding-right: 100px;
 }
-.InformationPage{
-    height: 600px;
-}
-.Grid{
+.grid{
     display: grid;
     grid-template-columns: repeat(12, 1fr);
 }
-.InformationField{
+.field{
     grid-column: 2 / span 6;
     display: flex;
 }
-.InformationField_M{
+.field__m{
     flex-grow: 1;
     padding-top: 120px;
 }
-.InformationField_Text{
-    font-family: Inter;
+.field__text{
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
     line-height: 24px;
     color: #6366F1;
 }
-.InformationField_Input{
+.field__input{
     display: flex;
     padding-bottom: 20px;
 }
-.InformationField_Input_Unactive{
+.field__input_unactive{
     background: rgba(238, 242, 255, 1);
     border: 1px solid #6366F1;
     box-sizing: border-box;
+    padding-left: 5px;
     border-radius: 8px;
     width: 100%;
-    padding-right: 10px;
+    padding-right: 5px;
     resize: none;
 }
-.InformationField_Input_Active{
+.field__input_active{
     background: #ffffff;
     border: 1px solid #6366F1;
     box-sizing: border-box;
+    padding-left: 5px;
     border-radius: 8px;
     width: 100%;
-    padding-right: 10px;
+    padding-right: 5px;
     resize: none;
 }
 
-.TitleField{
+.title{
     grid-column: 8 / span 4;
     padding-top: 147px;
 }
-.TitleField_Input{
+.title__input{
     display: flex;
     justify-content: center;
     padding-bottom: 20px;
 }
-.TitleField_Image{
+.title__image{
     padding-right: 20px;
 }
 
-.PButton{
+.pbutton{
     display: flex;
     height: 100%;
     align-items: center;
     justify-content: center;
 }
-.Button{
+.button{
     background: #6366F1;
     border: 1px solid #6366F1;
     box-sizing: border-box;
     border-radius: 8px;
     width: 125px;
     height: 44px;
-}
-.Button_Text{
-    font-family: Inter;
+
     font-style: normal;
     font-weight: 600;
     font-size: 20px;
     line-height: 28px;
     color: #EEF2FF;
+}
+
+.button:hover{
+    background: #EEF2FF;
+    border: 1px solid #EEF2FF;
+    box-sizing: border-box;
+    border-radius: 8px;
+    width: 125px;
+    height: 44px;
+
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 28px;
+    color: #6366F1;
 }

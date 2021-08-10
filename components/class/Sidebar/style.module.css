@@ -1,39 +1,37 @@
-.SideBar{
+.sidebar{
     display: flex;
     padding-left: 100px;
     padding-right: 100px;
 }
-.Button_Nonhighlight{
+.button_normal{
     padding-right: 36px;
     padding-left: 36px;
 }
-.Button_Nonhighlight:hover{
-    padding-right: 36px;
-    padding-left: 36px;
-    background-color: aliceblue;
-}
-.Button_Highlight{
+.button_normal:hover{
     padding-right: 36px;
     padding-left: 36px;
     background-color: aliceblue;
 }
-.ButtonText_Nonhighlight{
-    font-family: Inter;
+.button_highlight{
+    padding-right: 36px;
+    padding-left: 36px;
+    background-color: aliceblue;
+}
+.button__text_normal{
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
     line-height: 24px;
     color: #000000;
 }
-.ButtonText_Highlight{
-    font-family: Inter;
+.button__text_highlight{
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
     line-height: 24px;
     color: #6366F1;
 }
-.VerticalLine{
+.line{
     border-left: 2px solid #000;
     height: 30px;
 }

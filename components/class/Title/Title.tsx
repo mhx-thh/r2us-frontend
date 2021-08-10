@@ -28,12 +28,12 @@ const Title = function (props: { data: classInfo }) {
   };
 
   return (
-    <div className={style.Title}>
-      <div className={style.Page}>
-        <div className={style.Title_Up}>
-          <div className={style.Grid}>
-            <div className={style.Title_Up_Left}>
-              <div className={style.Title_Up_Left_Image}>
+    <div className={style.title}>
+      <div className={style.page}>
+        <div className={style.title__upper}>
+          <div className={style.grid}>
+            <div className={style.title__upper__left}>
+              <div className={style.title__upper__left__image}>
                 {/* Ảnh đại diện môn */}
                 <svg
                   width="60"
@@ -50,14 +50,14 @@ const Title = function (props: { data: classInfo }) {
                 </svg>
               </div>
               {/* Chữ của môn */}
-              <div className={style.Title_Up_Left_Text}>
+              <div className={style.title__upper__left__text}>
                 {props.data.className}
               </div>
             </div>
 
-            <div className={style.Title_Up_Right}>
+            <div className={style.title__upper__right}>
               <div className="flex">
-                <div className={style.Title_Up_Right_Image}>
+                <div className={style.title__upper__right__image}>
                   {/* Yêu thích môn? */}
                   <svg
                     width="24"
@@ -89,12 +89,12 @@ const Title = function (props: { data: classInfo }) {
             </div>
           </div>
         </div>
-        <div className={style.Title_Down}>
+        <div className={style.title__lower}>
           {/* Thông tin lớp */}
-          <div className={style.Grid}>
+          <div className={style.title__lower__information}>
             {/* Năm học */}
-            <div className={style.Title_Down_Information_Group_First}>
-              <div className={style.Title_Down_Information_Image}>
+            <div className={style.title__lower__information__group}>
+              <div className={style.title__lower__information__image}>
                 <svg
                   width="20"
                   height="20"
@@ -175,8 +175,8 @@ const Title = function (props: { data: classInfo }) {
             </div>
 
             {/* Môn học */}
-            <div className={style.Title_Down_Information_Group}>
-              <div className={style.Title_Down_Information_Image}>
+            <div className={style.title__lower__information__group}>
+              <div className={style.title__lower__information__image}>
                 <svg
                   width="21"
                   height="22"
@@ -194,8 +194,8 @@ const Title = function (props: { data: classInfo }) {
             </div>
 
             {/* Nhóm học */}
-            <div className={style.Title_Down_Information_Group}>
-              <div className={style.Title_Down_Information_Image}>
+            <div className={style.title__lower__information__group}>
+              <div className={style.title__lower__information__image}>
                 <svg
                   width="16"
                   height="18"
@@ -213,8 +213,8 @@ const Title = function (props: { data: classInfo }) {
             </div>
 
             {/* Giáo viên */}
-            <div className={style.Title_Down_Information_Group}>
-              <div className={style.Title_Down_Information_Image}>
+            <div className={style.title__lower__information__group}>
+              <div className={style.title__lower__information__image}>
                 <svg
                   width="17"
                   height="17"
@@ -230,15 +230,15 @@ const Title = function (props: { data: classInfo }) {
               </div>
               {props.data.instructorId.instructorName}
             </div>
+          </div>
 
-            <div className={style.Title_Down_Right}>
-              <div className={style.Title_Down_Right_Text}>
-                <div className={style.Title_Down_Right_TextHighlight}>
-                  Cập nhật lần cuối:
-                </div>
-                <div className={style.Title_Down_Right_TextNonHightlight}>
-                  12:00, 03/08/2021
-                </div>
+          <div className={style.title__lower__right}>
+            <div className={style.title__lower__right__text}>
+              <div className={style.title__lower__right__text_highlight}>
+                Cập nhật lần cuối:
+              </div>
+              <div className={style.title__lower__right__text_normal}>
+                12:00, 03/08/2021
               </div>
             </div>
           </div>
