@@ -74,13 +74,6 @@ const InformationPage = function (data: classInfo) {
               data={data.data.className}
               multiline={false}
             />
-            <InputField
-              name="Đường dẫn"
-              editable={false}
-              // data={`${process.env.NEXT_PUBLIC_WEB_URL}/group/${data.data.slug}`}
-              data={`localhost:3000/group/${data.data.slug}`}
-              multiline={false}
-            />
             <InputField name="Mô tả" editable data="a" multiline={true} />
           </div>
         </div>
@@ -220,7 +213,6 @@ const InformationPage = function (data: classInfo) {
               data={data.data.instructorId.instructorName}
             />
           </div>
-
           <div className={style.pbutton}>
             <button className={style.button}>Tham gia</button>
           </div>

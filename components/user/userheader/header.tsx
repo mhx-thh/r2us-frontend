@@ -53,7 +53,10 @@ function UserHeader({ param }: Props) {
       <div className={style.BG}>
         <div className="wrap">
           <div className="inline-block">
-            <img className={style.circle} src='https://img4.thuthuatphanmem.vn/uploads/2020/08/27/anh-dai-dien-shiba-chibi-de-thuong_052908671.jpg'></img>
+            <img
+              className={style.circle}
+              src="https://img4.thuthuatphanmem.vn/uploads/2020/08/27/anh-dai-dien-shiba-chibi-de-thuong_052908671.jpg"
+            ></img>
           </div>
           <div className={style.Name}>
             <div className={style.text1}>tên người</div>
@@ -62,7 +65,6 @@ function UserHeader({ param }: Props) {
           </div>
         </div>
         <div className="items-center text-center   inline-flex ">
-
           {SideBarData.map((val) => (
             <button className="text-xl font-semibold flex items-center focus:outline-none m-2 mt-0 hover:bg-blue-100 hover:text-blue-500 rounded pl-3 py-3 p-11">
               <Link href={val.Link}>

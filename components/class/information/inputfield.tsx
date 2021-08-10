@@ -32,7 +32,7 @@ function InputField(props: {
             disabled={!!!isActive}
             value={data}
             onChange={isActive ? handleChange : undefined}
-            rows={4}
+            rows={7}
           />
         ) : (
           <input

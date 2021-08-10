@@ -1,4 +1,4 @@
-.userpage{
+.page{
     height: 425px;
     padding-left: 100px;
     padding-right: 100px;
@@ -15,7 +15,7 @@
     grid-column: 2 / span 5;
     display: flex;
 }
-.user__input_m{
+.user__input__m{
     flex-grow: 1;
 }
 .user__input__grid{

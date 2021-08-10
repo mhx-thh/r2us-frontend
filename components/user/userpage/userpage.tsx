@@ -17,7 +17,7 @@ const UserPage = function () {
   };
 
   return (
-    <div className={style.userpage}>
+    <div className={style.page}>
       <div className={style.grid}>
         {/* User field */}
         <div className={style.user__input}>

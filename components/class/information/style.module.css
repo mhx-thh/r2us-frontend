@@ -52,16 +52,26 @@
     padding-top: 147px;
 }
 .title__input{
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     justify-content: center;
     padding-bottom: 20px;
 }
+.title__m{
+    flex-grow: 1;
+    grid-column: 2 / span 3;
+}
 .title__image{
     padding-right: 20px;
+    grid-column: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
 }
 
 .pbutton{
     display: flex;
+    grid-column: 1 / span 4;
     height: 100%;
     align-items: center;
     justify-content: center;
