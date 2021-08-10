@@ -1,45 +1,42 @@
-.Page{
+.userpage{
+    height: 425px;
     padding-left: 100px;
     padding-right: 100px;
 }
-.UserPage{
-    height: 425px;
-}
-.M{
+.m{
     padding-bottom: 20px;
 }
-.Grid{
+.grid{
     display: grid;
     grid-template-columns: repeat(12, 1fr);
 }
-.UserInput{
+.user__input{
     padding-top: 64px;
     grid-column: 2 / span 5;
     display: flex;
 }
-.UserInput_M{
+.user__input_m{
     flex-grow: 1;
 }
-.UserInput_Grid{
+.user__input__grid{
     display: grid;
     grid-template-columns: repeat(6, 1fr);
 }
-.UserInput_TitleText{
+.user__input__titletext{
     grid-column: 1;
     display: flex;
 
-    font-family: Inter;
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
     line-height: 24px;
     color: #6366F1;
 }
-.UserInput_Input{
+.user__input__input{
     grid-column: 2 / span 5;
     display: flex;
 }
-.UserInput_Field_Unactive{
+.user__input__field_normal{
     background: rgba(238, 242, 255, 1);
     border: 1px solid #6366F1;
     box-sizing: border-box;
@@ -48,7 +45,7 @@
     padding-right: 10px;
     resize: none;
 }
-.UserInput_Field_Active{
+.user__input__field_active{
     background: #ffffff;
     border: 1px solid #6366F1;
     box-sizing: border-box;
@@ -57,8 +54,7 @@
     padding-right: 10px;
     resize: none;
 }
-.UserInput_Field_Text{
-    font-family: Inter;
+.user__input__field__text{
     font-style: normal;
     font-weight: 500;
     font-size: 16px;

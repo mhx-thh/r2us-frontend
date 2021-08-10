@@ -41,9 +41,7 @@ const User = function (props) {
       <div className={style.Title}></div>
       <Sidebar param={path} />
       <hr></hr>
-      <div className={style.Page}>
-        <UserPage />;
-      </div>
+      <UserPage />;
     </MetaLayout>
   );
 };
