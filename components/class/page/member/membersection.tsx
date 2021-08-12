@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Document from "../documentpage/document";
 import Member from "./member";
 
 const MemberSection = function (props: { name: string }) {
