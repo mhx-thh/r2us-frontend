@@ -1,4 +1,3 @@
-import InformationPage from "components/class/information/InformationPage";
 import LayoutClass from "components/layout/layoutClass";
 import React, { useEffect, useState } from "react";
 import Sidebar from "components/class/Sidebar/Sidebar";
@@ -6,7 +5,6 @@ import Title from "components/class/Title/Title";
 import NewClassAPI from "api/NewClassAPI";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import style from "./style.module.css";
 
 export const getServerSideProps: GetServerSideProps = async (params) => {
   const temp = params.params.slug.toString();
@@ -54,7 +52,6 @@ type propApi = {
 
 const Item = function (props: propApi) {
   const initProps = props.data;
-  console.log(props);
 
   const initTitle = {
     academicId: {
@@ -71,17 +68,13 @@ const Item = function (props: propApi) {
 
   const router = useRouter();
   const path = router.asPath;
+  const title = `R2US - ${initProps.className}`;
 
   return (
-    <LayoutClass
-      title="MHX 2021 - Tin học hóa"
-      desc="ClassPage"
-      icon="/icons/mhx-logo.svg"
-    >
+    <LayoutClass title={title} desc="ClassPage" icon="icons/logo.svg">
       <Title data={initTitle} />
       <Sidebar param={path} id={initProps.slug} />
       <hr></hr>
-      <div className="px-24"></div>
     </LayoutClass>
   );
 };

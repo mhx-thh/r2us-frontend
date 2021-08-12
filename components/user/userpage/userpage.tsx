@@ -17,11 +17,11 @@ const UserPage = function () {
   };
 
   return (
-    <div className={style.UserPage}>
-      <div className={style.Grid}>
+    <div className={style.page}>
+      <div className={style.grid}>
         {/* User field */}
-        <div className={style.UserInput}>
-          <div className={style.UserInput_M}>
+        <div className={style.user__input}>
+          <div className={style.user__input__m}>
             <InputField name="Tên" editable data="A" multiline={false} />
             <InputField name="Biệt danh" editable data="B" multiline={false} />
             <InputField name="MSSV" editable data="C" multiline={false} />

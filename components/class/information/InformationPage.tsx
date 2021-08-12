@@ -62,11 +62,11 @@ const InformationPage = function (data: classInfo) {
   };
 
   return (
-    <div className={style.InformationPage}>
-      <div className={style.Grid}>
+    <div className={style.page}>
+      <div className={style.grid}>
         {/* Information field */}
-        <div className={style.InformationField}>
-          <div className={style.InformationField_M}>
+        <div className={style.field}>
+          <div className={style.field__m}>
             {/* Note: Sẽ truyền thêm vào Api thay đổi nữa... */}
             <InputField
               name="Tên nhóm"
@@ -74,21 +74,14 @@ const InformationPage = function (data: classInfo) {
               data={data.data.className}
               multiline={false}
             />
-            <InputField
-              name="Đường dẫn"
-              editable={false}
-              // data={`${process.env.NEXT_PUBLIC_WEB_URL}/group/${data.data.slug}`}
-              data={`localhost:3000/group/${data.data.slug}`}
-              multiline={false}
-            />
             <InputField name="Mô tả" editable data="a" multiline={true} />
           </div>
         </div>
         {/* Title information field, or something like that, idk */}
-        <div className={style.TitleField}>
+        <div className={style.title}>
           {/* Năm học */}
-          <div className={style.TitleField_Input}>
-            <div className={style.TitleField_Image}>
+          <div className={style.title__input}>
+            <div className={style.title__image}>
               <svg
                 width="28"
                 height="28"
@@ -162,8 +155,8 @@ const InformationPage = function (data: classInfo) {
           </div>
 
           {/* Môn học */}
-          <div className={style.TitleField_Input}>
-            <div className={style.TitleField_Image}>
+          <div className={style.title__input}>
+            <div className={style.title__image}>
               <svg
                 width="28"
                 height="28"
@@ -181,8 +174,8 @@ const InformationPage = function (data: classInfo) {
           </div>
 
           {/* Nhóm học */}
-          <div className={style.TitleField_Input}>
-            <div className={style.TitleField_Image}>
+          <div className={style.title__input}>
+            <div className={style.title__image}>
               <svg
                 width="28"
                 height="28"
@@ -200,8 +193,8 @@ const InformationPage = function (data: classInfo) {
           </div>
 
           {/* Giáo viên */}
-          <div className={style.TitleField_Input}>
-            <div className={style.TitleField_Image}>
+          <div className={style.title__input}>
+            <div className={style.title__image}>
               <svg
                 width="28"
                 height="28"
@@ -220,11 +213,8 @@ const InformationPage = function (data: classInfo) {
               data={data.data.instructorId.instructorName}
             />
           </div>
-
-          <div className={style.PButton}>
-            <button className={style.Button}>
-              <div className={style.Button_Text}>Tham gia</div>
-            </button>
+          <div className={style.pbutton}>
+            <button className={style.button}>Tham gia</button>
           </div>
         </div>
       </div>

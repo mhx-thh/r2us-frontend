@@ -21,27 +21,23 @@ function InputField(props: {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className={style.InformationField_Text}>{props?.name}</div>
-      <div className={style.InformationField_Input}>
+      <div className={style.field__text}>{props?.name}</div>
+      <div className={style.field__input}>
         {props.multiline ? (
           <textarea
             className={
-              isActive
-                ? style.InformationField_Input_Active
-                : style.InformationField_Input_Unactive
+              isActive ? style.field__input_active : style.field__input_unactive
             }
             id={props.name}
             disabled={!!!isActive}
             value={data}
             onChange={isActive ? handleChange : undefined}
-            rows={4}
+            rows={7}
           />
         ) : (
           <input
             className={
-              isActive
-                ? style.InformationField_Input_Active
-                : style.InformationField_Input_Unactive
+              isActive ? style.field__input_active : style.field__input_unactive
             }
             id={props.name}
             disabled={!!!isActive}

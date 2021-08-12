@@ -23,16 +23,16 @@ function InputField(props: {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className={style.M}>
-        <div className={style.UserInput_Grid}>
-          <div className={style.UserInput_TitleText}>{props.name}</div>
-          <div className={style.UserInput_Input}>
+      <div className={style.m}>
+        <div className={style.user__input__grid}>
+          <div className={style.user__input__titletext}>{props.name}</div>
+          <div className={style.user__input__input}>
             {props.multiline ? (
               <textarea
                 className={
                   isActive
-                    ? style.UserInput_Field_Active
-                    : style.UserInput_Field_Unactive
+                    ? style.user__input__field_active
+                    : style.user__input__field_normal
                 }
                 id={props.name}
                 disabled={!!!isActive}
@@ -44,8 +44,8 @@ function InputField(props: {
               <input
                 className={
                   isActive
-                    ? style.UserInput_Field_Active
-                    : style.UserInput_Field_Unactive
+                    ? style.user__input__field_active
+                    : style.user__input__field_normal
                 }
                 id={props.name}
                 disabled={!!!isActive}

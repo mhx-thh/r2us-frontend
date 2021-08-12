@@ -1,47 +1,46 @@
-.Page{
+.page{
     padding-left: 100px;
     padding-right: 100px;
 }
-.Grid{
+.grid{
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     width: 100%;
 }
-.Title{
+.title{
     height: 175px;
     width: 100%;
     background-color: #EEF2FF
 }
-.Title_Up{
+.title__upper{
     height: 135px;
     display: flex;
 }
-.Title_Up_Left{
+.title__upper__left{
     grid-column: span 5;
     display: flex;
     align-items: center;
 }
-.Title_Up_Left_Image{
+.title__upper__left__image{
     padding-right: 23px;
 }
-.Title_Up_Left_Text{
-    @apply font-extrabold;
+.title__upper__left__text{
     font-style: normal;
     font-weight: 600;
     font-size: 30px;
     line-height: 36px;
     color: #6366F1;
 }
-.Title_Up_Right{
+.title__upper__right{
     display: flex;
     grid-column: 9 / span 4;
     align-items: center;
     justify-content: flex-end;
 }
-.Title_Up_Right_Image{
+.title__upper__right__image{
     padding-right: 23px;
 }
-.Title_Up_Right_Button{
+.title__upper__right__button{
     width: 140px;
     height: 32px;
     border-radius: 6px;
@@ -49,44 +48,36 @@
     border-width: 1px;
     border-color: #6366F1;
 }
-.Title_Up_Right_Text{
-    font-family: Inter;
+.title__upper__right__text{
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
     line-height: 24px;
     color: #6366F1;
 }
-.Title_Down{
+.title__lower{
+    display: flex;
+    justify-content: space-between;
+}
+.title__lower__information{
     display: flex;
 }
-.Title_Down_Information{
-    display: flex;
-}
-.Title_Down_Information_Group{
-    display: flex;
-    padding-right: 15px;
-    grid-column: span 2;
-}
-.Title_Down_Information_Group_First{
+.title__lower__information__group{
     display: flex;
     padding-right: 15px;
-    grid-column: 1 / span 2;
 }
-.Title_Down_Information_Image{
+.title__lower__information__image{
     padding-right: 10px;
 }
 
-.Title_Down_Right{
+.title__lower__right{
     display: flex;
-    grid-column: 9 / span 4;
     justify-content: flex-end;
 }
-.Title_Down_Right_Text{
+.title__lower__right__text{
     display: flex;
 }
-.Title_Down_Right_TextHighlight{
-    font-family: Inter;
+.title__lower__right__text_highlight{
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
@@ -94,8 +85,7 @@
     color: #3B82F6;
     padding-right: 10px;
 }
-.Title_Down_Right_TextNonHightlight{
-    font-family: Inter;
+.title__lower__right__text_normal{
     font-style: normal;
     font-weight: normal;
     font-size: 14px;

@@ -6,7 +6,6 @@ import Title from "components/class/Title/Title";
 import NewClassAPI from "api/NewClassAPI";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import style from "./style.module.css";
 
 export const getServerSideProps: GetServerSideProps = async (params) => {
   const temp = params.params.slug.toString();
@@ -54,7 +53,7 @@ type propApi = {
 
 const Item = function (props: propApi) {
   const initProps = props.data;
-  console.log(props);
+  // console.log(props);
 
   const initTitle = {
     academicId: {
@@ -77,9 +76,7 @@ const Item = function (props: propApi) {
       <Title data={initTitle} />
       <Sidebar param={path} id={initProps.slug} />
       <hr></hr>
-      <div className={style.Page}>
-        <InformationPage data={props.data} />;
-      </div>
+      <InformationPage data={props.data} />;
     </LayoutClass>
   );
 };
