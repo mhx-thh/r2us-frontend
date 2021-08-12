@@ -1,3 +1,8 @@
+.title{
+    height: 175px;
+    width: 100%;
+    background-color: #EEF2FF
+}
 .page{
     padding-left: 100px;
     padding-right: 100px;
@@ -6,11 +11,6 @@
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     width: 100%;
-}
-.title{
-    height: 175px;
-    width: 100%;
-    background-color: #EEF2FF
 }
 .title__upper{
     height: 135px;

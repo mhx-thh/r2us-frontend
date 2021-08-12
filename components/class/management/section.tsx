@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Document from "../documentpage/document";
+import Document from "../page/documentpage/document";
 
 const Section = function (props: { name: string }) {
   const [open, setOpen] = useState(false);

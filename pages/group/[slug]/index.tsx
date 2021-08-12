@@ -1,4 +1,4 @@
-import InformationPage from "components/class/information/InformationPage";
+import InformationPage from "components/class/page/information/InformationPage";
 import LayoutClass from "components/layout/layoutClass";
 import React, { useEffect, useState } from "react";
 import Sidebar from "components/class/Sidebar/Sidebar";
