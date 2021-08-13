@@ -5,6 +5,7 @@ import Title from "components/class/Title/Title";
 import NewClassAPI from "api/NewClassAPI";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
+import ReviewPage from "components/class/page/reviewpage/reviewpage";
 
 export const getServerSideProps: GetServerSideProps = async (params) => {
   const temp = params.params.slug.toString();
@@ -18,36 +19,38 @@ export const getServerSideProps: GetServerSideProps = async (params) => {
   };
 };
 
+type classType = {
+  className: string;
+  ratingsAverage: number;
+  ratingsQuantity: number;
+  nStudents: number;
+  _id: string;
+  instructorId: {
+    _id: string;
+    instructorName: string;
+    id: string;
+  };
+  academicId: {
+    schoolyear: string;
+    semester: number;
+  };
+  courseId: {
+    courseName: string;
+    _id: string;
+    facultyId: {
+      facultyName: string;
+      _id: string;
+    };
+  };
+  createdAt: string;
+  updatedAt: string;
+  slug: string;
+  __v: number;
+};
+
 type propApi = {
   status: string;
-  data: {
-    className: string;
-    ratingsAverage: number;
-    ratingsQuantity: number;
-    nStudents: number;
-    _id: string;
-    instructorId: {
-      _id: string;
-      instructorName: string;
-      id: string;
-    };
-    academicId: {
-      schoolyear: string;
-      semester: number;
-    };
-    courseId: {
-      courseName: string;
-      _id: string;
-      facultyId: {
-        facultyName: string;
-        _id: string;
-      };
-    };
-    createdAt: string;
-    updatedAt: string;
-    slug: string;
-    __v: number;
-  };
+  data: classType;
 };
 
 const Item = function (props: propApi) {
@@ -75,8 +78,8 @@ const Item = function (props: propApi) {
       <Title data={initTitle} />
       <Sidebar param={path} id={initProps.slug} />
       <hr></hr>
+      <ReviewPage />
     </LayoutClass>
   );
 };
-
 export default Item;
