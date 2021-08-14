@@ -80,6 +80,10 @@ const Item = function (props: propApi) {
       instructorName: initProps.instructorId.instructorName,
     },
   };
+
+  const router = useRouter();
+  const path = router.asPath;
+  const title = `R2US - ${initProps.className}`;
   if (router.isFallback) {
     return <div>Loading...</div>;
   } else {
