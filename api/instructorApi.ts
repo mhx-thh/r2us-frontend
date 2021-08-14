@@ -9,6 +9,10 @@ const InstructorAPI = {
     const url = `${apiV1}/groups/instructors/${id}`;
     return get(url, "");
   },
+  getInstructors: function () {
+    const url = `${apiV1}/groups/instructors`;
+    return get(url, "");
+  },
 };
 
 export default InstructorAPI;

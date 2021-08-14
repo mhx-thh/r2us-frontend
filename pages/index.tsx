@@ -1,4 +1,4 @@
-import NewClassAPI from "api/NewClassAPI";
+import GroupAPI from "api/groupAPI";
 import Footer from "components/footer/FooterComponent";
 import ResourceItem from "components/Resource/ResourceItem";
 import GroupItem from "components/Group/GroupItem";
@@ -7,23 +7,46 @@ import ReviewItem from "components/Review/ReviewItem";
 import Link from "next/link";
 import React, { FC, useEffect, useState } from "react";
 import style from "./style.module.css";
+import Document from "components/homepage/Document";
+import Resource from "components/homepage/Document";
 
 const TogglePage: FC = () => {
   const [newClass, setNewClass] = useState([]);
+  const [newResource, setNewResource] = useState([]);
+  const [newReview, setNewReview] = useState([]);
   useEffect(() => {
     async function fetchNewClass() {
       try {
-        const res = await NewClassAPI.get();
-        // console.log(res);
+        const res = await GroupAPI.getGroups();
         const data = res?.data?.data?.result;
-        const mydata = data.splice(0, 4);
-        // console.log(mydata);
-        setNewClass(mydata);
+        setNewClass(data);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    async function fetchNewResource() {
+      try {
+        const res = await GroupAPI.getResources();
+        const data = res?.data?.data?.result;
+        console.log(data);
+        setNewResource(data);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    async function fetchNewReview() {
+      try {
+        const res = await GroupAPI.getReviews();
+        const data = res?.data?.data?.result;
+        console.log(data);
+        setNewReview(data);
       } catch (error) {
         console.log(error.message);
       }
     }
     fetchNewClass();
+    fetchNewResource();
+    fetchNewReview();
   }, []);
 
   return (
@@ -173,7 +196,6 @@ const TogglePage: FC = () => {
           {newClass.map((data, index) => (
             <GroupItem key={index} agroup={data} />
           ))}
-          {/* <Group /> */}
         </div>
       </div>
       {/* tài liệu mới nhâts và cảm nhận mới nhất*/}
@@ -185,14 +207,17 @@ const TogglePage: FC = () => {
               Tài liệu mới nhất
             </p>
             <div className="absolute -bottom-4 left-72">
-              <LgBage>Xem thêm</LgBage>
+              <Link href="/search">
+                <button>
+                  <LgBage>Xem thêm</LgBage>
+                </button>
+              </Link>
             </div>
           </div>
           <div className="-pl-10 grid grid-cols-4 gap-x-80 mr-24">
-            <ResourceItem />
-            <ResourceItem />
-            <ResourceItem />
-            <ResourceItem />
+            {newResource.map((data, index) => (
+              <ResourceItem key={index} aresource={data} />
+            ))}
           </div>
         </div>
         {/* cảm nhận mới nhất */}
@@ -202,21 +227,27 @@ const TogglePage: FC = () => {
               Cảm nhận mới nhất
             </p>
             <div className="absolute -bottom-4 left-72">
-              <LgBage>Xem thêm</LgBage>
+              <Link href="/search">
+                <button>
+                  <LgBage>Xem thêm</LgBage>
+                </button>
+              </Link>
             </div>
           </div>
 
           <div className="-pl-10 grid grid-cols-4 gap-x-80 ">
-            {/* cảm nhận 1 */}
-            <ReviewItem />
-            <ReviewItem />
-            <ReviewItem />
-            <ReviewItem />
+            {newReview.map((data, index) => (
+              <ReviewItem key={index} areview={data} />
+            ))}
           </div>
         </div>
       </div>
 
-      <Footer />
+      <Link href="/">
+        <button>
+          <Footer />
+        </button>
+      </Link>
     </React.Fragment>
     // <ClassDocument />
   );
