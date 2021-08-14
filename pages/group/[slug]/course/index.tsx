@@ -16,6 +16,7 @@ export const getStaticProps: GetStaticProps = async (params) => {
       status: res.data.status,
       data: res.data.data,
     },
+    revalidate: 10,
   };
 };
 
