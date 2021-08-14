@@ -242,12 +242,7 @@ const TogglePage: FC = () => {
           </div>
         </div>
       </div>
-
-      <Link href="/">
-        <button>
-          <Footer />
-        </button>
-      </Link>
+      <Footer />
     </React.Fragment>
     // <ClassDocument />
   );
