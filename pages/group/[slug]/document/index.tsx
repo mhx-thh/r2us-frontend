@@ -86,13 +86,17 @@ const Item = function (props: propApi) {
   const path = router.asPath;
   const title = `R2US - ${initProps.className}`;
 
-  return (
-    <LayoutClass title={title} desc="ClassPage" icon="icons/logo.svg">
-      <Title data={initTitle} />
-      <Sidebar param={path} id={initProps.slug} />
-      <hr></hr>
-      <DocumentPage />
-    </LayoutClass>
-  );
+  if (router.isFallback) {
+    return <div>Loading...</div>;
+  } else {
+    return (
+      <LayoutClass title={title} desc="ClassPage" icon="icons/logo.svg">
+        <Title data={initTitle} />
+        <Sidebar param={path} id={initProps.slug} />
+        <hr></hr>
+        <DocumentPage />
+      </LayoutClass>
+    );
+  }
 };
 export default Item;

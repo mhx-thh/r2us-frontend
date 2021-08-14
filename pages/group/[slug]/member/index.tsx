@@ -83,7 +83,9 @@ const Item = function (props: propApi) {
   const router = useRouter();
   const path = router.asPath;
   const title = `R2US - ${initProps.className}`;
-
+  if (router.isFallback) {
+    return <div>Loading...</div>;
+  } else {
   return (
     <LayoutClass title={title} desc="ClassPage" icon="icons/logo.svg">
       <Title data={initTitle} />
@@ -91,7 +93,7 @@ const Item = function (props: propApi) {
       <hr></hr>
       <MemberPage />
     </LayoutClass>
-  );
+  );}
 };
 
 export default Item;
