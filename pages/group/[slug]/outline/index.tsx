@@ -3,11 +3,11 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "components/class/Sidebar/Sidebar";
 import Title from "components/class/Title/Title";
 import NewClassAPI from "api/NewClassAPI";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import DocumentPage from "components/class/page/documentpage/documentpage";
 
-export const getServerSideProps: GetServerSideProps = async (params) => {
+export const getStaticProps: GetStaticProps = async (params) => {
   const temp = params.params.slug.toString();
   const res = await NewClassAPI.getGroup(temp);
 
@@ -16,6 +16,19 @@ export const getServerSideProps: GetServerSideProps = async (params) => {
       status: res.data.status,
       data: res.data.data,
     },
+  };
+};
+
+export const getStaticPaths: GetStaticPaths = async (params) => {
+  const res = await NewClassAPI.get();
+
+  const paths = res.data.data.result.map((group) => ({
+    params: { slug: group.slug },
+  }));
+
+  return {
+    paths,
+    fallback: false,
   };
 };
 
