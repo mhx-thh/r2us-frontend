@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import { useAppDispatch } from "redux/hooks";
 import { getInfoAsync } from "redux/userSlice";
+import { checkIsAdminAsync } from "redux/adminSlice";
 
 interface Props {
   title: string;
@@ -29,6 +30,7 @@ const MetaLayout = ({ title, desc, icon, children }: Props) => {
       return;
     }
     dispatch(getInfoAsync(token));
+    dispatch(checkIsAdminAsync(token));
   }, []);
   const url = process.env.NEXT_PUBLIC_WEB_URL;
   const path = router.asPath;
