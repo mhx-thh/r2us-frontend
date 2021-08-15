@@ -1,16 +1,24 @@
-import React, { FC } from "react";
+import React from "react";
 
-const ReviewItem: FC = () => {
+type AppProps = {
+  areview: any;
+};
+function ReviewItem({ areview }: AppProps) {
+  if (!areview.reviewTitle) {
+    return <div>Review mẫu</div>;
+  }
   return (
     <div className="bg-white transition duration-300 ease-in-out transform w-64 h-36 px-6 py-3.5 rounded-3xl border border-indigo-500 cursor-pointer relative hover:scale-110 shadow-lg">
       <div className="absolute -top-4 right-3 rounded-3xl border border-indigo-500 bg-white">
         <div className="px-2 py-0.5 text-center">
-          <p>Lớp học</p>
+          <p>{areview.reviewType}</p>
         </div>
       </div>
-      <p className="text-lg leading-7 font-semibold">
-        Cảm nhận về lớp thân yêu của tôi
-      </p>
+      <div className="h-14 w-60 text-left justify-center">
+        <p className="text-lg leading-7 font-semibold items-center">
+          {areview.reviewTitle}
+        </p>
+      </div>
       <div className="flex items-center">
         <svg
           width="18"
@@ -35,9 +43,11 @@ const ReviewItem: FC = () => {
           />
         </svg>
 
-        <p className="ml-2.5 text-sm leading-8 font-normal">KTLT - 20/3</p>
+        <p className="ml-2.5 text-sm leading-5 font-normal">
+          {areview.classId.className}
+        </p>
       </div>
-      <div className="flex items-center justify-end -mt-8">
+      <div className="flex items-center justify-end -mt-0">
         <svg
           width="20"
           height="20"
@@ -56,5 +66,5 @@ const ReviewItem: FC = () => {
       </div>
     </div>
   );
-};
+}
 export default ReviewItem;

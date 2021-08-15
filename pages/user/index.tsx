@@ -4,10 +4,10 @@ import { selectUser } from "redux/userSlice";
 import React, { useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import style from "./style.module.css";
 import UserPage from "components/user/userpage/userpage";
 import MetaLayout from "components/layout/MegaLayout";
 import Sidebar from "components/user/Sidebar/UserSidebar";
+import UserHeader from "components/user/userheader/header";
 
 // export const getServerSideProps: GetServerSideProps = async (params) => {
 //   const res = await NewClassAPI.getGroup(temp);
@@ -38,7 +38,7 @@ const User = function (props) {
       desc="ClassPage"
       icon="/icons/mhx-logo.svg"
     >
-      <div className={style.Title}></div>
+      <UserHeader param={path} />
       <Sidebar param={path} />
       <hr></hr>
       <UserPage />;

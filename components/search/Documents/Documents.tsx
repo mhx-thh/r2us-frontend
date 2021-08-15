@@ -44,24 +44,7 @@ function Documents(props) {
           />
         ))} */}
 
-        <CardDocument />
-        <CardDocument />
-        <CardDocument />
-        <CardDocument />
-        <CardDocument />
-        <CardDocument />
-        <CardDocument />
-        <CardDocument />
-        <CardDocument />
-        <CardDocument />
-        <CardDocument />
-        <CardDocument />
-        <CardDocument />
-        <CardDocument />
-        <CardDocument />
-        <CardDocument />
-        <CardDocument />
-        <CardDocument />
+        <CardDocument aresource={{}} />
       </div>
 
       <Pagination pagination={pagination} onPageChange={handlePageChange} />

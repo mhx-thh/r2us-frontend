@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Document from "../documentpage/document";
 import Member from "./member";
+import style from "./style.module.css";
 
 const MemberSection = function (props: { name: string }) {
   const [open, setOpen] = useState(false);
@@ -8,17 +8,16 @@ const MemberSection = function (props: { name: string }) {
     setOpen(!!!open);
   };
   return (
-    <div className="relative text-left p-2">
+    <div className={style.section}>
       {/* Head */}
-      <p>{props.name}</p>
+      <div className={style.section__title}>
+        <div className={style.section__title__box}>
+          <div className={style.section__title__text}>{props.name}</div>
+        </div>
+      </div>
 
       {/* Content */}
-      <div className="flex flex-wrap items-center justify-center px-16 py-8">
-        <Member />
-        <Member />
-        <Member />
-        <Member />
-        <Member />
+      <div className={style.section__member}>
         <Member />
         <Member />
         <Member />

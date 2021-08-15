@@ -1,47 +1,51 @@
-.circle{
-    position: relative;
-   bottom:30px;
-   left:40%;
+.title{
+    height: 175px;
+    width: 100%;
+    background: #EEF2FF;
+}
+.page{
+    padding-left: 100px;
+    padding-right: 100px;
+    height: 100%;
+}
+.grid{
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    height: 100%;
+}
+.title__m{
+    grid-column: 4 / span 9;
+    display: flex;
+    align-items: center;
+}
+.image{
+    bottom:30px;
+    left:40%;
     background: #456BD9;
-    border: 0.1875em solid #0F1C3F;
+    /* border: 0.1875em solid #0F1C3F; */
     border-radius: 50%;
-    height:8em;
-    width: 8em;
-margin-left: 150px;
-margin-right:150px;
+    height: 120px;
+    width: 120px;
 }
-
-.BG{
-    width: full;
- background: #EEF2FF;
- padding-top:50px ;
+.text{
+    padding-left: 20px;
 }
+.text__1{
 
-.Name{
-    padding-left: 50px;
-    display:inline-block;
-    position: relative;
-    bottom:40px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 28px;
+    /* identical to box height, or 140% */
+    color: #111827;
+
 }
-
-.text1{
+.text__2{
     font-family: Inter;
-font-style: normal;
-font-weight: 500;
-font-size: 20px;
-line-height: 28px;
-/* identical to box height, or 140% */
-color: #111827;
-
-}
-
-.text2{
-    font-family: Inter;
-font-style: normal;
-font-weight: normal;
-font-size: 16px;
-line-height: 24px;
-/* identical to box height, or 150% */
-color: #000000;
-margin-top: 20px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    /* identical to box height, or 150% */
+    color: #000000;
 }
