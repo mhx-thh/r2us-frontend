@@ -1,8 +1,8 @@
-import { apiV1, config, get } from "api/generic";
+import { apiV1, get } from "api/generic";
 
 const GroupAPI = {
   getGroups: function () {
-    const url = `${apiV1}/groups/class`;
+    const url = `${apiV1}/groups/class/new-groups`;
     return get(url, "");
   },
   getGroup: function (id: string) {
@@ -15,6 +15,18 @@ const GroupAPI = {
   },
   getInstructor: function (id: string) {
     const url = `${apiV1}/groups/instructors/${id}`;
+    return get(url, "");
+  },
+  getNewResources: function () {
+    const url = `${apiV1}/groups/resources/new-resources`;
+    return get(url, "");
+  },
+  getResources: function () {
+    const url = `${apiV1}/groups/resources`;
+    return get(url, "");
+  },
+  getReviews: function () {
+    const url = `${apiV1}/groups/reviews`;
     return get(url, "");
   },
 };

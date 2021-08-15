@@ -1,11 +1,15 @@
 import React from "react";
-import SmBage from "components/homepage/SmBage";
-const Document = () => {
+import SmBage from "./SmBage";
+
+type AppProps = {
+  aresource: any;
+};
+function Resource({ aresource }: AppProps) {
   return (
     <div className="relative w-64 h-40 rounded-2xl bg-white border border-indigo-500 shadow-lg">
       <div className="absolute flex items-center text-left pl-4 pr-3 pt-3">
         <p className="text-lg leading-6 font-semibold">
-          Đề thi kỹ thuật lập trình KH2 2019-2020
+          {aresource.resourceName}
         </p>
       </div>
       <div className="grid grid-rows-4 gap-y-1.5 pt-16">
@@ -23,7 +27,7 @@ const Document = () => {
             />
           </svg>
           <p className="pl-2 text-sm leading-5 font-normal">
-            Giao diện thân thiện
+            {aresource.classId.instructorId.instructorName}
           </p>
         </div>
         <div className="p-0 flex justify-start pl-10">
@@ -40,7 +44,7 @@ const Document = () => {
             />
           </svg>
           <p className="pl-2 text-sm leading-5 font-normal">
-            Giao diện thân thiện
+            {aresource.classId.courseId.courseName}
           </p>
         </div>
         <div className="p-0 flex justify-start pl-10">
@@ -66,12 +70,15 @@ const Document = () => {
               strokeLinejoin="round"
             />
           </svg>
-          <p className="pl-2 text-sm leading-5 font-normal">2021 - 2022</p>
+          <p className="pl-2 text-sm leading-5 font-normal">
+            {" "}
+            {aresource.classId.className}
+          </p>
         </div>
       </div>
 
       <div className="absolute -top-2.5 left-36">
-        <SmBage>Đề cương</SmBage>
+        <SmBage>{aresource.resourceType}</SmBage>
       </div>
       <div className="absolute bottom-3 right-5">
         <svg
@@ -92,5 +99,5 @@ const Document = () => {
       </div>
     </div>
   );
-};
-export default Document;
+}
+export default Resource;
