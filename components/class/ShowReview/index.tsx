@@ -1,6 +1,31 @@
 import React from "react";
 
-const ShowReview = function () {
+type Api = {
+  review: string;
+  userId: {
+    givenName: string;
+    familyName: string;
+    photo: string;
+  };
+  classId: {
+    className: string;
+    courseId: {
+      courseName: string;
+    };
+    academicId: {
+      schoolyear: string;
+      semester: number;
+    };
+    instructorId: {
+      instructorName: string;
+    };
+  };
+};
+type AppProps = {
+  data: Api;
+};
+const ShowReview = function (data: AppProps) {
+  const Data = data.data;
   return (
     <div>
       <div className="absolute bg-indigo-200 w-full left-0 top-0 h-80 rounded-t-2xl tracking-normal">
@@ -22,8 +47,7 @@ const ShowReview = function () {
             />
           </svg>
           <div className="mx-4 text-2xl font-medium text-indigo-500 ">
-            {" "}
-            Cảm nhận - Lý thuyết thống kê
+            Cảm nhận - {Data.classId.courseId.courseName}
           </div>
         </div>
         {/* Teacher */}
@@ -41,7 +65,9 @@ const ShowReview = function () {
               fill="#6366F1"
             />
           </svg>
-          <div className="mx-8 my-1 ">Tom Cook techer</div>
+          <div className="mx-8 my-1 ">
+            {Data.classId.instructorId.instructorName}
+          </div>
         </div>
         {/* course */}
         <div className="flex px-36 mx-11 my-5">
@@ -59,7 +85,7 @@ const ShowReview = function () {
             />
           </svg>
           <div className="mx-8 text-base leading-6 font-medium">
-            Ly Thuyet Thong ke
+            {Data.classId.className}
           </div>
         </div>
         {/* class */}
@@ -87,8 +113,10 @@ const ShowReview = function () {
               strokeLinejoin="round"
             />
           </svg>
-          <div className="mx-9 text-base leading-6 font-medium">LTTK 19TTH</div>
-          <div className="pl-64 ">
+          <div className="mx-9 text-base leading-6 font-medium w-11/12">
+            {Data.classId.courseId.courseName}
+          </div>
+          <div className="">
             <svg
               width="29"
               height="28"
@@ -104,25 +132,21 @@ const ShowReview = function () {
           </div>
         </div>
         {/* Review */}
-        <div className="absolute top-72 my-3 flex mx-36 w-8/12 h-52 bg-white shadow-xl rounded-3xl z-10 text-center items-center">
-          <textarea
-            className="h-11/12 w-11/12 m-auto justify-self-center"
-            value="Tom Cook nau canh chua ma khong ngon thi lam gi, no rat la do luon a. om Cook nau canh chua ma khong ngon thi lam gi, no rat la do luon a. om Cook nau canh chua ma khong ngon thi lam gi, no luon a. Tom Cook nau canh chua ma khong ngon thi lam gi, no rat la do luon a. om Cook nau canh chua ma khong ngon thi lam gi, no rat la do luon a. Tom Cook nau canh chua ma khong ngon thi lam gi, no rat la do luon a. om Cook nau canh chua ma khong ngon thi lam gi, no rat la do luon a. om Cook nau canh chua ma khong ngon thi lam gi, no luon a. Tom Cook nau canh chua ma khong ngon thi lam gi, no rat la do luon a. om Cook nau canh chua ma khong ngon thi lam gi, no rat la do luon a "
-            rows={8}
-          />
+        <div className="absolute top-72 my-3 flex mx-36 w-8/12 h-52 bg-white shadow-xl rounded-3xl z-10 text-center">
+          <div className="m-3 overflow-auto">{Data.review}</div>
         </div>
         {/* SchoolYear */}
-        <div className="px-44 mt-72 bg-white text-lg leading-6 font-medium text-indigo-500">
-          <p>2020-2021, học kì 2</p>
+        <div className="px-44 mt-64 bg-white text-lg leading-6 font-medium text-indigo-500">
+          <p>
+            {Data.classId.academicId.schoolyear} - học kì{" "}
+            {Data.classId.academicId.semester}
+          </p>
         </div>
         {/* Avatar */}
         <div className="float-right mr-8 -mt-52">
-          <img
-            src="https://dbk.vn/uploads/ckfinder/images/tranh-anh/anh-buon-4.jpg"
-            width="50"
-          />
+          <img src={`${Data.userId.photo}`} width="50" />
           <svg
-            className="ml-3 my-10"
+            className="ml-4 my-10"
             xmlns="http://www.w3.org/2000/svg"
             width="18"
             height="24"

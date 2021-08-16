@@ -1,4 +1,7 @@
+import GroupAPI from "api/groupAPI";
 import NewClassAPI from "api/NewClassAPI";
+import PopUp from "components/class/PopUp/popup";
+import ShowReview from "components/class/ShowReview";
 import ResourceItem from "components/Resource/ResourceItem";
 import ReviewItem from "components/Review/ReviewItem";
 import React, { useEffect, useState } from "react";
@@ -10,10 +13,50 @@ type documentinfo = {
   description: string;
 };
 
+type AppProps = {
+  review: string;
+  userId: {
+    givenName: string;
+    familyName: string;
+    photo: string;
+  };
+  classId: {
+    className: string;
+    courseId: {
+      courseName: string;
+    };
+    academicId: {
+      schoolyear: string;
+      semester: number;
+    };
+    instructorId: {
+      instructorName: string;
+    };
+  };
+};
+
 const Review = function () {
+  const [data, setData] = useState<AppProps>();
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const res = await GroupAPI.getReviews();
+        const data = res?.data?.data?.result;
+        setData(data[0]);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    fetchData();
+  }, []);
+
+  const [open, setOpen] = useState(0);
+  const ClickPopup = () => {
+    setOpen(1);
+  };
   return (
     <div className={style.document}>
-      <button className={style.document__button}>
+      <button className={style.document__button} onClick={ClickPopup}>
         <svg
           width="15"
           height="4"
@@ -30,6 +73,11 @@ const Review = function () {
       <div className={style.document__document}>
         <ReviewItem areview={{}} />
       </div>
+      {open === 1 && (
+        <PopUp closepopup={setOpen}>
+          <ShowReview data={data} />
+        </PopUp>
+      )}
     </div>
   );
 };

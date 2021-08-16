@@ -25,8 +25,16 @@ const GroupAPI = {
     const url = `${apiV1}/groups/resources`;
     return get(url, "");
   },
+  getResource: function (id: string) {
+    const url = `${apiV1}/groups/resources/${id}`;
+    return get(url, "");
+  },
   getReviews: function () {
     const url = `${apiV1}/groups/reviews`;
+    return get(url, "");
+  },
+  getReview: function (id: string) {
+    const url = `${apiV1}/groups/reviews/${id}`;
     return get(url, "");
   },
 };

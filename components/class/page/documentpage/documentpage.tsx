@@ -1,5 +1,9 @@
-import NewClassAPI from "api/NewClassAPI";
+import GroupAPI from "api/groupAPI";
+import PopUp from "components/class/PopUp/popup";
+import ShowResource from "components/class/ShowResource";
+import ShowReview from "components/class/ShowReview";
 import ResourceItem from "components/Resource/ResourceItem";
+import { GetServerSideProps } from "next";
 import React, { useEffect, useState } from "react";
 import style from "./style.module.css";
 
@@ -8,11 +12,66 @@ type documentinfo = {
   src: string;
   description: string;
 };
-
+type AppProps = {
+  resourceType: string;
+  resourceLink: string;
+  status: string;
+  _id: string;
+  resourceName: string;
+  userId: {
+    _id: string;
+    givenName: string;
+    familyName: string;
+    photo: string;
+  };
+  classId: {
+    className: string;
+    _id: string;
+    instructorId: {
+      _id: string;
+      instructorName: string;
+      id: string;
+    };
+    academicId: {
+      schoolyear: string;
+      semester: number;
+    };
+    courseId: {
+      courseName: string;
+      _id: string;
+      facultyId: {
+        facultyName: string;
+        _id: string;
+      };
+    };
+  };
+  createdAt: string;
+  updatedAt: string;
+  slug: string;
+  __v: number;
+  id: string;
+};
 const Document = function () {
+  const [data, setData] = useState<AppProps>();
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const res = await GroupAPI.getResources();
+        const data = res?.data?.data?.result;
+        setData(data[0]);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    fetchData();
+  }, []);
+  const [open, setOpen] = useState(0);
+  const ClickPopup = () => {
+    setOpen(1);
+  };
   return (
     <div className={style.document}>
-      <button className={style.document__button}>
+      <button className={style.document__button} onClick={ClickPopup}>
         <svg
           width="15"
           height="4"
@@ -29,6 +88,11 @@ const Document = function () {
       <div className={style.document__document}>
         <ResourceItem aresource={{}} />
       </div>
+      {open === 1 && (
+        <PopUp closepopup={setOpen}>
+          <ShowResource data={data} />
+        </PopUp>
+      )}
     </div>
   );
 };
