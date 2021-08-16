@@ -1,0 +1,112 @@
+.background {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal{
+    position: fixed;
+    top: 40px;
+    left: 20%;
+    z-index: 2;
+    margin: auto;
+    background-color: #FFFFFF;
+    width: 60%;
+    border-radius: 0.75rem;
+}
+.modal__title{
+    display: flex;
+    background-color: #E0E7FF;
+    padding-left: 8rem;
+    padding-right: 8rem;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+    border-radius: 0.75rem;
+}
+.modal__title__text{
+    padding: 0.5rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    font-size: 1.5rem;
+    line-height: 2.25rem;
+    font-weight: 500;
+    --tw-text-opacity: 1;
+    color: rgba(99, 102, 241, var(--tw-text-opacity));
+    letter-spacing: 0em;
+}
+
+.modal__minput
+{
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+.modal__input{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 10px;
+}
+.modal__input__image{
+    margin: 0.75rem;
+}
+.modal__input__select{
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    margin: 0.5rem;
+    --tw-bg-opacity: 1;
+    background-color: rgba(238, 242, 255, var(--tw-bg-opacity));
+    width: 24rem;
+    border-radius: 1rem;
+    height: 2rem;
+    border-width: 1px;
+    border-style: solid;
+    --tw-border-opacity: 1;
+    border-color: rgba(99, 102, 241, var(--tw-border-opacity));
+}
+.modal__input__textinput{
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    margin: 0.5rem;
+    --tw-bg-opacity: 1;
+    background-color: rgba(238, 242, 255, var(--tw-bg-opacity));
+    width: 24rem;
+    border-radius: 1rem;
+    height: 2rem;
+    border-width: 1px;
+    border-style: solid;
+    --tw-border-opacity: 1;
+    border-color: rgba(99, 102, 241, var(--tw-border-opacity));
+}
+
+.modal__suggestion{
+    display: flex;
+}
+.modal__suggestion__title{
+    padding-left: 12rem;
+    padding-right: 2rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0em;
+}
+.modal__suggestion__example{
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-weight: 400;
+    letter-spacing: 0em;
+    --tw-text-opacity: 1;
+    color: rgba(99, 102, 241, var(--tw-text-opacity));
+}
+
+.modal__buttonsection{
+    padding-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.modal__button{
+    padding-right: 30px;
+}

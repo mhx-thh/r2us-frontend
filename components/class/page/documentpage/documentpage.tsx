@@ -1,4 +1,5 @@
 import NewClassAPI from "api/NewClassAPI";
+import AddDoc from "components/class/AddDoc/AddDoc";
 import ResourceItem from "components/Resource/ResourceItem";
 import React, { useEffect, useState } from "react";
 import style from "./style.module.css";

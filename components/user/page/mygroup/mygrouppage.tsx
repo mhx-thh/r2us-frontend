@@ -1,4 +1,5 @@
 import NewClassAPI from "api/NewClassAPI";
+import CreateGroup from "components/class/CreateGroup/createGroup";
 import ResourceItem from "components/Resource/ResourceItem";
 import React, { useEffect, useState } from "react";
 import style from "./style.module.css";
@@ -148,26 +149,18 @@ const Group = function () {
 };
 
 const GroupPage = function () {
-  const [data, setData] = useState({
-    name: "A",
-    src: "B",
-    description: "C",
-  });
-
-  const [addDoc, setAddDoc] = useState(0);
-  const ClickpopupDoc = () => {
-    setAddDoc(1);
+  const [isCreated, setIsCreated] = useState(false);
+  const handleClick = function () {
+    setIsCreated(!!!isCreated);
   };
   const user = "admin";
-
-  const [newClass, setNewClass] = useState([]);
 
   return (
     <div className={style.page}>
       <div>
         {/* "Chia sẻ tài liệu button" */}
         <div className={style.buttonarea}>
-          <button className={style.button}>
+          <button className={style.button} onClick={handleClick}>
             <div className={style.button__text}>Chia sẻ tài liệu</div>
             <div className={style.button__image}>
               <svg
@@ -199,6 +192,7 @@ const GroupPage = function () {
           <Group />
         </div>
       </div>
+      {isCreated ? <CreateGroup onClose={handleClick} /> : <div />}
     </div>
   );
 };

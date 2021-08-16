@@ -8,6 +8,7 @@ import MetaLayout from "components/layout/MegaLayout";
 import Sidebar from "components/user/Sidebar/UserSidebar";
 import UserHeader from "components/user/userheader/header";
 import GroupPage from "components/user/page/mygroup/mygrouppage";
+import Temp from "components/class/CreateGroup/createGroup";
 
 // export const getServerSideProps: GetServerSideProps = async (params) => {
 //   const res = await NewClassAPI.getGroup(temp);
