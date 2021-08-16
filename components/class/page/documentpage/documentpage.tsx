@@ -5,15 +5,9 @@ import ShowReview from "components/class/ShowReview";
 import NewClassAPI from "api/NewClassAPI";
 import AddDoc from "components/class/AddDoc/AddDoc";
 import ResourceItem from "components/Resource/ResourceItem";
-import { GetServerSideProps } from "next";
 import React, { useEffect, useState } from "react";
 import style from "./style.module.css";
 
-type documentinfo = {
-  name: string;
-  src: string;
-  description: string;
-};
 type AppProps = {
   resourceType: string;
   resourceLink: string;
@@ -53,24 +47,29 @@ type AppProps = {
   __v: number;
   id: string;
 };
-const Document = function () {
-  const [data, setData] = useState<AppProps>();
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const res = await GroupAPI.getResources();
-        const data = res?.data?.data?.result;
-        setData(data[0]);
-      } catch (error) {
-        console.log(error.message);
-      }
-    }
-    fetchData();
-  }, []);
+
+const Document = function (document: AppProps) {
+  // const [data, setData] = useState<AppProps>(undefined);
+  // useEffect(() => {
+  //   console.log(data);
+  // }, [data]);
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       const res = await GroupAPI.getResources();
+  //       const data = res?.data?.data?.result;
+  //       setData(data[0]);
+  //     } catch (error) {
+  //       console.log(error.message);
+  //     }
+  //   }
+  //   fetchData();
+  // }, []);
   const [open, setOpen] = useState(0);
   const ClickPopup = () => {
     setOpen(1);
   };
+
   return (
     <div className={style.document}>
       <button className={style.document__button} onClick={ClickPopup}>
@@ -87,25 +86,19 @@ const Document = function () {
           />
         </svg>
       </button>
-      <div className={style.document__document}>
-        <ResourceItem aresource={{}} />
+      <div className={style.document__document} onClick={ClickPopup}>
+        <ResourceItem aresource={document.document} />
       </div>
       {open === 1 && (
         <PopUp closepopup={setOpen}>
-          <ShowResource data={data} />
+          <ShowResource data={document} />
         </PopUp>
       )}
     </div>
   );
 };
 
-const DocumentPage = function () {
-  const [data, setData] = useState({
-    name: "A",
-    src: "B",
-    description: "C",
-  });
-
+const DocumentPage = function (document: any) {
   const [addDoc, setAddDoc] = useState(0);
   const ClickpopupDoc = () => {
     setAddDoc(1);
@@ -142,13 +135,16 @@ const DocumentPage = function () {
 
         {/* Document */}
         <div className={style.documentsection}>
+          {document.document.result.map((data) => (
+            <Document key={data.resourceName} document={data} />
+          ))}
+          {/* <Document />
           <Document />
           <Document />
           <Document />
           <Document />
           <Document />
-          <Document />
-          <Document />
+          <Document /> */}
         </div>
 
         {/* Request */}
@@ -160,13 +156,13 @@ const DocumentPage = function () {
 
         {/* Request document */}
         <div className={style.documentsection}>
+          {/* <Document />
           <Document />
           <Document />
           <Document />
           <Document />
           <Document />
-          <Document />
-          <Document />
+          <Document /> */}
         </div>
       </div>
     </div>

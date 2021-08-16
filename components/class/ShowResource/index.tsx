@@ -40,12 +40,15 @@ type AppProps = {
   __v: number;
   id: string;
 };
+
 type Api = {
-  data: AppProps;
+  data: {
+    document: AppProps;
+  };
 };
 
 const ShowResource = function (initData: Api) {
-  const Data = initData.data;
+  const Data = initData.data.document;
   return (
     <div className="absolute bg-indigo-200 w-full left-0 top-0 h-80 rounded-t-2xl tracking-normal  text-base leading-6 font-medium">
       {/* Title */}
