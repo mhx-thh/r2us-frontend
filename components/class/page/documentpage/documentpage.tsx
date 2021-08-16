@@ -2,6 +2,8 @@ import GroupAPI from "api/groupAPI";
 import PopUp from "components/class/PopUp/popup";
 import ShowResource from "components/class/ShowResource";
 import ShowReview from "components/class/ShowReview";
+import NewClassAPI from "api/NewClassAPI";
+import AddDoc from "components/class/AddDoc/AddDoc";
 import ResourceItem from "components/Resource/ResourceItem";
 import { GetServerSideProps } from "next";
 import React, { useEffect, useState } from "react";
