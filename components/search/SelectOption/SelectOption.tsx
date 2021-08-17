@@ -23,7 +23,7 @@ function SelectOption(props: typeSelectOption) {
       name={name}
       onChange={onHandleChange}
     >
-      <option value="all">{placeholder}</option>
+      <option value="">{placeholder}</option>
       {options.map((optionItem) => (
         <option key={optionItem._id} value={optionItem._id}>
           {optionItem.label}

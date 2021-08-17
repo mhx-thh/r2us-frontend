@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import  ResourceItem from "components/Resource/ResourceItem";
 import Loading from "../Loading/Loading";
 import Pagination from "../Pagination/Pagination";
+import ReviewItem from "components/Review/ReviewItem";
 
 type TypeDoc = {
-  resource: any;
+  review: any;
 }
 
-function Documents({resource}:TypeDoc) {
-  console.log("props:" ,resource)
-  // const { documents, loading } = data;
+function Reviews({review}:TypeDoc) {
+  console.log("props:" ,review)
+  // const { Reviews, loading } = data;
   // console.log(documents)
   // const [activeModal, setActiveModal] = useState(false);
   // const [infoDocument, setInfoDocument] = useState({});
@@ -33,7 +34,7 @@ function Documents({resource}:TypeDoc) {
   const pagination = {
     _limit: 10,
     _page: 1,
-    _totalRows:1 || resource.length,
+    _totalRows:1 || review.length,
   }
   const handlePageChange = (new_page) => {
     console.log(new_page);
@@ -42,15 +43,15 @@ function Documents({resource}:TypeDoc) {
   return (
     <div>
       <div className="grid lg:grid-cols-4 gap-12 md:grid-cols-3 sm:grid-cols-2 px-24 py-10">
-        {resource.map((data,index)=>{
-            <ResourceItem  aresource={data} />
-            console.log("data:",data)
+        {review.map((idx: any)=>{
+            <ReviewItem  areview={idx} />
+            console.log("data:",idx)
         })}
       </div>
-      <ResourceItem  aresource={resource[0]} />
+      <ReviewItem areview={review[0]}/>
       <Pagination pagination={pagination} onPageChange={handlePageChange} />
     </div>
   );
 }
 
-export default Documents;
+export default Reviews;
