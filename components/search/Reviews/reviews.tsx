@@ -44,11 +44,10 @@ function Reviews({review}:TypeDoc) {
     <div>
       <div className="grid lg:grid-cols-4 gap-12 md:grid-cols-3 sm:grid-cols-2 px-24 py-10">
         {review.map((idx: any)=>{
-            <ReviewItem  areview={idx} />
-            console.log("data:",idx)
+          return (
+            <ReviewItem  areview={idx} />)
         })}
       </div>
-      <ReviewItem areview={review[0]}/>
       <Pagination pagination={pagination} onPageChange={handlePageChange} />
     </div>
   );
