@@ -48,6 +48,7 @@ type Api = {
 };
 
 const ShowResource = function (initData: Api) {
+  console.log(initData.data.document);
   const Data = initData.data.document;
   return (
     <div className="absolute bg-indigo-200 w-full left-0 top-0 h-80 rounded-t-2xl tracking-normal  text-base leading-6 font-medium">
@@ -198,7 +199,11 @@ const ShowResource = function (initData: Api) {
       </div>
       {/* Avatar */}
       <div className="float-right mr-8 -mt-60">
-        <img src={`${Data.userId.photo}`} width="50" />
+        <img
+          src={`${Data.userId.photo}`}
+          width="50"
+          className="rounded-3xl border-2 border-blue-600 border-solid"
+        />
         <svg
           className="ml-3 my-10"
           xmlns="http://www.w3.org/2000/svg"

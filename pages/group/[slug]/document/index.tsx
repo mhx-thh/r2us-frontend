@@ -1,13 +1,12 @@
-import LayoutClass from "components/layout/layoutClass";
-import React, { useEffect, useState } from "react";
+import GroupAPI from "api/groupAPI";
+import NewClassAPI from "api/NewClassAPI";
+import DocumentPage from "components/class/page/documentpage/documentpage";
 import Sidebar from "components/class/Sidebar/Sidebar";
 import Title from "components/class/Title/Title";
-import NewClassAPI from "api/NewClassAPI";
-
+import LayoutClass from "components/layout/layoutClass";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import DocumentPage from "components/class/page/documentpage/documentpage";
-import GroupAPI from "api/groupAPI";
+import React from "react";
 
 export const getServerSideProps: GetServerSideProps = async (params) => {
   const temp = params.params.slug.toString();
@@ -60,7 +59,6 @@ type propApi = {
 
 const Item = function (props: propApi) {
   const initProps = props.data;
-
   const initTitle = {
     academicId: {
       schoolyear: initProps.academicId.schoolyear,

@@ -1,11 +1,7 @@
-import GroupAPI from "api/groupAPI";
 import PopUp from "components/class/PopUp/popup";
 import ShowResource from "components/class/ShowResource";
-import ShowReview from "components/class/ShowReview";
-import NewClassAPI from "api/NewClassAPI";
-import AddDoc from "components/class/AddDoc/AddDoc";
 import ResourceItem from "components/Resource/ResourceItem";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import style from "./style.module.css";
 
 type AppProps = {
@@ -49,27 +45,10 @@ type AppProps = {
 };
 
 const Document = function (document: AppProps) {
-  // const [data, setData] = useState<AppProps>(undefined);
-  // useEffect(() => {
-  //   console.log(data);
-  // }, [data]);
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     try {
-  //       const res = await GroupAPI.getResources();
-  //       const data = res?.data?.data?.result;
-  //       setData(data[0]);
-  //     } catch (error) {
-  //       console.log(error.message);
-  //     }
-  //   }
-  //   fetchData();
-  // }, []);
   const [open, setOpen] = useState(0);
   const ClickPopup = () => {
     setOpen(1);
   };
-
   return (
     <div className={style.document}>
       <button className={style.document__button} onClick={ClickPopup}>

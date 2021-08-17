@@ -6,11 +6,11 @@ import NewClassAPI from "api/NewClassAPI";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import ReviewPage from "components/class/page/reviewpage/reviewpage";
+import GroupAPI from "api/groupAPI";
 
 export const getServerSideProps: GetServerSideProps = async (params) => {
   const temp = params.params.slug.toString();
   const res = await NewClassAPI.getGroup(temp);
-
   return {
     props: {
       status: res.data.status,
@@ -55,7 +55,6 @@ type propApi = {
 
 const Item = function (props: propApi) {
   const initProps = props.data;
-
   const initTitle = {
     academicId: {
       schoolyear: initProps.academicId.schoolyear,

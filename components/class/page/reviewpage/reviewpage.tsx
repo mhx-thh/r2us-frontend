@@ -1,55 +1,48 @@
-import GroupAPI from "api/groupAPI";
-import NewClassAPI from "api/NewClassAPI";
 import PopUp from "components/class/PopUp/popup";
 import ShowReview from "components/class/ShowReview";
-import ResourceItem from "components/Resource/ResourceItem";
 import ReviewItem from "components/Review/ReviewItem";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import style from "./style.module.css";
 
-type documentinfo = {
-  name: string;
-  src: string;
-  description: string;
-};
-
 type AppProps = {
+  reviewType: string;
+  reviewTitle: string;
   review: string;
+  _id: string;
   userId: {
+    _id: string;
     givenName: string;
     familyName: string;
     photo: string;
   };
   classId: {
     className: string;
+    _id: string;
     courseId: {
       courseName: string;
+      _id: string;
+      facultyId: {
+        facultyName: string;
+        _id: string;
+      };
     };
     academicId: {
       schoolyear: string;
       semester: number;
     };
     instructorId: {
+      _id: string;
       instructorName: string;
+      id: string;
     };
   };
+  createdAt: string;
+  updatedAt: string;
+  description: string;
+  __v: number;
 };
 
-const Review = function () {
-  const [data, setData] = useState<AppProps>();
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const res = await GroupAPI.getReviews();
-        const data = res?.data?.data?.result;
-        setData(data[0]);
-      } catch (error) {
-        console.log(error.message);
-      }
-    }
-    fetchData();
-  }, []);
-
+const Review = function (data: AppProps) {
   const [open, setOpen] = useState(0);
   const ClickPopup = () => {
     setOpen(1);
@@ -70,8 +63,8 @@ const Review = function () {
           />
         </svg>
       </button>
-      <div className={style.document__document}>
-        <ReviewItem areview={{}} />
+      <div className={style.document__document} onClick={ClickPopup}>
+        <ReviewItem areview={data.data} />
       </div>
       {open === 1 && (
         <PopUp closepopup={setOpen}>
@@ -82,13 +75,7 @@ const Review = function () {
   );
 };
 
-const ReviewPage = function () {
-  const [data, setData] = useState({
-    name: "A",
-    src: "B",
-    description: "C",
-  });
-
+const ReviewPage = function (data: any) {
   const [addDoc, setAddDoc] = useState(0);
   const ClickpopupDoc = () => {
     setAddDoc(1);
@@ -96,7 +83,6 @@ const ReviewPage = function () {
   const user = "admin";
 
   const [newClass, setNewClass] = useState([]);
-
   return (
     <div className={style.page}>
       <div>
@@ -125,13 +111,9 @@ const ReviewPage = function () {
 
         {/* Document */}
         <div className={style.documentsection}>
-          <Review />
-          <Review />
-          <Review />
-          <Review />
-          <Review />
-          <Review />
-          <Review />
+          {data.data.result.map((data) => (
+            <Review key={data._id} data={data} />
+          ))}
         </div>
 
         {/* Request */}
@@ -143,13 +125,13 @@ const ReviewPage = function () {
 
         {/* Request document */}
         <div className={style.documentsection}>
+          {/* <Review />
           <Review />
           <Review />
           <Review />
           <Review />
           <Review />
-          <Review />
-          <Review />
+          <Review /> */}
         </div>
       </div>
     </div>
