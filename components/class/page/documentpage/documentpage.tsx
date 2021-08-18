@@ -1,6 +1,7 @@
 import PopUp from "components/class/PopUp/popup";
 import ShowResource from "components/class/ShowResource";
 import ResourceItem from "components/Resource/ResourceItem";
+import ResourceShowModal from "components/Resource/ResourceShowModal";
 import React, { useState } from "react";
 import style from "./style.module.css";
 
@@ -49,6 +50,7 @@ const Document = function (document: AppProps) {
   const ClickPopup = () => {
     setOpen(1);
   };
+  console.log(document.document);
   return (
     <div className={style.document}>
       <button className={style.document__button} onClick={ClickPopup}>
@@ -70,7 +72,7 @@ const Document = function (document: AppProps) {
       </div>
       {open === 1 && (
         <PopUp closepopup={setOpen}>
-          <ShowResource data={document} />
+          <ResourceShowModal sresource={document.document} />
         </PopUp>
       )}
     </div>

@@ -1,5 +1,6 @@
 import NewClassAPI from "api/NewClassAPI";
 import CreateGroup from "components/class/CreateGroup/createGroup";
+import PopUp from "components/class/PopUp/popup";
 import ResourceItem from "components/Resource/ResourceItem";
 import React, { useEffect, useState } from "react";
 import style from "./style.module.css";
@@ -151,7 +152,7 @@ const Group = function () {
 const GroupPage = function () {
   const [isCreated, setIsCreated] = useState(false);
   const handleClick = function () {
-    setIsCreated(!!!isCreated);
+    setIsCreated(!isCreated);
   };
   const user = "admin";
 
@@ -191,8 +192,12 @@ const GroupPage = function () {
           <Group />
           <Group />
         </div>
+        {isCreated && (
+          <PopUp closepopup={setIsCreated}>
+            <CreateGroup />
+          </PopUp>
+        )}
       </div>
-      {isCreated ? <CreateGroup onClose={handleClick} /> : <div />}
     </div>
   );
 };

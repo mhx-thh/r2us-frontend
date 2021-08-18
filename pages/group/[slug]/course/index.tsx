@@ -11,10 +11,12 @@ import GroupAPI from "api/groupAPI";
 export const getServerSideProps: GetServerSideProps = async (params) => {
   const temp = params.params.slug.toString();
   const res = await NewClassAPI.getGroup(temp);
+  const rev = await GroupAPI.getReviews();
   return {
     props: {
       status: res.data.status,
       data: res.data.data,
+      review: rev.data.data,
     },
   };
 };
@@ -51,6 +53,7 @@ type classType = {
 type propApi = {
   status: string;
   data: classType;
+  review: any;
 };
 
 const Item = function (props: propApi) {
@@ -79,7 +82,7 @@ const Item = function (props: propApi) {
         <Title data={initTitle} />
         <Sidebar param={path} id={initProps.slug} />
         <hr></hr>
-        <ReviewPage />
+        <ReviewPage data={props.review} />
       </LayoutClass>
     );
   }

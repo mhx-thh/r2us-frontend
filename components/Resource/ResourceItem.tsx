@@ -1,4 +1,3 @@
-import AddReview from "components/class/AddReviewCourse/AddReview";
 import React from "react";
 
 type AppProps = {
