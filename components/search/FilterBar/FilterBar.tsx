@@ -13,6 +13,8 @@ import LoginSuccess from "pages/search";
 import { route } from "next/dist/next-server/server/router";
 import Link from "next/link";
 import { UrlObject } from "url";
+import InstructorAPI from "api/instructorApi";
+import AcademicAPI from "api/academicApi";
 
 function FilterBar({ getData }) {
   //declare variable
@@ -27,12 +29,14 @@ function FilterBar({ getData }) {
   const [facultyList, setfacultyList] = useState([]);
   const [courseList, setCourseList] = useState([]);
   const [academicList, setAcademicList] = useState([]);
+  const [instructorsList, setInstructorsList] = useState([]);
   const [filter, setFilter] = useState({
     search:  "",
-    uni:  "",
+    academic:  "",
     faculty:  "",
     course:  "",
     type: "",
+    instructor:"",
     _limit: 10,
     _page:  1,
     
@@ -56,8 +60,6 @@ function FilterBar({ getData }) {
     }
     async function fetchFaculty(){
       const response = await facultyApi.getAll();
-      console.log("Res: ",response?.data?.result)
-      // setfacultyList(response?.data?.result)
       const newFaculties = response?.data?.result.map((op) => {
             const newOp = {};
             newOp["label"] = op.facultyName;
@@ -69,16 +71,40 @@ function FilterBar({ getData }) {
     function setacademic(){
       setAcademicList(["2017-2018","2018-2019","2019-2020","2020-2021"])
     }
+    async function fetchInstructors() {
+      const response= await InstructorAPI.get()
+      const newInstructors = response?.data?.data?.result.map((op) => {
+          const newOp = {};
+          newOp["label"] = op.instructorName;
+          newOp["_id"] = op._id;
+          return newOp;
+      });
+      setInstructorsList(newInstructors)
+    }
+    async function fetchAcademics() {
+      const response= await AcademicAPI.get()
+      const newInstructors = response?.data?.data?.result.map((op) => {
+          const newOp = {};
+          newOp["label"] = `${op.schoolyear} / ${op.semester}`;
+          newOp["_id"] = op._id;
+          return newOp;
+      });
+      setAcademicList(newInstructors)
+    }
     fetchResource()
     fetchReview()
     fetchFaculty()
     setacademic()
+    fetchInstructors()
+    fetchAcademics()
   },[])
   console.log("Falcutylist:",facultyList)
+  console.log("Falcutylist:",instructorsList)
   console.log("quey:",typeof(router.query.search))
 
 
   console.log("filter",filter)
+  console.log("resources ban dau: ",resources)
   const handleSubmitFilter = (values) => {  
     console.log("values:",values)
     setFilter({
@@ -86,9 +112,33 @@ function FilterBar({ getData }) {
       _limit: 10, 
       _page: 1, 
     });
-
+    // const paramString = queryString.stringify(filter);
+    // if (router.pathname === "/search"){
+    //   router.push(`/search?${paramString}`,undefined,{scroll:false});
+    // }
+    // if (router.pathname==="/search/review"){
+    //   router.push(`/search/review?${paramString}`,undefined,{scroll:false})
+    // }
+    // if (router.pathname === "/search"){
+    //   const getMatchResource=(resource)=>{
+    //     return resource?.classId?.courseId?._id.indexOf(filter.course) > -1 &&
+    //             resource?.classId?.courseId?.facultyId?._id.indexOf(filter.faculty) > -1 &&
+    //             // resource?.classId?.instructorId?._id.indexOf(filter.instructor) >-1 &&
+    //             resource?.resourceName.indexOf(filter.search) > -1
+    //   }
+    //   setResources(resources.filter(getMatchResource)) ;
+    // }
+    // if (router.pathname==="/search/review"){
+    //   const getMatchReview=(review)=>{
+    //     return review?.classId?.courseId?._id.indexOf(filter.course) > -1 &&
+    //             review?.classId?.courseId?.facultyId?._id.indexOf(filter.faculty) > -1 &&
+    //             review?.review.indexOf(filter.search) > -1
+    //   } 
+    //   setReviews(reviews.filter(getMatchReview)) ;
+    // }
   };
-  console.log("Router:",router.query)
+  console.log("resourcesss: ",resources)
+  console.log("Filter:",filter)
   useEffect(()=>{
     const paramString = queryString.stringify(filter);
     if (router.pathname === "/search"){
@@ -101,20 +151,25 @@ function FilterBar({ getData }) {
       const getMatchResource=(resource)=>{
         return resource?.classId?.courseId?._id.indexOf(filter.course) > -1 &&
                 resource?.classId?.courseId?.facultyId?._id.indexOf(filter.faculty) > -1 &&
+                resource?.classId?.instructorId?._id.indexOf(filter.instructor) >-1 &&
+                resource?.classId?.academicId?._id.indexOf(filter.academic) >-1 &&
                 resource?.resourceName.indexOf(filter.search) > -1
       }
-      setResources(resources.filter(getMatchResource)) ;
+      setResource_filtered(resources.filter(getMatchResource)) ;
     }
     if (router.pathname==="/search/review"){
       const getMatchReview=(review)=>{
         return review?.classId?.courseId?._id.indexOf(filter.course) > -1 &&
                 review?.classId?.courseId?.facultyId?._id.indexOf(filter.faculty) > -1 &&
+                review?.classId?.instructorId?._id.indexOf(filter.instructor) >-1 &&
+                review?.classId?.academicId?._id.indexOf(filter.academic) >-1 &&
                 review?.review.indexOf(filter.search) > -1
       } 
-      setReviews(reviews.filter(getMatchReview)) ;
+      setReview_filtered(reviews.filter(getMatchReview)) ;
     }
 
-  },[filter._limit,filter._page, filter.course,filter.faculty,filter.search,filter.type,filter.uni])
+  },[filter._limit,filter._page, filter.course,filter.faculty,filter.search,filter.type,filter.instructor])
+  console.log("resource filter: ", resource_filtered)
   // useEffect(()=>{
   //   setFilter({
   //     search:""+router.query.search ,
@@ -129,10 +184,24 @@ function FilterBar({ getData }) {
   console.log("resourcefilterd:",resource_filtered)
   console.log("reviewfilterd:",review_filtered)
   if (router.pathname ==="/search"){
-    getData(resources);
+    if (filter.course=="" && filter.faculty=="" && filter.instructor=="" && filter.search=="" )
+    {
+      getData(resources)
+    }
+    if (filter.course !=="" || filter.faculty !==""||filter.instructor !=="" || filter.search !=="")
+    {
+      getData(resource_filtered);
+    }
   }
   if (router.pathname==="/search/review"){
-    getData(reviews);
+    if (filter.course=="" && filter.faculty=="" && filter.instructor=="" && filter.search=="" )
+    {
+      getData(reviews)
+    }
+    if (filter.course !=="" || filter.faculty !==""||filter.instructor !=="" || filter.search !=="")
+    {
+      getData(review_filtered);
+    }
   }
   useEffect(() => {
     const fetchDocuments = async () => {
@@ -151,7 +220,7 @@ function FilterBar({ getData }) {
   };
 
   const handleChange = (e) => {
-    const name = e.target.id;
+    const name = e.target.name;
     const value = e.target.value;
     const api = filterListApi[name];
 
@@ -209,35 +278,35 @@ function FilterBar({ getData }) {
           {/* Row 2 */}
           <div className="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 gap-12 px-24">
             <SelectOption
-              name="Khoa"
-              id="faculty"
+              name="faculty"
+              id="Khoa"
               register={register}
               onHandleChange={handleChange}
               options={facultyList}
               placeholder="Chọn Khoa"
             />
             <SelectOption
-              name="Môn học"
-              id="course"
+              name="course"
+              id="Môn học"
               register={register}
               onHandleChange={handleChange}
               options={courseList}
               placeholder="Chọn Môn"
             />
             <SelectOption
-              name="Sắp xếp theo"
-              id="academic"
+              name="academic"
+              id="Năm học"
               register={register}
               onHandleChange={handleChange}
               options={academicList}
               placeholder="Năm học"
             />
              <SelectOption
-              name="Giáo viên"
-              id="instructor"
+              name="instructor"
+              id="Giáo viên"
               register={register}
               onHandleChange={handleChange}
-              options={academicList}
+              options={instructorsList}
               placeholder="Giáo viên"
             />
             <div>

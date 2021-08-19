@@ -19,7 +19,7 @@ function SelectOption(props: typeSelectOption) {
 
   return (
     <div className="w-48">
-      <p className="text-lg leading-7 font-semibold">{name}</p>
+      <p className="text-lg leading-7 font-semibold">{id}</p>
       <select
         {...register(name)}
         className="block w-48 text-gray-700 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
