@@ -15,6 +15,7 @@ import Link from "next/link";
 import { UrlObject } from "url";
 
 function FilterBar({ getData }) {
+  //declare variable
   const [searchvalue, setSearchvalue]= useState("")
   const [resource_filtered,setResource_filtered]=useState([])
   const [review_filtered,setReview_filtered]=useState([])
@@ -25,9 +26,21 @@ function FilterBar({ getData }) {
   const [uniList, setUniList] = useState([]);
   const [facultyList, setfacultyList] = useState([]);
   const [courseList, setCourseList] = useState([]);
-  const [typeList, setTypeList] = useState([]);
+  const [academicList, setAcademicList] = useState([]);
+  const [filter, setFilter] = useState({
+    search:  "",
+    uni:  "",
+    faculty:  "",
+    course:  "",
+    type: "",
+    _limit: 10,
+    _page:  1,
+    
+  });
   
   const router = useRouter();
+
+  //fetch data first time
   useEffect(()=>{
     async function fetchResource() {
       const response= await GroupAPI.getResources();
@@ -41,21 +54,30 @@ function FilterBar({ getData }) {
       console.log(response?.data?.data?.result)
       setReviews(response?.data?.data?.result)
     }
+    async function fetchFaculty(){
+      const response = await facultyApi.getAll();
+      console.log("Res: ",response?.data?.result)
+      // setfacultyList(response?.data?.result)
+      const newFaculties = response?.data?.result.map((op) => {
+            const newOp = {};
+            newOp["label"] = op.facultyName;
+            newOp["_id"] = op._id;
+            return newOp;
+          });
+        setfacultyList(newFaculties);
+    }
+    function setacademic(){
+      setAcademicList(["2017-2018","2018-2019","2019-2020","2020-2021"])
+    }
     fetchResource()
     fetchReview()
+    fetchFaculty()
+    setacademic()
   },[])
+  console.log("Falcutylist:",facultyList)
   console.log("quey:",typeof(router.query.search))
-  const [filter, setFilter] = useState({
-    search:  "",
-    uni:  "",
-    faculty:  "",
-    course:  "",
-    type: "",
-    _limit: 10,
-    _page:  1,
-    
-  });
-  
+
+
   console.log("filter",filter)
   const handleSubmitFilter = (values) => {  
     console.log("values:",values)
@@ -81,7 +103,7 @@ function FilterBar({ getData }) {
                 resource?.classId?.courseId?.facultyId?._id.indexOf(filter.faculty) > -1 &&
                 resource?.resourceName.indexOf(filter.search) > -1
       }
-      setResource_filtered(resources.filter(getMatchResource)) ;
+      setResources(resources.filter(getMatchResource)) ;
     }
     if (router.pathname==="/search/review"){
       const getMatchReview=(review)=>{
@@ -89,7 +111,7 @@ function FilterBar({ getData }) {
                 review?.classId?.courseId?.facultyId?._id.indexOf(filter.faculty) > -1 &&
                 review?.review.indexOf(filter.search) > -1
       } 
-      setReview_filtered(reviews.filter(getMatchReview)) ;
+      setReviews(reviews.filter(getMatchReview)) ;
     }
 
   },[filter._limit,filter._page, filter.course,filter.faculty,filter.search,filter.type,filter.uni])
@@ -107,10 +129,10 @@ function FilterBar({ getData }) {
   console.log("resourcefilterd:",resource_filtered)
   console.log("reviewfilterd:",review_filtered)
   if (router.pathname ==="/search"){
-    getData(resource_filtered);
+    getData(resources);
   }
   if (router.pathname==="/search/review"){
-    getData(review_filtered);
+    getData(reviews);
   }
   useEffect(() => {
     const fetchDocuments = async () => {
@@ -125,59 +147,21 @@ function FilterBar({ getData }) {
   const { register, handleSubmit } = useForm();
 
   const filterListApi = {
-    uni: facultyApi,
     faculty: courseApi,
   };
 
-  
-
-  // Get information for filter
-  useEffect(() => {
-    const fetchData = async () => {
-      setUniList([
-        {
-          _id: 1,
-          label: "Khoa học Tự Nhiên",
-        },
-      ]);
-
-      setTypeList([
-        { _id: 1, label: "Đề Thi" },
-        { _id: 2, label: "Đề Cương" },
-        { _id: 3, label: "Đề Tài" },
-      ]);
-    };
-    fetchData();
-  }, []);
-  useEffect(()=>{
-    
-  })
   const handleChange = (e) => {
-    const name = e.target.name;
+    const name = e.target.id;
     const value = e.target.value;
     const api = filterListApi[name];
 
     const fetchData = async (api) => {
       let options;
-      if (name == "uni") {
-        const data = await api.getAll();
-        options = data.data.result;
-      } else {
-        const data = await api.get(value);
-        options = data.data.result;
-      }
+      const data = await api.get(value);
+      options = data?.data?.result;
+
 
       switch (name) {
-        case "uni":
-          const newFaculties = options.map((op) => {
-            const newOp = {};
-            newOp["label"] = op.facultyName;
-            newOp["_id"] = op._id;
-            return newOp;
-          });
-          setfacultyList(newFaculties);
-          break;
-
         case "faculty":
           const newCourses = options.map((op) => {
             const newOp = {};
@@ -225,45 +209,41 @@ function FilterBar({ getData }) {
           {/* Row 2 */}
           <div className="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 gap-12 px-24">
             <SelectOption
-              name="uni"
-              register={register}
-              onHandleChange={handleChange}
-              options={uniList}
-              placeholder="Chọn Trường"
-            />
-            <SelectOption
-              name="faculty"
+              name="Khoa"
+              id="faculty"
               register={register}
               onHandleChange={handleChange}
               options={facultyList}
               placeholder="Chọn Khoa"
             />
             <SelectOption
-              name="course"
+              name="Môn học"
+              id="course"
               register={register}
               onHandleChange={handleChange}
               options={courseList}
               placeholder="Chọn Môn"
             />
-            {router.pathname==="/search" && 
             <SelectOption
-              name="type"
+              name="Sắp xếp theo"
+              id="academic"
               register={register}
               onHandleChange={handleChange}
-              options={typeList}
-              placeholder="Chọn Loại Tài Liệu"
+              options={academicList}
+              placeholder="Năm học"
             />
-            }
-             {router.pathname==="/search/review" && 
-            <SelectOption
-              name="type"
+             <SelectOption
+              name="Giáo viên"
+              id="instructor"
               register={register}
               onHandleChange={handleChange}
-              options={typeList}
-              placeholder="Chọn loại cảm nhận"
+              options={academicList}
+              placeholder="Giáo viên"
             />
-            }
-            <Button type="submit" value="Áp dụng" />
+            <div>
+              <br/>
+              <Button type="submit" value="Áp dụng" />
+            </div>
           </div>
         </form>
       </div>

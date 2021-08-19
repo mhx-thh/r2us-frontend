@@ -29,18 +29,17 @@ function InputText(props: typeInputText) {
     }
     if (list[e.target.value].label === "Lớp học")
       {
-        setSearchType("/class")
-        console.log(searchType)
+        router.push("/search/class",undefined,{scroll:false,shallow:true});
       }
   }
   return (
     <div className="w-full flex justify-center">
-      <div className="w-2/5 relative focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent ">
+      <div className="w-2/5 relative  focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent ">
         <input
           {...register(name)}
           type="text"
           id="search"
-          className="rounded-full border-transparent w-full appearance-none border border-gray-300 py-4 pl-16 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+          className="rounded-full  shadow-xl border-transparent w-full appearance-none border border-gray-300 py-4 pl-16 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
           placeholder={placeholder}
         />
 

@@ -38,7 +38,12 @@ function Documents({resource}:TypeDoc) {
   const handlePageChange = (new_page) => {
     console.log(new_page);
   };
-
+  if (resource==[]) { 
+    return (
+      <Loading />
+    )
+  }
+  else {
   return (
     <div>
       <div className="grid lg:grid-cols-4 gap-12 md:grid-cols-3 sm:grid-cols-2 px-24 py-10">
@@ -51,6 +56,7 @@ function Documents({resource}:TypeDoc) {
       <Pagination pagination={pagination} onPageChange={handlePageChange} />
     </div>
   );
+      }
 }
 
 export default Documents;
