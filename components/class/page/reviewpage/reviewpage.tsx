@@ -44,14 +44,9 @@ type AppProps = {
 };
 
 const Review = function (data: AppProps) {
-  const [open, setOpen] = useState(0);
-  const ClickPopup = () => {
-    setOpen(1);
-  };
-  console.log(data.data);
   return (
     <div className={style.document}>
-      <button className={style.document__button} onClick={ClickPopup}>
+      <button className={style.document__button}>
         <svg
           width="15"
           height="4"
@@ -65,14 +60,9 @@ const Review = function (data: AppProps) {
           />
         </svg>
       </button>
-      <div className={style.document__document} onClick={ClickPopup}>
+      <div className={style.document__document}>
         <ReviewItem areview={data.data} />
       </div>
-      {open === 1 && (
-        <PopUp closepopup={setOpen}>
-          <ReviewShowModal sreview={data.data} />
-        </PopUp>
-      )}
     </div>
   );
 };

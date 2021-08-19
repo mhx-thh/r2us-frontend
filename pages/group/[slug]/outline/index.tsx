@@ -6,15 +6,17 @@ import NewClassAPI from "api/NewClassAPI";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import DocumentPage from "components/class/page/documentpage/documentpage";
+import GroupAPI from "api/groupAPI";
 
 export const getServerSideProps: GetServerSideProps = async (params) => {
   const temp = params.params.slug.toString();
   const res = await NewClassAPI.getGroup(temp);
-
+  const moreRes = await GroupAPI.getResources();
   return {
     props: {
       status: res.data.status,
       data: res.data.data,
+      document: moreRes.data.data,
     },
   };
 };
@@ -51,6 +53,7 @@ type classType = {
 type propApi = {
   status: string;
   data: classType;
+  document: any;
 };
 
 const Item = function (props: propApi) {
@@ -80,7 +83,7 @@ const Item = function (props: propApi) {
         <Title data={initTitle} />
         <Sidebar param={path} id={initProps.slug} />
         <hr></hr>
-        <DocumentPage />
+        <DocumentPage document={props.document} />
       </LayoutClass>
     );
   }

@@ -1,3 +1,5 @@
+import CreateGroup from "components/class/CreateGroup/createGroup";
+import CreateResource from "components/class/CreateResource";
 import PopUp from "components/class/PopUp/popup";
 import ShowResource from "components/class/ShowResource";
 import ResourceItem from "components/Resource/ResourceItem";
@@ -46,14 +48,9 @@ type AppProps = {
 };
 
 const Document = function (document: AppProps) {
-  const [open, setOpen] = useState(0);
-  const ClickPopup = () => {
-    setOpen(1);
-  };
-  console.log(document.document);
   return (
     <div className={style.document}>
-      <button className={style.document__button} onClick={ClickPopup}>
+      <button className={style.document__button}>
         <svg
           width="15"
           height="4"
@@ -67,14 +64,9 @@ const Document = function (document: AppProps) {
           />
         </svg>
       </button>
-      <div className={style.document__document} onClick={ClickPopup}>
+      <div className={style.document__document}>
         <ResourceItem aresource={document.document} />
       </div>
-      {open === 1 && (
-        <PopUp closepopup={setOpen}>
-          <ResourceShowModal sresource={document.document} />
-        </PopUp>
-      )}
     </div>
   );
 };
@@ -87,13 +79,16 @@ const DocumentPage = function (document: any) {
   const user = "admin";
 
   const [newClass, setNewClass] = useState([]);
-
+  const [create, setCreate] = useState(false);
+  const handleClick = () => {
+    setCreate(true);
+  };
   return (
     <div className={style.page}>
       <div>
         {/* "Chia sẻ tài liệu button" */}
         <div className={style.buttonarea}>
-          <button className={style.button}>
+          <button className={style.button} onClick={handleClick}>
             <div className={style.button__text}>Chia sẻ tài liệu</div>
             <div className={style.button__image}>
               <svg
@@ -113,19 +108,16 @@ const DocumentPage = function (document: any) {
             </div>
           </button>
         </div>
-
+        {create === true && (
+          <PopUp closepopup={setCreate}>
+            <CreateResource />
+          </PopUp>
+        )}
         {/* Document */}
         <div className={style.documentsection}>
           {document.document.result.map((data) => (
             <Document key={data.resourceName} document={data} />
           ))}
-          {/* <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document /> */}
         </div>
 
         {/* Request */}
@@ -136,15 +128,7 @@ const DocumentPage = function (document: any) {
         </div>
 
         {/* Request document */}
-        <div className={style.documentsection}>
-          {/* <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document /> */}
-        </div>
+        <div className={style.documentsection}>{/* <Document /> */}</div>
       </div>
     </div>
   );
