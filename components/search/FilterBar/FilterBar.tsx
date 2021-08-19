@@ -268,9 +268,9 @@ function FilterBar({ getData }) {
         </form>
       </div>
 
-      <hr className="mt-5 mb-10" />
+       <hr className="mt-5 mb-10" />
 
-      <div className="flex justify-between items-center flex-wrap px-24">
+      {/*<div className="flex justify-between items-center flex-wrap px-24">
         <div className="flex items-center mb-2 sm:mb-0">
 
             <div
@@ -295,13 +295,13 @@ function FilterBar({ getData }) {
         </div>
         <div>
           <select className="block w-52 text-gray-700 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
-            <option value="Năm Học">Năm Học</option>
-            <option value="Giảng Viên">Giảng Viên</option>
+             <option value="Năm Học">Năm Học</option>
+             <option value="Giảng Viên">Giảng Viên</option>
           </select>
-        </div>
-      </div>
+         </div>
+            </div> */}
 
-      <hr className="mt-5 mb-10" />
+      <hr className="mt-5 mb-10" /> 
     </div>
   );
 }
