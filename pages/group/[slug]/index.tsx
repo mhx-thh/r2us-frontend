@@ -21,7 +21,6 @@ import GroupAPI from "api/groupAPI";
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const res = await GroupAPI.getGroups();
-  console.log(res);
   const paths = res.data.data.result.map((path) => ({
     params: { slug: path.slug },
   }));
@@ -31,7 +30,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (params) => {
   const temp = params.params.slug.toString();
   const res = await GroupAPI.getGroup(temp);
-  console.log(res);
   return {
     props: {
       status: res.data.status,
@@ -75,7 +73,6 @@ type propApi = {
 
 const Item = function (props: propApi) {
   const initProps = props.data;
-  console.log(props.data);
 
   const initTitle = {
     academicId: {
@@ -93,7 +90,6 @@ const Item = function (props: propApi) {
     },
     updateAt: props.data.updatedAt,
   };
-  console.log(props.data);
   const router = useRouter();
   if (router.isFallback) {
     return <div>Loading...</div>;

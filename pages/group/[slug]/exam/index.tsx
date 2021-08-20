@@ -4,11 +4,32 @@ import DocumentPage from "components/class/page/documentpage/documentpage";
 import Sidebar from "components/class/Sidebar/Sidebar";
 import Title from "components/class/Title/Title";
 import LayoutClass from "components/layout/layoutClass";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import React from "react";
 
-export const getServerSideProps: GetServerSideProps = async (params) => {
+// export const getServerSideProps: GetServerSideProps = async (params) => {
+//   const temp = params.params.slug.toString();
+//   const res = await NewClassAPI.getGroup(temp);
+//   const moreRes = await GroupAPI.getResources();
+//   return {
+//     props: {
+//       status: res.data.status,
+//       data: res.data.data,
+//       document: moreRes.data.data,
+//     },
+//   };
+// };
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const res = await GroupAPI.getGroups();
+  const paths = res.data.data.result.map((path) => ({
+    params: { slug: path.slug },
+  }));
+  return { paths: paths, fallback: "blocking" };
+};
+
+export const getStaticProps: GetStaticProps = async (params) => {
   const temp = params.params.slug.toString();
   const res = await NewClassAPI.getGroup(temp);
   const moreRes = await GroupAPI.getResources();
