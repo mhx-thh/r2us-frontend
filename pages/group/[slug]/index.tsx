@@ -7,37 +7,42 @@ import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import GroupAPI from "api/groupAPI";
 
-// export const getServerSideProps: GetServerSideProps = async (params) => {
-//   const temp = params.params.slug.toString();
-//   const res = await NewClassAPI.getGroup(temp);
-
-//   return {
-//     props: {
-//       status: res.data.status,
-//       data: res.data.data,
-//     },
-//   };
-// };
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await GroupAPI.getGroups();
-  const paths = res.data.data.result.map((path) => ({
-    params: { slug: path.slug },
-  }));
-  return { paths: paths, fallback: "blocking" };
-};
-
-export const getStaticProps: GetStaticProps = async (params) => {
+export const getServerSideProps: GetServerSideProps = async (params) => {
   const temp = params.params.slug.toString();
   const res = await GroupAPI.getGroup(temp);
+
+  params.res.setHeader(
+    "Cache-control",
+    "public, s-maxage=10, stale-while-revalidate=59"
+  );
+
   return {
     props: {
       status: res.data.status,
       data: res.data.data,
-      revalidate: 10,
     },
   };
 };
+
+// export const getStaticPaths: GetStaticPaths = async () => {
+//   const res = await GroupAPI.getGroups();
+//   const paths = res.data.data.result.map((path) => ({
+//     params: { slug: path.slug },
+//   }));
+//   return { paths: paths, fallback: "blocking" };
+// };
+
+// export const getStaticProps: GetStaticProps = async (params) => {
+//   const temp = params.params.slug.toString();
+//   const res = await GroupAPI.getGroup(temp);
+//   return {
+//     props: {
+//       status: res.data.status,
+//       data: res.data.data,
+//       revalidate: 10,
+//     },
+//   };
+// };
 
 type propApi = {
   status: string;
