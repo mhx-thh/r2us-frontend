@@ -1,13 +1,12 @@
-import Link from "next/link";
-import { useAppSelector } from "redux/hooks";
-import { selectUser } from "redux/userSlice";
-import React, { useEffect, useState } from "react";
-import { GetServerSideProps } from "next";
-import { useRouter } from "next/router";
+import Footer from "components/footer/FooterComponent";
 import MetaLayout from "components/layout/MegaLayout";
+import DocumentPage from "components/user/page/document/documentpage";
 import Sidebar from "components/user/Sidebar/UserSidebar";
 import UserHeader from "components/user/userheader/header";
-import DocumentPage from "components/user/page/document/documentpage";
+import { useRouter } from "next/router";
+import React from "react";
+import { useAppSelector } from "redux/hooks";
+import { selectUser } from "redux/userSlice";
 
 // export const getServerSideProps: GetServerSideProps = async (params) => {
 //   const res = await NewClassAPI.getGroup(temp);
@@ -31,17 +30,14 @@ const User = function (props) {
 
   const router = useRouter();
   const path = router.asPath;
-
+  const title = `${user.familyName} ${user.givenName} | R2us`;
   return (
-    <MetaLayout
-      title="MHX 2021 - Tin học hóa"
-      desc="ClassPage"
-      icon="/icons/mhx-logo.svg"
-    >
-      <UserHeader param={path} />
+    <MetaLayout title={title} desc="User" icon="icons/logo.svg">
+      <UserHeader user={user} />
       <Sidebar param={path} />
       <hr></hr>
       <DocumentPage />;
+      <Footer />
     </MetaLayout>
   );
 };

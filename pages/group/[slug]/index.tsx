@@ -75,7 +75,7 @@ type propApi = {
 
 const Item = function (props: propApi) {
   const initProps = props.data;
-  // console.log(props);
+  console.log(props.data);
 
   const initTitle = {
     academicId: {
@@ -83,22 +83,23 @@ const Item = function (props: propApi) {
     },
     courseId: {
       courseName: initProps.courseId.courseName,
+      facultyId: {
+        facultyName: initProps.courseId.facultyId.facultyName,
+      },
     },
     className: initProps.className,
     instructorId: {
       instructorName: initProps.instructorId.instructorName,
     },
+    updateAt: props.data.updatedAt,
   };
-
+  console.log(props.data);
   const router = useRouter();
-  const path = router.asPath;
-  const title = `R2US - ${initProps.className}`;
   if (router.isFallback) {
     return <div>Loading...</div>;
   } else {
-    const router = useRouter();
     const path = router.asPath;
-    const title = `R2US - ${initProps.className}`;
+    const title = `R2us | ${initProps.className}`;
     return (
       <LayoutClass title={title} desc="ClassPage" icon="icons/logo.svg">
         <Title data={initTitle} />

@@ -7,11 +7,15 @@ type classInfo = {
   };
   courseId: {
     courseName: string;
+    facultyId: {
+      facultyName: string;
+    };
   };
   className: string;
   instructorId: {
     instructorName: string;
   };
+  updateAt: string;
 };
 
 const Title = function (props: { data: classInfo }) {
@@ -26,7 +30,6 @@ const Title = function (props: { data: classInfo }) {
     const newClassInfo = { ...classInfo, description: "newDescription" };
     setClassInfo(newClassInfo);
   };
-
   return (
     <div className={style.title}>
       <div className={style.page}>
@@ -174,7 +177,7 @@ const Title = function (props: { data: classInfo }) {
               {props.data.academicId.schoolyear}
             </div>
 
-            {/* Môn học */}
+            {/* Khoa */}
             <div className={style.title__lower__information__group}>
               <div className={style.title__lower__information__image}>
                 <svg
@@ -190,10 +193,10 @@ const Title = function (props: { data: classInfo }) {
                   />
                 </svg>
               </div>
-              {props.data.courseId.courseName}
+              {props.data.courseId.facultyId.facultyName}
             </div>
 
-            {/* Nhóm học */}
+            {/* Môn học */}
             <div className={style.title__lower__information__group}>
               <div className={style.title__lower__information__image}>
                 <svg
@@ -209,7 +212,7 @@ const Title = function (props: { data: classInfo }) {
                   />
                 </svg>
               </div>
-              {props.data.className}
+              {props.data.courseId.courseName}
             </div>
 
             {/* Giáo viên */}
@@ -238,7 +241,10 @@ const Title = function (props: { data: classInfo }) {
                 Cập nhật lần cuối:
               </div>
               <div className={style.title__lower__right__text_normal}>
-                12:00, 03/08/2021
+                {props.data.updateAt.slice(11, 16)},{" "}
+                {props.data.updateAt.slice(8, 10)}/
+                {props.data.updateAt.slice(5, 7)}/
+                {props.data.updateAt.slice(0, 4)}
               </div>
             </div>
           </div>
