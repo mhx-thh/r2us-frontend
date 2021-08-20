@@ -65,16 +65,20 @@ const Item = function (props: propApi) {
     },
     courseId: {
       courseName: initProps.courseId.courseName,
+      facultyId: {
+        facultyName: initProps.courseId.facultyId.facultyName,
+      },
     },
     className: initProps.className,
     instructorId: {
       instructorName: initProps.instructorId.instructorName,
     },
+    updateAt: initProps.updatedAt,
   };
 
   const router = useRouter();
   const path = router.asPath;
-  const title = `R2US - ${initProps.className}`;
+  const title = `R2us | ${initProps.className}`;
   if (router.isFallback) {
     return <div>Loading...</div>;
   } else {

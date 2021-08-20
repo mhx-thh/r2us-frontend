@@ -8,6 +8,7 @@ import MetaLayout from "components/layout/MegaLayout";
 import Sidebar from "components/user/Sidebar/UserSidebar";
 import UserHeader from "components/user/userheader/header";
 import ReviewPage from "components/user/page/review/reviewpage";
+import Footer from "components/footer/FooterComponent";
 
 // export const getServerSideProps: GetServerSideProps = async (params) => {
 //   const res = await NewClassAPI.getGroup(temp);
@@ -28,20 +29,16 @@ import ReviewPage from "components/user/page/review/reviewpage";
 
 const User = function (props) {
   const user = useAppSelector(selectUser);
-
   const router = useRouter();
   const path = router.asPath;
-
+  const title = `${user.familyName} ${user.givenName} | R2us`;
   return (
-    <MetaLayout
-      title="MHX 2021 - Tin học hóa"
-      desc="ClassPage"
-      icon="/icons/mhx-logo.svg"
-    >
-      <UserHeader param={path} />
+    <MetaLayout title={title} desc="User" icon="icons/logo.svg">
+      <UserHeader user={user} />
       <Sidebar param={path} />
       <hr></hr>
       <ReviewPage />;
+      <Footer />
     </MetaLayout>
   );
 };

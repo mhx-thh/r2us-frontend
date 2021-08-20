@@ -39,6 +39,7 @@
 .user__input__field_normal{
     background: rgba(238, 242, 255, 1);
     border: 1px solid #6366F1;
+    padding: 6px;
     box-sizing: border-box;
     border-radius: 8px;
     width: 100%;
@@ -47,6 +48,7 @@
 }
 .user__input__field_active{
     background: #ffffff;
+    padding: 6px;
     border: 1px solid #6366F1;
     box-sizing: border-box;
     border-radius: 8px;

@@ -9,6 +9,7 @@ import Sidebar from "components/user/Sidebar/UserSidebar";
 import UserHeader from "components/user/userheader/header";
 import GroupPage from "components/user/page/mygroup/mygrouppage";
 import Temp from "components/class/CreateGroup/createGroup";
+import Footer from "components/footer/FooterComponent";
 
 // export const getServerSideProps: GetServerSideProps = async (params) => {
 //   const res = await NewClassAPI.getGroup(temp);
@@ -32,17 +33,14 @@ const User = function (props) {
 
   const router = useRouter();
   const path = router.asPath;
-
+  const title = `${user.familyName} ${user.givenName} | R2us`;
   return (
-    <MetaLayout
-      title="MHX 2021 - Tin học hóa"
-      desc="ClassPage"
-      icon="/icons/mhx-logo.svg"
-    >
-      <UserHeader param={path} />
+    <MetaLayout title={title} desc="User" icon="icons/logo.svg">
+      <UserHeader user={user} />
       <Sidebar param={path} />
       <hr></hr>
       <GroupPage />
+      <Footer />
     </MetaLayout>
   );
 };
