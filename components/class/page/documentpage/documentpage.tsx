@@ -47,7 +47,8 @@ type AppProps = {
   id: string;
 };
 
-const Document = function (document: AppProps) {
+// const Document = function (document: AppProps) {
+const Document = function (document: any) {
   return (
     <div className={style.document}>
       <button className={style.document__button}>

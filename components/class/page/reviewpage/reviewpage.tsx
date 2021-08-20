@@ -43,7 +43,8 @@ type AppProps = {
   __v: number;
 };
 
-const Review = function (data: AppProps) {
+// const Review = function (data: AppProps) {
+const Review = function (data: any) {
   return (
     <div className={style.document}>
       <button className={style.document__button}>

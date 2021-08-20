@@ -46,7 +46,8 @@ type Api = {
   };
 };
 
-const ShowReview = function (initData: Api) {
+// const ShowReview = function (initData: Api) {
+const ShowReview = function (initData: any) {
   console.log(initData.data.data);
   const Data = initData.data.data;
   return (

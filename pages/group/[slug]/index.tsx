@@ -3,18 +3,40 @@ import LayoutClass from "components/layout/layoutClass";
 import React, { useEffect, useState } from "react";
 import Sidebar from "components/class/Sidebar/Sidebar";
 import Title from "components/class/Title/Title";
-import NewClassAPI from "api/NewClassAPI";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
+import GroupAPI from "api/groupAPI";
 
-export const getServerSideProps: GetServerSideProps = async (params) => {
+// export const getServerSideProps: GetServerSideProps = async (params) => {
+//   const temp = params.params.slug.toString();
+//   const res = await NewClassAPI.getGroup(temp);
+
+//   return {
+//     props: {
+//       status: res.data.status,
+//       data: res.data.data,
+//     },
+//   };
+// };
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const res = await GroupAPI.getGroups();
+  console.log(res);
+  const paths = res.data.data.result.map((path) => ({
+    params: { slug: path.slug },
+  }));
+  return { paths: paths, fallback: "blocking" };
+};
+
+export const getStaticProps: GetStaticProps = async (params) => {
   const temp = params.params.slug.toString();
-  const res = await NewClassAPI.getGroup(temp);
-
+  const res = await GroupAPI.getGroup(temp);
+  console.log(res);
   return {
     props: {
       status: res.data.status,
       data: res.data.data,
+      revalidate: 10,
     },
   };
 };
