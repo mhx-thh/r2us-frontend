@@ -7,6 +7,9 @@ import NewClassAPI from "api/NewClassAPI";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 
+import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { groupsReceived, groupAdded } from "redux/groupSlice";
+
 export const getServerSideProps: GetServerSideProps = async (params) => {
   const temp = params.params.slug.toString();
   const res = await NewClassAPI.getGroup(temp);
@@ -71,21 +74,19 @@ const Item = function (props: propApi) {
   const router = useRouter();
   const path = router.asPath;
   const title = `R2US - ${initProps.className}`;
-  if (router.isFallback) {
-    return <div>Loading...</div>;
-  } else {
-    const router = useRouter();
-    const path = router.asPath;
-    const title = `R2US - ${initProps.className}`;
-    return (
-      <LayoutClass title={title} desc="ClassPage" icon="icons/logo.svg">
-        <Title data={initTitle} />
-        <Sidebar param={path} id={initProps.slug} />
-        <hr></hr>
-        <InformationPage data={props.data} />;
-      </LayoutClass>
-    );
-  }
+
+  const dispatch = useAppDispatch();
+  dispatch(groupAdded({}));
+  const groups = useAppSelector(groupAdded);
+
+  return (
+    <LayoutClass title={title} desc="ClassPage" icon="icons/logo.svg">
+      <Title data={initTitle} />
+      <Sidebar param={path} id={initProps.slug} />
+      <hr></hr>
+      <InformationPage data={props.data} />;
+    </LayoutClass>
+  );
 };
 
 export default Item;
