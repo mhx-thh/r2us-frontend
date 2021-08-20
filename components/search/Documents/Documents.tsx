@@ -5,9 +5,12 @@ import Pagination from "../Pagination/Pagination";
 
 type TypeDoc = {
   resource: any;
+  loading: boolean;
+  label:any;
+  data:any;
 }
 
-function Documents({resource}:TypeDoc) {
+function Documents({resource,loading,label,data}:TypeDoc) {
   console.log("props:" ,resource)
   // const { documents, loading } = data;
   // console.log(documents)
@@ -37,8 +40,8 @@ function Documents({resource}:TypeDoc) {
   }
   const handlePageChange = (new_page) => {
     console.log(new_page);
-  };
-  if (resource==[]) { 
+  }; 
+  if (loading == true) { 
     return (
       <Loading />
     )
@@ -46,6 +49,21 @@ function Documents({resource}:TypeDoc) {
   else {
   return (
     <div>
+      {/* { label !== [] &&
+        label.map((idx)=>{
+          <div>
+            <p className=" px-24  text-base leading-6 font-semibold"> {idx.label} </p>
+            <div className="grid lg:grid-cols-4 gap-12 md:grid-cols-3 sm:grid-cols-2 px-24 py-10">
+              {idx.value.map((data,index)=>{
+                return(
+                  <ResourceItem key={index} aresource={data} />
+                )
+              })}
+            </div>
+          </div>
+        })
+      } */}
+      <p className=" px-24  text-base leading-6 font-semibold"> {label} </p>
       <div className="grid lg:grid-cols-4 gap-12 md:grid-cols-3 sm:grid-cols-2 px-24 py-10">
         {resource.map((data,index)=>{
           return(
@@ -56,7 +74,7 @@ function Documents({resource}:TypeDoc) {
       <Pagination pagination={pagination} onPageChange={handlePageChange} />
     </div>
   );
-      }
+  }
 }
-
+  
 export default Documents;

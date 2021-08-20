@@ -8,14 +8,19 @@ interface AppProps {
 
 const LoginSuccess = ({ query }: AppProps) => {
   const [documents, setDocuments] = useState([]);
-
-  const getDocuments = (value) => {
+  const [loading,setLoaing]=useState(true)
+  const [label,setLabel]=useState([])
+  const [data,setData]=useState([])
+  const getDocuments = (value: React.SetStateAction<any[]>,loading: boolean | ((prevState: boolean) => boolean),label: React.SetStateAction<any[]>,data: React.SetStateAction<any[]>) => {
     setDocuments(value);
+    setLoaing(loading);
+    setLabel(label)
+    setData(data)
   };
   const dt=[1,2,3,4]
   return (
     <Layout getData={getDocuments} >
-      <Documents resource={documents} />
+      <Documents resource={documents} loading={loading} label={label} data={data} />
     </Layout>
   );
 };

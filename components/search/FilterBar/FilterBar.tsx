@@ -15,6 +15,9 @@ import Link from "next/link";
 import { UrlObject } from "url";
 import InstructorAPI from "api/instructorApi";
 import AcademicAPI from "api/academicApi";
+import review from "pages/search/review";
+import Loading from "../Loading/Loading";
+import { useAppSelector } from "redux/hooks";
 
 function FilterBar({ getData }) {
   //declare variable
@@ -24,6 +27,7 @@ function FilterBar({ getData }) {
 
   const [resources,setResources]= useState([])
   const [reviews,setReviews]= useState([])
+  const [loading,setLoading]=useState(true)
 
   const [uniList, setUniList] = useState([]);
   const [facultyList, setfacultyList] = useState([]);
@@ -48,12 +52,14 @@ function FilterBar({ getData }) {
   useEffect(()=>{
     async function fetchResource() {
       const response= await GroupAPI.getResources();
+      setLoading(false)
       console.log("Resource: ")
       console.log(response?.data?.data?.result)
-      setResources(response?.data?.data?.result)
+      setResources(response?.data?.data?.result)    
     }
     async function fetchReview() {
       const response= await GroupAPI.getReviews();
+      setLoading(false)
       console.log("Reviews: ")
       console.log(response?.data?.data?.result)
       setReviews(response?.data?.data?.result)
@@ -68,9 +74,6 @@ function FilterBar({ getData }) {
           });
         setfacultyList(newFaculties);
     }
-    function setacademic(){
-      setAcademicList(["2017-2018","2018-2019","2019-2020","2020-2021"])
-    }
     async function fetchInstructors() {
       const response= await InstructorAPI.get()
       const newInstructors = response?.data?.data?.result.map((op) => {
@@ -83,21 +86,26 @@ function FilterBar({ getData }) {
     }
     async function fetchAcademics() {
       const response= await AcademicAPI.get()
-      const newInstructors = response?.data?.data?.result.map((op) => {
+      const newAcademic = response?.data?.data?.result.map((op) => {
           const newOp = {};
           newOp["label"] = `${op.schoolyear} / ${op.semester}`;
           newOp["_id"] = op._id;
           return newOp;
       });
-      setAcademicList(newInstructors)
+      const filterAcademicList=[{
+        "_id" : "0",
+        "label" : "Xếp theo năm học"
+      },].concat(newAcademic)
+      setAcademicList(filterAcademicList)
     }
+    getData(resources,loading)
     fetchResource()
     fetchReview()
     fetchFaculty()
-    setacademic()
     fetchInstructors()
     fetchAcademics()
   },[])
+
   console.log("Falcutylist:",facultyList)
   console.log("Falcutylist:",instructorsList)
   console.log("quey:",typeof(router.query.search))
@@ -112,41 +120,17 @@ function FilterBar({ getData }) {
       _limit: 10, 
       _page: 1, 
     });
-    // const paramString = queryString.stringify(filter);
-    // if (router.pathname === "/search"){
-    //   router.push(`/search?${paramString}`,undefined,{scroll:false});
-    // }
-    // if (router.pathname==="/search/review"){
-    //   router.push(`/search/review?${paramString}`,undefined,{scroll:false})
-    // }
-    // if (router.pathname === "/search"){
-    //   const getMatchResource=(resource)=>{
-    //     return resource?.classId?.courseId?._id.indexOf(filter.course) > -1 &&
-    //             resource?.classId?.courseId?.facultyId?._id.indexOf(filter.faculty) > -1 &&
-    //             // resource?.classId?.instructorId?._id.indexOf(filter.instructor) >-1 &&
-    //             resource?.resourceName.indexOf(filter.search) > -1
-    //   }
-    //   setResources(resources.filter(getMatchResource)) ;
-    // }
-    // if (router.pathname==="/search/review"){
-    //   const getMatchReview=(review)=>{
-    //     return review?.classId?.courseId?._id.indexOf(filter.course) > -1 &&
-    //             review?.classId?.courseId?.facultyId?._id.indexOf(filter.faculty) > -1 &&
-    //             review?.review.indexOf(filter.search) > -1
-    //   } 
-    //   setReviews(reviews.filter(getMatchReview)) ;
-    // }
+    const paramString = queryString.stringify(values);
+    if (router.pathname === "/search"){
+      router.push(`/search?${paramString}`,undefined,{scroll : false});
+    }
+    if (router.pathname==="/search/review"){
+      router.push(`/search/review?${paramString}`,undefined,{scroll : false})
+    }
   };
   console.log("resourcesss: ",resources)
   console.log("Filter:",filter)
   useEffect(()=>{
-    const paramString = queryString.stringify(filter);
-    if (router.pathname === "/search"){
-      router.push(`/search?${paramString}`,undefined,{scroll:false});
-    }
-    if (router.pathname==="/search/review"){
-      router.push(`/search/review?${paramString}`,undefined,{scroll:false})
-    }
     if (router.pathname === "/search"){
       const getMatchResource=(resource)=>{
         return resource?.classId?.courseId?._id.indexOf(filter.course) > -1 &&
@@ -168,19 +152,24 @@ function FilterBar({ getData }) {
       setReview_filtered(reviews.filter(getMatchReview)) ;
     }
 
-  },[filter._limit,filter._page, filter.course,filter.faculty,filter.search,filter.type,filter.instructor])
+  },[filter._limit,filter._page, filter.course,filter.faculty,filter.search,filter.type,filter.instructor,filter.academic,
+    router.query._limit,router.query._page, router.query.course,router.query.faculty,router.query.search,router.query.type,router.query.instructor,router.query.academic])
   console.log("resource filter: ", resource_filtered)
-  // useEffect(()=>{
-  //   setFilter({
-  //     search:""+router.query.search ,
-  //     uni:  ""+router.query.uni,
-  //     faculty:  ""+router.query.faculty,
-  //     course:  ""+router.query.course,
-  //     type: ""+router.query.type,
-  //     _limit: Number(router.query._limit),
-  //     _page:  Number(router.query._page),
-  //   })
-  // },[router.query])
+  useEffect(()=>{
+    function set() {
+      setFilter({
+        search:  "" + router.query.search,
+        academic:  "" + router.query.academic,
+        faculty:  "" + router.query.faculty,
+        course:  "" + router.query.course,
+        type: "" + router.query.type,
+        instructor:"" + router.query.instructor,
+        _limit: Number(router.query._limit),
+        _page:  Number(router.query._page),
+      })
+    }
+    set()
+  },[router.query])
   console.log("resourcefilterd:",resource_filtered)
   console.log("reviewfilterd:",review_filtered)
   if (router.pathname ==="/search"){
@@ -188,9 +177,33 @@ function FilterBar({ getData }) {
     {
       getData(resources)
     }
-    if (filter.course !=="" || filter.faculty !==""||filter.instructor !=="" || filter.search !=="")
+    if (filter.course !=="" || filter.faculty !==""||filter.instructor !=="" || filter.search !=="" || filter.academic !== "")
     {
-      getData(resource_filtered);
+      if (filter.academic ==="0")
+      {
+        const temAcademicList=[...academicList]
+        temAcademicList.splice(0,1)
+        temAcademicList.sort(function(a,b){
+          if ( a.label > b.label ){
+            return -1;
+          }
+          if ( a.label< b.label ){
+            return 1;
+          }
+          return 0;
+        })
+        const a=[]
+        const b=[]
+        temAcademicList.map((value)=>{
+          a.push([resources.filter(resource => 
+            resource?.classId?.academicId?._id.indexOf(value._id))])
+          b.push(value.label)
+        })
+        console.log("a:",a)
+        console.log("b:",b)
+        // getData(resource_filtered,false,b,a)
+      }
+      else {getData(resource_filtered)}
     }
   }
   if (router.pathname==="/search/review"){
@@ -203,14 +216,21 @@ function FilterBar({ getData }) {
       getData(review_filtered);
     }
   }
-  useEffect(() => {
-    const fetchDocuments = async () => {
-      const response = await facultyApi.getAll();
-      const newDocuments = response.data.result;
-      //getData(newDocuments);
-    };
-    fetchDocuments();
-  }, [filter]);
+
+  function temp() {
+    const temAcademicList=[...academicList]
+    temAcademicList.splice(0,1)
+    function compare1( a, b ) {
+      if ( a.label > b.label ){
+        return -1;
+      }
+      if ( a.label< b.label ){
+        return 1;
+      }
+      return 0;
+    }
+    temAcademicList.sort(compare1)
+  }
 
   // Form for filter
   const { register, handleSubmit } = useForm();
@@ -241,13 +261,14 @@ function FilterBar({ getData }) {
           setCourseList(newCourses);
           break;
       }
-    };
+    }
 
     if (api) fetchData(api);
   };
 
+  console.log("Router query: ",router.query )
   const handleMoveToTab = (path: string | UrlObject) => {
-    router.push(path,undefined,{scroll:false,shallow:true});
+    router.push(path,undefined,{scroll:false});
   };
  
   return (
@@ -316,40 +337,7 @@ function FilterBar({ getData }) {
           </div>
         </form>
       </div>
-
-       <hr className="mt-5 mb-10" />
-
-      {/*<div className="flex justify-between items-center flex-wrap px-24">
-        <div className="flex items-center mb-2 sm:mb-0">
-
-            <div
-              className="mr-2"
-              onClick={() => {
-                handleMoveToTab("/search");
-              }}
-            >
-              <Button type="button" value="Tài Liệu" />
-            </div>
-
-
-            <div
-              className="mr-2"
-              onClick={() => {
-                handleMoveToTab("/search/review");
-              }}
-            >
-              <Button type="button" value="Review"  />
-            </div>
-
-        </div>
-        <div>
-          <select className="block w-52 text-gray-700 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500">
-             <option value="Năm Học">Năm Học</option>
-             <option value="Giảng Viên">Giảng Viên</option>
-          </select>
-         </div>
-            </div> */}
-
+      <hr className="mt-5 mb-10" />
       <hr className="mt-5 mb-10" /> 
     </div>
   );
