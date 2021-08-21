@@ -3,13 +3,18 @@ import LayoutClass from "components/layout/layoutClass";
 import React, { useEffect, useState } from "react";
 import Sidebar from "components/class/Sidebar/Sidebar";
 import Title from "components/class/Title/Title";
-import NewClassAPI from "api/NewClassAPI";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
+import GroupAPI from "api/groupAPI";
 
 export const getServerSideProps: GetServerSideProps = async (params) => {
   const temp = params.params.slug.toString();
-  const res = await NewClassAPI.getGroup(temp);
+  const res = await GroupAPI.getGroup(temp);
+
+  params.res.setHeader(
+    "Cache-control",
+    "public, s-maxage=10, stale-while-revalidate=59"
+  );
 
   return {
     props: {
@@ -18,6 +23,26 @@ export const getServerSideProps: GetServerSideProps = async (params) => {
     },
   };
 };
+
+// export const getStaticPaths: GetStaticPaths = async () => {
+//   const res = await GroupAPI.getGroups();
+//   const paths = res.data.data.result.map((path) => ({
+//     params: { slug: path.slug },
+//   }));
+//   return { paths: paths, fallback: "blocking" };
+// };
+
+// export const getStaticProps: GetStaticProps = async (params) => {
+//   const temp = params.params.slug.toString();
+//   const res = await GroupAPI.getGroup(temp);
+//   return {
+//     props: {
+//       status: res.data.status,
+//       data: res.data.data,
+//       revalidate: 10,
+//     },
+//   };
+// };
 
 type propApi = {
   status: string;
@@ -53,7 +78,6 @@ type propApi = {
 
 const Item = function (props: propApi) {
   const initProps = props.data;
-  console.log(props.data);
 
   const initTitle = {
     academicId: {
@@ -71,7 +95,6 @@ const Item = function (props: propApi) {
     },
     updateAt: props.data.updatedAt,
   };
-  console.log(props.data);
   const router = useRouter();
   if (router.isFallback) {
     return <div>Loading...</div>;
