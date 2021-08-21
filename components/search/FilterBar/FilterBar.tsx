@@ -35,6 +35,7 @@ function FilterBar({ getData }) {
   const [courseList, setCourseList] = useState([]);
   const [academicList, setAcademicList] = useState([]);
   const [instructorsList, setInstructorsList] = useState([]);
+  const [sort,setSort]=useState([])
 
   const router = useRouter();
   const [filter,setFilter]=useState(()=>{
@@ -115,7 +116,7 @@ function FilterBar({ getData }) {
   console.log("Falcutylist:",instructorsList)
   console.log("quey:",typeof(router.query.search))
   console.log("filter",filter)
-  console.log("resources ban dau: ",resources)
+  console.log("resources ban dau: ",typeof(resources))
   const handleSubmitFilter = (values) => {  
     console.log("values:",values)
     setFilter({
@@ -158,6 +159,60 @@ function FilterBar({ getData }) {
         setReview_filtered(reviews.filter(getMatchReview)) ;
       }
     }
+    if (router.pathname ==="/search"){
+      if (filter.course=="" && filter.faculty=="" && filter.instructor=="" && filter.search=="" )
+      {
+        getData(resources)
+      }
+      if (filter.course !=="" || filter.faculty !==""||filter.instructor !=="" || filter.search !=="" || filter.academic !== "")
+      {
+        if (filter.academic ==="0")
+        {
+          const temAcademicList=[...academicList]
+          temAcademicList.splice(0,1)
+          temAcademicList.sort(function(a,b){
+            if ( a.label > b.label ){
+              return -1;
+            }
+            if ( a.label< b.label ){
+              return 1;
+            }
+            return 0;
+          })
+          const a=[]
+          const b=[]
+          console.log("flag:",temAcademicList)
+          temAcademicList.map((value)=>{
+            a.push([resources.filter(resource => {
+              return resource?.classId?.academicId?._id.indexOf(value._id)})])
+            b.push(value.label)
+            console.log("a:",a)
+          })
+          const newa = temAcademicList.map((op)=>{
+            const a ={}
+            const b=[]
+            a["label"]=op.label
+            a["value"] = ([resources.filter(resource => {
+              return resource?.classId?.academicId?._id.indexOf(op._id) > -1 })])
+            return a
+          })
+          setSort(newa)
+          console.log("newa:",newa)
+          getData(resource_filtered,sort)
+        }
+        else {getData(resource_filtered)} 
+      }
+    }
+    if (router.pathname==="/search/review"){
+      if (filter.course=="" && filter.faculty=="" && filter.instructor=="" && filter.search=="" )
+      {
+        getData(reviews)
+      }
+      if (filter.course !=="" || filter.faculty !==""||filter.instructor !=="" || filter.search !=="")
+      {
+        getData(review_filtered);
+      }
+    }
     computeFilter()
   },[filter])
   
@@ -180,59 +235,7 @@ function FilterBar({ getData }) {
   },[router.query.search,router.query.academic,router.query.faculty,router.query.course,router.query.instructor])
   console.log("resourcefilterd:",resource_filtered)
   console.log("reviewfilterd:",review_filtered)
-  if (router.pathname ==="/search"){
-    if (filter.course=="" && filter.faculty=="" && filter.instructor=="" && filter.search=="" )
-    {
-      getData(resources)
-    }
-    if (filter.course !=="" || filter.faculty !==""||filter.instructor !=="" || filter.search !=="" || filter.academic !== "")
-    {
-      if (filter.academic ==="0")
-      {
-        const temAcademicList=[...academicList]
-        temAcademicList.splice(0,1)
-        temAcademicList.sort(function(a,b){
-          if ( a.label > b.label ){
-            return -1;
-          }
-          if ( a.label< b.label ){
-            return 1;
-          }
-          return 0;
-        })
-        const a=[]
-        const b=[]
-        console.log("flag:",temAcademicList)
-        temAcademicList.map((value)=>{
-          a.push([resources.filter(resource => {
-            return resource?.classId?.academicId?._id.indexOf(value._id)})])
-          b.push(value.label)
-          console.log("a:",a)
-        })
-        const newa = temAcademicList.map((op)=>{
-          const a ={}
-          const b=[]
-          a["label"]=op.label
-          a["value"] = ([resources.filter(resource => {
-            return resource?.classId?.academicId?._id.indexOf(op._id) > -1 })])
-          return a
-        })
-        console.log("newa:",newa)
-        getData(resource_filtered,false)
-      }
-      else {getData(resource_filtered)}
-    }
-  }
-  if (router.pathname==="/search/review"){
-    if (filter.course=="" && filter.faculty=="" && filter.instructor=="" && filter.search=="" )
-    {
-      getData(reviews)
-    }
-    if (filter.course !=="" || filter.faculty !==""||filter.instructor !=="" || filter.search !=="")
-    {
-      getData(review_filtered);
-    }
-  }
+  
 
 
 
