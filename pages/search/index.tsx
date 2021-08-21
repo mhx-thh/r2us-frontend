@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import Layout from "components/search/Layout/Layout";
 import Documents from "components/search/Documents/Documents";
+import Loading from "components/search/Loading/Loading";
 interface AppProps {
   query: any;
-
 }
 
-const LoginSuccess = ({ query }: AppProps) => {
+const Resource = ({ query }: AppProps) => {
   const [documents, setDocuments] = useState([]);
   const [loading,setLoaing]=useState(true)
   const [label,setLabel]=useState([])
@@ -18,17 +18,18 @@ const LoginSuccess = ({ query }: AppProps) => {
     setData(data)
   };
   const dt=[1,2,3,4]
+  console.log("text:")
   return (
     <Layout getData={getDocuments} >
+      {documents === [] && <Loading/>}
       <Documents resource={documents} loading={loading} label={label} data={data} />
     </Layout>
   );
 };
 
-export default LoginSuccess;
-
-export async function getServerSideProps(context) {
-  return {
-    props: { token: context?.query ?? "" }, // will be passed to the page component as props
-  };
-}
+export default Resource;
+// export async function getServerSideProps(context) {
+//   return {
+//     props: {}, // will be passed to the page component as props
+//   }
+// }

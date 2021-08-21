@@ -28,26 +28,30 @@ function FilterBar({ getData }) {
   const [resources,setResources]= useState([])
   const [reviews,setReviews]= useState([])
   const [loading,setLoading]=useState(true)
+  const [onSubmit,setOnSubmit] = useState(false)
 
   const [uniList, setUniList] = useState([]);
   const [facultyList, setfacultyList] = useState([]);
   const [courseList, setCourseList] = useState([]);
   const [academicList, setAcademicList] = useState([]);
   const [instructorsList, setInstructorsList] = useState([]);
-  const [filter, setFilter] = useState({
-    search:  "",
-    academic:  "",
-    faculty:  "",
-    course:  "",
-    type: "",
-    instructor:"",
-    _limit: 10,
-    _page:  1,
-    
-  });
-  
-  const router = useRouter();
 
+  const router = useRouter();
+  const [filter,setFilter]=useState(()=>{
+    return {
+      search:  router.query.search || "",
+      academic: router.query.academic || "",
+      faculty:  router.query.faculty || "",
+      course:  router.query.course || "",
+      type: router.query.type || "",
+      instructor:router.query.instructor || "",
+      _limit: router.query._limit || 10,
+      _page:  router.query._page|| 1,
+    }
+  })
+  
+  
+  console.log("text:",filter)
   //fetch data first time
   useEffect(()=>{
     async function fetchResource() {
@@ -88,7 +92,7 @@ function FilterBar({ getData }) {
       const response= await AcademicAPI.get()
       const newAcademic = response?.data?.data?.result.map((op) => {
           const newOp = {};
-          newOp["label"] = `${op.schoolyear} / ${op.semester}`;
+          newOp["label"] = `${op.schoolyear} / học kì ${op.semester}`;
           newOp["_id"] = op._id;
           return newOp;
       });
@@ -98,7 +102,7 @@ function FilterBar({ getData }) {
       },].concat(newAcademic)
       setAcademicList(filterAcademicList)
     }
-    getData(resources,loading)
+    getData(resources)
     fetchResource()
     fetchReview()
     fetchFaculty()
@@ -109,8 +113,6 @@ function FilterBar({ getData }) {
   console.log("Falcutylist:",facultyList)
   console.log("Falcutylist:",instructorsList)
   console.log("quey:",typeof(router.query.search))
-
-
   console.log("filter",filter)
   console.log("resources ban dau: ",resources)
   const handleSubmitFilter = (values) => {  
@@ -129,49 +131,55 @@ function FilterBar({ getData }) {
     }
   };
   console.log("resourcesss: ",resources)
-  console.log("Filter:",filter)
+  
   useEffect(()=>{
-    if (router.pathname === "/search"){
-      const getMatchResource=(resource)=>{
-        return resource?.classId?.courseId?._id.indexOf(filter.course) > -1 &&
-                resource?.classId?.courseId?.facultyId?._id.indexOf(filter.faculty) > -1 &&
-                resource?.classId?.instructorId?._id.indexOf(filter.instructor) >-1 &&
-                resource?.classId?.academicId?._id.indexOf(filter.academic) >-1 &&
-                resource?.resourceName.indexOf(filter.search) > -1
+    function computeFilter(){
+      console.log("compiite:",filter)
+      if (router.pathname === "/search"){ 
+        const getMatchResource=(resource)=>{
+          return resource?.classId?.courseId?._id.indexOf(filter.course) > -1 &&
+                  resource?.classId?.courseId?.facultyId?._id.indexOf(filter.faculty) > -1 &&
+                  resource?.classId?.instructorId?._id.indexOf(filter.instructor) >-1 &&
+                  resource?.classId?.academicId?._id.indexOf(filter.academic) >-1 &&
+                  resource?.resourceName.indexOf(filter.search) > -1
+        }
+        setResource_filtered(resources.filter(getMatchResource)) ;
+        console.log("resource filter: ", resource_filtered)
       }
-      setResource_filtered(resources.filter(getMatchResource)) ;
+      if (router.pathname==="/search/review"){
+        const getMatchReview=(review)=>{
+          return review?.classId?.courseId?._id.indexOf(filter.course) > -1 &&
+                  review?.classId?.courseId?.facultyId?._id.indexOf(filter.faculty) > -1 &&
+                  review?.classId?.instructorId?._id.indexOf(filter.instructor) >-1 &&
+                  review?.classId?.academicId?._id.indexOf(filter.academic) >-1 &&
+                  review?.review.indexOf(filter.search) > -1
+        } 
+        setReview_filtered(reviews.filter(getMatchReview)) ;
+      }
     }
-    if (router.pathname==="/search/review"){
-      const getMatchReview=(review)=>{
-        return review?.classId?.courseId?._id.indexOf(filter.course) > -1 &&
-                review?.classId?.courseId?.facultyId?._id.indexOf(filter.faculty) > -1 &&
-                review?.classId?.instructorId?._id.indexOf(filter.instructor) >-1 &&
-                review?.classId?.academicId?._id.indexOf(filter.academic) >-1 &&
-                review?.review.indexOf(filter.search) > -1
-      } 
-      setReview_filtered(reviews.filter(getMatchReview)) ;
-    }
-
-  },[filter._limit,filter._page, filter.course,filter.faculty,filter.search,filter.type,filter.instructor,filter.academic,
-    router.query._limit,router.query._page, router.query.course,router.query.faculty,router.query.search,router.query.type,router.query.instructor,router.query.academic])
-  console.log("resource filter: ", resource_filtered)
+    computeFilter()
+  },[filter])
+  
   useEffect(()=>{
     function set() {
-      setFilter({
-        search:  "" + router.query.search,
-        academic:  "" + router.query.academic,
-        faculty:  "" + router.query.faculty,
-        course:  "" + router.query.course,
-        type: "" + router.query.type,
-        instructor:"" + router.query.instructor,
-        _limit: Number(router.query._limit),
-        _page:  Number(router.query._page),
+      setFilter(() => {
+        return {
+          search:  router.query.search || "",
+          academic:  router.query.academic || "",
+          faculty:  router.query.faculty || "",
+          course:  router.query.course || "",
+          type: router.query.type || "",
+          instructor: router.query.instructor || "",
+          _limit: router.query._limit || 10,
+          _page:  router.query._page || 1,
+        }
       })
     }
     set()
-  },[router.query])
+  },[router.query.search,router.query.academic,router.query.faculty,router.query.course,router.query.instructor])
   console.log("resourcefilterd:",resource_filtered)
   console.log("reviewfilterd:",review_filtered)
+  useEffect(()=>{
   if (router.pathname ==="/search"){
     if (filter.course=="" && filter.faculty=="" && filter.instructor=="" && filter.search=="" )
     {
@@ -216,21 +224,8 @@ function FilterBar({ getData }) {
       getData(review_filtered);
     }
   }
+})
 
-  function temp() {
-    const temAcademicList=[...academicList]
-    temAcademicList.splice(0,1)
-    function compare1( a, b ) {
-      if ( a.label > b.label ){
-        return -1;
-      }
-      if ( a.label< b.label ){
-        return 1;
-      }
-      return 0;
-    }
-    temAcademicList.sort(compare1)
-  }
 
   // Form for filter
   const { register, handleSubmit } = useForm();
@@ -243,7 +238,6 @@ function FilterBar({ getData }) {
     const name = e.target.name;
     const value = e.target.value;
     const api = filterListApi[name];
-
     const fetchData = async (api) => {
       let options;
       const data = await api.get(value);
@@ -262,7 +256,7 @@ function FilterBar({ getData }) {
           break;
       }
     }
-
+    setOnSubmit(!onSubmit)
     if (api) fetchData(api);
   };
 
