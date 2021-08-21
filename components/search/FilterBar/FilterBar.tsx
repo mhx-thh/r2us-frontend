@@ -218,7 +218,7 @@ function FilterBar({ getData }) {
           return a
         })
         console.log("newa:",newa)
-        getData(resource_filtered,newa)
+        getData(resource_filtered,false)
       }
       else {getData(resource_filtered)}
     }
