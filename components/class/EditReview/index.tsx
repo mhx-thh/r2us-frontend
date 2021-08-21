@@ -1,10 +1,14 @@
 import React from "react";
 import InputText from "../InputText";
 
-const EditReview = function () {
+type AppProps = {
+  ereview: any;
+};
+
+const EditReview = function ({ ereview }: AppProps) {
   return (
     <div>
-      <div className="absolute bg-indigo-200 w-full left-0 top-0 h-80 rounded-t-2xl tracking-normal">
+      <div className="absolute bg-indigo-200 w-full left-0 top-0 h-80 rounded-t-2xl tracking-normal text-base leading-6 font-medium">
         {/* Title */}
         <div className="flex px-16 mt-16 mb-8 tracking-normal">
           <svg
@@ -23,15 +27,16 @@ const EditReview = function () {
             />
           </svg>
           <div className="mx-4 text-2xl font-medium text-indigo-500 ">
-            Cảm nhận - Lý thuyết thống kê
+            Cảm nhận - {ereview.classId.courseId.courseName}
           </div>
         </div>
-        <div className="flex px-36 ml-0.5">
+        {/* Teacher */}
+        <div className="flex px-56 ml-0 m-3">
           <svg
             className="my-2"
             xmlns="http://www.w3.org/2000/svg"
-            width="17"
-            height="17"
+            width="23"
+            height="23"
             viewBox="0 0 17 17"
             fill="none"
           >
@@ -40,16 +45,15 @@ const EditReview = function () {
               fill="#6366F1"
             />
           </svg>
-          <div className="mx-8 ">
-            <InputText editable data="Tom Cook techer" multiline={false} />
+          <div className="mx-8 py-1 my-1">{ereview.classId.instructorId.instructorName}
           </div>
         </div>
         {/* course */}
-        <div className="flex px-36">
+        <div className="flex px-56 pb-3">
           <svg
             className="my-1"
             xmlns="http://www.w3.org/2000/svg"
-            width="20"
+            width="23"
             height="23"
             viewBox="0 0 20 23"
             fill="none"
@@ -59,17 +63,17 @@ const EditReview = function () {
               fill="#6366F1"
             />
           </svg>
-          <div className="mx-8">
-            <InputText editable data="Ly Thuyet Thong ke" multiline={false} />
+          <div className="mx-8 my-1">
+              {ereview.classId.courseId.courseName}
           </div>
         </div>
         {/* class */}
-        <div className="flex px-36">
+        <div className="flex px-56">
           <svg
-            className="my-1"
+            className="my-3 "
             xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="22"
+            width="23"
+            height="23"
             viewBox="0 0 18 22"
             fill="none"
           >
@@ -88,28 +92,25 @@ const EditReview = function () {
               strokeLinejoin="round"
             />
           </svg>
-          <div className="mx-9">
-            <InputText editable data="LTTK 19TTH" multiline={false} />
+          <div className="px-8 my-3 w-11/12">{ereview.classId.className}
           </div>
         </div>
         {/* Review */}
-        <div className="absolute top-72 my-3 flex mx-36 w-8/12 h-52 bg-white shadow-xl rounded-3xl z-10 text-center items-center m-auto">
-          <div className="m-auto">
-            <InputText
-              data="Tom Cook nau canh chua ma khong ngon thi lam gi, no rat la do luon a. om Cook nau canh chua ma khong ngon thi lam gi, no rat la do luon a. om Cook nau canh chua ma khong ngon thi lam gi, no luon a. Tom Cook nau canh chua ma khong ngon thi lam gi, no rat la do luon a. om Cook nau canh chua ma khong ngon thi lam gi, no rat la do luon a.  "
-              editable
-              multiline
-            />
+        <div className="absolute top-72 my-3 flex mx-36 w-8/12 h-52 bg-white shadow-xl rounded-3xl z-10 text-center items-center m-auto py-5">
+          <div className="m-auto absolute left-2 top-2 w-full">
+            <InputText data={ereview.review} editable multiline />
           </div>
         </div>
         {/* SchoolYear */}
         <div className="px-44 mt-60 bg-white text-lg leading-6 font-medium text-indigo-500">
-          <p>2020-2021, học kì 2</p>
+          {ereview.classId.academicId.schoolyear}, học kì{" "}
+          {ereview.classId.academicId.semester}
         </div>
         {/* Avatar */}
-        <div className="float-right mr-8 -mt-52">
+        <div className="float-right mr-8 -mt-52 relative top-2">
           <img
-            src="https://kynguyenlamdep.com/wp-content/uploads/2020/01/hinh-anh-dep-hoa-bo-cong-anh.jpg"
+            src={`${ereview.userId.photo}`}
+            className="rounded-full"
             width="50"
             height="50"
           />

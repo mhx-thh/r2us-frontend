@@ -1,56 +1,59 @@
-import CreateGroup from "components/class/CreateGroup/createGroup";
 import CreateResource from "components/class/CreateResource";
+import DropdownResource from "components/class/DropDown/dropdownResource";
 import PopUp from "components/class/PopUp/popup";
-import ShowResource from "components/class/ShowResource";
 import ResourceItem from "components/Resource/ResourceItem";
-import ResourceShowModal from "components/Resource/ResourceShowModal";
 import React, { useState } from "react";
 import style from "./style.module.css";
 
-type AppProps = {
-  resourceType: string;
-  resourceLink: string;
-  status: string;
-  _id: string;
-  resourceName: string;
-  userId: {
-    _id: string;
-    givenName: string;
-    familyName: string;
-    photo: string;
-  };
-  classId: {
-    className: string;
-    _id: string;
-    instructorId: {
-      _id: string;
-      instructorName: string;
-      id: string;
-    };
-    academicId: {
-      schoolyear: string;
-      semester: number;
-    };
-    courseId: {
-      courseName: string;
-      _id: string;
-      facultyId: {
-        facultyName: string;
-        _id: string;
-      };
-    };
-  };
-  createdAt: string;
-  updatedAt: string;
-  slug: string;
-  __v: number;
-  id: string;
-};
+// type AppProps = {
+//   resourceType: string;
+//   resourceLink: string;
+//   status: string;
+//   _id: string;
+//   resourceName: string;
+//   userId: {
+//     _id: string;
+//     givenName: string;
+//     familyName: string;
+//     photo: string;
+//   };
+//   classId: {
+//     className: string;
+//     _id: string;
+//     instructorId: {
+//       _id: string;
+//       instructorName: string;
+//       id: string;
+//     };
+//     academicId: {
+//       schoolyear: string;
+//       semester: number;
+//     };
+//     courseId: {
+//       courseName: string;
+//       _id: string;
+//       facultyId: {
+//         facultyName: string;
+//         _id: string;
+//       };
+//     };
+//   };
+//   createdAt: string;
+//   updatedAt: string;
+//   slug: string;
+//   __v: number;
+//   id: string;
+// };
 
-const Document = function (document: AppProps) {
+const Document = function (document: any) {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  console.log(document.document);
   return (
     <div className={style.document}>
-      <button className={style.document__button}>
+      <button className={style.document__button} onClick={handleOpen}>
         <svg
           width="15"
           height="4"
@@ -66,6 +69,11 @@ const Document = function (document: AppProps) {
       </button>
       <div className={style.document__document}>
         <ResourceItem aresource={document.document} />
+      </div>
+      <div className="absolute">
+        {open === true && (
+          <DropdownResource close={setOpen} data={document.document} />
+        )}
       </div>
     </div>
   );

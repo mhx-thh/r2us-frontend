@@ -1,52 +1,54 @@
-import PopUp from "components/class/PopUp/popup";
-import ShowReview from "components/class/ShowReview";
+import DropdownReview from "components/class/DropDown/dropdownReview";
 import ReviewItem from "components/Review/ReviewItem";
-import ReviewShowModal from "components/Review/ReviewShowModal";
 import React, { useState } from "react";
 import style from "./style.module.css";
 
-type AppProps = {
-  reviewType: string;
-  reviewTitle: string;
-  review: string;
-  _id: string;
-  userId: {
-    _id: string;
-    givenName: string;
-    familyName: string;
-    photo: string;
-  };
-  classId: {
-    className: string;
-    _id: string;
-    courseId: {
-      courseName: string;
-      _id: string;
-      facultyId: {
-        facultyName: string;
-        _id: string;
-      };
-    };
-    academicId: {
-      schoolyear: string;
-      semester: number;
-    };
-    instructorId: {
-      _id: string;
-      instructorName: string;
-      id: string;
-    };
-  };
-  createdAt: string;
-  updatedAt: string;
-  description: string;
-  __v: number;
-};
+// type AppProps = {
+//   reviewType: string;
+//   reviewTitle: string;
+//   review: string;
+//   _id: string;
+//   userId: {
+//     _id: string;
+//     givenName: string;
+//     familyName: string;
+//     photo: string;
+//   };
+//   classId: {
+//     className: string;
+//     _id: string;
+//     courseId: {
+//       courseName: string;
+//       _id: string;
+//       facultyId: {
+//         facultyName: string;
+//         _id: string;
+//       };
+//     };
+//     academicId: {
+//       schoolyear: string;
+//       semester: number;
+//     };
+//     instructorId: {
+//       _id: string;
+//       instructorName: string;
+//       id: string;
+//     };
+//   };
+//   createdAt: string;
+//   updatedAt: string;
+//   description: string;
+//   __v: number;
+// };
 
-const Review = function (data: AppProps) {
+const Review = function (data: any) {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
   return (
     <div className={style.document}>
-      <button className={style.document__button}>
+      <button className={style.document__button} onClick={handleOpen}>
         <svg
           width="15"
           height="4"
@@ -62,6 +64,9 @@ const Review = function (data: AppProps) {
       </button>
       <div className={style.document__document}>
         <ReviewItem areview={data.data} />
+      </div>
+      <div className="absolute">
+        {open === true && <DropdownReview close={setOpen} data={data.data} />}
       </div>
     </div>
   );

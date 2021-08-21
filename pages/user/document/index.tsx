@@ -30,7 +30,7 @@ const User = function (props) {
 
   const router = useRouter();
   const path = router.asPath;
-  const title = `${user.familyName} ${user.givenName} | R2us`;
+  const title = `R2us | ${user.familyName} ${user.givenName}`;
   return (
     <MetaLayout title={title} desc="User" icon="icons/logo.svg">
       <UserHeader user={user} />

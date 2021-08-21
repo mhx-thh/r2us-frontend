@@ -30,7 +30,7 @@ function InputText(props: {
             disabled={!!!isActive}
             value={data}
             onChange={isActive ? handleChange : undefined}
-            rows={7}
+            rows={8}
           />
         ) : (
           <input

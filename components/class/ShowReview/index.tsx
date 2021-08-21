@@ -1,54 +1,6 @@
 import React from "react";
 
-type AppProps = {
-  reviewType: string;
-  reviewTitle: string;
-  review: string;
-  _id: string;
-  userId: {
-    _id: string;
-    givenName: string;
-    familyName: string;
-    photo: string;
-  };
-  classId: {
-    className: string;
-    _id: string;
-    courseId: {
-      courseName: string;
-      _id: string;
-      facultyId: {
-        facultyName: string;
-        _id: string;
-      };
-    };
-    academicId: {
-      schoolyear: string;
-      semester: number;
-    };
-    instructorId: {
-      _id: string;
-      instructorName: string;
-      id: string;
-    };
-  };
-  createdAt: string;
-  updatedAt: string;
-  description: string;
-  __v: number;
-};
-
-type Api = {
-  data: {
-    data: {
-      review: AppProps;
-    };
-  };
-};
-
-const ShowReview = function (initData: Api) {
-  console.log(initData.data.data);
-  const Data = initData.data.data;
+const ShowReview = function (initData: any) {
   return (
     <div className="absolute bg-indigo-200 w-full left-0 top-0 h-80 rounded-t-2xl tracking-normal">
       {/* Title */}
@@ -69,7 +21,7 @@ const ShowReview = function (initData: Api) {
           />
         </svg>
         <div className="mx-4 text-2xl font-medium text-indigo-500 ">
-          Cảm nhận - {Data.classId.courseId.courseName}
+          Cảm nhận - {initData.classId.courseId.courseName}
         </div>
       </div>
       {/* Teacher */}
@@ -88,7 +40,7 @@ const ShowReview = function (initData: Api) {
           />
         </svg>
         <div className="mx-8 my-1 ">
-          {Data.classId.instructorId.instructorName}
+          {initData.classId.instructorId.instructorName}
         </div>
       </div>
       {/* course */}
@@ -107,7 +59,7 @@ const ShowReview = function (initData: Api) {
           />
         </svg>
         <div className="mx-8 text-base leading-6 font-medium">
-          {Data.classId.className}
+          {initData.classId.className}
         </div>
       </div>
       {/* class */}
@@ -136,7 +88,7 @@ const ShowReview = function (initData: Api) {
           />
         </svg>
         <div className="mx-9 text-base leading-6 font-medium w-11/12">
-          {Data.classId.courseId.courseName}
+          {initData.classId.courseId.courseName}
         </div>
         <div className="">
           <svg
@@ -155,19 +107,19 @@ const ShowReview = function (initData: Api) {
       </div>
       {/* Review */}
       <div className="absolute top-72 my-3 flex mx-36 w-8/12 h-52 bg-white shadow-xl rounded-3xl z-10 text-center">
-        <div className="m-3 overflow-auto">{Data.review}</div>
+        <div className="m-3 overflow-auto">{initData.review}</div>
       </div>
       {/* SchoolYear */}
       <div className="px-44 mt-64 bg-white text-lg leading-6 font-medium text-indigo-500">
         <p>
-          {Data.classId.academicId.schoolyear} - học kì{" "}
-          {Data.classId.academicId.semester}
+          {initData.classId.academicId.schoolyear} - học kì{" "}
+          {initData.classId.academicId.semester}
         </p>
       </div>
       {/* Avatar */}
       <div className="float-right mr-8 -mt-52">
         <img
-          src={`${Data.userId.photo}`}
+          src={`${initData.userId.photo}`}
           width="50"
           className="rounded-3xl border-2 border-blue-600 border-solid"
         />

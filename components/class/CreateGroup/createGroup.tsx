@@ -1,6 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 
-const CreateGroup = function () {
+const CreateGroup = function ({ data }: any) {
+  console.log(data.data.falcuty.result);
+  console.log(data.data.course.result);
+  console.log(data.data.teacher.data.result);
+  const [faculty, setFaculty] = useState();
+  const [course, setCourse] = useState();
+  const handleFaculty = (e) => {
+    setFaculty(e.target.value);
+  };
+  const handleCourse = (e) => {
+    setCourse(e.target.value);
+  };
   return (
     <div className="absolute bg-indigo-200 w-full h-28 left-0 top-0 rounded-t-2xl">
       {/* Title */}
@@ -96,8 +107,11 @@ const CreateGroup = function () {
         </svg>
         <select className="px-2 m-2 bg-indigo-50 w-96 rounded-2xl h-8 border border-solid border-indigo-500">
           <option value="">Chọn năm học</option>
-          <option value="2021">2021-2022</option>
-          <option value="2022">2022-2023</option>
+          {data.data.schoolyear.result.map((val, key) => (
+            <option value={val.schoolyear} key={key}>
+              {val.schoolyear}
+            </option>
+          ))}
         </select>
         <svg
           className="m-3"
@@ -147,10 +161,16 @@ const CreateGroup = function () {
             fill="#6366F1"
           />
         </svg>
-        <select className="px-2 m-2 bg-indigo-50 w-96 rounded-2xl h-8 border border-solid border-indigo-500">
+        <select
+          className="px-2 m-2 bg-indigo-50 w-96 rounded-2xl h-8 border border-solid border-indigo-500"
+          onChange={handleFaculty}
+        >
           <option value="">Chọn khoa</option>
-          <option value="cntt">Công nghệ thông tin</option>
-          <option value="sh">Sinh học</option>
+          {data.data.falcuty.result.map((val, key) => (
+            <option value={val.facultyName} key={key}>
+              {val.facultyName}
+            </option>
+          ))}
         </select>
         <svg
           className="m-3"
@@ -200,10 +220,20 @@ const CreateGroup = function () {
             fill="#6366F1"
           />
         </svg>
-        <select className="px-2 m-2 bg-indigo-50 w-96 rounded-2xl h-8 border border-solid border-indigo-500">
+        <select
+          className="px-2 m-2 bg-indigo-50 w-96 rounded-2xl h-8 border border-solid border-indigo-500"
+          onChange={handleCourse}
+        >
           <option value="">Chọn môn</option>
-          <option value="nmlt">Nhập môn lập trình</option>
-          <option value="ktlt">Kỹ thuật lập trình</option>
+          {data.data.course.result.map((val, key) =>
+            faculty === val.facultyId.facultyName ? (
+              <option value={val._id} key={key}>
+                {val.courseName}
+              </option>
+            ) : (
+              <div></div>
+            )
+          )}
         </select>
         <svg
           className="m-3"
@@ -239,7 +269,7 @@ const CreateGroup = function () {
         </svg>
       </div>
       {/* Teacher */}
-      <div className="flex pl-48 top-0 mb-4">
+      <div className="flex pl-48 top-0 mb-4 active:border-none">
         <svg
           className="m-3"
           width="23"
@@ -255,8 +285,17 @@ const CreateGroup = function () {
         </svg>
         <select className="px-2 m-2 bg-indigo-50 w-96 rounded-2xl h-8 border border-solid border-indigo-500">
           <option value="">Chọn giáo viên</option>
-          <option value="nmlt">Trương Toàn Thịnh</option>
-          <option value="ktlt">Nguyễn Lê Hoàng Dũng</option>
+          {data.data.teacher.data.result.map((val, key) =>
+            val.courseId.map((id) =>
+              id === course ? (
+                <option value={val.id} key={key}>
+                  {val.instructorName}
+                </option>
+              ) : (
+                <div></div>
+              )
+            )
+          )}
         </select>
         <svg
           className="m-3"
@@ -420,7 +459,6 @@ const CreateGroup = function () {
         </svg>
       </div>
     </div>
-    
   );
 };
 

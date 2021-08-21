@@ -144,11 +144,13 @@ function ResourceShowModal({ sresource }: AppProps) {
         {sresource.classId.academicId.semester}
       </div>
       {/* Description */}
-      <div className="ml-44 -mt-16 my-3 flex mx-36 w-7/12 h-40">
-        <div className="m-3 overflow-auto"></div>
+      <div className="ml-40 px-1 -mt-16 my-3 flex mx-36 w-7/12 h-40">
+        <div className="mx-3 overflow-auto ">
+          {sresource.resourceDescription}
+        </div>
       </div>
       {/* Avatar */}
-      <div className="float-right mr-8 -mt-60">
+      <div className="float-right mr-8 -mt-60 relative -top-1">
         <img
           src={`${sresource.userId.photo}`}
           width="50"

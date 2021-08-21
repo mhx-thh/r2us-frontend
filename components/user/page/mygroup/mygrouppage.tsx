@@ -149,13 +149,12 @@ const Group = function () {
   );
 };
 
-const GroupPage = function () {
+const GroupPage = function (data: any) {
   const [isCreated, setIsCreated] = useState(false);
   const handleClick = function () {
     setIsCreated(!isCreated);
   };
   const user = "admin";
-
   return (
     <div className={style.page}>
       <div>
@@ -199,7 +198,7 @@ const GroupPage = function () {
         </div>
         {isCreated && (
           <PopUp closepopup={setIsCreated}>
-            <CreateGroup />
+            <CreateGroup data={data} />
           </PopUp>
         )}
       </div>

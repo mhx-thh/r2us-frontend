@@ -58,7 +58,7 @@
     box-sizing: border-box;
     width: 500px;
     border-radius: 8px;
-    padding: 10px;
+    padding-left: 6px;
     padding-right: 0px;
     align-items: flex-end;
     resize: none;
@@ -69,7 +69,7 @@
     box-sizing: border-box;
     border-radius: 8px;
     width: 500px;
-    padding: 10px;
+    padding-left: 6px;
     justify-items: end;
     align-items: flex-end;
     padding-right: 0px;

@@ -115,7 +115,7 @@ function ReviewShowModal({ sreview }: AppProps) {
         {sreview.classId.academicId.semester}
       </div>
       {/* Avatar */}
-      <div className="float-right mr-8 -mt-52 pt-1">
+      <div className="float-right mr-8 -mt-52">
         <img
           src={`${sreview.userId.photo}`}
           width="50"
