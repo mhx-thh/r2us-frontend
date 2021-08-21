@@ -76,6 +76,7 @@ function FilterBar({ getData }) {
             newOp["_id"] = op._id;
             return newOp;
           });
+          console.log("typeof:",typeof(newFaculties))
         setfacultyList(newFaculties);
     }
     async function fetchInstructors() {
@@ -166,7 +167,7 @@ function FilterBar({ getData }) {
         return {
           search:  router.query.search || "",
           academic:  router.query.academic || "",
-          faculty:  router.query.faculty || "",
+          faculty:  router.query.faculty || "", 
           course:  router.query.course || "",
           type: router.query.type || "",
           instructor: router.query.instructor || "",
@@ -179,7 +180,6 @@ function FilterBar({ getData }) {
   },[router.query.search,router.query.academic,router.query.faculty,router.query.course,router.query.instructor])
   console.log("resourcefilterd:",resource_filtered)
   console.log("reviewfilterd:",review_filtered)
-  useEffect(()=>{
   if (router.pathname ==="/search"){
     if (filter.course=="" && filter.faculty=="" && filter.instructor=="" && filter.search=="" )
     {
@@ -202,14 +202,23 @@ function FilterBar({ getData }) {
         })
         const a=[]
         const b=[]
+        console.log("flag:",temAcademicList)
         temAcademicList.map((value)=>{
-          a.push([resources.filter(resource => 
-            resource?.classId?.academicId?._id.indexOf(value._id))])
+          a.push([resources.filter(resource => {
+            return resource?.classId?.academicId?._id.indexOf(value._id)})])
           b.push(value.label)
+          console.log("a:",a)
         })
-        console.log("a:",a)
-        console.log("b:",b)
-        // getData(resource_filtered,false,b,a)
+        const newa = temAcademicList.map((op)=>{
+          const a ={}
+          const b=[]
+          a["label"]=op.label
+          a["value"] = ([resources.filter(resource => {
+            return resource?.classId?.academicId?._id.indexOf(op._id) > -1 })])
+          return a
+        })
+        console.log("newa:",newa)
+        getData(resource_filtered,newa)
       }
       else {getData(resource_filtered)}
     }
@@ -224,7 +233,7 @@ function FilterBar({ getData }) {
       getData(review_filtered);
     }
   }
-})
+
 
 
   // Form for filter

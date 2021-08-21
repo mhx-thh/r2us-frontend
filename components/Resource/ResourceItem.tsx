@@ -35,7 +35,7 @@ function ResourceItem({ aresource }: AppProps) {
             />
           </svg>
           <p className="ml-2.5 text-sm leading-7 font-normal">
-            {aresource?.classId.instructorId.instructorName}
+            {aresource?.classId?.instructorId?.instructorName}
           </p>
         </div>
         <div className="flex items-center">
@@ -52,7 +52,7 @@ function ResourceItem({ aresource }: AppProps) {
             />
           </svg>
           <p className="ml-2.5 text-sm leading-7 font-normal">
-            {aresource?.classId.courseId.courseName}
+            {aresource?.classId?.courseId?.courseName}
           </p>
         </div>
         <div className="flex items-center text-top">
@@ -80,7 +80,7 @@ function ResourceItem({ aresource }: AppProps) {
           </svg>
 
           <p className="ml-2.5 text-sm md:leading-5 font-normal text-top">
-            {aresource?.classId.className}
+            {aresource?.classId?.className}
           </p>
         </div>
       </div>

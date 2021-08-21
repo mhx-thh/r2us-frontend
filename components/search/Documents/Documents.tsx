@@ -5,12 +5,9 @@ import Pagination from "../Pagination/Pagination";
 
 type TypeDoc = {
   resource: any;
-  loading: boolean;
-  label:any;
-  data:any;
 }
 
-function Documents({resource,loading,label,data}:TypeDoc) {
+function Documents({resource}:TypeDoc) {
   console.log("props:" ,resource)
   // const { documents, loading } = data;
   // console.log(documents)
@@ -41,12 +38,6 @@ function Documents({resource,loading,label,data}:TypeDoc) {
   const handlePageChange = (new_page) => {
     console.log(new_page);
   }; 
-  if (loading == true) { 
-    return (
-      <Loading />
-    )
-  }
-  else {
   return (
     <div>
       {/* { label !== [] &&
@@ -63,7 +54,6 @@ function Documents({resource,loading,label,data}:TypeDoc) {
           </div>
         })
       } */}
-      <p className=" px-24  text-base leading-6 font-semibold"> {label} </p>
       <div className="grid lg:grid-cols-4 gap-12 md:grid-cols-3 sm:grid-cols-2 px-24 py-10">
         {resource.map((data,index)=>{
           return(
@@ -74,7 +64,6 @@ function Documents({resource,loading,label,data}:TypeDoc) {
       <Pagination pagination={pagination} onPageChange={handlePageChange} />
     </div>
   );
-  }
 }
   
 export default Documents;

@@ -6,12 +6,9 @@ import ReviewItem from "components/Review/ReviewItem";
 
 type TypeDoc = {
   review: any;
-  loading:boolean;
-  label:any;
-  data:any;
 }
 
-function Reviews({review,loading,label,data}:TypeDoc) {
+function Reviews({review}:TypeDoc) {
   console.log("props:" ,review)
   // const { Reviews, loading } = data;
   // console.log(documents)
