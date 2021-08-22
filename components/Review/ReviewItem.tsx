@@ -44,7 +44,7 @@ function ReviewItem({ areview }: AppProps) {
         </svg>
 
         <p className="ml-2.5 text-sm leading-5 font-normal">
-          {areview?.classId.className}
+          {areview?.classId?.className}
         </p>
       </div>
       <div className="flex items-center justify-end -mt-0">
