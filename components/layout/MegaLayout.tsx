@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { useAppDispatch } from "redux/hooks";
 import { getInfoAsync } from "redux/userSlice";
 import { checkIsAdminAsync } from "redux/adminSlice";
+import Footer from "components/footer/FooterComponent";
 
 interface Props {
   title: string;

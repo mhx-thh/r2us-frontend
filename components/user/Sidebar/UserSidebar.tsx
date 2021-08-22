@@ -24,7 +24,7 @@ function Sidebar(props: { param: string }) {
     },
     {
       Title: "Nhóm lớp của tôi",
-      Link: "/user/myclass",
+      Link: "/user/mygroup",
     },
   ];
 
