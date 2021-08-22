@@ -1,4 +1,6 @@
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
+import SelectOption from "../SelectOption/SelectOption";
 
 type typeInputText = {
   register: any;
@@ -8,15 +10,36 @@ type typeInputText = {
 
 function InputText(props: typeInputText) {
   const { register, name, placeholder } = props;
-
+  const list= [
+    {  label: "Tài liệu" },
+    {  label: "Cảm nhận" },
+    {  label: "Lớp học" },
+  ] 
+  const [searchType,setSearchType]=useState("")
+  const router=useRouter();
+  const handleChange=(e)=>{
+    console.log("list:" ,list[e.target.value].label)
+    if (list[e.target.value].label === "Tài liệu")
+      {
+        router.push("/search",undefined,{scroll:false,shallow:true});
+      }
+    if (list[e.target.value].label === "Cảm nhận")
+    {
+      router.push("/search/review",undefined,{scroll:false,shallow:true});
+    }
+    if (list[e.target.value].label === "Lớp học")
+      {
+        router.push("/search/class",undefined,{scroll:false,shallow:true});
+      }
+  }
   return (
     <div className="w-full flex justify-center">
-      <div className="w-2/5 relative">
+      <div className="w-2/5 relative  focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent ">
         <input
           {...register(name)}
           type="text"
           id="search"
-          className="rounded-full border-transparent w-full appearance-none border border-gray-300 py-4 pl-16 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+          className="rounded-full  shadow-xl border-transparent w-full appearance-none border border-gray-300 py-4 pl-16 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
           placeholder={placeholder}
         />
 
@@ -35,6 +58,24 @@ function InputText(props: typeInputText) {
               />
             </svg>
           </label>
+        </div>
+
+        <div className="absolute top-2 right-4 ">
+          <select
+          placeholder="..."
+          // {...register(name)}
+          className="block text-gray-700 py-2 px-3 border  border-l-2 border-r-0 border-b-0 border-t-0 border-gray-300 bg-white text-lg leading-7  focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+          name={name}
+          onChange={handleChange}
+          >
+            {list.map((value,idx)=>{
+              return(
+              <option key={idx} value={idx} className="">
+                {value.label}
+              </option>
+              )
+            })}
+          </select>
         </div>
       </div>
     </div>

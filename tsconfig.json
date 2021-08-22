@@ -30,7 +30,7 @@
         "next-env.d.ts",
         "**/*.ts",
         "**/*.tsx",
-        "app/*.js", "components/layout/MegaLayout.tsx", "pages/api/user/userApi.js",
+        "app/*.js",
     ],
     "exclude": [
         "node_modules"
