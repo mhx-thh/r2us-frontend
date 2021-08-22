@@ -109,6 +109,10 @@ function ResourceItem({ aresource }: AppProps) {
               strokeLinejoin="round"
             />
           </svg>
+
+          <p className="ml-2.5 text-sm md:leading-5 font-normal text-top">
+            {aresource?.classId?.className}
+          </p>
         </div>
       </div>
       <div>

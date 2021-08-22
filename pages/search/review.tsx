@@ -1,15 +1,20 @@
+import ReviewItem from "components/Review/ReviewItem";
 import Layout from "components/search/Layout/Layout";
-import React from "react";
+import Reviews from "components/search/Reviews/reviews";
+import React, { useState } from "react";
 
 function review(props) {
-  const getReviews = (value) => {
-    console.log(value);
+  const [review,setReview]=useState([])
+  const [data,setData]=useState([])
+  const getReviews = (value,label,data) => {
+    setReview(value);
+    setData(data)
   };
 
   return (
     <div>
       <Layout getData={getReviews}>
-        <h1>Review here</h1>
+        <Reviews review={review}  />
       </Layout>
     </div>
   );
