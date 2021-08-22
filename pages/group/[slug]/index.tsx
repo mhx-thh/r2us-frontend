@@ -14,10 +14,10 @@ export const getServerSideProps: GetServerSideProps = async (params) => {
   const temp = params.params.slug.toString();
   const res = await GroupAPI.getGroup(temp);
 
-  params.res.setHeader(
-    "Cache-control",
-    "public, s-maxage=10, stale-while-revalidate=59"
-  );
+  // params.res.setHeader(
+  //   "Cache-control",
+  //   "public, s-maxage=10, stale-while-revalidate=59"
+  // );
 
   return {
     props: {
