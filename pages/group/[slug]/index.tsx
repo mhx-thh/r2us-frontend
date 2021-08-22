@@ -7,6 +7,9 @@ import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import GroupAPI from "api/groupAPI";
 
+import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { groupsReceived, groupAdded } from "redux/groupSlice";
+
 export const getServerSideProps: GetServerSideProps = async (params) => {
   const temp = params.params.slug.toString();
   const res = await GroupAPI.getGroup(temp);
