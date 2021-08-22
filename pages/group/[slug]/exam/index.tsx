@@ -14,7 +14,7 @@ export const getServerSideProps: GetServerSideProps = async (params) => {
 
   params.res.setHeader(
     "Cache-control",
-    "public, s-maxage=10, stale-while-revalidate=59"
+    "public, s-maxage=10, stale-while-revalidate=10"
   );
 
   return {
