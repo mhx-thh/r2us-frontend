@@ -154,7 +154,7 @@ const InformationPage = function (data: classInfo) {
             <TitleField name="Năm học" data={data.data.academicId.schoolyear} />
           </div>
 
-          {/* Môn học */}
+          {/* Khoa */}
           <div className={style.title__input}>
             <div className={style.title__image}>
               <svg
@@ -170,10 +170,13 @@ const InformationPage = function (data: classInfo) {
                 />
               </svg>
             </div>
-            <TitleField name="Môn học" data={data.data.courseId.courseName} />
+            <TitleField
+              name="Môn học"
+              data={data.data.courseId.facultyId.facultyName}
+            />
           </div>
 
-          {/* Nhóm học */}
+          {/* Môn học */}
           <div className={style.title__input}>
             <div className={style.title__image}>
               <svg
@@ -189,7 +192,7 @@ const InformationPage = function (data: classInfo) {
                 />
               </svg>
             </div>
-            <TitleField name="Nhóm học" data={data.data.className} />
+            <TitleField name="Nhóm học" data={data.data.courseId.courseName} />
           </div>
 
           {/* Giáo viên */}

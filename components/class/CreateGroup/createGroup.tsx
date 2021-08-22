@@ -1,30 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 
-const CreateGroup = function () {
+const CreateGroup = function ({ data }: any) {
+  console.log(data.data.falcuty.result);
+  console.log(data.data.course.result);
+  console.log(data.data.teacher.data.result);
+  const [faculty, setFaculty] = useState();
+  const [course, setCourse] = useState();
+  const handleFaculty = (e) => {
+    setFaculty(e.target.value);
+  };
+  const handleCourse = (e) => {
+    setCourse(e.target.value);
+  };
   return (
-    <div className="absolute bg-indigo-100 w-full h-28 left-0 top-0 rounded-t-xl active:border-none">
+    <div className="absolute bg-indigo-200 w-full h-28 left-0 top-0 rounded-t-2xl">
       {/* Title */}
-      <div className="flex px-32 py-10 ">
+      <div className="flex px-32 py-10">
         <svg
-          width="38"
-          height="45"
-          viewBox="0 0 38 45"
-          fill="none"
+          className="my-1"
           xmlns="http://www.w3.org/2000/svg"
+          width="38"
+          height="39"
+          viewBox="0 0 38 39"
+          fill="none"
         >
-          <g clipPath="url(#clip0)">
-            <path
-              d="M36.4167 3.75H1.58333C1.16341 3.75 0.76068 3.94754 0.463748 4.29917C0.166815 4.65081 0 5.12772 0 5.625L0 39.375C0 39.8723 0.166815 40.3492 0.463748 40.7008C0.76068 41.0525 1.16341 41.25 1.58333 41.25H36.4167C36.8366 41.25 37.2393 41.0525 37.5363 40.7008C37.8332 40.3492 38 39.8723 38 39.375V5.625C38 5.12772 37.8332 4.65081 37.5363 4.29917C37.2393 3.94754 36.8366 3.75 36.4167 3.75ZM34.8333 37.5H31.6667V35.625H23.75V37.5H3.16667V7.5H34.8333V37.5ZM16.2925 18.2063C16.2925 17.3559 16.5778 16.5404 17.0855 15.9391C17.5933 15.3378 18.2819 15 19 15C20.5042 15 21.7075 16.4438 21.7075 18.2063C21.7075 19.9875 20.5042 21.4313 19 21.4313C17.4958 21.4313 16.2925 19.9875 16.2925 18.2063ZM9.04083 21.1688C9.04083 19.8375 9.95917 18.75 11.0833 18.75C11.625 18.75 12.1446 19.0048 12.5276 19.4584C12.9106 19.912 13.1258 20.5273 13.1258 21.1688C13.1258 22.5 12.2075 23.5688 11.0833 23.5688C9.95917 23.5688 9.04083 22.5 9.04083 21.1688ZM24.8742 21.1688C24.8742 20.5273 25.0894 19.912 25.4724 19.4584C25.8554 19.0048 26.375 18.75 26.9167 18.75C27.4584 18.75 27.9779 19.0048 28.3609 19.4584C28.744 19.912 28.9592 20.5273 28.9592 21.1688C28.9592 22.5 28.0408 23.5688 26.9167 23.5688C25.7925 23.5688 24.8742 22.5 24.8742 21.1688ZM31.6667 28.3875V30H6.33333V28.3875C6.33333 26.625 8.7875 25.1813 11.0833 25.1813C11.9542 25.1813 12.8408 25.3875 13.6167 25.7438C14.8042 24.45 16.9417 23.5688 19 23.5688C21.0583 23.5688 23.1958 24.45 24.3833 25.7438C25.1592 25.3875 26.0458 25.1813 26.9167 25.1813C29.2125 25.1813 31.6667 26.625 31.6667 28.3875Z"
-              fill="#6366F1"
-            />
-          </g>
-          <defs>
-            <clipPath id="clip0">
-              <rect width="38" height="45" fill="white" />
-            </clipPath>
-          </defs>
+          <path
+            d="M36.4167 0.75H1.58333C1.16341 0.75 0.76068 0.947544 0.463748 1.29917C0.166815 1.65081 0 2.12772 0 2.625L0 36.375C0 36.8723 0.166815 37.3492 0.463748 37.7008C0.76068 38.0525 1.16341 38.25 1.58333 38.25H36.4167C36.8366 38.25 37.2393 38.0525 37.5363 37.7008C37.8332 37.3492 38 36.8723 38 36.375V2.625C38 2.12772 37.8332 1.65081 37.5363 1.29917C37.2393 0.947544 36.8366 0.75 36.4167 0.75ZM34.8333 34.5H31.6667V32.625H23.75V34.5H3.16667V4.5H34.8333V34.5ZM16.2925 15.2063C16.2925 14.3559 16.5778 13.5404 17.0855 12.9391C17.5933 12.3378 18.2819 12 19 12C20.5042 12 21.7075 13.4438 21.7075 15.2063C21.7075 16.9875 20.5042 18.4313 19 18.4313C17.4958 18.4313 16.2925 16.9875 16.2925 15.2063ZM9.04083 18.1688C9.04083 16.8375 9.95917 15.75 11.0833 15.75C11.625 15.75 12.1446 16.0048 12.5276 16.4584C12.9106 16.912 13.1258 17.5273 13.1258 18.1688C13.1258 19.5 12.2075 20.5688 11.0833 20.5688C9.95917 20.5688 9.04083 19.5 9.04083 18.1688ZM24.8742 18.1688C24.8742 17.5273 25.0894 16.912 25.4724 16.4584C25.8554 16.0048 26.375 15.75 26.9167 15.75C27.4584 15.75 27.9779 16.0048 28.3609 16.4584C28.744 16.912 28.9592 17.5273 28.9592 18.1688C28.9592 19.5 28.0408 20.5688 26.9167 20.5688C25.7925 20.5688 24.8742 19.5 24.8742 18.1688ZM31.6667 25.3875V27H6.33333V25.3875C6.33333 23.625 8.7875 22.1813 11.0833 22.1813C11.9542 22.1813 12.8408 22.3875 13.6167 22.7438C14.8042 21.45 16.9417 20.5688 19 20.5688C21.0583 20.5688 23.1958 21.45 24.3833 22.7438C25.1592 22.3875 26.0458 22.1813 26.9167 22.1813C29.2125 22.1813 31.6667 23.625 31.6667 25.3875Z"
+            fill="#6366F1"
+          />
         </svg>
-        <h1 className="p-2 mx-4 text-2xl leading-9 font-medium text-indigo-500 tracking-normal">
+
+        <h1 className="p-2 mx-4  text-2xl leading-9 font-medium text-indigo-500 tracking-normal">
           Tạo nhóm
         </h1>
       </div>
@@ -101,8 +107,11 @@ const CreateGroup = function () {
         </svg>
         <select className="px-2 m-2 bg-indigo-50 w-96 rounded-2xl h-8 border border-solid border-indigo-500">
           <option value="">Chọn năm học</option>
-          <option value="2021">2021-2022</option>
-          <option value="2022">2022-2023</option>
+          {data.data.schoolyear.result.map((val, key) => (
+            <option value={val.schoolyear} key={key}>
+              {val.schoolyear}
+            </option>
+          ))}
         </select>
         <svg
           className="m-3"
@@ -152,10 +161,16 @@ const CreateGroup = function () {
             fill="#6366F1"
           />
         </svg>
-        <select className="px-2 m-2 bg-indigo-50 w-96 rounded-2xl h-8 border border-solid border-indigo-500">
+        <select
+          className="px-2 m-2 bg-indigo-50 w-96 rounded-2xl h-8 border border-solid border-indigo-500"
+          onChange={handleFaculty}
+        >
           <option value="">Chọn khoa</option>
-          <option value="cntt">Công nghệ thông tin</option>
-          <option value="sh">Sinh học</option>
+          {data.data.falcuty.result.map((val, key) => (
+            <option value={val.facultyName} key={key}>
+              {val.facultyName}
+            </option>
+          ))}
         </select>
         <svg
           className="m-3"
@@ -205,10 +220,20 @@ const CreateGroup = function () {
             fill="#6366F1"
           />
         </svg>
-        <select className="px-2 m-2 bg-indigo-50 w-96 rounded-2xl h-8 border border-solid border-indigo-500">
+        <select
+          className="px-2 m-2 bg-indigo-50 w-96 rounded-2xl h-8 border border-solid border-indigo-500"
+          onChange={handleCourse}
+        >
           <option value="">Chọn môn</option>
-          <option value="nmlt">Nhập môn lập trình</option>
-          <option value="ktlt">Kỹ thuật lập trình</option>
+          {data.data.course.result.map((val, key) =>
+            faculty === val.facultyId.facultyName ? (
+              <option value={val._id} key={key}>
+                {val.courseName}
+              </option>
+            ) : (
+              <div></div>
+            )
+          )}
         </select>
         <svg
           className="m-3"
@@ -244,7 +269,7 @@ const CreateGroup = function () {
         </svg>
       </div>
       {/* Teacher */}
-      <div className="flex pl-48 top-0 mb-4">
+      <div className="flex pl-48 top-0 mb-4 active:border-none">
         <svg
           className="m-3"
           width="23"
@@ -260,8 +285,17 @@ const CreateGroup = function () {
         </svg>
         <select className="px-2 m-2 bg-indigo-50 w-96 rounded-2xl h-8 border border-solid border-indigo-500">
           <option value="">Chọn giáo viên</option>
-          <option value="nmlt">Trương Toàn Thịnh</option>
-          <option value="ktlt">Nguyễn Lê Hoàng Dũng</option>
+          {data.data.teacher.data.result.map((val, key) =>
+            val.courseId.map((id) =>
+              id === course ? (
+                <option value={val.id} key={key}>
+                  {val.instructorName}
+                </option>
+              ) : (
+                <div></div>
+              )
+            )
+          )}
         </select>
         <svg
           className="m-3"

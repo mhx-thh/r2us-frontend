@@ -1,6 +1,6 @@
 import React from "react";
 
-const CreateResource = function () {
+const CreateReview = function () {
   return (
     <div>
       <div className="absolute bg-indigo-100 w-8/12 h-full top-0 left-0 rounded-l-2xl">
@@ -352,4 +352,4 @@ const CreateResource = function () {
   );
 };
 
-export default CreateResource;
+export default CreateReview;

@@ -1,23 +1,51 @@
-import LayoutClass from "components/layout/layoutClass";
-import React, { useEffect, useState } from "react";
+import GroupAPI from "api/groupAPI";
+import DocumentPage from "components/class/page/documentpage/documentpage";
 import Sidebar from "components/class/Sidebar/Sidebar";
 import Title from "components/class/Title/Title";
-import NewClassAPI from "api/NewClassAPI";
-import { GetServerSideProps } from "next";
+import LayoutClass from "components/layout/layoutClass";
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
-import DocumentPage from "components/class/page/documentpage/documentpage";
+import React from "react";
 
 export const getServerSideProps: GetServerSideProps = async (params) => {
   const temp = params.params.slug.toString();
-  const res = await NewClassAPI.getGroup(temp);
+  const res = await GroupAPI.getGroup(temp);
+  const moreRes = await GroupAPI.getResources();
+
+  params.res.setHeader(
+    "Cache-control",
+    "public, s-maxage=10, stale-while-revalidate=59"
+  );
 
   return {
     props: {
       status: res.data.status,
       data: res.data.data,
+      document: moreRes.data.data,
     },
   };
 };
+
+// export const getStaticPaths: GetStaticPaths = async () => {
+//   const res = await GroupAPI.getGroups();
+//   const paths = res.data.data.result.map((path) => ({
+//     params: { slug: path.slug },
+//   }));
+//   return { paths: paths, fallback: "blocking" };
+// };
+
+// export const getStaticProps: GetStaticProps = async (params) => {
+//   const temp = params.params.slug.toString();
+//   const res = await GroupAPI.getGroup(temp);
+//   const moreRes = await GroupAPI.getResources();
+//   return {
+//     props: {
+//       status: res.data.status,
+//       data: res.data.data,
+//       document: moreRes.data.data,
+//     },
+//   };
+// };
 
 type classType = {
   className: string;
@@ -51,6 +79,7 @@ type classType = {
 type propApi = {
   status: string;
   data: classType;
+  document: any;
 };
 
 const Item = function (props: propApi) {
@@ -62,16 +91,20 @@ const Item = function (props: propApi) {
     },
     courseId: {
       courseName: initProps.courseId.courseName,
+      facultyId: {
+        facultyName: initProps.courseId.facultyId.facultyName,
+      },
     },
     className: initProps.className,
     instructorId: {
       instructorName: initProps.instructorId.instructorName,
     },
+    updateAt: initProps.updatedAt,
   };
 
   const router = useRouter();
   const path = router.asPath;
-  const title = `R2US - ${initProps.className}`;
+  const title = `R2us | ${initProps.className}`;
   if (router.isFallback) {
     return <div>Loading...</div>;
   } else {
@@ -80,7 +113,7 @@ const Item = function (props: propApi) {
         <Title data={initTitle} />
         <Sidebar param={path} id={initProps.slug} />
         <hr></hr>
-        <DocumentPage />
+        <DocumentPage document={props.document} />
       </LayoutClass>
     );
   }

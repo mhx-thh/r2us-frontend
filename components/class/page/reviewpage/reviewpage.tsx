@@ -1,19 +1,54 @@
-import NewClassAPI from "api/NewClassAPI";
-import ResourceItem from "components/Resource/ResourceItem";
+import DropdownReview from "components/class/DropDown/dropdownReview";
 import ReviewItem from "components/Review/ReviewItem";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import style from "./style.module.css";
 
-type documentinfo = {
-  name: string;
-  src: string;
-  description: string;
-};
+// type AppProps = {
+//   reviewType: string;
+//   reviewTitle: string;
+//   review: string;
+//   _id: string;
+//   userId: {
+//     _id: string;
+//     givenName: string;
+//     familyName: string;
+//     photo: string;
+//   };
+//   classId: {
+//     className: string;
+//     _id: string;
+//     courseId: {
+//       courseName: string;
+//       _id: string;
+//       facultyId: {
+//         facultyName: string;
+//         _id: string;
+//       };
+//     };
+//     academicId: {
+//       schoolyear: string;
+//       semester: number;
+//     };
+//     instructorId: {
+//       _id: string;
+//       instructorName: string;
+//       id: string;
+//     };
+//   };
+//   createdAt: string;
+//   updatedAt: string;
+//   description: string;
+//   __v: number;
+// };
 
-const Review = function () {
+const Review = function (data: any) {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
   return (
     <div className={style.document}>
-      <button className={style.document__button}>
+      <button className={style.document__button} onClick={handleOpen}>
         <svg
           width="15"
           height="4"
@@ -28,19 +63,16 @@ const Review = function () {
         </svg>
       </button>
       <div className={style.document__document}>
-        <ReviewItem areview={{}} />
+        <ReviewItem areview={data.data} />
+      </div>
+      <div className="absolute">
+        {open === true && <DropdownReview close={setOpen} data={data.data} />}
       </div>
     </div>
   );
 };
 
-const ReviewPage = function () {
-  const [data, setData] = useState({
-    name: "A",
-    src: "B",
-    description: "C",
-  });
-
+const ReviewPage = function (data: any) {
   const [addDoc, setAddDoc] = useState(0);
   const ClickpopupDoc = () => {
     setAddDoc(1);
@@ -48,26 +80,27 @@ const ReviewPage = function () {
   const user = "admin";
 
   const [newClass, setNewClass] = useState([]);
-
   return (
     <div className={style.page}>
       <div>
         {/* "Chia sẻ tài liệu button" */}
         <div className={style.buttonarea}>
           <button className={style.button}>
-            <div className={style.button__text}>Chia sẻ tài liệu</div>
+            <div className={style.button__text}>Chia sẻ cảm nhận</div>
             <div className={style.button__image}>
               <svg
-                width="27"
-                height="23"
-                viewBox="0 0 27 23"
+                width="28"
+                height="28"
+                viewBox="0 0 28 28"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M2.60714 0.5H24.8929L26.75 2.35714V20.9286L24.8929 22.7857H2.60714L0.75 20.9286V2.35714L2.60714 0.5ZM2.60714 20.9286H24.8929V2.35714H2.60714V20.9286ZM23.0357 4.21429H4.46429V9.78572H23.0357V4.21429ZM21.1786 7.92857H6.32143V6.07143H21.1786V7.92857ZM15.6071 19.0714H23.0357V11.6429H15.6071V19.0714ZM17.4643 13.5H21.1786V17.2143H17.4643V13.5ZM11.8929 11.6429H4.46429V13.5H11.8929V11.6429ZM4.46429 17.2143H11.8929V19.0714H4.46429V17.2143Z"
+                  d="M8.16699 8.16675H19.8337V10.5001H8.16699V8.16675ZM8.16699 12.8334H16.3337V15.1667H8.16699V12.8334Z"
+                  fill="#6366F1"
+                />
+                <path
+                  d="M23.333 2.33325H4.66634C3.37951 2.33325 2.33301 3.37975 2.33301 4.66659V25.6666L8.55484 20.9999H23.333C24.6198 20.9999 25.6663 19.9534 25.6663 18.6666V4.66659C25.6663 3.37975 24.6198 2.33325 23.333 2.33325ZM23.333 18.6666H7.77784L4.66634 20.9999V4.66659H23.333V18.6666Z"
                   fill="#6366F1"
                 />
               </svg>
@@ -77,15 +110,10 @@ const ReviewPage = function () {
 
         {/* Document */}
         <div className={style.documentsection}>
-          <Review />
-          <Review />
-          <Review />
-          <Review />
-          <Review />
-          <Review />
-          <Review />
+          {data.data.result.map((data) => (
+            <Review key={data._id} data={data} />
+          ))}
         </div>
-
         {/* Request */}
         <div className={style.prebox}>
           <div className={style.box}>
@@ -95,13 +123,13 @@ const ReviewPage = function () {
 
         {/* Request document */}
         <div className={style.documentsection}>
+          {/* <Review />
           <Review />
           <Review />
           <Review />
           <Review />
           <Review />
-          <Review />
-          <Review />
+          <Review /> */}
         </div>
       </div>
     </div>

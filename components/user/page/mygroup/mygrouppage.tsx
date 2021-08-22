@@ -1,4 +1,6 @@
 import NewClassAPI from "api/NewClassAPI";
+import CreateGroup from "components/class/CreateGroup/createGroup";
+import PopUp from "components/class/PopUp/popup";
 import ResourceItem from "components/Resource/ResourceItem";
 import React, { useEffect, useState } from "react";
 import style from "./style.module.css";
@@ -147,42 +149,38 @@ const Group = function () {
   );
 };
 
-const GroupPage = function () {
-  const [data, setData] = useState({
-    name: "A",
-    src: "B",
-    description: "C",
-  });
-
-  const [addDoc, setAddDoc] = useState(0);
-  const ClickpopupDoc = () => {
-    setAddDoc(1);
+const GroupPage = function (data: any) {
+  const [isCreated, setIsCreated] = useState(false);
+  const handleClick = function () {
+    setIsCreated(!isCreated);
   };
   const user = "admin";
-
-  const [newClass, setNewClass] = useState([]);
-
   return (
     <div className={style.page}>
       <div>
         {/* "Chia sẻ tài liệu button" */}
         <div className={style.buttonarea}>
-          <button className={style.button}>
-            <div className={style.button__text}>Chia sẻ tài liệu</div>
+          <button className={style.button} onClick={handleClick}>
+            <div className={style.button__text}>Tạo nhóm</div>
             <div className={style.button__image}>
               <svg
-                width="27"
-                height="23"
-                viewBox="0 0 27 23"
+                width="30"
+                height="36"
+                viewBox="0 0 30 36"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M2.60714 0.5H24.8929L26.75 2.35714V20.9286L24.8929 22.7857H2.60714L0.75 20.9286V2.35714L2.60714 0.5ZM2.60714 20.9286H24.8929V2.35714H2.60714V20.9286ZM23.0357 4.21429H4.46429V9.78572H23.0357V4.21429ZM21.1786 7.92857H6.32143V6.07143H21.1786V7.92857ZM15.6071 19.0714H23.0357V11.6429H15.6071V19.0714ZM17.4643 13.5H21.1786V17.2143H17.4643V13.5ZM11.8929 11.6429H4.46429V13.5H11.8929V11.6429ZM4.46429 17.2143H11.8929V19.0714H4.46429V17.2143Z"
-                  fill="#6366F1"
-                />
+                <g clipPath="url(#clip0)">
+                  <path
+                    d="M28.75 2.96051H1.25C0.918479 2.96051 0.600537 3.11647 0.366117 3.39407C0.131696 3.67167 0 4.04818 0 4.44077L0 31.0855C0 31.4781 0.131696 31.8546 0.366117 32.1322C0.600537 32.4098 0.918479 32.5658 1.25 32.5658H28.75C29.0815 32.5658 29.3995 32.4098 29.6339 32.1322C29.8683 31.8546 30 31.4781 30 31.0855V4.44077C30 4.04818 29.8683 3.67167 29.6339 3.39407C29.3995 3.11647 29.0815 2.96051 28.75 2.96051ZM27.5 29.6053H25V28.125H18.75V29.6053H2.5V5.92104H27.5V29.6053ZM12.8625 14.3733C12.8625 13.702 13.0877 13.0582 13.4886 12.5835C13.8894 12.1088 14.4331 11.8421 15 11.8421C16.1875 11.8421 17.1375 12.9819 17.1375 14.3733C17.1375 15.7796 16.1875 16.9194 15 16.9194C13.8125 16.9194 12.8625 15.7796 12.8625 14.3733ZM7.1375 16.7122C7.1375 15.6612 7.8625 14.8026 8.75 14.8026C9.17766 14.8026 9.58781 15.0038 9.89021 15.3619C10.1926 15.72 10.3625 16.2057 10.3625 16.7122C10.3625 17.7631 9.6375 18.6069 8.75 18.6069C7.8625 18.6069 7.1375 17.7631 7.1375 16.7122ZM19.6375 16.7122C19.6375 16.2057 19.8074 15.72 20.1098 15.3619C20.4122 15.0038 20.8223 14.8026 21.25 14.8026C21.6777 14.8026 22.0878 15.0038 22.3902 15.3619C22.6926 15.72 22.8625 16.2057 22.8625 16.7122C22.8625 17.7631 22.1375 18.6069 21.25 18.6069C20.3625 18.6069 19.6375 17.7631 19.6375 16.7122ZM25 22.4112V23.6842H5V22.4112C5 21.0197 6.9375 19.8799 8.75 19.8799C9.4375 19.8799 10.1375 20.0427 10.75 20.324C11.6875 19.3026 13.375 18.6069 15 18.6069C16.625 18.6069 18.3125 19.3026 19.25 20.324C19.8625 20.0427 20.5625 19.8799 21.25 19.8799C23.0625 19.8799 25 21.0197 25 22.4112Z"
+                    fill="#6366F1"
+                  />
+                </g>
+                <defs>
+                  <clipPath id="clip0">
+                    <rect width="30" height="35.5263" fill="white" />
+                  </clipPath>
+                </defs>
               </svg>
             </div>
           </button>
@@ -198,6 +196,11 @@ const GroupPage = function () {
           <Group />
           <Group />
         </div>
+        {isCreated && (
+          <PopUp closepopup={setIsCreated}>
+            <CreateGroup data={data} />
+          </PopUp>
+        )}
       </div>
     </div>
   );

@@ -1,18 +1,59 @@
-import NewClassAPI from "api/NewClassAPI";
+import CreateResource from "components/class/CreateResource";
+import DropdownResource from "components/class/DropDown/dropdownResource";
+import PopUp from "components/class/PopUp/popup";
 import ResourceItem from "components/Resource/ResourceItem";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import style from "./style.module.css";
 
-type documentinfo = {
-  name: string;
-  src: string;
-  description: string;
-};
+// type AppProps = {
+//   resourceType: string;
+//   resourceLink: string;
+//   status: string;
+//   _id: string;
+//   resourceName: string;
+//   userId: {
+//     _id: string;
+//     givenName: string;
+//     familyName: string;
+//     photo: string;
+//   };
+//   classId: {
+//     className: string;
+//     _id: string;
+//     instructorId: {
+//       _id: string;
+//       instructorName: string;
+//       id: string;
+//     };
+//     academicId: {
+//       schoolyear: string;
+//       semester: number;
+//     };
+//     courseId: {
+//       courseName: string;
+//       _id: string;
+//       facultyId: {
+//         facultyName: string;
+//         _id: string;
+//       };
+//     };
+//   };
+//   createdAt: string;
+//   updatedAt: string;
+//   slug: string;
+//   __v: number;
+//   id: string;
+// };
 
-const Document = function () {
+const Document = function (document: any) {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  console.log(document.document);
   return (
     <div className={style.document}>
-      <button className={style.document__button}>
+      <button className={style.document__button} onClick={handleOpen}>
         <svg
           width="15"
           height="4"
@@ -27,19 +68,18 @@ const Document = function () {
         </svg>
       </button>
       <div className={style.document__document}>
-        <ResourceItem aresource={{}} />
+        <ResourceItem aresource={document.document} />
+      </div>
+      <div className="absolute">
+        {open === true && (
+          <DropdownResource close={setOpen} data={document.document} />
+        )}
       </div>
     </div>
   );
 };
 
-const DocumentPage = function () {
-  const [data, setData] = useState({
-    name: "A",
-    src: "B",
-    description: "C",
-  });
-
+const DocumentPage = function (document: any) {
   const [addDoc, setAddDoc] = useState(0);
   const ClickpopupDoc = () => {
     setAddDoc(1);
@@ -47,13 +87,16 @@ const DocumentPage = function () {
   const user = "admin";
 
   const [newClass, setNewClass] = useState([]);
-
+  const [create, setCreate] = useState(false);
+  const handleClick = () => {
+    setCreate(true);
+  };
   return (
     <div className={style.page}>
       <div>
         {/* "Chia sẻ tài liệu button" */}
         <div className={style.buttonarea}>
-          <button className={style.button}>
+          <button className={style.button} onClick={handleClick}>
             <div className={style.button__text}>Chia sẻ tài liệu</div>
             <div className={style.button__image}>
               <svg
@@ -73,16 +116,16 @@ const DocumentPage = function () {
             </div>
           </button>
         </div>
-
+        {create === true && (
+          <PopUp closepopup={setCreate}>
+            <CreateResource />
+          </PopUp>
+        )}
         {/* Document */}
         <div className={style.documentsection}>
-          <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document />
+          {document.document.result.map((data) => (
+            <Document key={data.resourceName} document={data} />
+          ))}
         </div>
 
         {/* Request */}
@@ -93,15 +136,7 @@ const DocumentPage = function () {
         </div>
 
         {/* Request document */}
-        <div className={style.documentsection}>
-          <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document />
-        </div>
+        <div className={style.documentsection}>{/* <Document /> */}</div>
       </div>
     </div>
   );
