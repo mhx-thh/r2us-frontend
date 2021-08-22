@@ -10,7 +10,6 @@ import queryString from "query-string";
 import GroupAPI from "api/groupAPI";
 import Documents from "../Documents/Documents";
 import LoginSuccess from "pages/search";
-import { route } from "next/dist/next-server/server/router";
 import Link from "next/link";
 import { UrlObject } from "url";
 import InstructorAPI from "api/instructorApi";
