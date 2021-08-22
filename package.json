@@ -3,8 +3,8 @@
     "version": "1.0.0",
     "main": "index.js",
     "license": "MIT",
-    "scripts": {
-        "dev": "next dev",
+    "scripts": {            
+        "dev": "next dev",      
         "build": "next build",
         "start": "next start",
         "lint": "eslint '*/**/**/*.{js,ts,tsx}' --quiet --fix",
