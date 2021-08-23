@@ -12,6 +12,12 @@ export const getServerSideProps: GetServerSideProps = async (params) => {
   const temp = params.params.slug.toString();
   const res = await NewClassAPI.getGroup(temp);
   const moreRes = await GroupAPI.getResources();
+
+  params.res.setHeader(
+    "Cache-control",
+    "public, s-maxage=10, stale-while-revalidate=10"
+  );
+
   return {
     props: {
       status: res.data.status,

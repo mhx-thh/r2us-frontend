@@ -1,4 +1,6 @@
 import NewClassAPI from "api/NewClassAPI";
+import CreateResource from "components/class/CreateResource";
+import PopUp from "components/class/PopUp/popup";
 import ResourceItem from "components/Resource/ResourceItem";
 import React, { useEffect, useState } from "react";
 import style from "./style.module.css";
@@ -34,12 +36,17 @@ const DocumentPage = function () {
 
   const [newClass, setNewClass] = useState([]);
 
+  const [create, setCreate] = useState(false);
+  const handleClick = () => {
+    setCreate(true);
+  };
+
   return (
     <div className={style.page}>
       <div>
         {/* "Chia sẻ tài liệu button" */}
         <div className={style.buttonarea}>
-          <button className={style.button}>
+          <button className={style.button} onClick={handleClick}>
             <div className={style.button__text}>Chia sẻ tài liệu</div>
             <div className={style.button__image}>
               <svg
@@ -59,6 +66,12 @@ const DocumentPage = function () {
             </div>
           </button>
         </div>
+
+        {create === true && (
+          <PopUp closepopup={setCreate}>
+            <CreateResource />
+          </PopUp>
+        )}
 
         {/* Document */}
         <div className={style.documentsection}>
