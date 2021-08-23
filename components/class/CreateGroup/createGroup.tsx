@@ -1,17 +1,100 @@
+import AcademicAPI from "api/academicApi";
+import GroupAPI from "api/groupAPI";
 import React, { useState } from "react";
+import { useAppSelector } from "redux/hooks";
+import { selectToken } from "redux/userSlice";
+
+type Api = {
+  academicId: string;
+  courseId: string;
+  instructorId: string;
+  className: string;
+};
 
 const CreateGroup = function ({ data }: any) {
-  console.log(data.data.falcuty.result);
-  console.log(data.data.course.result);
-  console.log(data.data.teacher.data.result);
-  const [faculty, setFaculty] = useState();
-  const [course, setCourse] = useState();
-  const handleFaculty = (e) => {
-    setFaculty(e.target.value);
+  const token = useAppSelector(selectToken);
+  const [nameGroup, setNameGroup] = useState("");
+  const [facultyId, setFacultyId] = useState("");
+  const [courseId, setCourseId] = useState("");
+  const [create, setCreate] = useState<Api>({
+    academicId: "",
+    courseId: "",
+    instructorId: "",
+    className: "",
+  });
+
+  const handleAcademicId = (e) => {
+    setCreate({
+      ...create,
+      academicId: e.target.value,
+      courseId: "",
+      instructorId: "",
+    });
   };
-  const handleCourse = (e) => {
-    setCourse(e.target.value);
+
+  const handleFacultyId = (e) => {
+    setFacultyId(e.target.value);
+    setCourseId("");
+    setCreate({
+      ...create,
+      courseId: "",
+      instructorId: "",
+    });
   };
+
+  const handleInstructor = (e) => {
+    setCreate({
+      ...create,
+      instructorId: e.target.value,
+    });
+  };
+
+  const handleCourseId = (e) => {
+    setCourseId(e.target.value);
+    setCreate({
+      ...create,
+      courseId: e.target.value,
+      instructorId: "",
+    });
+  };
+
+  const handleClassName = (e) => {
+    setNameGroup(e.target.value);
+    setCreate({
+      ...create,
+      className: e.target.value,
+    });
+  };
+
+  const handleReset = () => {
+    setFacultyId("");
+    setCourseId("");
+    setNameGroup("");
+    setCreate({
+      ...create,
+      courseId: "",
+      instructorId: "",
+      className: "",
+    });
+  };
+
+  const handleRecommend = (e) => {
+    setNameGroup(e.target.value);
+    setCreate({
+      ...create,
+      className: e.target.value,
+    });
+  };
+
+  const handleSend = () => {
+    console.log(create);
+    create.academicId !== "" &&
+      create.className !== "" &&
+      create.courseId !== "" &&
+      create.instructorId !== "" &&
+      GroupAPI.postClass(create, token);
+  };
+
   return (
     <div className="absolute bg-indigo-200 w-full h-28 left-0 top-0 rounded-t-2xl">
       {/* Title */}
@@ -30,14 +113,14 @@ const CreateGroup = function ({ data }: any) {
           />
         </svg>
 
-        <h1 className="p-2 mx-4  text-2xl leading-9 font-medium text-indigo-500 tracking-normal">
+        <h1 className="p-1 mx-4  text-3xl leading-9 font-medium text-indigo-500 tracking-normal">
           Tạo nhóm
         </h1>
       </div>
       {/* SchoolYear */}
-      <div className="flex pl-48 top-0 mb-4 ">
+      <div className="flex pl-48 mb-4">
         <svg
-          className="m-3"
+          className="m-3 mt-4"
           width="23"
           height="24"
           viewBox="0 0 18 18"
@@ -105,16 +188,19 @@ const CreateGroup = function ({ data }: any) {
             fill="#6366F1"
           />
         </svg>
-        <select className="px-2 m-2 bg-indigo-50 w-96 rounded-2xl h-8 border border-solid border-indigo-500">
+        <select
+          className="px-2 m-2 bg-indigo-50 w-96 rounded-2xl h-10 border border-solid border-indigo-500"
+          onChange={handleAcademicId}
+        >
           <option value="">Chọn năm học</option>
           {data.data.schoolyear.result.map((val, key) => (
-            <option value={val.schoolyear} key={key}>
-              {val.schoolyear}
+            <option value={val._id} key={key}>
+              {val.schoolyear} - học kì {val.semester}
             </option>
           ))}
         </select>
         <svg
-          className="m-3"
+          className="m-3 mt-4"
           width="26"
           height="26"
           viewBox="0 0 26 26"
@@ -149,7 +235,7 @@ const CreateGroup = function ({ data }: any) {
       {/* Faculty */}
       <div className="flex pl-48 top-0 mb-4">
         <svg
-          className="m-3"
+          className="m-3 mt-4"
           width="23"
           height="24"
           viewBox="0 0 23 24"
@@ -162,18 +248,18 @@ const CreateGroup = function ({ data }: any) {
           />
         </svg>
         <select
-          className="px-2 m-2 bg-indigo-50 w-96 rounded-2xl h-8 border border-solid border-indigo-500"
-          onChange={handleFaculty}
+          className="px-2 m-2 bg-indigo-50 w-96 rounded-2xl h-10 border border-solid border-indigo-500"
+          onChange={handleFacultyId}
         >
           <option value="">Chọn khoa</option>
           {data.data.falcuty.result.map((val, key) => (
-            <option value={val.facultyName} key={key}>
+            <option value={val._id} key={key}>
               {val.facultyName}
             </option>
           ))}
         </select>
         <svg
-          className="m-3"
+          className="m-3 mt-4"
           width="26"
           height="26"
           viewBox="0 0 26 26"
@@ -208,7 +294,7 @@ const CreateGroup = function ({ data }: any) {
       {/* Course */}
       <div className="flex pl-48 top-0 mb-4">
         <svg
-          className="m-3"
+          className="m-3 mt-4"
           width="23"
           height="24"
           viewBox="0 0 16 18"
@@ -221,12 +307,12 @@ const CreateGroup = function ({ data }: any) {
           />
         </svg>
         <select
-          className="px-2 m-2 bg-indigo-50 w-96 rounded-2xl h-8 border border-solid border-indigo-500"
-          onChange={handleCourse}
+          className="px-2 m-2 bg-indigo-50 w-96 rounded-2xl h-10 border border-solid border-indigo-500"
+          onChange={handleCourseId}
         >
           <option value="">Chọn môn</option>
           {data.data.course.result.map((val, key) =>
-            faculty === val.facultyId.facultyName ? (
+            facultyId === val.facultyId._id ? (
               <option value={val._id} key={key}>
                 {val.courseName}
               </option>
@@ -236,7 +322,7 @@ const CreateGroup = function ({ data }: any) {
           )}
         </select>
         <svg
-          className="m-3"
+          className="m-3 mt-4"
           width="26"
           height="26"
           viewBox="0 0 26 26"
@@ -271,7 +357,7 @@ const CreateGroup = function ({ data }: any) {
       {/* Teacher */}
       <div className="flex pl-48 top-0 mb-4 active:border-none">
         <svg
-          className="m-3"
+          className="m-3 mt-4"
           width="23"
           height="24"
           viewBox="0 0 17 17"
@@ -283,11 +369,14 @@ const CreateGroup = function ({ data }: any) {
             fill="#6366F1"
           />
         </svg>
-        <select className="px-2 m-2 bg-indigo-50 w-96 rounded-2xl h-8 border border-solid border-indigo-500">
+        <select
+          className="px-2 m-2 bg-indigo-50 w-96 rounded-2xl h-10 border border-solid border-indigo-500"
+          onChange={handleInstructor}
+        >
           <option value="">Chọn giáo viên</option>
           {data.data.teacher.data.result.map((val, key) =>
             val.courseId.map((id) =>
-              id === course ? (
+              id === courseId ? (
                 <option value={val.id} key={key}>
                   {val.instructorName}
                 </option>
@@ -298,7 +387,7 @@ const CreateGroup = function ({ data }: any) {
           )}
         </select>
         <svg
-          className="m-3"
+          className="m-3 mt-4"
           width="23"
           height="24"
           viewBox="0 0 23 24"
@@ -330,11 +419,11 @@ const CreateGroup = function ({ data }: any) {
           />
         </svg>
       </div>
-      {/* NameGroup    */}
+      {/* className    */}
       <div className="flex pl-48 top-0 mb-4">
         <div className="flex">
           <svg
-            className="m-3"
+            className="m-3 mt-4"
             width="23"
             height="24"
             viewBox="0 0 24 24"
@@ -348,11 +437,13 @@ const CreateGroup = function ({ data }: any) {
           </svg>
 
           <input
-            className="px-2 m-2 bg-indigo-50 w-96 rounded-2xl h-8 border border-solid border-indigo-500"
+            className="px-2 m-2 bg-indigo-50 w-96 rounded-2xl h-10 border border-solid border-indigo-500"
             placeholder="Nhập tên nhóm"
+            onChange={handleClassName}
+            value={nameGroup}
           />
           <svg
-            className="m-3"
+            className="m-3 mt-4 "
             width="26"
             height="26"
             viewBox="0 0 26 26"
@@ -389,74 +480,79 @@ const CreateGroup = function ({ data }: any) {
         <p className="pl-48 pr-8 text-base leading-6 font-semibold tracking-normal">
           Gợi ý:{" "}
         </p>
-        <a
-          href="#"
+        <button
           className="text-base leading-6 font-normal tracking-normal text-indigo-500 pr-2"
+          onClick={handleRecommend}
+          value={"Kỹ thuật lập trình - 20/3"}
         >
-          Kỹ thuật lập trình -20/3,
-        </a>
-        <a
-          href="#"
+          Kỹ thuật lập trình - 20/3,
+        </button>
+        <button
+          onClick={handleRecommend}
           className="text-base leading-6 font-normal tracking-normal text-indigo-500 pr-2"
+          value={"YCPM - 18/2"}
         >
           {" "}
           YCPM - 18/2
-        </a>
+        </button>
       </div>
-      <div className="flex m-3 pl-64 pt-10 ">
-        <svg
-          className="mx-6"
-          width="125"
-          height="41"
-          viewBox="0 0 125 41"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <rect
-            x="0.5"
-            y="0.5"
-            width="124"
-            height="40"
-            rx="9.5"
-            fill="#EEF2FF"
-            stroke="#6366F1"
-          />
-          <path
-            d="M24.3636 28C28.7955 28 31.4233 25.2585 31.4233 20.7131C31.4233 16.1818 28.7955 13.4545 24.4631 13.4545H19.4347V19.5696H17.3395V21.196H19.4347V28H24.3636ZM22.0696 25.7202V21.196H24.1435V19.5696H22.0696V15.7344H24.3139C27.2685 15.7344 28.8097 17.3821 28.8097 20.7131C28.8097 24.0582 27.2685 25.7202 24.2358 25.7202H22.0696ZM36.9524 28.2202C38.6641 28.2202 39.6868 27.4176 40.1555 26.5014H40.2408V28H42.7124V20.6989C42.7124 17.8153 40.3615 16.9489 38.2805 16.9489C35.9865 16.9489 34.2251 17.9716 33.657 19.9602L36.0575 20.3011C36.3132 19.5554 37.0376 18.9162 38.2947 18.9162C39.4879 18.9162 40.1413 19.527 40.1413 20.5994V20.642C40.1413 21.3807 39.3672 21.4162 37.4425 21.6222C35.326 21.8494 33.3018 22.4815 33.3018 24.9389C33.3018 27.0838 34.8714 28.2202 36.9524 28.2202ZM39.8004 13.3409C39.7933 14.0369 39.3956 14.6548 38.3942 14.6548C37.3786 14.6548 36.995 14.0227 36.995 13.3409H35.0845C35.0774 15.0028 36.3629 16.125 38.3942 16.125C40.4396 16.125 41.7251 15.0028 41.7251 13.3409H39.8004ZM37.62 26.331C36.5476 26.331 35.7805 25.8409 35.7805 24.8963C35.7805 23.9091 36.6399 23.4972 37.7905 23.3338C38.4652 23.2415 39.8146 23.071 40.1484 22.8011V24.0866C40.1484 25.3011 39.1683 26.331 37.62 26.331ZM38.2947 31.9205C39.1115 31.9205 39.7791 31.2955 39.7791 30.5284C39.7791 29.7543 39.1115 29.1293 38.2947 29.1293C37.4709 29.1293 36.8033 29.7543 36.8033 30.5284C36.8033 31.2955 37.4709 31.9205 38.2947 31.9205ZM50.745 17.0909H48.593V14.4773H46.022V17.0909H44.4737V19.0795H46.022V25.1449C46.0078 27.1974 47.4993 28.206 49.4311 28.1491C50.1626 28.1278 50.6669 27.9858 50.9439 27.8935L50.5107 25.8835C50.3686 25.919 50.0774 25.983 49.7578 25.983C49.1115 25.983 48.593 25.7557 48.593 24.7188V19.0795H50.745V17.0909ZM60.4272 13.4545H57.8562V28H60.4272V13.4545ZM66.2102 28.2202C67.9219 28.2202 68.9446 27.4176 69.4134 26.5014H69.4986V28H71.9702V20.6989C71.9702 17.8153 69.6193 16.9489 67.5384 16.9489C65.2443 16.9489 63.483 17.9716 62.9148 19.9602L65.3153 20.3011C65.571 19.5554 66.2955 18.9162 67.5526 18.9162C68.7457 18.9162 69.3991 19.527 69.3991 20.5994V20.642C69.3991 21.3807 68.625 21.4162 66.7003 21.6222C64.5838 21.8494 62.5597 22.4815 62.5597 24.9389C62.5597 27.0838 64.1293 28.2202 66.2102 28.2202ZM66.8778 26.331C65.8054 26.331 65.0384 25.8409 65.0384 24.8963C65.0384 23.9091 65.8977 23.4972 67.0483 23.3338C67.723 23.2415 69.0724 23.071 69.4062 22.8011V24.0866C69.4062 25.3011 68.4261 26.331 66.8778 26.331ZM67.5526 31.9205C68.3693 31.9205 69.0369 31.2955 69.0369 30.5284C69.0369 29.7543 68.3693 29.1293 67.5526 29.1293C66.7287 29.1293 66.0611 29.7543 66.0611 30.5284C66.0611 31.2955 66.7287 31.9205 67.5526 31.9205ZM74.5554 28H77.1264V17.0909H74.5554V28ZM75.848 15.5426C76.6648 15.5426 77.3324 14.9176 77.3324 14.1506C77.3324 13.3764 76.6648 12.7514 75.848 12.7514C75.0241 12.7514 74.3565 13.3764 74.3565 14.1506C74.3565 14.9176 75.0241 15.5426 75.848 15.5426Z"
-            fill="#6366F1"
-          />
-          <path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="M97.5008 23.294L102.679 28.596C103.199 29.132 103.537 29.1375 104.066 28.596L105.105 27.532C105.614 27.011 105.648 26.669 105.105 26.1125L99.6223 20.5L105.105 14.8875C105.619 14.36 105.629 14.004 105.105 13.4675L104.066 12.404C103.527 11.852 103.194 11.8775 102.68 12.404L97.5008 17.706L92.3223 12.4045C91.8078 11.878 91.4748 11.8525 90.9358 12.4045L89.8968 13.468C89.3728 14.0045 89.3823 14.3605 89.8968 14.888L95.3793 20.5L89.8968 26.1125C89.3533 26.669 89.3823 27.011 89.8968 27.532L90.9353 28.596C91.4598 29.1375 91.7978 29.132 92.3218 28.596L97.5008 23.294Z"
-            fill="#6366F1"
-          />
-        </svg>
-        <svg
-          width="125"
-          height="41"
-          viewBox="0 0 125 41"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <rect
-            x="0.5"
-            y="0.5"
-            width="124"
-            height="40"
-            rx="9.5"
-            fill="#EEF2FF"
-            stroke="#6366F1"
-          />
-          <path
-            d="M42.179 18.0994H44.8636C44.4162 15.2443 41.9446 13.2557 38.7273 13.2557C34.9205 13.2557 32.0653 16.054 32.0653 20.7415C32.0653 25.3438 34.7926 28.1989 38.8054 28.1989C42.4062 28.1989 44.9844 25.8835 44.9844 22.1335V20.3864H39.0824V22.446H42.4347C42.392 24.5199 41.0071 25.8338 38.8196 25.8338C36.3835 25.8338 34.7145 24.0085 34.7145 20.7131C34.7145 17.4389 36.4119 15.6207 38.7628 15.6207C40.517 15.6207 41.7102 16.5582 42.179 18.0994ZM58.3846 16.5298C58.3775 17.8935 58.2567 18.6179 56.9854 18.7884V17.0909H54.4144V23.4119C54.4144 25.0739 53.2283 25.8977 52.092 25.8977C50.8562 25.8977 50.0323 25.0241 50.0323 23.6392V17.0909H47.4613V24.0369C47.4613 26.6577 48.9528 28.142 51.0977 28.142C52.7312 28.142 53.8817 27.2827 54.3789 26.0611H54.4925V28H56.9854V20.0881C59.3008 19.9034 60.0323 18.696 60.0394 16.5298H58.3846ZM53.2283 15.5568V14.9034C53.9883 14.7898 54.734 14.3849 54.7269 13.483C54.734 12.304 53.4982 11.5795 51.1545 11.5795L51.0906 12.8509C51.9144 12.8509 52.5465 13.0213 52.5394 13.5327C52.5465 13.9304 52.1701 14.1506 51.1687 14.1932L51.2681 15.5568H53.2283ZM61.0124 28H63.5835V17.0909H61.0124V28ZM62.305 15.5426C63.1218 15.5426 63.7894 14.9176 63.7894 14.1506C63.7894 13.3764 63.1218 12.7514 62.305 12.7514C61.4812 12.7514 60.8136 13.3764 60.8136 14.1506C60.8136 14.9176 61.4812 15.5426 62.305 15.5426Z"
-            fill="#6366F1"
-          />
-          <path
-            d="M82.6938 20.9999L79.2988 12.2719C79.0628 11.6649 79.6548 11.0839 80.2408 11.2899L80.3338 11.3299L98.3338 20.3299C98.4496 20.3879 98.5485 20.475 98.6207 20.5826C98.6929 20.6902 98.7359 20.8147 98.7457 20.9439C98.7555 21.0731 98.7316 21.2027 98.6764 21.3199C98.6212 21.4372 98.5366 21.5381 98.4308 21.6129L98.3338 21.6709L80.3338 30.6709C79.7508 30.9619 79.1168 30.4269 79.2688 29.8239L79.2988 29.7279L82.6938 20.9999L79.2988 12.2719L82.6938 20.9999ZM81.4018 13.5399L84.0118 20.2499H90.6388C90.82 20.2499 90.9951 20.3155 91.1317 20.4347C91.2683 20.5538 91.3571 20.7183 91.3818 20.8979L91.3888 20.9999C91.3887 21.1813 91.323 21.3565 91.2036 21.4931C91.0843 21.6297 90.9195 21.7185 90.7398 21.7429L90.6388 21.7499H84.0098L81.4008 28.4599L96.3218 20.9999L81.4008 13.5399H81.4018Z"
-            fill="#6366F1"
-          />
-        </svg>
+      <div className="flex m-3 pl-64 pt-5">
+        <button className="relative left-8" onClick={handleReset}>
+          <svg
+            width="125"
+            height="41"
+            viewBox="0 0 125 41"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect
+              x="0.5"
+              y="0.5"
+              width="124"
+              height="40"
+              rx="9.5"
+              fill="#EEF2FF"
+              stroke="#6366F1"
+            />
+            <path
+              d="M24.3636 28C28.7955 28 31.4233 25.2585 31.4233 20.7131C31.4233 16.1818 28.7955 13.4545 24.4631 13.4545H19.4347V19.5696H17.3395V21.196H19.4347V28H24.3636ZM22.0696 25.7202V21.196H24.1435V19.5696H22.0696V15.7344H24.3139C27.2685 15.7344 28.8097 17.3821 28.8097 20.7131C28.8097 24.0582 27.2685 25.7202 24.2358 25.7202H22.0696ZM36.9524 28.2202C38.6641 28.2202 39.6868 27.4176 40.1555 26.5014H40.2408V28H42.7124V20.6989C42.7124 17.8153 40.3615 16.9489 38.2805 16.9489C35.9865 16.9489 34.2251 17.9716 33.657 19.9602L36.0575 20.3011C36.3132 19.5554 37.0376 18.9162 38.2947 18.9162C39.4879 18.9162 40.1413 19.527 40.1413 20.5994V20.642C40.1413 21.3807 39.3672 21.4162 37.4425 21.6222C35.326 21.8494 33.3018 22.4815 33.3018 24.9389C33.3018 27.0838 34.8714 28.2202 36.9524 28.2202ZM39.8004 13.3409C39.7933 14.0369 39.3956 14.6548 38.3942 14.6548C37.3786 14.6548 36.995 14.0227 36.995 13.3409H35.0845C35.0774 15.0028 36.3629 16.125 38.3942 16.125C40.4396 16.125 41.7251 15.0028 41.7251 13.3409H39.8004ZM37.62 26.331C36.5476 26.331 35.7805 25.8409 35.7805 24.8963C35.7805 23.9091 36.6399 23.4972 37.7905 23.3338C38.4652 23.2415 39.8146 23.071 40.1484 22.8011V24.0866C40.1484 25.3011 39.1683 26.331 37.62 26.331ZM38.2947 31.9205C39.1115 31.9205 39.7791 31.2955 39.7791 30.5284C39.7791 29.7543 39.1115 29.1293 38.2947 29.1293C37.4709 29.1293 36.8033 29.7543 36.8033 30.5284C36.8033 31.2955 37.4709 31.9205 38.2947 31.9205ZM50.745 17.0909H48.593V14.4773H46.022V17.0909H44.4737V19.0795H46.022V25.1449C46.0078 27.1974 47.4993 28.206 49.4311 28.1491C50.1626 28.1278 50.6669 27.9858 50.9439 27.8935L50.5107 25.8835C50.3686 25.919 50.0774 25.983 49.7578 25.983C49.1115 25.983 48.593 25.7557 48.593 24.7188V19.0795H50.745V17.0909ZM60.4272 13.4545H57.8562V28H60.4272V13.4545ZM66.2102 28.2202C67.9219 28.2202 68.9446 27.4176 69.4134 26.5014H69.4986V28H71.9702V20.6989C71.9702 17.8153 69.6193 16.9489 67.5384 16.9489C65.2443 16.9489 63.483 17.9716 62.9148 19.9602L65.3153 20.3011C65.571 19.5554 66.2955 18.9162 67.5526 18.9162C68.7457 18.9162 69.3991 19.527 69.3991 20.5994V20.642C69.3991 21.3807 68.625 21.4162 66.7003 21.6222C64.5838 21.8494 62.5597 22.4815 62.5597 24.9389C62.5597 27.0838 64.1293 28.2202 66.2102 28.2202ZM66.8778 26.331C65.8054 26.331 65.0384 25.8409 65.0384 24.8963C65.0384 23.9091 65.8977 23.4972 67.0483 23.3338C67.723 23.2415 69.0724 23.071 69.4062 22.8011V24.0866C69.4062 25.3011 68.4261 26.331 66.8778 26.331ZM67.5526 31.9205C68.3693 31.9205 69.0369 31.2955 69.0369 30.5284C69.0369 29.7543 68.3693 29.1293 67.5526 29.1293C66.7287 29.1293 66.0611 29.7543 66.0611 30.5284C66.0611 31.2955 66.7287 31.9205 67.5526 31.9205ZM74.5554 28H77.1264V17.0909H74.5554V28ZM75.848 15.5426C76.6648 15.5426 77.3324 14.9176 77.3324 14.1506C77.3324 13.3764 76.6648 12.7514 75.848 12.7514C75.0241 12.7514 74.3565 13.3764 74.3565 14.1506C74.3565 14.9176 75.0241 15.5426 75.848 15.5426Z"
+              fill="#6366F1"
+            />
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M97.5008 23.294L102.679 28.596C103.199 29.132 103.537 29.1375 104.066 28.596L105.105 27.532C105.614 27.011 105.648 26.669 105.105 26.1125L99.6223 20.5L105.105 14.8875C105.619 14.36 105.629 14.004 105.105 13.4675L104.066 12.404C103.527 11.852 103.194 11.8775 102.68 12.404L97.5008 17.706L92.3223 12.4045C91.8078 11.878 91.4748 11.8525 90.9358 12.4045L89.8968 13.468C89.3728 14.0045 89.3823 14.3605 89.8968 14.888L95.3793 20.5L89.8968 26.1125C89.3533 26.669 89.3823 27.011 89.8968 27.532L90.9353 28.596C91.4598 29.1375 91.7978 29.132 92.3218 28.596L97.5008 23.294Z"
+              fill="#6366F1"
+            />
+          </svg>
+        </button>
+        <button className="relative left-16" onClick={handleSend}>
+          <svg
+            width="125"
+            height="41"
+            viewBox="0 0 125 41"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect
+              x="0.5"
+              y="0.5"
+              width="124"
+              height="40"
+              rx="9.5"
+              fill="#EEF2FF"
+              stroke="#6366F1"
+            />
+            <path
+              d="M42.179 18.0994H44.8636C44.4162 15.2443 41.9446 13.2557 38.7273 13.2557C34.9205 13.2557 32.0653 16.054 32.0653 20.7415C32.0653 25.3438 34.7926 28.1989 38.8054 28.1989C42.4062 28.1989 44.9844 25.8835 44.9844 22.1335V20.3864H39.0824V22.446H42.4347C42.392 24.5199 41.0071 25.8338 38.8196 25.8338C36.3835 25.8338 34.7145 24.0085 34.7145 20.7131C34.7145 17.4389 36.4119 15.6207 38.7628 15.6207C40.517 15.6207 41.7102 16.5582 42.179 18.0994ZM58.3846 16.5298C58.3775 17.8935 58.2567 18.6179 56.9854 18.7884V17.0909H54.4144V23.4119C54.4144 25.0739 53.2283 25.8977 52.092 25.8977C50.8562 25.8977 50.0323 25.0241 50.0323 23.6392V17.0909H47.4613V24.0369C47.4613 26.6577 48.9528 28.142 51.0977 28.142C52.7312 28.142 53.8817 27.2827 54.3789 26.0611H54.4925V28H56.9854V20.0881C59.3008 19.9034 60.0323 18.696 60.0394 16.5298H58.3846ZM53.2283 15.5568V14.9034C53.9883 14.7898 54.734 14.3849 54.7269 13.483C54.734 12.304 53.4982 11.5795 51.1545 11.5795L51.0906 12.8509C51.9144 12.8509 52.5465 13.0213 52.5394 13.5327C52.5465 13.9304 52.1701 14.1506 51.1687 14.1932L51.2681 15.5568H53.2283ZM61.0124 28H63.5835V17.0909H61.0124V28ZM62.305 15.5426C63.1218 15.5426 63.7894 14.9176 63.7894 14.1506C63.7894 13.3764 63.1218 12.7514 62.305 12.7514C61.4812 12.7514 60.8136 13.3764 60.8136 14.1506C60.8136 14.9176 61.4812 15.5426 62.305 15.5426Z"
+              fill="#6366F1"
+            />
+            <path
+              d="M82.6938 20.9999L79.2988 12.2719C79.0628 11.6649 79.6548 11.0839 80.2408 11.2899L80.3338 11.3299L98.3338 20.3299C98.4496 20.3879 98.5485 20.475 98.6207 20.5826C98.6929 20.6902 98.7359 20.8147 98.7457 20.9439C98.7555 21.0731 98.7316 21.2027 98.6764 21.3199C98.6212 21.4372 98.5366 21.5381 98.4308 21.6129L98.3338 21.6709L80.3338 30.6709C79.7508 30.9619 79.1168 30.4269 79.2688 29.8239L79.2988 29.7279L82.6938 20.9999L79.2988 12.2719L82.6938 20.9999ZM81.4018 13.5399L84.0118 20.2499H90.6388C90.82 20.2499 90.9951 20.3155 91.1317 20.4347C91.2683 20.5538 91.3571 20.7183 91.3818 20.8979L91.3888 20.9999C91.3887 21.1813 91.323 21.3565 91.2036 21.4931C91.0843 21.6297 90.9195 21.7185 90.7398 21.7429L90.6388 21.7499H84.0098L81.4008 28.4599L96.3218 20.9999L81.4008 13.5399H81.4018Z"
+              fill="#6366F1"
+            />
+          </svg>
+        </button>
       </div>
     </div>
   );

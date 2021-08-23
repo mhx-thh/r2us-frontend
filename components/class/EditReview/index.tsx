@@ -45,7 +45,8 @@ const EditReview = function ({ ereview }: AppProps) {
               fill="#6366F1"
             />
           </svg>
-          <div className="mx-8 py-1 my-1">{ereview.classId.instructorId.instructorName}
+          <div className="mx-8 py-1 my-1">
+            {ereview.classId.instructorId.instructorName}
           </div>
         </div>
         {/* course */}
@@ -63,9 +64,7 @@ const EditReview = function ({ ereview }: AppProps) {
               fill="#6366F1"
             />
           </svg>
-          <div className="mx-8 my-1">
-              {ereview.classId.courseId.courseName}
-          </div>
+          <div className="mx-8 my-1">{ereview.classId.courseId.courseName}</div>
         </div>
         {/* class */}
         <div className="flex px-56">
@@ -92,8 +91,7 @@ const EditReview = function ({ ereview }: AppProps) {
               strokeLinejoin="round"
             />
           </svg>
-          <div className="px-8 my-3 w-11/12">{ereview.classId.className}
-          </div>
+          <div className="px-8 my-3 w-11/12">{ereview.classId.className}</div>
         </div>
         {/* Review */}
         <div className="absolute top-72 my-3 flex mx-36 w-8/12 h-52 bg-white shadow-xl rounded-3xl z-10 text-center items-center m-auto py-5">

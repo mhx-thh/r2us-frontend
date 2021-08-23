@@ -151,7 +151,10 @@ const InformationPage = function (data: classInfo) {
                 />
               </svg>
             </div>
-            <TitleField name="Năm học" data={data.data.academicId.schoolyear} />
+            <TitleField
+              name="Năm học"
+              data={`${data.data.academicId.schoolyear} - học kì ${data.data.academicId.semester}`}
+            />
           </div>
 
           {/* Khoa */}

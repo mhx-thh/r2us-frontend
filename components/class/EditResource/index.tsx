@@ -1,45 +1,49 @@
 import GroupAPI from "api/groupAPI";
 import React, { useState } from "react";
+import { useAppSelector } from "redux/hooks";
+import { selectToken } from "redux/userSlice";
 import InputText from "../InputText";
 
-type Api = {
-  resourceType: string;
-  resourceLink: string;
-  resourceDescription: string;
-  status: string;
-  isShare: string;
-  classId: {
-    className: string;
-    _id: string;
-    courseId: {
-      _id: string;
-      courseName: string;
-      facultyId: {
-        facultyName: string;
-        _id: string;
-      };
-    };
-    instructorId: {
-      _id: string;
-      instructorName: string;
-      id: string;
-    };
-    academicId: {
-      _id: string;
-      schoolyear: string;
-      semester: string;
-    };
-  };
-  resourceName: string;
-  userId: {
-    _id: string;
-    givenName: string;
-    familyName: string;
-    photo: string;
-  };
-};
 const EditResource = function ({ eresource }: any) {
-  const [data, setData] = useState(eresource);
+  const token = useAppSelector(selectToken);
+  const initData = {
+    resourceType: eresource.resourceType,
+    resourceLink: eresource.resourceLink,
+    resourceDescription: eresource.resourceDescription,
+    status: eresource.status,
+    isShare: eresource.isShare,
+    classId: {
+      className: eresource.classId.className,
+      _id: eresource.classId._id,
+      courseId: {
+        _id: eresource.classId.courseId._id,
+        courseName: eresource.classId.courseId.courseName,
+        facultyId: {
+          facultyName: eresource.classId.courseId.facultyId.facultyName,
+          _id: eresource.classId.courseId.facultyId._id,
+        },
+      },
+      instructorId: {
+        _id: eresource.classId.instructorId._id,
+        instructorName: eresource.classId.instructorId.instructorName,
+        id: eresource.classId.instructorId.id,
+      },
+      academicId: {
+        _id: eresource.classId.academicId._id,
+        schoolyear: eresource.classId.academicId.schoolyear,
+        semester: eresource.classId.academicId.semester,
+      },
+    },
+    resourceName: eresource.resourceName,
+    userId: {
+      _id: eresource.userId._id,
+      givenName: eresource.userId.givenName,
+      familyName: eresource.userId.familyName,
+      photo: eresource.userId.photo,
+    },
+    slug: eresource.slug,
+  };
+  const [data, setData] = useState(initData);
   const handleLink = (e) => {
     setData({
       ...data,
@@ -207,8 +211,7 @@ const EditResource = function ({ eresource }: any) {
       <button
         onClick={() => {
           console.log(data);
-          // Chưa gắn Token
-          GroupAPI.patchResource(data, eresource._id, "");
+          GroupAPI.patchResource(data, eresource._id, token);
         }}
       >
         <svg

@@ -38,7 +38,6 @@ export const getServerSideProps: GetServerSideProps = async (params) => {
 
 const User = function (props: AppProps) {
   const user = useAppSelector(selectUser);
-
   const router = useRouter();
   const path = router.asPath;
   const title = `R2us | ${user.familyName} ${user.givenName}`;
@@ -47,7 +46,7 @@ const User = function (props: AppProps) {
       <UserHeader user={user} />
       <Sidebar param={path} />
       <hr></hr>
-      <GroupPage data={props} />
+      <GroupPage data={props} user={user} />
       <Footer />
     </MetaLayout>
   );

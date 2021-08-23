@@ -1,6 +1,7 @@
 import NewClassAPI from "api/NewClassAPI";
 import CreateGroup from "components/class/CreateGroup/createGroup";
 import PopUp from "components/class/PopUp/popup";
+import GroupItem from "components/Group/GroupItem";
 import ResourceItem from "components/Resource/ResourceItem";
 import React, { useEffect, useState } from "react";
 import style from "./style.module.css";
@@ -149,12 +150,25 @@ const Group = function () {
   );
 };
 
-const GroupPage = function (data: any) {
+const GroupPage = function ({ data, user }: any) {
   const [isCreated, setIsCreated] = useState(false);
   const handleClick = function () {
     setIsCreated(!isCreated);
   };
-  const user = "admin";
+  // const userRole = "admin";
+  const [myClass, setMyClass] = useState([]);
+  useEffect(() => {
+    async function fetchMyClass() {
+      try {
+        const res = await NewClassAPI.get();
+        const data = res?.data?.data?.result;
+        setMyClass(data);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    fetchMyClass();
+  }, []);
   return (
     <div className={style.page}>
       <div>
@@ -188,13 +202,13 @@ const GroupPage = function (data: any) {
 
         {/* Group */}
         <div className={style.groupsection}>
-          <Group />
-          <Group />
-          <Group />
-          <Group />
-          <Group />
-          <Group />
-          <Group />
+          {myClass.map((val, key) =>
+            val.createBy === user._id ? (
+              <GroupItem key={key} agroup={val} />
+            ) : (
+              <div></div>
+            )
+          )}
         </div>
         {isCreated && (
           <PopUp closepopup={setIsCreated}>

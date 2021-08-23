@@ -1,4 +1,4 @@
-import { apiV1, get, put } from "api/generic";
+import { apiV1, get, post, put } from "api/generic";
 
 const GroupAPI = {
   getGroups: function () {
@@ -40,6 +40,10 @@ const GroupAPI = {
   patchResource: function (data: any, id: string, token: string) {
     const url = `${apiV1}/groups/resources/update/${id}`;
     return put(url, data, token);
+  },
+  postClass: function (data: any, token: string) {
+    const url = `${apiV1}/groups/class/create`;
+    return post(url, data, token);
   },
 };
 

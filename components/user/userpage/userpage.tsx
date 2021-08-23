@@ -13,9 +13,15 @@ const UserPage = function ({ user }: AppProps) {
       <div className="pt-16 flex col-span-6">
         <div className="flex-grow">
           <InputField
+            name="Họ"
+            editable
+            data={`${user.familyName}`}
+            multiline={false}
+          />
+          <InputField
             name="Tên"
             editable
-            data={`${user.familyName} ${user.givenName}`}
+            data={`${user.givenName}`}
             multiline={false}
           />
           <InputField
