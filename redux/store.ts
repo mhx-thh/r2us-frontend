@@ -7,7 +7,6 @@ export const store = configureStore({
   reducer: {
     user: userReducer,
     admin: adminSlice,
-    group: groupSlice,
   },
 });
 
