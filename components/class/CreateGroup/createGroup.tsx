@@ -1,4 +1,3 @@
-import AcademicAPI from "api/academicApi";
 import GroupAPI from "api/groupAPI";
 import React, { useState } from "react";
 import { useAppSelector } from "redux/hooks";
@@ -12,6 +11,7 @@ type Api = {
 };
 
 const CreateGroup = function ({ data }: any) {
+  console.log(data.schoolyear.result);
   const token = useAppSelector(selectToken);
   const [nameGroup, setNameGroup] = useState("");
   const [facultyId, setFacultyId] = useState("");
@@ -87,7 +87,6 @@ const CreateGroup = function ({ data }: any) {
   };
 
   const handleSend = () => {
-    console.log(create);
     create.academicId !== "" &&
       create.className !== "" &&
       create.courseId !== "" &&
@@ -193,7 +192,7 @@ const CreateGroup = function ({ data }: any) {
           onChange={handleAcademicId}
         >
           <option value="">Chọn năm học</option>
-          {data.data.schoolyear.result.map((val, key) => (
+          {data.schoolyear.result.map((val, key) => (
             <option value={val._id} key={key}>
               {val.schoolyear} - học kì {val.semester}
             </option>
@@ -252,7 +251,7 @@ const CreateGroup = function ({ data }: any) {
           onChange={handleFacultyId}
         >
           <option value="">Chọn khoa</option>
-          {data.data.falcuty.result.map((val, key) => (
+          {data.falcuty.result.map((val, key) => (
             <option value={val._id} key={key}>
               {val.facultyName}
             </option>
@@ -311,7 +310,7 @@ const CreateGroup = function ({ data }: any) {
           onChange={handleCourseId}
         >
           <option value="">Chọn môn</option>
-          {data.data.course.result.map((val, key) =>
+          {data.course.result.map((val, key) =>
             facultyId === val.facultyId._id ? (
               <option value={val._id} key={key}>
                 {val.courseName}
@@ -374,7 +373,7 @@ const CreateGroup = function ({ data }: any) {
           onChange={handleInstructor}
         >
           <option value="">Chọn giáo viên</option>
-          {data.data.teacher.data.result.map((val, key) =>
+          {data.teacher.data.result.map((val, key) =>
             val.courseId.map((id) =>
               id === courseId ? (
                 <option value={val.id} key={key}>
