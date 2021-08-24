@@ -1,4 +1,6 @@
 import NewClassAPI from "api/NewClassAPI";
+import CreateReview from "components/class/CreateReview";
+import PopUp from "components/class/PopUp/popup";
 import ResourceItem from "components/Resource/ResourceItem";
 import ReviewItem from "components/Review/ReviewItem";
 import React, { useEffect, useState } from "react";
@@ -35,12 +37,17 @@ const ReviewPage = function () {
 
   const [newClass, setNewClass] = useState([]);
 
+  const [create, setCreate] = useState(false);
+  const handleClick = () => {
+    setCreate(true);
+  };
+
   return (
     <div className={style.page}>
       <div>
         {/* "Chia sẻ tài liệu button" */}
         <div className={style.buttonarea}>
-          <button className={style.button}>
+          <button className={style.button} onClick={handleClick}>
             <div className={style.button__text}>Chia sẻ cảm nhận</div>
             <div className={style.button__image}>
               <svg
@@ -60,6 +67,12 @@ const ReviewPage = function () {
             </div>
           </button>
         </div>
+
+        {create === true && (
+          <PopUp closepopup={setCreate}>
+            <CreateReview />
+          </PopUp>
+        )}
 
         {/* Document */}
         <div className={style.documentsection}>

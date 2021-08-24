@@ -1,4 +1,4 @@
-import CreateResource from "components/class/CreateResource";
+import CreateResource from "components/class/CreateResource/createResource";
 import DropdownResource from "components/class/DropDown/dropdownResource";
 import PopUp from "components/class/PopUp/popup";
 import ResourceItem from "components/Resource/ResourceItem";
