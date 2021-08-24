@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import ConvertTime from "../ConvertTime";
 import style from "./style.module.css";
 
 type classInfo = {
@@ -241,10 +242,7 @@ const Title = function (props: { data: classInfo }) {
                 Cập nhật lần cuối:
               </div>
               <div className={style.title__lower__right__text_normal}>
-                {props.data.updateAt.slice(11, 16)},{" "}
-                {props.data.updateAt.slice(8, 10)}/
-                {props.data.updateAt.slice(5, 7)}/
-                {props.data.updateAt.slice(0, 4)}
+                <ConvertTime data={props.data.updateAt} />
               </div>
             </div>
           </div>

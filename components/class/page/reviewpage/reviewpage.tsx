@@ -72,14 +72,14 @@ const Review = function (data: any) {
   );
 };
 
-const ReviewPage = function (data: any) {
+const ReviewPage = function ({ data, id }: any) {
   const [addDoc, setAddDoc] = useState(0);
   const ClickpopupDoc = () => {
     setAddDoc(1);
   };
   const user = "admin";
-
   const [newClass, setNewClass] = useState([]);
+  console.log(data);
   return (
     <div className={style.page}>
       <div>
@@ -110,9 +110,16 @@ const ReviewPage = function (data: any) {
 
         {/* Document */}
         <div className={style.documentsection}>
-          {data.data.result.map((data) => (
-            <Review key={data._id} data={data} />
-          ))}
+          {data.result.map((data) =>
+            data.classId.className === id.className &&
+            data.classId.courseId.courseName === id.courseName &&
+            data.classId.instructorId.instructorName === id.instructorName &&
+            data.classId.academicId.academicName === id.academicName ? (
+              <Review key={data._id} data={data} />
+            ) : (
+              <div></div>
+            )
+          )}
         </div>
         {/* Request */}
         <div className={style.prebox}>

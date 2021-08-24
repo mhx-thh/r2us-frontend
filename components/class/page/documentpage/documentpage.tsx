@@ -79,7 +79,7 @@ const Document = function (document: any) {
   );
 };
 
-const DocumentPage = function (document: any) {
+const DocumentPage = function ({ document, id }: any) {
   const [addDoc, setAddDoc] = useState(0);
   const ClickpopupDoc = () => {
     setAddDoc(1);
@@ -123,9 +123,16 @@ const DocumentPage = function (document: any) {
         )}
         {/* Document */}
         <div className={style.documentsection}>
-          {document.document.result.map((data) => (
-            <Document key={data.resourceName} document={data} />
-          ))}
+          {document.result.map((data) =>
+            data.classId.className === id.className &&
+            data.classId.courseId.courseName === id.courseName &&
+            data.classId.instructorId.instructorName === id.instructorName &&
+            data.classId.academicId.academicName === id.academicName ? (
+              <Document key={data.resourceName} document={data} />
+            ) : (
+              <div></div>
+            )
+          )}
         </div>
 
         {/* Request */}

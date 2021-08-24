@@ -9,5 +9,9 @@ const userApi = {
     const url = `${apiV1}/user/me`;
     return get(url, token);
   },
+  getMyReviews: function (token: string) {
+    const url = `${apiV1}/groups/reviews/me`;
+    return get(url, token);
+  },
 };
 export default userApi;
