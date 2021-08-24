@@ -210,7 +210,7 @@ const GroupPage = function ({ data, user }: any) {
             )
           )}
         </div>
-        {isCreated && (
+        {isCreated === true && (
           <PopUp closepopup={setIsCreated}>
             <CreateGroup data={data} />
           </PopUp>

@@ -4,6 +4,8 @@ import PopUp from "components/class/PopUp/popup";
 import ResourceItem from "components/Resource/ResourceItem";
 import ReviewItem from "components/Review/ReviewItem";
 import React, { useEffect, useState } from "react";
+import { useAppSelector } from "redux/hooks";
+import { selectToken } from "redux/userSlice";
 import style from "./style.module.css";
 
 type documentinfo = {
@@ -22,7 +24,7 @@ const Review = function () {
   );
 };
 
-const ReviewPage = function () {
+const ReviewPage = function ({ review }: any) {
   const [data, setData] = useState({
     name: "A",
     src: "B",
@@ -76,13 +78,9 @@ const ReviewPage = function () {
 
         {/* Document */}
         <div className={style.documentsection}>
-          <Review />
-          <Review />
-          <Review />
-          <Review />
-          <Review />
-          <Review />
-          <Review />
+          {/* {review.map((val, key) => (
+            <ReviewItem areview={val} key={key} />
+          ))} */}
         </div>
       </div>
     </div>

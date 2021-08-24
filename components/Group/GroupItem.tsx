@@ -6,7 +6,7 @@ type AppProps = {
 };
 
 function GroupItem({ agroup }: AppProps) {
-  const classSlugUrl = `group/${agroup.slug}`;
+  const classSlugUrl = `/group/${agroup.slug}`;
   return (
     // 1 group
     <Link href={classSlugUrl}>
