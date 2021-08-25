@@ -13,5 +13,9 @@ const userApi = {
     const url = `${apiV1}/groups/reviews/me`;
     return get(url, token);
   },
+  getMyResources: function (token: string) {
+    const url = `${apiV1}/groups/resources/me`;
+    return get(url, token);
+  },
 };
 export default userApi;

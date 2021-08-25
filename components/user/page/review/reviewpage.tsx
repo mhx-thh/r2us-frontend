@@ -1,4 +1,5 @@
 import NewClassAPI from "api/NewClassAPI";
+import userApi from "api/userApi";
 import ResourceItem from "components/Resource/ResourceItem";
 import ReviewItem from "components/Review/ReviewItem";
 import React, { useEffect, useState } from "react";
@@ -23,19 +24,25 @@ const Review = function () {
 };
 
 const ReviewPage = function ({ review }: any) {
-  const [data, setData] = useState({
-    name: "A",
-    src: "B",
-    description: "C",
-  });
-
+  const token = useAppSelector(selectToken);
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    async function getMyReviews() {
+      try {
+        const res = await userApi.getMyReviews(token);
+        const data = res?.data?.data?.result;
+        setData(data);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    getMyReviews();
+  }, []);
   const [addDoc, setAddDoc] = useState(0);
   const ClickpopupDoc = () => {
     setAddDoc(1);
   };
   const user = "admin";
-
-  const [newClass, setNewClass] = useState([]);
 
   return (
     <div className={style.page}>
@@ -65,9 +72,9 @@ const ReviewPage = function ({ review }: any) {
 
         {/* Document */}
         <div className={style.documentsection}>
-          {/* {review.map((val, key) => (
+          {data.map((val, key) => (
             <ReviewItem areview={val} key={key} />
-          ))} */}
+          ))}
         </div>
       </div>
     </div>
