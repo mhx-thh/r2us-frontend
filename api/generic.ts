@@ -61,3 +61,19 @@ export const put = function (url: string, data: any, token: string) {
       })
   );
 };
+
+export const patch = function (url: string, data: any, token: string) {
+  return new Promise<{ data: any }>((resolve, reject) =>
+    axios
+      .patch(url, data, config(token))
+      .then((res) => {
+        // return data
+        return resolve({ data: res.data });
+      })
+      .catch((err) => {
+        // return err message
+        if (!err.response) return reject(err.message);
+        return reject(err.response.data.message);
+      })
+  );
+};

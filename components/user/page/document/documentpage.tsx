@@ -1,23 +1,36 @@
 import GroupAPI from "api/groupAPI";
+import userApi from "api/userApi";
 import CreateResource from "components/class/CreateResource/createResource";
 import PopUp from "components/class/PopUp/popup";
 import ResourceItem from "components/Resource/ResourceItem";
 import React, { useEffect, useState } from "react";
+import { useAppSelector } from "redux/hooks";
+import { selectToken } from "redux/userSlice";
 import style from "./style.module.css";
 import { useAppSelector } from "redux/hooks";
 import { selectUser } from "redux/userSlice";
 
-const Document = function () {
-  return (
-    <div className={style.document}>
-      <div className={style.document__document}>
-        <ResourceItem aresource={{}} />
-      </div>
-    </div>
-  );
-};
+const DocumentPage = function () {
+  const token = useAppSelector(selectToken);
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    async function getData() {
+      try {
+        const res = await userApi.getMyResources(token);
+        const data = res?.data?.data?.result;
+        setData(data);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    getData();
+  }, []);
+  const [addDoc, setAddDoc] = useState(0);
+  const ClickpopupDoc = () => {
+    setAddDoc(1);
+  };
+  const userRole = "admin";
 
-const DocumentPage = function ({ data }: any) {
   const [create, setCreate] = useState(false);
   const handleClick = () => {
     setCreate(true);
@@ -73,9 +86,9 @@ const DocumentPage = function ({ data }: any) {
 
         {/* Document */}
         <div className={style.documentsection}>
-          {resource.map((val) =>
-            val.createBy === user.id ? <Document /> : <div></div>
-          )}
+          {data.map((val, key) => (
+            <ResourceItem aresource={val} key={key} />
+          ))}
         </div>
       </div>
     </div>
