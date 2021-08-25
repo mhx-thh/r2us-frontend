@@ -45,6 +45,11 @@ const GroupAPI = {
     const url = `${apiV1}/groups/class/create`;
     return post(url, data, token);
   },
+  postResource: function (data: any, token: string) {
+    const url = `${apiV1}/groups/resources/create`;
+    console.log("Url: ", url, "Data: ", data, "Token: ", token);
+    return post(url, data, token);
+  },
 };
 
 export default GroupAPI;

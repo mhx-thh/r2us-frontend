@@ -1,31 +1,40 @@
+import AcademicAPI from "api/academicApi";
 import Footer from "components/footer/FooterComponent";
 import MetaLayout from "components/layout/MegaLayout";
 import DocumentPage from "components/user/page/document/documentpage";
 import Sidebar from "components/user/Sidebar/UserSidebar";
 import UserHeader from "components/user/userheader/header";
+import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import React from "react";
 import { useAppSelector } from "redux/hooks";
 import { selectUser } from "redux/userSlice";
 
-// export const getServerSideProps: GetServerSideProps = async (params) => {
-//   const res = await NewClassAPI.getGroup(temp);
-//   const schoolyear = await AcademicAPI.getAcademic(res.data.data.academicId);
-//   const instructorName = await InstructorAPI.getInstructor(
-//     res.data.data.instructorId
-//   );
+type AppProps = {
+  schoolyear: any;
+  falcuty: any;
+  course: any;
+  teacher: any;
+};
 
-//   return {
-//     props: {
-//       status: res.data.status,
-//       data: res.data.data,
-//     },
-//   };
-// };
+export const getServerSideProps: GetServerSideProps = async (params) => {
+  const schoolyear = await AcademicAPI.getSchoolYears();
+  const falcuty = await AcademicAPI.getFalcuties();
+  const course = await AcademicAPI.getCourses();
+  const teacher = await AcademicAPI.getIntructors();
 
-// type propApi = {};
+  return {
+    props: {
+      schoolyear: schoolyear.data.data,
+      falcuty: falcuty.data.data,
+      course: course.data.data,
+      teacher: teacher.data,
+    },
+  };
+};
 
-const User = function (props) {
+const User = function (props: AppProps) {
+  console.log(props);
   const user = useAppSelector(selectUser);
 
   const router = useRouter();
@@ -36,7 +45,7 @@ const User = function (props) {
       <UserHeader user={user} />
       <Sidebar param={path} />
       <hr></hr>
-      <DocumentPage />;
+      <DocumentPage data={props} />;
       <Footer />
     </MetaLayout>
   );

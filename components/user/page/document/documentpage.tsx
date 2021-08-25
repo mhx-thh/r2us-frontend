@@ -4,6 +4,8 @@ import PopUp from "components/class/PopUp/popup";
 import ResourceItem from "components/Resource/ResourceItem";
 import React, { useEffect, useState } from "react";
 import style from "./style.module.css";
+import { useAppSelector } from "redux/hooks";
+import { selectUser } from "redux/userSlice";
 
 const Document = function () {
   return (
@@ -15,7 +17,7 @@ const Document = function () {
   );
 };
 
-const DocumentPage = function ({ data, user }: any) {
+const DocumentPage = function ({ data }: any) {
   const [create, setCreate] = useState(false);
   const handleClick = () => {
     setCreate(true);
@@ -34,6 +36,8 @@ const DocumentPage = function ({ data, user }: any) {
     }
     fetchResource();
   }, []);
+
+  const user = useAppSelector(selectUser);
 
   return (
     <div className={style.page}>
@@ -70,7 +74,7 @@ const DocumentPage = function ({ data, user }: any) {
         {/* Document */}
         <div className={style.documentsection}>
           {resource.map((val) =>
-            val.createBy === user._id ? <Document /> : <div></div>
+            val.createBy === user.id ? <Document /> : <div></div>
           )}
         </div>
       </div>
