@@ -7,7 +7,6 @@ import React, { useEffect, useState } from "react";
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 import style from "./style.module.css";
-import { useAppSelector } from "redux/hooks";
 import { selectUser } from "redux/userSlice";
 
 const DocumentPage = function () {
