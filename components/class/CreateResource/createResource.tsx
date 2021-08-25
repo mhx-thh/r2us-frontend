@@ -1,6 +1,121 @@
-import React from "react";
+import GroupAPI from "api/groupAPI";
+import { apiV1, get } from "api/generic";
+import React, { useEffect, useState } from "react";
+import { useAppSelector } from "redux/hooks";
+import { selectToken } from "redux/userSlice";
 
-const CreateResource = function () {
+type Api = {
+  className: string;
+  courseId: string;
+  instructorId: string;
+  academicId: string;
+};
+
+const CreateResource = function ({ data }: any) {
+  const token = useAppSelector(selectToken);
+  const [group, setGroup] = useState([]);
+  const [nameGroup, setNameGroup] = useState("");
+  const [facultyId, setFacultyId] = useState("");
+  const [courseId, setCourseId] = useState("");
+
+  const [create, setCreate] = useState<Api>({
+    academicId: "",
+    courseId: "",
+    instructorId: "",
+    className: "",
+  });
+
+  useEffect(() => {
+    async function fetchGroup({ courseId, instructorId, academicId }: any) {
+      const url = `${apiV1}/groups/class?courseId__eq=${courseId}&instructorId__eq=${instructorId}&academicId__eq=${academicId}`;
+      console.log("Url: ", url);
+      const data = await get(url, "");
+      setGroup(data.data.data.result);
+      console.log("Data: ", data.data.data.result);
+      console.log("Group: ", group);
+    }
+
+    create.academicId !== "" &&
+      create.courseId !== "" &&
+      create.instructorId !== "" &&
+      fetchGroup({
+        courseId: create.courseId,
+        instructorId: create.instructorId,
+        academicId: create.academicId,
+      });
+  }, [create]);
+
+  const handleAcademicId = (e) => {
+    setCreate({
+      ...create,
+      academicId: e.target.value,
+      courseId: "",
+      instructorId: "",
+    });
+  };
+
+  const handleFacultyId = (e) => {
+    setFacultyId(e.target.value);
+    setCourseId("");
+    setCreate({
+      ...create,
+      courseId: "",
+      instructorId: "",
+    });
+  };
+
+  const handleInstructor = (e) => {
+    setCreate({
+      ...create,
+      instructorId: e.target.value,
+    });
+  };
+
+  const handleCourseId = (e) => {
+    setCourseId(e.target.value);
+    setCreate({
+      ...create,
+      courseId: e.target.value,
+      instructorId: "",
+    });
+  };
+
+  const handleClassName = (e) => {
+    setNameGroup(e.target.value);
+    setCreate({
+      ...create,
+      className: e.target.value,
+    });
+  };
+
+  const handleReset = () => {
+    setFacultyId("");
+    setCourseId("");
+    setNameGroup("");
+    setCreate({
+      ...create,
+      courseId: "",
+      instructorId: "",
+      className: "",
+    });
+  };
+
+  const handleRecommend = (e) => {
+    setNameGroup(e.target.value);
+    setCreate({
+      ...create,
+      className: e.target.value,
+    });
+  };
+
+  const handleSend = () => {
+    create.academicId !== "" &&
+      create.className !== "" &&
+      create.courseId !== "" &&
+      create.instructorId !== "" &&
+      GroupAPI.postClass(create, token);
+  };
+
   return (
     <div>
       <div className="absolute bg-indigo-100 w-8/12 h-full top-0 left-0 rounded-l-2xl">
@@ -203,10 +318,16 @@ const CreateResource = function () {
               fill="#6366F1"
             />
           </svg>
-          <select className="px-2 bg-indigo-50 w-48 rounded-2xl h-10 border border-solid border-indigo-500">
+          <select
+            className="px-2 bg-indigo-50 w-48 rounded-2xl h-10 border border-solid border-indigo-500"
+            onChange={handleAcademicId}
+          >
             <option value="">Chọn năm học</option>
-            <option value="2021">2021-2022</option>
-            <option value="2022">2022-2023</option>
+            {data.schoolyear.result.map((val, key) => (
+              <option value={val._id} key={val._id}>
+                {val.schoolyear} - học kì {val.semester}
+              </option>
+            ))}
           </select>
         </div>
         {/* Faculty */}
@@ -224,10 +345,16 @@ const CreateResource = function () {
               fill="#6366F1"
             />
           </svg>
-          <select className="px-2 bg-indigo-50 w-48 rounded-2xl h-10 border border-solid border-indigo-500">
+          <select
+            className="px-2 bg-indigo-50 w-48 rounded-2xl h-10 border border-solid border-indigo-500"
+            onChange={handleFacultyId}
+          >
             <option value="">Chọn khoa</option>
-            <option value="cntt">Công nghệ thông tin</option>
-            <option value="sh">Sinh học</option>
+            {data.falcuty.result.map((val, key) => (
+              <option value={val._id} key={key}>
+                {val.facultyName}
+              </option>
+            ))}
           </select>
         </div>
         {/* Course */}
@@ -245,10 +372,20 @@ const CreateResource = function () {
               fill="#6366F1"
             />
           </svg>
-          <select className="px-2 bg-indigo-50 w-48 rounded-2xl h-10 border border-solid border-indigo-500">
+          <select
+            className="px-2 bg-indigo-50 w-48 rounded-2xl h-10 border border-solid border-indigo-500"
+            onChange={handleCourseId}
+          >
             <option value="">Chọn môn</option>
-            <option value="nmlt">Nhập môn lập trình</option>
-            <option value="ktlt">Kỹ thuật lập trình</option>
+            {data.course.result.map((val, key) =>
+              facultyId === val.facultyId._id ? (
+                <option value={val._id} key={key}>
+                  {val.courseName}
+                </option>
+              ) : (
+                <div></div>
+              )
+            )}
           </select>
         </div>
         {/* Teacher */}
@@ -267,10 +404,22 @@ const CreateResource = function () {
                 fill="#6366F1"
               />
             </svg>
-            <select className="px-2 bg-indigo-50 w-48 rounded-2xl h-10 border border-solid border-indigo-500">
+            <select
+              className="px-2 bg-indigo-50 w-48 rounded-2xl h-10 border border-solid border-indigo-500"
+              onChange={handleInstructor}
+            >
               <option value="">Chọn giáo viên</option>
-              <option value="nmlt">Trương Toàn Thịnh</option>
-              <option value="ktlt">Nguyễn Lê Hoàng Dũng</option>
+              {data.teacher.data.result.map((val, key) =>
+                val.courseId.map((id) =>
+                  id === courseId ? (
+                    <option value={val.id} key={key}>
+                      {val.instructorName}
+                    </option>
+                  ) : (
+                    <div></div>
+                  )
+                )
+              )}
             </select>
           </div>
           <div className="flex relative left-16">

@@ -1,29 +1,13 @@
-import NewClassAPI from "api/NewClassAPI";
 import userApi from "api/userApi";
-import ResourceItem from "components/Resource/ResourceItem";
+import CreateReview from "components/class/CreateReview";
+import PopUp from "components/class/PopUp/popup";
 import ReviewItem from "components/Review/ReviewItem";
 import React, { useEffect, useState } from "react";
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 import style from "./style.module.css";
 
-type documentinfo = {
-  name: string;
-  src: string;
-  description: string;
-};
-
-const Review = function () {
-  return (
-    <div className={style.document}>
-      <div className={style.document__document}>
-        <ReviewItem areview={{}} />
-      </div>
-    </div>
-  );
-};
-
-const ReviewPage = function ({ review }: any) {
+const ReviewPage = function () {
   const token = useAppSelector(selectToken);
   const [data, setData] = useState([]);
   useEffect(() => {
@@ -44,12 +28,17 @@ const ReviewPage = function ({ review }: any) {
   };
   const user = "admin";
 
+  const [create, setCreate] = useState(false);
+  const handleClick = () => {
+    setCreate(true);
+  };
+
   return (
     <div className={style.page}>
       <div>
         {/* "Chia sẻ tài liệu button" */}
         <div className={style.buttonarea}>
-          <button className={style.button}>
+          <button className={style.button} onClick={handleClick}>
             <div className={style.button__text}>Chia sẻ cảm nhận</div>
             <div className={style.button__image}>
               <svg
@@ -69,6 +58,12 @@ const ReviewPage = function ({ review }: any) {
             </div>
           </button>
         </div>
+
+        {create === true && (
+          <PopUp closepopup={setCreate}>
+            <CreateReview />
+          </PopUp>
+        )}
 
         {/* Document */}
         <div className={style.documentsection}>

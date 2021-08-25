@@ -18,6 +18,7 @@ type AppProps = {
   course: any;
   teacher: any;
 };
+
 export const getServerSideProps: GetServerSideProps = async (params) => {
   // const res = await NewClassAPI.getGroup(temp);
   const schoolyear = await AcademicAPI.getSchoolYears();

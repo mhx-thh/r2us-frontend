@@ -1,28 +1,12 @@
-import NewClassAPI from "api/NewClassAPI";
+import GroupAPI from "api/groupAPI";
 import userApi from "api/userApi";
-import CreateResource from "components/class/CreateResource";
+import CreateResource from "components/class/CreateResource/createResource";
 import PopUp from "components/class/PopUp/popup";
 import ResourceItem from "components/Resource/ResourceItem";
 import React, { useEffect, useState } from "react";
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 import style from "./style.module.css";
-
-type documentinfo = {
-  name: string;
-  src: string;
-  description: string;
-};
-
-const Document = function () {
-  return (
-    <div className={style.document}>
-      <div className={style.document__document}>
-        <ResourceItem aresource={{}} />
-      </div>
-    </div>
-  );
-};
 
 const DocumentPage = function () {
   const token = useAppSelector(selectToken);
@@ -49,6 +33,20 @@ const DocumentPage = function () {
   const handleClick = () => {
     setCreate(true);
   };
+
+  const [resource, setResource] = useState([]);
+  useEffect(() => {
+    async function fetchResource() {
+      try {
+        const res = await GroupAPI.getResources();
+        const data = res?.data?.data?.result;
+        setResource(data);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    fetchResource();
+  }, []);
 
   return (
     <div className={style.page}>
@@ -78,7 +76,7 @@ const DocumentPage = function () {
 
         {create === true && (
           <PopUp closepopup={setCreate}>
-            <CreateResource />
+            <CreateResource data={data} />
           </PopUp>
         )}
 
