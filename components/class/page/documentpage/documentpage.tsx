@@ -1,6 +1,4 @@
-import CreateResource from "components/class/CreateResource/createResource";
 import DropdownResource from "components/class/DropDown/dropdownResource";
-import PopUp from "components/class/PopUp/popup";
 import ResourceItem from "components/Resource/ResourceItem";
 import React, { useState } from "react";
 import style from "./style.module.css";
@@ -45,12 +43,12 @@ import style from "./style.module.css";
 //   id: string;
 // };
 
-const Document = function (document: any) {
+const Document = function ({ document, status }: any) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);
   };
-  console.log(document.document);
+
   return (
     <div className={style.document}>
       <button className={style.document__button} onClick={handleOpen}>
@@ -68,11 +66,13 @@ const Document = function (document: any) {
         </svg>
       </button>
       <div className={style.document__document}>
-        <ResourceItem aresource={document.document} />
+        <ResourceItem aresource={document} />
       </div>
       <div className="absolute">
-        {open === true && (
-          <DropdownResource close={setOpen} data={document.document} />
+        {open === true ? (
+          <DropdownResource close={setOpen} data={document} />
+        ) : (
+          <div></div>
         )}
       </div>
     </div>
@@ -86,7 +86,6 @@ const DocumentPage = function ({ document, id }: any) {
   };
   const user = "admin";
 
-  const [newClass, setNewClass] = useState([]);
   const [create, setCreate] = useState(false);
   const handleClick = () => {
     setCreate(true);
@@ -116,19 +115,24 @@ const DocumentPage = function ({ document, id }: any) {
             </div>
           </button>
         </div>
-        {create === true && (
+        {/* {create === true && (
           <PopUp closepopup={setCreate}>
             <CreateResource />
           </PopUp>
-        )}
+        )} */}
         {/* Document */}
         <div className={style.documentsection}>
           {document.result.map((data) =>
             data.classId.className === id.className &&
             data.classId.courseId.courseName === id.courseName &&
             data.classId.instructorId.instructorName === id.instructorName &&
-            data.classId.academicId.academicName === id.academicName ? (
-              <Document key={data.resourceName} document={data} />
+            data.classId.academicId.academicName === id.academicName &&
+            data.status === "accept" ? (
+              <Document
+                key={data.resourceName}
+                document={data}
+                status={data.status}
+              />
             ) : (
               <div></div>
             )
@@ -143,7 +147,23 @@ const DocumentPage = function ({ document, id }: any) {
         </div>
 
         {/* Request document */}
-        <div className={style.documentsection}>{/* <Document /> */}</div>
+        <div className={style.documentsection}>
+          {document.result.map((data) =>
+            data.classId.className === id.className &&
+            data.classId.courseId.courseName === id.courseName &&
+            data.classId.instructorId.instructorName === id.instructorName &&
+            data.classId.academicId.academicName === id.academicName &&
+            data.status === "pending" ? (
+              <Document
+                key={data.resourceName}
+                document={data}
+                status={data.status}
+              />
+            ) : (
+              <div></div>
+            )
+          )}
+        </div>
       </div>
     </div>
   );

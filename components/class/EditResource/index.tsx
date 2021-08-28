@@ -2,36 +2,35 @@ import GroupAPI from "api/groupAPI";
 import React, { useState } from "react";
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
-import InputText from "../InputText";
 
+type App = {
+  resourceType: string;
+  resourceLink: string;
+  resourceDescription: string;
+  resourceName: string;
+};
 const EditResource = function ({ eresource }: any) {
-  const [link, setLink] = useState(eresource.resourceLink);
-  const [review, setReview] = useState(eresource.resourceDescription);
-
   const token = useAppSelector(selectToken);
+
   const initData = {
     resourceType: eresource.resourceType,
     resourceLink: eresource.resourceLink,
     resourceDescription: eresource.resourceDescription,
     resourceName: eresource.resourceName,
   };
-  const [data, setData] = useState(initData);
-  const handleLink = (e) => {
-    setLink(e.target.value);
+  const [data, setData] = useState<App>(initData);
+  const handleChange = (e) => {
+    const val = e.target.value;
+    const name = e.target.name;
     setData({
       ...data,
-      resourceLink: e.target.value,
+      [name]: val,
     });
   };
-  const handleReview = (e) => {
-    setReview(e.target.value);
-    setData({
-      ...data,
-      resourceDescription: e.target.value,
-    });
-  };
-  const handleSend = async () => {
-    await GroupAPI.patchResource(data, eresource._id, token);
+
+  const handleSend = (e) => {
+    e.preventDefault();
+    GroupAPI.patchResource(data, eresource._id, token);
   };
 
   return (
@@ -42,8 +41,8 @@ const EditResource = function ({ eresource }: any) {
           <svg
             className="my-1"
             xmlns="http://www.w3.org/2000/svg"
-            width="27"
-            height="23"
+            width="31"
+            height="31"
             viewBox="0 0 27 23"
             fill="none"
           >
@@ -54,9 +53,15 @@ const EditResource = function ({ eresource }: any) {
               fill="#6366F1"
             />
           </svg>
-          <div className="mx-4 text-2xl font-medium text-indigo-500 ">
-            {" "}
-            {eresource.resourceName}
+          <div>
+            <div className="mx-8 mr-56 w-full">
+              <input
+                className="w-full px-2 text-2xl leading-9 font-medium text-indigo-500 bg-indigo-100 border border-solid rounded-xl border-2 border-solid border-indigo-500"
+                value={data.resourceName}
+                name="resourceName"
+                onChange={handleChange}
+              />
+            </div>
           </div>
         </div>
         {/* Teacher */}
@@ -129,34 +134,30 @@ const EditResource = function ({ eresource }: any) {
         {/* Link */}
         <div className="absolute top-72 my-3 flex mx-36 w-8/12 h-12 bg-white shadow-xl rounded-3xl items-center content-center self-center z-10">
           <div className="w-full text-base font-medium ">
-            {/* <InputText
-              editable
-              multiline={false}
-              data={eresource.resourceLink}
-            /> */}
             <input
               className=" p-5 w-full rounded-3xl h-12 bg-indigo-50 border-2 border-solid border-indigo-500"
               placeholder="Nhập link tài liệu"
-              onChange={handleLink}
-              value={link}
+              name="resourceLink"
+              onChange={handleChange}
+              value={data.resourceLink}
             />
           </div>
         </div>
+
         {/* SchoolYear */}
         <div className="mx-44 mt-16 pt-8 bg-white text-lg leading-6  font-medium text-indigo-500">
           {eresource.classId.academicId.schoolyear}, học kì{" "}
           {eresource.classId.academicId.semester}
-          {/* <InputText editable data="2020-2021, học kì 2" multiline={false} /> */}
         </div>
-        {/* Review */}
 
+        {/* Review */}
         <div className="absolute px-2.5 ml-40 mt-4 h-44">
-          {/* <InputText editable data={eresource.resourceDescription} multiline />{" "} */}
           <textarea
             className="bg-indigo-50 box-border rounded-lg items-end resize-none h-44 border-2 border-solid border-indigo-500 "
             placeholder="Mô tả môn học tại đây"
-            onChange={handleReview}
-            value={review}
+            name="resourceDescription"
+            onChange={handleChange}
+            value={data.resourceDescription}
             rows={7}
             cols={65}
           />
@@ -203,7 +204,7 @@ const EditResource = function ({ eresource }: any) {
               strokeLinejoin="round"
             />
           </svg>
-          <button onClick={handleSend}>
+          <button type="submit">
             <svg
               className="ml-4"
               width="24"

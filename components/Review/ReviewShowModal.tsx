@@ -25,7 +25,7 @@ function ReviewShowModal({ sreview }: AppProps) {
           />
         </svg>
         <div className="mx-4 text-2xl font-medium text-indigo-500 ">
-          Cảm nhận - {sreview.classId.courseId.courseName}
+          {sreview.reviewTitle}
         </div>
       </div>
       {/* Teacher */}

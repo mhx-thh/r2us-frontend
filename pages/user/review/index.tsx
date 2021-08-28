@@ -33,7 +33,7 @@ const User = function () {
       <UserHeader user={user} />
       <Sidebar param={path} />
       <hr></hr>
-      <ReviewPage data={myReview} />;
+      <ReviewPage />;
       <Footer />
     </MetaLayout>
   );

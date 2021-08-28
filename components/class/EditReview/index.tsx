@@ -2,46 +2,47 @@ import GroupAPI from "api/groupAPI";
 import React, { useState } from "react";
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
-import InputText from "../InputText";
 
-type AppProps = {
-  ereview: any;
+type App = {
+  review: string;
+  reviewTitle: string;
+  reviewType: string;
 };
 
-const EditReview = function ({ ereview }: AppProps) {
+const EditReview = function ({ ereview }: any) {
   const token = useAppSelector(selectToken);
+
   const initData = {
-    resourceType: ereview.resourceType,
-    resourceLink: ereview.resourceLink,
-    resourceDescription: ereview.resourceDescription,
-    resourceName: ereview.resourceName,
+    review: ereview.review,
+    reviewTitle: ereview.reviewTitle,
+    reviewType: ereview.reviewType,
   };
-  const [data, setData] = useState(initData);
-  const handleLink = (e) => {
+  const [data, setData] = useState<App>(initData);
+
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const val = e.target.value;
     setData({
       ...data,
-      resourceLink: e.target.value,
+      [name]: val,
     });
   };
-  const handleReview = (e) => {
-    setData({
-      ...data,
-      resourceDescription: e.target.value,
-    });
+
+  const handleSend = (e) => {
+    e.preventDefault();
+    GroupAPI.patchReview(data, ereview._id, token);
   };
-  const handleSend = async () => {
-    await GroupAPI.patchResource(data, ereview._id, token);
-  };
+
   return (
-    <div>
+    <form onSubmit={handleSend}>
       <div className="absolute bg-indigo-200 w-full left-0 top-0 h-80 rounded-t-2xl tracking-normal text-base leading-6 font-medium">
         {/* Title */}
-        <div className="flex px-16 mt-16 mb-8 tracking-normal">
+        <div className="flex pl-16 mt-16 mb-8 tracking-normal">
           <svg
             className="my-1"
             xmlns="http://www.w3.org/2000/svg"
-            width="27"
-            height="23"
+            width="31"
+            height="31"
             viewBox="0 0 27 23"
             fill="none"
           >
@@ -52,8 +53,15 @@ const EditReview = function ({ ereview }: AppProps) {
               fill="#6366F1"
             />
           </svg>
-          <div className="mx-4 text-2xl font-medium text-indigo-500 ">
-            Cảm nhận - {ereview.classId.courseId.courseName}
+          <div>
+            <div className="mx-8 mr-56  w-full">
+              <input
+                className="w-full text-2xl leading-9 font-medium text-indigo-500 bg-indigo-100 px-2 rounded-xl border-2 border-solid border-indigo-500"
+                value={data.reviewTitle}
+                name="reviewTitle"
+                onChange={handleChange}
+              />
+            </div>
           </div>
         </div>
         {/* Teacher */}
@@ -121,15 +129,17 @@ const EditReview = function ({ ereview }: AppProps) {
         </div>
         {/* Review */}
         <div className="absolute top-72 my-3 flex mx-36 w-8/12 h-52 bg-white shadow-xl rounded-3xl z-10 text-center items-center m-auto py-5">
-          <div
-            className="m-auto absolute left-2 top-2 w-full"
-            onChange={handleReview}
-          >
-            <InputText data={ereview.review} editable multiline />
-          </div>
+          <textarea
+            className="absolute left-0 top-0 w-full bg-indigo-50 box-border rounded-3xl resize-none h-52 border-2 border-solid border-indigo-500"
+            placeholder="Mô tả môn học tại đây"
+            name="review"
+            value={data.review}
+            onChange={handleChange}
+            cols={65}
+          />
         </div>
         {/* SchoolYear */}
-        <div className="px-44 mt-60 bg-white text-lg leading-6 font-medium text-indigo-500">
+        <div className="px-44 mt-64 bg-white text-lg leading-6 font-medium text-indigo-500">
           {ereview.classId.academicId.schoolyear}, học kì{" "}
           {ereview.classId.academicId.semester}
         </div>
@@ -160,36 +170,24 @@ const EditReview = function ({ ereview }: AppProps) {
               fill="#6366F1"
             />
           </svg>
+          <button type="submit">
+            <svg
+              className="ml-4"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M5.69377 11.9999L2.29877 3.27189C2.06277 2.66489 2.65477 2.08389 3.24077 2.28989L3.33377 2.32989L21.3338 11.3299C21.4496 11.3879 21.5485 11.475 21.6207 11.5826C21.6929 11.6902 21.7359 11.8147 21.7457 11.9439C21.7555 12.0731 21.7316 12.2027 21.6764 12.3199C21.6212 12.4372 21.5366 12.5381 21.4308 12.6129L21.3338 12.6709L3.33377 21.6709C2.75077 21.9619 2.11677 21.4269 2.26877 20.8239L2.29877 20.7279L5.69377 11.9999L2.29877 3.27189L5.69377 11.9999ZM4.40177 4.53989L7.01177 11.2499H13.6388C13.82 11.2499 13.9951 11.3155 14.1317 11.4347C14.2683 11.5538 14.3571 11.7183 14.3818 11.8979L14.3888 11.9999C14.3887 12.1813 14.323 12.3565 14.2036 12.4931C14.0843 12.6297 13.9195 12.7185 13.7398 12.7429L13.6388 12.7499H7.00977L4.40077 19.4599L19.3218 11.9999L4.40077 4.53989H4.40177Z"
+                fill="#6366F1"
+              />
+            </svg>
+          </button>
         </div>
-        <button onClick={handleSend}>
-          <svg
-            width="125"
-            height="41"
-            viewBox="0 0 125 41"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect
-              x="0.5"
-              y="0.5"
-              width="124"
-              height="40"
-              rx="9.5"
-              fill="#EEF2FF"
-              stroke="#6366F1"
-            />
-            <path
-              d="M40.179 18.0994H42.8636C42.4162 15.2443 39.9446 13.2557 36.7273 13.2557C32.9205 13.2557 30.0653 16.054 30.0653 20.7415C30.0653 25.3438 32.7926 28.1989 36.8054 28.1989C40.4062 28.1989 42.9844 25.8835 42.9844 22.1335V20.3864H37.0824V22.446H40.4347C40.392 24.5199 39.0071 25.8338 36.8196 25.8338C34.3835 25.8338 32.7145 24.0085 32.7145 20.7131C32.7145 17.4389 34.4119 15.6207 36.7628 15.6207C38.517 15.6207 39.7102 16.5582 40.179 18.0994ZM56.3846 16.5298C56.3775 17.8935 56.2567 18.6179 54.9854 18.7884V17.0909H52.4144V23.4119C52.4144 25.0739 51.2283 25.8977 50.092 25.8977C48.8562 25.8977 48.0323 25.0241 48.0323 23.6392V17.0909H45.4613V24.0369C45.4613 26.6577 46.9528 28.142 49.0977 28.142C50.7312 28.142 51.8817 27.2827 52.3789 26.0611H52.4925V28H54.9854V20.0881C57.3008 19.9034 58.0323 18.696 58.0394 16.5298H56.3846ZM51.2283 15.5568V14.9034C51.9883 14.7898 52.734 14.3849 52.7269 13.483C52.734 12.304 51.4982 11.5795 49.1545 11.5795L49.0906 12.8509C49.9144 12.8509 50.5465 13.0213 50.5394 13.5327C50.5465 13.9304 50.1701 14.1506 49.1687 14.1932L49.2681 15.5568H51.2283ZM59.0124 28H61.5835V17.0909H59.0124V28ZM60.305 15.5426C61.1218 15.5426 61.7894 14.9176 61.7894 14.1506C61.7894 13.3764 61.1218 12.7514 60.305 12.7514C59.4812 12.7514 58.8136 13.3764 58.8136 14.1506C58.8136 14.9176 59.4812 15.5426 60.305 15.5426Z"
-              fill="#6366F1"
-            />
-            <path
-              d="M80.6938 20.9999L77.2988 12.2719C77.0628 11.6649 77.6548 11.0839 78.2408 11.2899L78.3338 11.3299L96.3338 20.3299C96.4496 20.3879 96.5485 20.475 96.6207 20.5826C96.6929 20.6902 96.7359 20.8147 96.7457 20.9439C96.7555 21.0731 96.7316 21.2027 96.6764 21.3199C96.6212 21.4372 96.5366 21.5381 96.4308 21.6129L96.3338 21.6709L78.3338 30.6709C77.7508 30.9619 77.1168 30.4269 77.2688 29.8239L77.2988 29.7279L80.6938 20.9999L77.2988 12.2719L80.6938 20.9999ZM79.4018 13.5399L82.0118 20.2499H88.6388C88.82 20.2499 88.9951 20.3155 89.1317 20.4347C89.2683 20.5538 89.3571 20.7183 89.3818 20.8979L89.3888 20.9999C89.3887 21.1813 89.323 21.3565 89.2036 21.4931C89.0843 21.6297 88.9195 21.7185 88.7398 21.7429L88.6388 21.7499H82.0098L79.4008 28.4599L94.3218 20.9999L79.4008 13.5399H79.4018Z"
-              fill="#6366F1"
-            />
-          </svg>
-        </button>
       </div>
-    </div>
+    </form>
   );
 };
 

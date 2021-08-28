@@ -1,16 +1,14 @@
-import Link from "next/link";
-import { useAppSelector } from "redux/hooks";
-import { selectUser } from "redux/userSlice";
-import React, { useEffect, useState } from "react";
-import { GetServerSideProps } from "next";
-import { useRouter } from "next/router";
+import AcademicAPI from "api/academicApi";
+import Footer from "components/footer/FooterComponent";
 import MetaLayout from "components/layout/MegaLayout";
+import GroupPage from "components/user/page/mygroup/mygrouppage";
 import Sidebar from "components/user/Sidebar/UserSidebar";
 import UserHeader from "components/user/userheader/header";
-import GroupPage from "components/user/page/mygroup/mygrouppage";
-import Temp from "components/class/CreateGroup/createGroup";
-import Footer from "components/footer/FooterComponent";
-import AcademicAPI from "api/academicApi";
+import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
+import React from "react";
+import { useAppSelector } from "redux/hooks";
+import { selectUser } from "redux/userSlice";
 
 type AppProps = {
   schoolyear: any;

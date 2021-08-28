@@ -122,22 +122,25 @@ const ReviewPage = function ({ data, id }: any) {
           )}
         </div>
         {/* Request */}
-        <div className={style.prebox}>
+        {/* <div className={style.prebox}>
           <div className={style.box}>
             <div className={style.box__text}>Yêu cầu</div>
           </div>
-        </div>
+        </div> */}
 
         {/* Request document */}
-        <div className={style.documentsection}>
-          {/* <Review />
-          <Review />
-          <Review />
-          <Review />
-          <Review />
-          <Review />
-          <Review /> */}
-        </div>
+        {/* <div className={style.documentsection}>
+          {data.result.map((data) =>
+            data.classId.className === id.className &&
+            data.classId.courseId.courseName === id.courseName &&
+            data.classId.instructorId.instructorName === id.instructorName &&
+            data.classId.academicId.academicName === id.academicName ? (
+              <Review key={data._id} data={data} />
+            ) : (
+              <div></div>
+            )
+          )}
+        </div> */}
       </div>
     </div>
   );

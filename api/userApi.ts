@@ -1,4 +1,4 @@
-import { apiV1, config, get } from "api/generic";
+import { apiV1, config, get, post } from "api/generic";
 
 const userApi = {
   getInfo: function (token: string) {
@@ -16,6 +16,14 @@ const userApi = {
   getMyResources: function (token: string) {
     const url = `${apiV1}/groups/resources/me`;
     return get(url, token);
+  },
+  getMyClass: function (token: string) {
+    const url = `${apiV1}/groups/enrollment/me`;
+    return get(url, token);
+  },
+  postEnroll: function (classId: any, token: string) {
+    const url = `${apiV1}/groups/enrollment`;
+    return post(url, classId, token);
   },
 };
 export default userApi;

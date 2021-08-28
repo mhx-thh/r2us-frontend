@@ -1,4 +1,4 @@
-import { apiV1, get, patch, post, put } from "api/generic";
+import { apiV1, delele, get, patch, post, put } from "api/generic";
 
 const GroupAPI = {
   getGroups: function () {
@@ -51,8 +51,15 @@ const GroupAPI = {
   },
   postResource: function (data: any, token: string) {
     const url = `${apiV1}/groups/resources/create`;
-    console.log("Url: ", url, "Data: ", data, "Token: ", token);
     return post(url, data, token);
+  },
+  deleteResource: function (id: string, token: string) {
+    const url = `${apiV1}/groups/resources/${id}`;
+    return delele(url, token);
+  },
+  deleteReview: function (id: string, token: string) {
+    const url = `${apiV1}/groups/reviews/${id}`;
+    return delele(url, token);
   },
 };
 

@@ -45,7 +45,7 @@ const User = function (props: AppProps) {
       <UserHeader user={user} />
       <Sidebar param={path} />
       <hr></hr>
-      <DocumentPage data={props} />;
+      <DocumentPage />;
       <Footer />
     </MetaLayout>
   );

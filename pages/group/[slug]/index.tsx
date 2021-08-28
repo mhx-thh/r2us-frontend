@@ -48,8 +48,6 @@ type propApi = {
   status: string;
   data: {
     className: string;
-    ratingsAverage: number;
-    ratingsQuantity: number;
     nStudents: number;
     _id: string;
     instructorId: {
@@ -60,6 +58,7 @@ type propApi = {
     academicId: {
       schoolyear: string;
       semester: number;
+      _id: string;
     };
     courseId: {
       courseName: string;
@@ -69,7 +68,9 @@ type propApi = {
         _id: string;
       };
     };
+    description: string;
     createdAt: string;
+    createBy: string;
     updatedAt: string;
     slug: string;
     __v: number;
@@ -78,7 +79,6 @@ type propApi = {
 
 const Item = function (props: propApi) {
   const initProps = props.data;
-
   const initTitle = {
     academicId: {
       schoolyear: initProps.academicId.schoolyear,

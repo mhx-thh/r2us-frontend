@@ -110,9 +110,9 @@ function ResourceItem({ aresource }: AppProps) {
             />
           </svg>
 
-          <p className="ml-2.5 text-sm md:leading-5 font-normal text-top">
+          {/* <p className="ml-2.5 text-sm md:leading-5 font-normal text-top">
             {aresource?.classId?.className}
-          </p>
+          </p> */}
         </div>
       </div>
       <div>
