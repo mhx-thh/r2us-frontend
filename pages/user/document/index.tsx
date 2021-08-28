@@ -34,7 +34,6 @@ export const getServerSideProps: GetServerSideProps = async (params) => {
 };
 
 const User = function (props: AppProps) {
-  console.log(props);
   const user = useAppSelector(selectUser);
 
   const router = useRouter();

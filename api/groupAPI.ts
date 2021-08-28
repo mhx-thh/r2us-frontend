@@ -50,7 +50,7 @@ const GroupAPI = {
     return post(url, data, token);
   },
   postResource: function (data: any, token: string) {
-    const url = `${apiV1}/groups/resources/create`;
+    const url = `${apiV1}/groups/resources`;
     console.log("Url: ", url, "Data: ", data, "Token: ", token);
     return post(url, data, token);
   },
