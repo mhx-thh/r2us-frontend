@@ -1,44 +1,39 @@
+import React, { useEffect, useState } from "react";
 import GroupAPI from "api/groupAPI";
 import { apiV1, get } from "api/generic";
-import React, { useEffect, useState } from "react";
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 
 type Api = {
-  className: string;
-  courseId: string;
-  instructorId: string;
-  academicId: string;
-};
-
-type ApiPatch = {
   resourceType: "Resources" | "Examination Paper" | "Review Paper";
   resourceName: string;
   resourceLink: string;
   resourceDescription: string;
+  // status: "pending" | "accepted";
+  // isShare: boolean;
+  classId: string;
 };
 
 const CreateResource = function ({ data }: any) {
   const token = useAppSelector(selectToken);
 
-  const [patch, setPatch] = useState<ApiPatch>({
+  const [schoolyear, setSchoolyear] = useState("");
+  const [facultyId, setFacultyId] = useState("");
+  const [courseId, setCourseId] = useState("");
+  const [instructorId, setInstructorId] = useState("");
+  const [group, setGroup] = useState([]);
+
+  const initCreate: Api = {
     resourceType: "Resources",
     resourceName: "",
     resourceLink: "",
     resourceDescription: "",
-  });
+    // status: "pending",
+    // isShare: false,
+    classId: "",
+  };
 
-  const [group, setGroup] = useState([]);
-  const [nameGroup, setNameGroup] = useState("");
-  const [facultyId, setFacultyId] = useState("");
-  const [courseId, setCourseId] = useState("");
-
-  const [create, setCreate] = useState<Api>({
-    academicId: "",
-    courseId: "",
-    instructorId: "",
-    className: "",
-  });
+  const [create, setCreate] = useState<Api>(initCreate);
 
   useEffect(() => {
     async function fetchGroup({ courseId, instructorId, academicId }: any) {
@@ -47,124 +42,100 @@ const CreateResource = function ({ data }: any) {
       setGroup(data.data.data.result);
     }
 
-    create.academicId !== "" &&
-      create.courseId !== "" &&
-      create.instructorId !== "" &&
+    schoolyear !== "" &&
+      courseId !== "" &&
+      instructorId !== "" &&
       fetchGroup({
-        courseId: create.courseId,
-        instructorId: create.instructorId,
-        academicId: create.academicId,
+        courseId: courseId,
+        instructorId: instructorId,
+        academicId: schoolyear,
       });
-    console.log(create);
-    console.log(group);
-  }, [create]);
-
-  useEffect(() => {
-    console.log(patch);
-  }, [patch]);
+  }, [schoolyear, courseId, instructorId]);
 
   const handleTypeResource = (e) => {
-    setPatch({
-      ...patch,
+    setCreate({
+      ...create,
       resourceType: e.target.value,
     });
   };
 
   const handleResourceName = (e) => {
-    setPatch({
-      ...patch,
+    setCreate({
+      ...create,
       resourceName: e.target.value,
     });
   };
 
   const handleResourceLink = (e) => {
-    setPatch({
-      ...patch,
+    setCreate({
+      ...create,
       resourceLink: e.target.value,
     });
   };
 
   const handleResourceDescription = (e) => {
-    setPatch({
-      ...patch,
+    setCreate({
+      ...create,
       resourceDescription: e.target.value,
     });
   };
 
   const handleAcademicId = (e) => {
-    setCreate({
-      ...create,
-      academicId: e.target.value,
-      courseId: "",
-      instructorId: "",
-    });
+    setSchoolyear(e.target.value);
   };
 
   const handleFacultyId = (e) => {
     setFacultyId(e.target.value);
     setCourseId("");
-    setCreate({
-      ...create,
-      courseId: "",
-      instructorId: "",
-    });
+    setInstructorId("");
   };
 
   const handleInstructor = (e) => {
-    setCreate({
-      ...create,
-      instructorId: e.target.value,
-    });
+    setInstructorId(e.target.value);
   };
 
   const handleCourseId = (e) => {
     setCourseId(e.target.value);
-    setCreate({
-      ...create,
-      courseId: e.target.value,
-      instructorId: "",
-    });
+    setInstructorId("");
   };
 
   const handleClassName = (e) => {
-    // setNameGroup(e.target.value);
-    setCreate({
-      ...create,
-      className: e.target.value,
-    });
+    console.log(create);
+    group.map(
+      (val) =>
+        val.className === e.target.value &&
+        setCreate({
+          ...create,
+          classId: val._id,
+        })
+    );
   };
 
   const handleReset = () => {
     setFacultyId("");
     setCourseId("");
-    // setNameGroup("");
     setCreate({
       ...create,
-      courseId: "",
-      instructorId: "",
-      className: "",
+      classId: initCreate.classId,
     });
   };
 
   const handleRecommend = (e) => {
-    // setNameGroup(e.target.value);
-    setCreate({
-      ...create,
-      className: e.target.value,
-    });
+    // setCreate({
+    //   ...create,
+    //   classId: {
+    //     ...create.classId,
+    //     className: e.target.value,
+    //   },
+    // });
   };
 
   const handleSend = () => {
-    console.log(create, token);
-    create.academicId !== "" &&
-      create.className !== "" &&
-      create.courseId !== "" &&
-      create.instructorId !== "" &&
-      GroupAPI.postResource(create, token)
-        .then((group) => {
-          GroupAPI.patchResource(patch, group.data._id, token);
-        })
-        .catch((err) => console.log(err));
+    create.resourceName !== "" &&
+      create.resourceLink !== "" &&
+      create.resourceDescription !== "" &&
+      create.classId !== "" &&
+      GroupAPI.postResource(create, token);
   };
 
   return (
@@ -381,7 +352,7 @@ const CreateResource = function ({ data }: any) {
           >
             <option value="">Chọn năm học</option>
             {data.schoolyear.result.map((val, key) => (
-              <option value={val._id} key={val._id}>
+              <option value={val._id} key={key}>
                 {val.schoolyear} - học kì {val.semester}
               </option>
             ))}
@@ -434,14 +405,13 @@ const CreateResource = function ({ data }: any) {
             onChange={handleCourseId}
           >
             <option value="">Chọn môn</option>
-            {data.course.result.map((val, key) =>
-              facultyId === val.facultyId._id ? (
-                <option value={val._id} key={key}>
-                  {val.courseName}
-                </option>
-              ) : (
-                <div></div>
-              )
+            {data.course.result.map(
+              (val, key) =>
+                facultyId === val.facultyId._id && (
+                  <option value={val._id} key={key}>
+                    {val.courseName}
+                  </option>
+                )
             )}
           </select>
         </div>
@@ -467,14 +437,13 @@ const CreateResource = function ({ data }: any) {
             >
               <option value="">Chọn giáo viên</option>
               {data.teacher.data.result.map((val, key) =>
-                val.courseId.map((id) =>
-                  id === courseId ? (
-                    <option value={val._id} key={key}>
-                      {val.instructorName}
-                    </option>
-                  ) : (
-                    <div></div>
-                  )
+                val.courseId.map(
+                  (id) =>
+                    id === courseId && (
+                      <option value={val._id} key={key}>
+                        {val.instructorName}
+                      </option>
+                    )
                 )
               )}
             </select>
