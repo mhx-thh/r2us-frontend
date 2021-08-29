@@ -1,23 +1,20 @@
+import GroupAPI from "api/groupAPI";
 import InformationPage from "components/class/page/information/InformationPage";
-import LayoutClass from "components/layout/layoutClass";
-import React, { useEffect, useState } from "react";
 import Sidebar from "components/class/Sidebar/Sidebar";
 import Title from "components/class/Title/Title";
-import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next";
+import LayoutClass from "components/layout/layoutClass";
+import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import GroupAPI from "api/groupAPI";
-
-import { useAppDispatch, useAppSelector } from "redux/hooks";
-import { groupsReceived, groupAdded } from "redux/groupSlice";
+import React from "react";
 
 export const getServerSideProps: GetServerSideProps = async (params) => {
   const temp = params.params.slug.toString();
   const res = await GroupAPI.getGroup(temp);
 
-  // params.res.setHeader(
-  //   "Cache-control",
-  //   "public, s-maxage=10, stale-while-revalidate=59"
-  // );
+  params.res.setHeader(
+    "Cache-control",
+    "public, s-maxage=10, stale-while-revalidate=10"
+  );
 
   return {
     props: {
@@ -51,8 +48,6 @@ type propApi = {
   status: string;
   data: {
     className: string;
-    ratingsAverage: number;
-    ratingsQuantity: number;
     nStudents: number;
     _id: string;
     instructorId: {
@@ -63,6 +58,7 @@ type propApi = {
     academicId: {
       schoolyear: string;
       semester: number;
+      _id: string;
     };
     courseId: {
       courseName: string;
@@ -72,7 +68,9 @@ type propApi = {
         _id: string;
       };
     };
+    description: string;
     createdAt: string;
+    createBy: string;
     updatedAt: string;
     slug: string;
     __v: number;
@@ -81,7 +79,6 @@ type propApi = {
 
 const Item = function (props: propApi) {
   const initProps = props.data;
-
   const initTitle = {
     academicId: {
       schoolyear: initProps.academicId.schoolyear,

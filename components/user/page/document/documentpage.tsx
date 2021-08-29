@@ -1,45 +1,42 @@
-import NewClassAPI from "api/NewClassAPI";
-import ResourceItem from "components/Resource/ResourceItem";
 import React, { useEffect, useState } from "react";
+
+import CreateResource from "components/class/CreateResource/createResource";
+import PopUp from "components/class/PopUp/popup";
+import ResourceItem from "components/Resource/ResourceItem";
 import style from "./style.module.css";
 
-type documentinfo = {
-  name: string;
-  src: string;
-  description: string;
-};
+import { useAppSelector } from "redux/hooks";
+import { selectToken } from "redux/userSlice";
 
-const Document = function () {
-  return (
-    <div className={style.document}>
-      <div className={style.document__document}>
-        <ResourceItem aresource={{}} />
-      </div>
-    </div>
-  );
-};
+import userApi from "api/userApi";
 
-const DocumentPage = function () {
-  const [data, setData] = useState({
-    name: "A",
-    src: "B",
-    description: "C",
-  });
+const DocumentPage = function (props: any) {
+  const token = useAppSelector(selectToken);
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    async function getData() {
+      try {
+        const res = await userApi.getMyResources(token);
+        const data = res?.data?.data?.result;
+        setData(data);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    getData();
+  }, []);
 
-  const [addDoc, setAddDoc] = useState(0);
-  const ClickpopupDoc = () => {
-    setAddDoc(1);
+  const [create, setCreate] = useState(false);
+  const handleClick = () => {
+    setCreate(true);
   };
-  const user = "admin";
-
-  const [newClass, setNewClass] = useState([]);
 
   return (
     <div className={style.page}>
       <div>
         {/* "Chia sẻ tài liệu button" */}
         <div className={style.buttonarea}>
-          <button className={style.button}>
+          <button className={style.button} onClick={handleClick}>
             <div className={style.button__text}>Chia sẻ tài liệu</div>
             <div className={style.button__image}>
               <svg
@@ -60,15 +57,17 @@ const DocumentPage = function () {
           </button>
         </div>
 
+        {create === true && (
+          <PopUp closepopup={setCreate}>
+            <CreateResource data={props.data} />
+          </PopUp>
+        )}
+
         {/* Document */}
         <div className={style.documentsection}>
-          <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document />
-          <Document />
+          {data.map((val, key) => (
+            <ResourceItem aresource={val} key={key} />
+          ))}
         </div>
       </div>
     </div>

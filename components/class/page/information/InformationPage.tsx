@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
+import userApi from "api/userApi";
 import InputField from "components/class/page/information/inputfield";
+import React, { useState } from "react";
+import { useAppSelector } from "redux/hooks";
+import { selectToken } from "redux/userSlice";
 import style from "./style.module.css";
 import TitleField from "./titlefield";
 
 type classInfo = {
   data: {
     className: string;
-    ratingsAverage: number;
-    ratingsQuantity: number;
     nStudents: number;
     _id: string;
     instructorId: {
@@ -18,6 +19,7 @@ type classInfo = {
     academicId: {
       schoolyear: string;
       semester: number;
+      _id: string;
     };
     courseId: {
       courseName: string;
@@ -27,7 +29,9 @@ type classInfo = {
         _id: string;
       };
     };
+    description: string;
     createdAt: string;
+    createBy: string;
     updatedAt: string;
     slug: string;
     __v: number;
@@ -36,7 +40,7 @@ type classInfo = {
 
 const InformationPage = function (data: classInfo) {
   const [classInfo, setClassInfo] = useState(data.data);
-
+  const token = useAppSelector(selectToken);
   const editNameClass = () => {
     const newClassInfo = { ...classInfo, className: "newName" };
     setClassInfo(newClassInfo);
@@ -48,19 +52,9 @@ const InformationPage = function (data: classInfo) {
     setClassInfo(newClassInfo);
   };
 
-  const initData = {
-    className: data.data.className,
-    courseId: {
-      courseName: data.data.courseId,
-    },
-    instructorId: {
-      instructorName: data.data.instructorId,
-    },
-    academicId: {
-      schoolyear: data.data.academicId,
-    },
+  const ClickEnroll = () => {
+    userApi.postEnroll(data.data, token);
   };
-
   return (
     <div className={style.page}>
       <div className={style.grid}>
@@ -74,7 +68,12 @@ const InformationPage = function (data: classInfo) {
               data={data.data.className}
               multiline={false}
             />
-            <InputField name="Mô tả" editable data="a" multiline={true} />
+            <InputField
+              name="Mô tả"
+              editable
+              data={data.data.description}
+              multiline={true}
+            />
           </div>
         </div>
         {/* Title information field, or something like that, idk */}
@@ -151,7 +150,10 @@ const InformationPage = function (data: classInfo) {
                 />
               </svg>
             </div>
-            <TitleField name="Năm học" data={data.data.academicId.schoolyear} />
+            <TitleField
+              name="Năm học"
+              data={`${data.data.academicId.schoolyear} - học kì ${data.data.academicId.semester}`}
+            />
           </div>
 
           {/* Khoa */}
@@ -217,7 +219,9 @@ const InformationPage = function (data: classInfo) {
             />
           </div>
           <div className={style.pbutton}>
-            <button className={style.button}>Tham gia</button>
+            <button className={style.button} onClick={ClickEnroll}>
+              Tham gia
+            </button>
           </div>
         </div>
       </div>

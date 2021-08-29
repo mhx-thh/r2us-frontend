@@ -1,21 +1,48 @@
-import React from "react";
-import InputText from "../InputText";
+import GroupAPI from "api/groupAPI";
+import React, { useState } from "react";
+import { useAppSelector } from "redux/hooks";
+import { selectToken } from "redux/userSlice";
 
-type AppProps = {
-  ereview: any;
+type App = {
+  review: string;
+  reviewTitle: string;
+  reviewType: string;
 };
 
-const EditReview = function ({ ereview }: AppProps) {
+const EditReview = function ({ ereview }: any) {
+  const token = useAppSelector(selectToken);
+
+  const initData = {
+    review: ereview.review,
+    reviewTitle: ereview.reviewTitle,
+    reviewType: ereview.reviewType,
+  };
+  const [data, setData] = useState<App>(initData);
+
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const val = e.target.value;
+    setData({
+      ...data,
+      [name]: val,
+    });
+  };
+
+  const handleSend = (e) => {
+    e.preventDefault();
+    GroupAPI.patchReview(data, ereview._id, token);
+  };
+
   return (
-    <div>
+    <form onSubmit={handleSend}>
       <div className="absolute bg-indigo-200 w-full left-0 top-0 h-80 rounded-t-2xl tracking-normal text-base leading-6 font-medium">
         {/* Title */}
-        <div className="flex px-16 mt-16 mb-8 tracking-normal">
+        <div className="flex pl-16 mt-16 mb-8 tracking-normal">
           <svg
             className="my-1"
             xmlns="http://www.w3.org/2000/svg"
-            width="27"
-            height="23"
+            width="31"
+            height="31"
             viewBox="0 0 27 23"
             fill="none"
           >
@@ -26,8 +53,15 @@ const EditReview = function ({ ereview }: AppProps) {
               fill="#6366F1"
             />
           </svg>
-          <div className="mx-4 text-2xl font-medium text-indigo-500 ">
-            Cảm nhận - {ereview.classId.courseId.courseName}
+          <div>
+            <div className="mx-8 mr-56  w-full">
+              <input
+                className="w-full text-2xl leading-9 font-medium text-indigo-500 bg-indigo-100 px-2 rounded-xl border-2 border-solid border-indigo-500"
+                value={data.reviewTitle}
+                name="reviewTitle"
+                onChange={handleChange}
+              />
+            </div>
           </div>
         </div>
         {/* Teacher */}
@@ -45,7 +79,8 @@ const EditReview = function ({ ereview }: AppProps) {
               fill="#6366F1"
             />
           </svg>
-          <div className="mx-8 py-1 my-1">{ereview.classId.instructorId.instructorName}
+          <div className="mx-8 py-1 my-1">
+            {ereview.classId.instructorId.instructorName}
           </div>
         </div>
         {/* course */}
@@ -63,9 +98,7 @@ const EditReview = function ({ ereview }: AppProps) {
               fill="#6366F1"
             />
           </svg>
-          <div className="mx-8 my-1">
-              {ereview.classId.courseId.courseName}
-          </div>
+          <div className="mx-8 my-1">{ereview.classId.courseId.courseName}</div>
         </div>
         {/* class */}
         <div className="flex px-56">
@@ -92,17 +125,21 @@ const EditReview = function ({ ereview }: AppProps) {
               strokeLinejoin="round"
             />
           </svg>
-          <div className="px-8 my-3 w-11/12">{ereview.classId.className}
-          </div>
+          <div className="px-8 my-3 w-11/12">{ereview.classId.className}</div>
         </div>
         {/* Review */}
         <div className="absolute top-72 my-3 flex mx-36 w-8/12 h-52 bg-white shadow-xl rounded-3xl z-10 text-center items-center m-auto py-5">
-          <div className="m-auto absolute left-2 top-2 w-full">
-            <InputText data={ereview.review} editable multiline />
-          </div>
+          <textarea
+            className="absolute left-0 top-0 w-full bg-indigo-50 box-border rounded-3xl resize-none h-52 border-2 border-solid border-indigo-500"
+            placeholder="Mô tả môn học tại đây"
+            name="review"
+            value={data.review}
+            onChange={handleChange}
+            cols={65}
+          />
         </div>
         {/* SchoolYear */}
-        <div className="px-44 mt-60 bg-white text-lg leading-6 font-medium text-indigo-500">
+        <div className="px-44 mt-64 bg-white text-lg leading-6 font-medium text-indigo-500">
           {ereview.classId.academicId.schoolyear}, học kì{" "}
           {ereview.classId.academicId.semester}
         </div>
@@ -133,9 +170,24 @@ const EditReview = function ({ ereview }: AppProps) {
               fill="#6366F1"
             />
           </svg>
+          <button type="submit">
+            <svg
+              className="ml-4"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M5.69377 11.9999L2.29877 3.27189C2.06277 2.66489 2.65477 2.08389 3.24077 2.28989L3.33377 2.32989L21.3338 11.3299C21.4496 11.3879 21.5485 11.475 21.6207 11.5826C21.6929 11.6902 21.7359 11.8147 21.7457 11.9439C21.7555 12.0731 21.7316 12.2027 21.6764 12.3199C21.6212 12.4372 21.5366 12.5381 21.4308 12.6129L21.3338 12.6709L3.33377 21.6709C2.75077 21.9619 2.11677 21.4269 2.26877 20.8239L2.29877 20.7279L5.69377 11.9999L2.29877 3.27189L5.69377 11.9999ZM4.40177 4.53989L7.01177 11.2499H13.6388C13.82 11.2499 13.9951 11.3155 14.1317 11.4347C14.2683 11.5538 14.3571 11.7183 14.3818 11.8979L14.3888 11.9999C14.3887 12.1813 14.323 12.3565 14.2036 12.4931C14.0843 12.6297 13.9195 12.7185 13.7398 12.7429L13.6388 12.7499H7.00977L4.40077 19.4599L19.3218 11.9999L4.40077 4.53989H4.40177Z"
+                fill="#6366F1"
+              />
+            </svg>
+          </button>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 

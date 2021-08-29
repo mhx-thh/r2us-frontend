@@ -13,6 +13,11 @@ export const getServerSideProps: GetServerSideProps = async (params) => {
   const res = await NewClassAPI.getGroup(temp);
   const moreRes = await GroupAPI.getResources();
 
+  params.res.setHeader(
+    "Cache-control",
+    "public, s-maxage=10, stale-while-revalidate=10"
+  );
+
   return {
     props: {
       status: res.data.status,
@@ -76,6 +81,12 @@ const Item = function (props: propApi) {
     updateAt: initProps.updatedAt,
   };
 
+  const Id = {
+    schoolyear: initProps.academicId.schoolyear,
+    courseName: initProps.courseId.courseName,
+    instructorName: initProps.instructorId.instructorName,
+    className: initProps.className,
+  };
   const router = useRouter();
   const path = router.asPath;
   const title = `R2us | ${initProps.className}`;
@@ -87,7 +98,7 @@ const Item = function (props: propApi) {
         <Title data={initTitle} />
         <Sidebar param={path} id={initProps.slug} />
         <hr></hr>
-        <DocumentPage document={props.document} />
+        <DocumentPage document={props.document} id={Id} />
       </LayoutClass>
     );
   }
