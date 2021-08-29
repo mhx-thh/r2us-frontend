@@ -6,7 +6,7 @@ const GroupAPI = {
     return get(url, "");
   },
   getGroup: function (id: string) {
-    const url = `${apiV1}/groups/class/${id}`;
+    const url = `${apiV1}/groups/class?${id}`;
     return get(url, "");
   },
   getInstructors: function () {
@@ -26,7 +26,7 @@ const GroupAPI = {
     return get(url, "");
   },
   getResource: function (id: string) {
-    const url = `${apiV1}/groups/resources/${id}`;
+    const url = `${apiV1}/groups/resources?${id}`;
     return get(url, "");
   },
   getReviews: function () {
@@ -34,7 +34,7 @@ const GroupAPI = {
     return get(url, "");
   },
   getReview: function (id: string) {
-    const url = `${apiV1}/groups/reviews/${id}`;
+    const url = `${apiV1}/groups/reviews?${id}`;
     return get(url, "");
   },
   patchResource: function (data: any, id: string, token: string) {

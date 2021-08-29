@@ -1,18 +1,19 @@
 import React from "react";
-import  ResourceItem from "components/Resource/ResourceItem";
+import GroupItem from "components/Group/GroupItem";
 
 type TypeDoc = {
-  resource: any;
+  group: any;
 }
 
-function Documents({resource}:TypeDoc) {
+function Groups({group}:TypeDoc) {
+  console.log("props:" ,group)
   return (
     <div>
       <div className="grid lg:grid-cols-4 gap-12 md:grid-cols-3 sm:grid-cols-2 px-24 py-10">
-        {resource.map((data,index)=>{
+        {group.map((data: any,index: React.Key)=>{
           console.log("data:",data)
           return(
-            <ResourceItem key={index} aresource={data} />)
+            <GroupItem key={index} agroup={data} />)
             console.log("data:",data)
         })}
       </div>
@@ -20,4 +21,4 @@ function Documents({resource}:TypeDoc) {
   );
 }
   
-export default Documents;
+export default Groups;
