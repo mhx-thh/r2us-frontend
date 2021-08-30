@@ -1,15 +1,13 @@
-import userApi from "api/userApi";
-import Footer from "components/footer/FooterComponent";
-import MetaLayout from "components/layout/MegaLayout";
-import ReviewPage from "components/user/page/review/reviewpage";
-import Sidebar from "components/user/Sidebar/UserSidebar";
-import UserHeader from "components/user/userheader/header";
-import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { useAppSelector } from "redux/hooks";
-import { selectToken, selectUser } from "redux/userSlice";
+import LayoutUser from "components/layout/layoutUser";
+import ReviewPage from "components/user/page/review/reviewpage";
 
-const User = function () {
+import { useAppSelector } from "redux/hooks";
+import { selectToken } from "redux/userSlice";
+
+import userApi from "api/userApi";
+
+const User = function (props) {
   const token = useAppSelector(selectToken);
   const [myReview, setMyReview] = useState([]);
   useEffect(() => {
@@ -24,18 +22,10 @@ const User = function () {
     }
     fetchMyReview();
   }, []);
-  const user = useAppSelector(selectUser);
-  const router = useRouter();
-  const path = router.asPath;
-  const title = `R2us | ${user.familyName} ${user.givenName}`;
   return (
-    <MetaLayout title={title} desc="User" icon="icons/logo.svg">
-      <UserHeader user={user} />
-      <Sidebar param={path} />
-      <hr></hr>
+    <LayoutUser>
       <ReviewPage />;
-      <Footer />
-    </MetaLayout>
+    </LayoutUser>
   );
 };
 
