@@ -1,6 +1,6 @@
 import userApi from "api/userApi";
-import CreateGroup from "components/class/CreateGroup/createGroup";
 import PopUp from "components/class/PopUp/popup";
+import GroupCreateModal from "components/Group/GroupCreateModal";
 import GroupItem from "components/Group/GroupItem";
 import React, { useEffect, useState } from "react";
 import { useAppSelector } from "redux/hooks";
@@ -66,7 +66,7 @@ const GroupPage = function ({ data, user }: any) {
         </div>
         {isCreated === true && (
           <PopUp closepopup={setIsCreated}>
-            <CreateGroup data={data} />
+            <GroupCreateModal data={data} />
           </PopUp>
         )}
       </div>
