@@ -1,6 +1,7 @@
 .page{
     padding-left: 100px;
     padding-right: 100px;
+    padding-bottom: 20px;
 }
 .grid{
     display: grid;
@@ -12,7 +13,7 @@
 }
 .field__m{
     flex-grow: 1;
-    padding-top: 120px;
+    padding-top: 75px;
 }
 .field__text{
     font-style: normal;
@@ -48,13 +49,13 @@
 
 .title{
     grid-column: 8 / span 4;
-    padding-top: 147px;
+    padding-top: 115px;
 }
 .title__input{
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     justify-content: center;
-    padding-bottom: 20px;
+    padding-bottom: 35px;
 }
 .title__m{
     flex-grow: 1;
@@ -71,7 +72,6 @@
 .pbutton{
     display: flex;
     grid-column: 1 / span 4;
-    height: 100%;
     align-items: center;
     justify-content: center;
 }
@@ -82,7 +82,6 @@
     border-radius: 8px;
     width: 125px;
     height: 44px;
-
     font-style: normal;
     font-weight: 600;
     font-size: 20px;

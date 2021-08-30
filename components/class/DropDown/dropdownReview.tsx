@@ -1,17 +1,15 @@
-import GroupAPI from "api/groupAPI";
 import React, { useEffect, useRef, useState } from "react";
-import { useAppSelector } from "redux/hooks";
-import { selectToken } from "redux/userSlice";
 import EditReview from "../EditReview";
 import PopUp from "../PopUp/popup";
 
-type AppProps = {
-  close: any;
-  data: any;
-};
+import GroupAPI from "api/groupAPI";
 
-function DropdownReview({ close, data }: AppProps) {
+import { useAppSelector } from "redux/hooks";
+import { selectToken } from "redux/userSlice";
+
+function DropdownReview({ close, data }: any) {
   const token = useAppSelector(selectToken);
+
   const useClickOutside = (handler) => {
     const ref = useRef(null);
     useEffect(() => {
@@ -27,17 +25,20 @@ function DropdownReview({ close, data }: AppProps) {
     });
     return ref;
   };
-  console.log(data);
+
   const ref = useClickOutside(() => {
     close(0);
   });
+
   const [update, setUpdate] = useState(false);
-  const handleUpdate = () => {
+  const ClickUpdate = () => {
     setUpdate(true);
   };
+
   const ClickDelete = () => {
     GroupAPI.deleteReview(data.id, token);
   };
+
   return (
     <div ref={ref} className="absolute my-8 -mx-24">
       <ul className="w-28  h-28 text-base leading-6 font-normal shadow rounded-xl py-1">
@@ -48,12 +49,12 @@ function DropdownReview({ close, data }: AppProps) {
           <button onClick={ClickDelete}>Xóa</button>
         </li>
         <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200">
-          <button onClick={handleUpdate}>Chỉnh sửa</button>
+          <button onClick={ClickUpdate}>Chỉnh sửa</button>
         </li>
       </ul>
-      {update && (
+      {update === true && (
         <PopUp closepopup={close}>
-          <EditReview ereview={data} />
+          <EditReview review={data} />
         </PopUp>
       )}
     </div>

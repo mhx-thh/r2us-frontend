@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Member from "./member";
 import style from "./style.module.css";
 
-const MemberSection = function (props: { name: string }) {
-  const [open, setOpen] = useState(false);
-  const clickDropdown = () => {
-    setOpen(!!!open);
-  };
+type AppProps = {
+  name: string;
+};
+
+const MemberSection = function (props: AppProps) {
   return (
     <div className={style.section}>
       {/* Head */}
