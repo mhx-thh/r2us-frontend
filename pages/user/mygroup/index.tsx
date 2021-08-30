@@ -26,7 +26,7 @@ export const getServerSideProps: GetServerSideProps = async (params) => {
   return {
     props: {
       schoolyear: schoolyear.data.data,
-      falcuty: falcuty.data.data,
+      faculty: falcuty.data.data,
       course: course.data.data,
       teacher: teacher.data,
     },

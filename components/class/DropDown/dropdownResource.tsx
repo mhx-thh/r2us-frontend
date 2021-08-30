@@ -1,9 +1,11 @@
-import GroupAPI from "api/groupAPI";
 import React, { useEffect, useRef, useState } from "react";
-import { useAppSelector } from "redux/hooks";
-import { selectToken } from "redux/userSlice";
 import EditResource from "../EditResource";
 import PopUp from "../PopUp/popup";
+
+import GroupAPI from "api/groupAPI";
+
+import { useAppSelector } from "redux/hooks";
+import { selectToken } from "redux/userSlice";
 
 type AppProps = {
   close: any;
@@ -11,6 +13,8 @@ type AppProps = {
 };
 
 function DropdownResource({ close, data }: AppProps) {
+  console.log("close", close);
+  console.log("data", data);
   const token = useAppSelector(selectToken);
   const useClickOutside = (handler) => {
     const ref = useRef(null);
