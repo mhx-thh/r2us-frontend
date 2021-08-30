@@ -7,15 +7,9 @@ import GroupAPI from "api/groupAPI";
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 
-type AppProps = {
-  close: any;
-  data: any;
-};
-
-function DropdownResource({ close, data }: AppProps) {
-  console.log("close", close);
-  console.log("data", data);
+function DropdownResource({ close, data }: any) {
   const token = useAppSelector(selectToken);
+
   const useClickOutside = (handler) => {
     const ref = useRef(null);
     useEffect(() => {
@@ -31,16 +25,20 @@ function DropdownResource({ close, data }: AppProps) {
     });
     return ref;
   };
+
   const ref = useClickOutside(() => {
     close(0);
   });
+
   const [update, setUpdate] = useState(false);
   const handleUpdate = () => {
     setUpdate(true);
   };
+
   const ClickDelete = () => {
     GroupAPI.deleteResource(data.id, token);
   };
+
   return (
     <div ref={ref} className="absolute my-8 -mx-24">
       <ul className="w-28  h-28 text-base leading-6 font-normal shadow rounded-xl py-1 bg-white">
@@ -60,9 +58,9 @@ function DropdownResource({ close, data }: AppProps) {
           <button onClick={handleUpdate}>Chỉnh sửa</button>
         </li>
       </ul>
-      {update && (
+      {update === true && (
         <PopUp closepopup={close}>
-          <EditResource eresource={data} />
+          <EditResource resource={data} />
         </PopUp>
       )}
     </div>
