@@ -2,39 +2,25 @@ import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
-import { useAppDispatch } from "redux/hooks";
-import { getInfoAsync } from "redux/userSlice";
-// import UserHeader from "../userheader/header";
-import Sidebar from "../Sidebar/UserSidebar";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { getInfoAsync, selectUser } from "redux/userSlice";
+import Footer from "components/footer/FooterComponent";
+import UserHeader from "components/user/userheader/header";
+import Sidebar from "components/user/Sidebar/UserSidebar";
 
 interface Props {
-  title: string;
-  desc: string;
-  icon: string;
   children: React.ReactNode;
 }
 
-const LayoutUser = ({ title, desc, icon, children }: Props) => {
+const LayoutUser = ({ children }: Props) => {
+  const user = useAppSelector(selectUser);
   const router = useRouter();
-  //   const dispatch = useAppDispatch();
-  //   useEffect(() => {
-  //     const token = localStorage.getItem("token");
-  //     const { pathname } = router;
-  //     if (pathname === "/login/cb" || pathname === "/login") return;
-  //     if (!token) {
-  //       Swal.fire({
-  //         timer: 2000,
-  //         icon: "warning",
-  //         title: "Chưa đăng nhập",
-  //         text: "Bạn chưa từng đăng nhập vào hệ thống nè",
-  //       });
-  //       return;
-  //     }
-  //     dispatch(getInfoAsync(token));
-  //   }, []);
   const url = process.env.NEXT_PUBLIC_WEB_URL;
   const path = router.asPath;
-  // TODO replace logo svg
+
+  const title = `R2us | ${user.familyName} ${user.givenName}`;
+  const desc = "user";
+  const icon = "icons/logo.svg";
 
   return (
     <React.Fragment>
@@ -52,10 +38,11 @@ const LayoutUser = ({ title, desc, icon, children }: Props) => {
         <link rel="canonical" href={`${url}${path}`} />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      {/* <UserHeader param={path} /> */}
-      <Sidebar param="asfd" />
+      <UserHeader user={user} />
+      <Sidebar param={path} />
+      <hr></hr>
       {children}
-      {/* <Footer /> */}
+      <Footer />
     </React.Fragment>
   );
 };
