@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+
 import Head from "next/head";
 import { useRouter } from "next/router";
-import Swal from "sweetalert2";
+
+import { checkIsAdminAsync } from "redux/adminSlice";
 import { useAppDispatch } from "redux/hooks";
 import { getInfoAsync } from "redux/userSlice";
-import { checkIsAdminAsync } from "redux/adminSlice";
-import Footer from "components/footer/FooterComponent";
+
+import Swal from "sweetalert2";
 
 interface Props {
   title: string;
@@ -17,6 +19,7 @@ interface Props {
 const MetaLayout = ({ title, desc, icon, children }: Props) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     const { pathname } = router;
@@ -33,9 +36,9 @@ const MetaLayout = ({ title, desc, icon, children }: Props) => {
     dispatch(getInfoAsync(token));
     dispatch(checkIsAdminAsync(token));
   }, []);
+
   const url = process.env.NEXT_PUBLIC_WEB_URL;
   const path = router.asPath;
-  // TODO replace logo svg
 
   return (
     <React.Fragment>

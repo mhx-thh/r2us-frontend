@@ -1,7 +1,7 @@
 import React from "react";
 import { GetServerSideProps } from "next";
 
-import LayoutUser from "components/layout/layoutUser";
+import LayoutUser from "components/layout/UserLayout";
 import GroupPage from "components/user/page/mygroup/mygrouppage";
 
 import { useAppSelector } from "redux/hooks";

@@ -1,24 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+
 import Head from "next/head";
 import { useRouter } from "next/router";
-import Swal from "sweetalert2";
-import { useAppDispatch, useAppSelector } from "redux/hooks";
-import { getInfoAsync, selectUser } from "redux/userSlice";
-import Footer from "components/footer/FooterComponent";
-import UserHeader from "components/user/userheader/header";
-import Sidebar from "components/user/Sidebar/UserSidebar";
+
+import { useAppSelector } from "redux/hooks";
+import { selectUser } from "redux/userSlice";
 
 interface Props {
   children: React.ReactNode;
 }
 
-const LayoutUser = ({ children }: Props) => {
+const LayoutClass = ({ children }: Props) => {
   const user = useAppSelector(selectUser);
+
   const router = useRouter();
   const url = process.env.NEXT_PUBLIC_WEB_URL;
   const path = router.asPath;
 
-  const title = `R2us | ${user.familyName} ${user.givenName}`;
+  const title = `R2us | ${user.familyname} ${user.givenName}`;
   const desc = "user";
   const icon = "icons/logo.svg";
 
@@ -38,13 +37,9 @@ const LayoutUser = ({ children }: Props) => {
         <link rel="canonical" href={`${url}${path}`} />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <UserHeader user={user} />
-      <Sidebar param={path} />
-      <hr></hr>
       {children}
-      <Footer />
     </React.Fragment>
   );
 };
 
-export default LayoutUser;
+export default LayoutClass;

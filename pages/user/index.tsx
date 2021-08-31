@@ -2,7 +2,7 @@ import React from "react";
 import { useRouter } from "next/router";
 
 import UserPage from "components/user/userpage/userpage";
-import LayoutUser from "components/layout/layoutUser";
+import LayoutUser from "components/layout/UserLayout";
 
 import { useAppSelector } from "redux/hooks";
 import { selectUser } from "redux/userSlice";

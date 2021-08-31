@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import LayoutUser from "components/layout/layoutUser";
+import LayoutUser from "components/layout/UserLayout";
 import ReviewPage from "components/user/page/review/reviewpage";
 
 import { useAppSelector } from "redux/hooks";

@@ -1,12 +1,15 @@
-import LayoutClass from "components/layout/layoutClass";
-import React, { useEffect, useState } from "react";
+import React from "react";
+
+import GroupAPI from "api/groupAPI";
+import NewClassAPI from "api/NewClassAPI";
+
+import ReviewPage from "components/class/page/reviewpage/reviewpage";
 import Sidebar from "components/class/Sidebar/Sidebar";
 import Title from "components/class/Title/Title";
-import NewClassAPI from "api/NewClassAPI";
+import LayoutClass from "components/layout/ClassLayout";
+
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import ReviewPage from "components/class/page/reviewpage/reviewpage";
-import GroupAPI from "api/groupAPI";
 
 export const getServerSideProps: GetServerSideProps = async (params) => {
   const temp = params.params.slug.toString();
@@ -20,9 +23,9 @@ export const getServerSideProps: GetServerSideProps = async (params) => {
 
   return {
     props: {
-      status: res.data.status,
-      data: res.data.data,
-      review: rev.data.data,
+      status: res?.data?.status,
+      data: res?.data?.data,
+      review: rev?.data?.data,
     },
   };
 };
@@ -63,6 +66,7 @@ type propApi = {
 };
 
 const Item = function (props: propApi) {
+  console.log(props.review);
   const initProps = props.data;
   const initTitle = {
     academicId: {

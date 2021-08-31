@@ -1,7 +1,7 @@
 import React from "react";
 import { GetServerSideProps } from "next";
 
-import LayoutUser from "components/layout/layoutUser";
+import LayoutUser from "components/layout/UserLayout";
 import DocumentPage from "components/user/page/document/documentpage";
 
 import AcademicAPI from "api/academicApi";

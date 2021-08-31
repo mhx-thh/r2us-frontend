@@ -2,7 +2,7 @@ import GroupAPI from "api/groupAPI";
 import DocumentPage from "components/class/page/documentpage/documentpage";
 import Sidebar from "components/class/Sidebar/Sidebar";
 import Title from "components/class/Title/Title";
-import LayoutClass from "components/layout/layoutClass";
+import LayoutClass from "components/layout/ClassLayout";
 import { GetServerSideProps, GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import React from "react";

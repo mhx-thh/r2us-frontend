@@ -44,10 +44,11 @@ type AppProps = {
 };
 
 const InformationPage = function (props: AppProps) {
+  console.log(props.data);
   const token = useAppSelector(selectToken);
 
   const ClickEnroll = () => {
-    userApi.postEnroll(props.data, token);
+    userApi.postEnroll(props.data._id, token);
   };
 
   return (
