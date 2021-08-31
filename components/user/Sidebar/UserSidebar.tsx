@@ -34,9 +34,7 @@ function Sidebar(props: { param: string }) {
         <div key={val.Title} className="flex">
           <button
             className={
-              props.param === val.Link
-                ? style.button_highlight
-                : style.button_normal
+              props.param === val.Link ? style.button__highlight : style.button
             }
           >
             <Link href={val.Link}>

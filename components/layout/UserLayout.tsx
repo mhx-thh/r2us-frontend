@@ -42,6 +42,7 @@ const LayoutUser = ({ children }: Props) => {
       </Head>
       <UserHeader user={user} />
       <Sidebar param={path} />
+      <div className="h-[12px]"></div>
       <hr></hr>
       {children}
       <Footer />

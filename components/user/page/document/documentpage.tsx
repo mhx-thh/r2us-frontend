@@ -6,12 +6,13 @@ import ResourceItem from "components/Resource/ResourceItem";
 import style from "./style.module.css";
 
 import { useAppSelector } from "redux/hooks";
-import { selectToken } from "redux/userSlice";
+import { selectStatus, selectToken } from "redux/userSlice";
 
 import userApi from "api/userApi";
 
 const DocumentPage = function (props: any) {
   const token = useAppSelector(selectToken);
+  const status = useAppSelector(selectStatus);
 
   const [create, setCreate] = useState(false);
   const handleClick = () => {
@@ -22,7 +23,6 @@ const DocumentPage = function (props: any) {
   useEffect(() => {
     async function getData() {
       try {
-        console.log(token);
         const res = await userApi.getMyResources(token);
         const data = res?.data?.data?.result;
         setData(data);
@@ -30,8 +30,10 @@ const DocumentPage = function (props: any) {
         console.log(error.message);
       }
     }
-    getData();
-  }, []);
+    if (status === "logined") {
+      getData();
+    }
+  }, [status]);
 
   return (
     <div className={style.page}>
@@ -68,7 +70,9 @@ const DocumentPage = function (props: any) {
         {/* Document */}
         <div className={style.documentsection}>
           {data.map((val, key) => (
-            <ResourceItem aresource={val} key={key} />
+            <div className="px-[25px] py-[15px]" key={key}>
+              <ResourceItem aresource={val} key={key} />
+            </div>
           ))}
         </div>
       </div>

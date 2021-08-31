@@ -1,15 +1,23 @@
-import userApi from "api/userApi";
+import React, { useEffect, useState } from "react";
+
 import CreateReview from "components/class/CreateReview/createReview";
 import PopUp from "components/class/PopUp/popup";
 import ReviewItem from "components/Review/ReviewItem";
-import React, { useEffect, useState } from "react";
+import style from "./style.module.css";
+
 import { useAppSelector } from "redux/hooks";
 import { selectStatus, selectToken } from "redux/userSlice";
-import style from "./style.module.css";
+
+import userApi from "api/userApi";
 
 const ReviewPage = function (props: any) {
   const token = useAppSelector(selectToken);
   const status = useAppSelector(selectStatus);
+
+  const [create, setCreate] = useState(false);
+  const handleClick = () => {
+    setCreate(true);
+  };
 
   const [data, setData] = useState([]);
   useEffect(() => {
@@ -26,11 +34,6 @@ const ReviewPage = function (props: any) {
       getMyReviews();
     }
   }, [status]);
-
-  const [create, setCreate] = useState(false);
-  const handleClick = () => {
-    setCreate(true);
-  };
 
   return (
     <div className={style.page}>
@@ -67,7 +70,9 @@ const ReviewPage = function (props: any) {
         {/* Document */}
         <div className={style.documentsection}>
           {data.map((val, key) => (
-            <ReviewItem areview={val} key={key} />
+            <div className="px-[25px] py-[15px]" key={key}>
+              <ReviewItem areview={val} />
+            </div>
           ))}
         </div>
       </div>

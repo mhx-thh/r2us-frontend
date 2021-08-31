@@ -1,19 +1,24 @@
-import userApi from "api/userApi";
+import React, { useEffect, useState } from "react";
+
 import PopUp from "components/class/PopUp/popup";
 import GroupCreateModal from "components/Group/GroupCreateModal";
 import GroupItem from "components/Group/GroupItem";
-import React, { useEffect, useState } from "react";
-import { useAppSelector } from "redux/hooks";
-import { selectToken } from "redux/userSlice";
 import style from "./style.module.css";
 
-const GroupPage = function ({ data, user }: any) {
+import { useAppSelector } from "redux/hooks";
+import { selectStatus, selectToken } from "redux/userSlice";
+
+import userApi from "api/userApi";
+
+const GroupPage = function (props: any) {
   const token = useAppSelector(selectToken);
+  const status = useAppSelector(selectStatus);
+
   const [isCreated, setIsCreated] = useState(false);
   const handleClick = function () {
     setIsCreated(!isCreated);
   };
-  // const userRole = "admin";
+
   const [myClass, setMyClass] = useState([]);
   useEffect(() => {
     async function fetchMyClass() {
@@ -25,8 +30,11 @@ const GroupPage = function ({ data, user }: any) {
         console.log(error.message);
       }
     }
-    fetchMyClass();
-  }, []);
+    if (status === "logined") {
+      fetchMyClass();
+    }
+  }, [status]);
+
   return (
     <div className={style.page}>
       <div>
@@ -61,12 +69,14 @@ const GroupPage = function ({ data, user }: any) {
         {/* Group */}
         <div className={style.groupsection}>
           {myClass.map((val, key) => (
-            <GroupItem key={key} agroup={val.classId} />
+            <div className="px-[25px] py-[15px]" key={key}>
+              <GroupItem key={key} agroup={val.classId} />
+            </div>
           ))}
         </div>
         {isCreated === true && (
           <PopUp closepopup={setIsCreated}>
-            <GroupCreateModal data={data} />
+            <GroupCreateModal data={props.props} />
           </PopUp>
         )}
       </div>

@@ -37,7 +37,7 @@ const User = function (props: AppProps) {
   const user = useAppSelector(selectUser);
   return (
     <LayoutUser>
-      <GroupPage data={props} user={user} />
+      <GroupPage props={props} />
     </LayoutUser>
   );
 };
