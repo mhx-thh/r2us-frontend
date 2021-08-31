@@ -1,28 +1,12 @@
-import LayoutClass from "components/layout/ClassLayout";
-import React, { useEffect, useState } from "react";
-import Sidebar from "components/class/Sidebar/Sidebar";
-import Title from "components/class/Title/Title";
+import React from "react";
+
 import NewClassAPI from "api/NewClassAPI";
+
+import MemberPage from "components/class/page/member/memberpage";
+import LayoutClass from "components/layout/ClassLayout";
+
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import MemberPage from "components/class/page/member/memberpage";
-
-export const getServerSideProps: GetServerSideProps = async (params) => {
-  const temp = params.params.slug.toString();
-  const res = await NewClassAPI.getGroup(temp);
-
-  params.res.setHeader(
-    "Cache-control",
-    "public, s-maxage=10, stale-while-revalidate=10"
-  );
-
-  return {
-    props: {
-      status: res.data.status,
-      data: res.data.data,
-    },
-  };
-};
 
 type propApi = {
   status: string;
@@ -56,6 +40,23 @@ type propApi = {
   };
 };
 
+export const getServerSideProps: GetServerSideProps = async (params) => {
+  const temp = params.params.slug.toString();
+  const res = await NewClassAPI.getGroup(temp);
+
+  params.res.setHeader(
+    "Cache-control",
+    "public, s-maxage=10, stale-while-revalidate=10"
+  );
+
+  return {
+    props: {
+      status: res.data.status,
+      data: res.data.data,
+    },
+  };
+};
+
 const Item = function (props: propApi) {
   const initProps = props.data;
 
@@ -74,19 +75,15 @@ const Item = function (props: propApi) {
       instructorName: initProps.instructorId.instructorName,
     },
     updateAt: initProps.updatedAt,
+    slug: initProps.slug,
   };
 
   const router = useRouter();
-  const path = router.asPath;
-  const title = `R2us | ${initProps.className}`;
   if (router.isFallback) {
     return <div>Loading...</div>;
   } else {
     return (
-      <LayoutClass title={title} desc="ClassPage" icon="icons/logo.svg">
-        <Title data={initTitle} />
-        <Sidebar param={path} id={initProps.slug} />
-        <hr></hr>
+      <LayoutClass initTitle={initTitle}>
         <MemberPage />
       </LayoutClass>
     );

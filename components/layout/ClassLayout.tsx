@@ -5,19 +5,22 @@ import { useRouter } from "next/router";
 
 import { useAppSelector } from "redux/hooks";
 import { selectUser } from "redux/userSlice";
+import Title from "components/class/Title/Title";
+import Sidebar from "components/class/Sidebar/Sidebar";
 
 interface Props {
   children: React.ReactNode;
+  initTitle: any;
 }
 
-const LayoutClass = ({ children }: Props) => {
+const LayoutClass = ({ initTitle, children }: Props) => {
   const user = useAppSelector(selectUser);
 
   const router = useRouter();
   const url = process.env.NEXT_PUBLIC_WEB_URL;
   const path = router.asPath;
 
-  const title = `R2us | ${user.familyname} ${user.givenName}`;
+  const title = `R2us | ${user.familyName} ${user.givenName}`;
   const desc = "user";
   const icon = "icons/logo.svg";
 
@@ -37,6 +40,9 @@ const LayoutClass = ({ children }: Props) => {
         <link rel="canonical" href={`${url}${path}`} />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
+      <Title data={initTitle} />
+      <Sidebar param={path} id={initTitle.slug} />
+      <hr></hr>
       {children}
     </React.Fragment>
   );

@@ -1,48 +1,12 @@
-import GroupAPI from "api/groupAPI";
-import InformationPage from "components/class/page/information/InformationPage";
-import Sidebar from "components/class/Sidebar/Sidebar";
-import Title from "components/class/Title/Title";
-import LayoutClass from "components/layout/ClassLayout";
-import { GetServerSideProps } from "next";
-import { useRouter } from "next/router";
 import React from "react";
 
-export const getServerSideProps: GetServerSideProps = async (params) => {
-  const temp = params.params.slug.toString();
-  const res = await GroupAPI.getGroup(temp);
+import GroupAPI from "api/groupAPI";
 
-  params.res.setHeader(
-    "Cache-control",
-    "public, s-maxage=10, stale-while-revalidate=10"
-  );
+import InformationPage from "components/class/page/information/InformationPage";
+import LayoutClass from "components/layout/ClassLayout";
 
-  return {
-    props: {
-      status: res.data.status,
-      data: res.data.data,
-    },
-  };
-};
-
-// export const getStaticPaths: GetStaticPaths = async () => {
-//   const res = await GroupAPI.getGroups();
-//   const paths = res.data.data.result.map((path) => ({
-//     params: { slug: path.slug },
-//   }));
-//   return { paths: paths, fallback: "blocking" };
-// };
-
-// export const getStaticProps: GetStaticProps = async (params) => {
-//   const temp = params.params.slug.toString();
-//   const res = await GroupAPI.getGroup(temp);
-//   return {
-//     props: {
-//       status: res.data.status,
-//       data: res.data.data,
-//       revalidate: 10,
-//     },
-//   };
-// };
+import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
 
 type propApi = {
   status: string;
@@ -77,8 +41,26 @@ type propApi = {
   };
 };
 
+export const getServerSideProps: GetServerSideProps = async (params) => {
+  const temp = params.params.slug.toString();
+  const res = await GroupAPI.getGroup(temp);
+
+  params.res.setHeader(
+    "Cache-control",
+    "public, s-maxage=10, stale-while-revalidate=10"
+  );
+
+  return {
+    props: {
+      status: res.data.status,
+      data: res.data.data,
+    },
+  };
+};
+
 const Item = function (props: propApi) {
   const initProps = props.data;
+
   const initTitle = {
     academicId: {
       schoolyear: initProps.academicId.schoolyear,
@@ -94,18 +76,16 @@ const Item = function (props: propApi) {
       instructorName: initProps.instructorId.instructorName,
     },
     updateAt: props.data.updatedAt,
+    slug: initProps.slug,
   };
+
   const router = useRouter();
+
   if (router.isFallback) {
     return <div>Loading...</div>;
   } else {
-    const path = router.asPath;
-    const title = `R2us | ${initProps.className}`;
     return (
-      <LayoutClass title={title} desc="ClassPage" icon="icons/logo.svg">
-        <Title data={initTitle} />
-        <Sidebar param={path} id={initProps.slug} />
-        <hr></hr>
+      <LayoutClass initTitle={initTitle}>
         <InformationPage data={props.data} />;
       </LayoutClass>
     );

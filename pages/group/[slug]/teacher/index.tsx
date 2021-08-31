@@ -1,12 +1,19 @@
-import LayoutClass from "components/layout/ClassLayout";
-import React, { useEffect, useState } from "react";
-import Sidebar from "components/class/Sidebar/Sidebar";
-import Title from "components/class/Title/Title";
+import React from "react";
+
+import GroupAPI from "api/groupAPI";
 import NewClassAPI from "api/NewClassAPI";
+
+import ReviewPage from "components/class/page/reviewpage/reviewpage";
+import LayoutClass from "components/layout/ClassLayout";
+
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import ReviewPage from "components/class/page/reviewpage/reviewpage";
-import GroupAPI from "api/groupAPI";
+
+type propApi = {
+  status: string;
+  data: any;
+  review: any;
+};
 
 export const getServerSideProps: GetServerSideProps = async (params) => {
   const temp = params.params.slug.toString();
@@ -27,43 +34,9 @@ export const getServerSideProps: GetServerSideProps = async (params) => {
   };
 };
 
-// type classType = {
-//   className: string;
-//   ratingsAverage: number;
-//   ratingsQuantity: number;
-//   nStudents: number;
-//   _id: string;
-//   instructorId: {
-//     _id: string;
-//     instructorName: string;
-//     id: string;
-//   };
-//   academicId: {
-//     schoolyear: string;
-//     semester: number;
-//   };
-//   courseId: {
-//     courseName: string;
-//     _id: string;
-//     facultyId: {
-//       facultyName: string;
-//       _id: string;
-//     };
-//   };
-//   createdAt: string;
-//   updatedAt: string;
-//   slug: string;
-//   __v: number;
-// };
-
-type propApi = {
-  status: string;
-  data: any;
-  review: any;
-};
-
 const Item = function (props: propApi) {
   const initProps = props.data;
+
   const initTitle = {
     academicId: {
       schoolyear: initProps.academicId.schoolyear,
@@ -79,6 +52,7 @@ const Item = function (props: propApi) {
       instructorName: initProps.instructorId.instructorName,
     },
     updateAt: initProps.updatedAt,
+    slug: initProps.slug,
   };
   const Id = {
     schoolyear: initProps.academicId.schoolyear,
@@ -88,16 +62,12 @@ const Item = function (props: propApi) {
   };
 
   const router = useRouter();
-  const path = router.asPath;
-  const title = `R2us | ${initProps.className}`;
+
   if (router.isFallback) {
     return <div>Loading...</div>;
   } else {
     return (
-      <LayoutClass title={title} desc="ClassPage" icon="icons/logo.svg">
-        <Title data={initTitle} />
-        <Sidebar param={path} id={initProps.slug} />
-        <hr></hr>
+      <LayoutClass initTitle={initTitle}>
         <ReviewPage data={props.review} id={Id} />
       </LayoutClass>
     );

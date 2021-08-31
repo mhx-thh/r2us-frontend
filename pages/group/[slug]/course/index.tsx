@@ -4,8 +4,6 @@ import GroupAPI from "api/groupAPI";
 import NewClassAPI from "api/NewClassAPI";
 
 import ReviewPage from "components/class/page/reviewpage/reviewpage";
-import Sidebar from "components/class/Sidebar/Sidebar";
-import Title from "components/class/Title/Title";
 import LayoutClass from "components/layout/ClassLayout";
 
 import { GetServerSideProps } from "next";
@@ -66,8 +64,8 @@ type propApi = {
 };
 
 const Item = function (props: propApi) {
-  console.log(props.review);
   const initProps = props.data;
+
   const initTitle = {
     academicId: {
       schoolyear: initProps.academicId.schoolyear,
@@ -83,24 +81,22 @@ const Item = function (props: propApi) {
       instructorName: initProps.instructorId.instructorName,
     },
     updateAt: initProps.updatedAt,
+    slug: initProps.slug,
   };
+
   const Id = {
     schoolyear: initProps.academicId.schoolyear,
     courseName: initProps.courseId.courseName,
     instructorName: initProps.instructorId.instructorName,
     className: initProps.className,
   };
+
   const router = useRouter();
-  const path = router.asPath;
-  const title = `R2us | ${initProps.className}`;
   if (router.isFallback) {
     return <div>Loading...</div>;
   } else {
     return (
-      <LayoutClass title={title} desc="ClassPage" icon="icons/logo.svg">
-        <Title data={initTitle} />
-        <Sidebar param={path} id={initProps.slug} />
-        <hr></hr>
+      <LayoutClass initTitle={initTitle}>
         <ReviewPage data={props.review} id={Id} />
       </LayoutClass>
     );

@@ -1,31 +1,13 @@
-import GroupAPI from "api/groupAPI";
-import NewClassAPI from "api/NewClassAPI";
-import DocumentPage from "components/class/page/documentpage/documentpage";
-import Sidebar from "components/class/Sidebar/Sidebar";
-import Title from "components/class/Title/Title";
-import LayoutClass from "components/layout/ClassLayout";
-import { GetServerSideProps } from "next";
-import { useRouter } from "next/router";
 import React from "react";
 
-export const getServerSideProps: GetServerSideProps = async (params) => {
-  const temp = params.params.slug.toString();
-  const res = await NewClassAPI.getGroup(temp);
-  const moreRes = await GroupAPI.getResources();
+import GroupAPI from "api/groupAPI";
+import NewClassAPI from "api/NewClassAPI";
 
-  params.res.setHeader(
-    "Cache-control",
-    "public, s-maxage=10, stale-while-revalidate=10"
-  );
+import DocumentPage from "components/class/page/documentpage/documentpage";
+import LayoutClass from "components/layout/ClassLayout";
 
-  return {
-    props: {
-      status: res.data.status,
-      data: res.data.data,
-      document: moreRes.data.data,
-    },
-  };
-};
+import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
 
 type classType = {
   className: string;
@@ -62,8 +44,28 @@ type propApi = {
   document: any;
 };
 
+export const getServerSideProps: GetServerSideProps = async (params) => {
+  const temp = params.params.slug.toString();
+  const res = await NewClassAPI.getGroup(temp);
+  const moreRes = await GroupAPI.getResources();
+
+  params.res.setHeader(
+    "Cache-control",
+    "public, s-maxage=10, stale-while-revalidate=10"
+  );
+
+  return {
+    props: {
+      status: res.data.status,
+      data: res.data.data,
+      document: moreRes.data.data,
+    },
+  };
+};
+
 const Item = function (props: propApi) {
   const initProps = props.data;
+
   const initTitle = {
     academicId: {
       schoolyear: initProps.academicId.schoolyear,
@@ -79,6 +81,7 @@ const Item = function (props: propApi) {
       instructorName: initProps.instructorId.instructorName,
     },
     updateAt: initProps.updatedAt,
+    slug: initProps.slug,
   };
 
   const Id = {
@@ -87,17 +90,14 @@ const Item = function (props: propApi) {
     instructorName: initProps.instructorId.instructorName,
     className: initProps.className,
   };
+
   const router = useRouter();
-  const path = router.asPath;
-  const title = `R2us | ${initProps.className}`;
+
   if (router.isFallback) {
     return <div>Loading...</div>;
   } else {
     return (
-      <LayoutClass title={title} desc="ClassPage" icon="icons/logo.svg">
-        <Title data={initTitle} />
-        <Sidebar param={path} id={initProps.slug} />
-        <hr></hr>
+      <LayoutClass initTitle={initTitle}>
         <DocumentPage document={props.document} id={Id} />
       </LayoutClass>
     );
