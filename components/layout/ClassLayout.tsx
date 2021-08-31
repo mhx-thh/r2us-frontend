@@ -5,15 +5,17 @@ import { useRouter } from "next/router";
 
 import { useAppSelector } from "redux/hooks";
 import { selectUser } from "redux/userSlice";
-import Title from "components/class/Title/Title";
 import Sidebar from "components/class/Sidebar/Sidebar";
+import { titleGroup } from "lib/models";
+import Title from "components/class/Title/Title";
 
 interface Props {
+  initTitle: titleGroup;
   children: React.ReactNode;
-  initTitle: any;
+  role: string;
 }
 
-const LayoutClass = ({ initTitle, children }: Props) => {
+const LayoutClass = (props: Props) => {
   const user = useAppSelector(selectUser);
 
   const router = useRouter();
@@ -23,7 +25,6 @@ const LayoutClass = ({ initTitle, children }: Props) => {
   const title = `R2us | ${user.familyName} ${user.givenName}`;
   const desc = "user";
   const icon = "icons/logo.svg";
-
   return (
     <React.Fragment>
       <Head>
@@ -40,10 +41,10 @@ const LayoutClass = ({ initTitle, children }: Props) => {
         <link rel="canonical" href={`${url}${path}`} />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <Title data={initTitle} />
-      <Sidebar param={path} id={initTitle.slug} />
+      <Title initTitle={props.initTitle} role={props.role} />
+      <Sidebar param={path} id={props.initTitle.slug} />
       <hr></hr>
-      {children}
+      {props.children}
     </React.Fragment>
   );
 };

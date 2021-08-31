@@ -3,44 +3,7 @@ import DropdownReview from "components/class/DropDown/dropdownReview";
 import ReviewItem from "components/Review/ReviewItem";
 
 import style from "./style.module.css";
-
-type ReviewType = {
-  reviewType: string;
-  reviewTitle: string;
-  review: string;
-  _id: string;
-  userId: {
-    _id: string;
-    givenName: string;
-    familyName: string;
-    photo: string;
-  };
-  classId: {
-    className: string;
-    _id: string;
-    courseId: {
-      courseName: string;
-      _id: string;
-      facultyId: {
-        facultyName: string;
-        _id: string;
-      };
-    };
-    academicId: {
-      _id: string;
-      schoolyear: string;
-      semester: number;
-    };
-    instructorId: {
-      _id: string;
-      instructorName: string;
-      id: string;
-    };
-  };
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-};
+import { ReviewType } from "lib/models";
 
 type AppProps = {
   reviewData: ReviewType;
@@ -68,15 +31,16 @@ const Review = function (props: AppProps) {
 };
 
 const ReviewPage = function ({ data, id }: any) {
+  console.log(data);
   return (
     <div className={style.page}>
       <div>
         {/* Button Share Review */}
         <div className={style.buttonarea}>
-          <button className={style.button}>
-            <div className={style.button__text}>Chia sẻ cảm nhận</div>
-            <img className={style.button__image} src="/icons/review.svg" />
-          </button>
+          <div className={style.head}>
+            <div className={style.head__text}>Chia sẻ cảm nhận</div>
+            <img className={style.head__image} src="/icons/review.svg" />
+          </div>
         </div>
 
         {/* Document */}
@@ -86,7 +50,7 @@ const ReviewPage = function ({ data, id }: any) {
             data.classId.courseId.courseName === id.courseName &&
             data.classId.instructorId.instructorName === id.instructorName &&
             data.classId.academicId.academicName === id.academicName ? (
-              <Review key={data._id} reviewData={data} />
+              <Review reviewData={data} key={data._id} />
             ) : (
               <div></div>
             )

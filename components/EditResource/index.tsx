@@ -5,41 +5,7 @@ import GroupAPI from "api/groupAPI";
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 
-type ApiType = {
-  resourceType: string;
-  resourceLink: string;
-  resourceDescription: string;
-  resourceName: string;
-};
-
-type ResourceType = {
-  resourceType: string;
-  resourceDescription: string;
-  resourceLink: string;
-  classId: {
-    className: string;
-    courseId: {
-      courseName: string;
-      facultyId: {
-        facultyName: string;
-      };
-    };
-    instructorId: {
-      instructorName: string;
-    };
-    academicId: {
-      schoolyear: string;
-      semester: string;
-    };
-  };
-  resourceName: string;
-  userId: {
-    givenName: string;
-    familyName: string;
-    photo: string;
-  };
-  _id: string;
-};
+import { ResourceType } from "lib/models";
 
 type AppProps = {
   resource: ResourceType;
@@ -55,7 +21,7 @@ const EditResource = function (props: AppProps) {
     resourceDescription: eresource.resourceDescription,
     resourceName: eresource.resourceName,
   };
-  const [data, setData] = useState<ApiType>(initData);
+  const [data, setData] = useState(initData);
 
   const handleChange = (e) => {
     const val = e.target.value;

@@ -3,52 +3,21 @@ import React from "react";
 import InputField from "components/class/page/information/inputfield";
 import TitleField from "./titlefield";
 import style from "./style.module.css";
+import { classInfo } from "lib/models";
 
 import userApi from "api/userApi";
 
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 
-type classType = {
-  className: string;
-  nStudents: number;
-  _id: string;
-  instructorId: {
-    _id: string;
-    instructorName: string;
-    id: string;
-  };
-  academicId: {
-    schoolyear: string;
-    semester: number;
-    _id: string;
-  };
-  courseId: {
-    courseName: string;
-    _id: string;
-    facultyId: {
-      facultyName: string;
-      _id: string;
-    };
-  };
-  description: string;
-  createdAt: string;
-  createBy: string;
-  updatedAt: string;
-  slug: string;
-  __v: number;
-};
-
 type AppProps = {
-  data: classType;
+  data: classInfo;
+  role: string;
 };
-
 const InformationPage = function (props: AppProps) {
-  console.log(props.data);
   const token = useAppSelector(selectToken);
-
   const ClickEnroll = () => {
-    userApi.postEnroll(props.data._id, token);
+    userApi.postEnroll({ classId: props.data._id }, token);
   };
 
   return (
@@ -116,11 +85,15 @@ const InformationPage = function (props: AppProps) {
           </div>
 
           {/* Button Enroll  */}
-          <div className={style.pbutton}>
-            <button className={style.button} onClick={ClickEnroll}>
-              Tham gia
-            </button>
-          </div>
+          {props.role === "" ? (
+            <div className={style.pbutton}>
+              <button className={style.button} onClick={ClickEnroll}>
+                Tham gia
+              </button>
+            </div>
+          ) : (
+            <div></div>
+          )}
         </div>
       </div>
     </div>

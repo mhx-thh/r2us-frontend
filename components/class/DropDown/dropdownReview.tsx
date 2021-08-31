@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import EditReview from "../EditReview";
+import React, { useState } from "react";
+import EditReview from "../../EditReview";
 import PopUp from "../PopUp/popup";
 
 import GroupAPI from "api/groupAPI";
@@ -7,25 +7,10 @@ import GroupAPI from "api/groupAPI";
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 
+import useClickOutside from "components/clickOutside/clickOutside";
+
 function DropdownReview({ close, data }: any) {
   const token = useAppSelector(selectToken);
-
-  const useClickOutside = (handler) => {
-    const ref = useRef(null);
-    useEffect(() => {
-      const handle = (event) => {
-        if (ref.current && !ref.current?.contains(event.target)) {
-          handler();
-        }
-      };
-      document.addEventListener("mousedown", handle);
-      return () => {
-        document.removeEventListener("mousedown", handle);
-      };
-    });
-    return ref;
-  };
-
   const ref = useClickOutside(() => {
     close(0);
   });
