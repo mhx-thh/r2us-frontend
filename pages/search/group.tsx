@@ -94,12 +94,23 @@ const Group = ({ data1 }: AppProps) => {
 };
 export default Group;
 export const getServerSideProps = async (context) => {
-  const param = queryString.stringify(context.query, { skipEmptyString: true });
-  const res = await GroupAPI.getGroup(param);
-  const data1 = res?.data?.data?.result;
-  return {
-    props: {
-      data1,
-    },
-  };
+  try {
+    const param = queryString.stringify(context.query, {
+      skipEmptyString: true,
+    });
+    const res = await GroupAPI.getGroup(param);
+    const data1 = res?.data?.data?.result;
+    return {
+      props: {
+        data1,
+      },
+    };
+  } catch (error) {
+    const data1 = [];
+    return {
+      props: {
+        data1,
+      },
+    };
+  }
 };
