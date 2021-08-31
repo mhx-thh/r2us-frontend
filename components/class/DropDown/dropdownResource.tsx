@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import EditResource from "../EditResource";
+import React, { useState } from "react";
+import EditResource from "../../EditResource";
 import PopUp from "../PopUp/popup";
 
 import GroupAPI from "api/groupAPI";
@@ -7,25 +7,10 @@ import GroupAPI from "api/groupAPI";
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 
+import useClickOutside from "components/clickOutside/clickOutside";
+
 function DropdownResource({ close, data }: any) {
   const token = useAppSelector(selectToken);
-
-  const useClickOutside = (handler) => {
-    const ref = useRef(null);
-    useEffect(() => {
-      const handle = (event) => {
-        if (ref.current && !ref.current?.contains(event.target)) {
-          handler();
-        }
-      };
-      document.addEventListener("mousedown", handle);
-      return () => {
-        document.removeEventListener("mousedown", handle);
-      };
-    });
-    return ref;
-  };
-
   const ref = useClickOutside(() => {
     close(0);
   });
@@ -51,13 +36,16 @@ function DropdownResource({ close, data }: any) {
             <button>Thêm</button>
           </li>
         )}
+
         <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 ">
           <button onClick={ClickDelete}>Xóa</button>
         </li>
+
         <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200">
           <button onClick={handleUpdate}>Chỉnh sửa</button>
         </li>
       </ul>
+
       {update === true && (
         <PopUp closepopup={close}>
           <EditResource resource={data} />

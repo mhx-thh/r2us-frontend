@@ -1,26 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import useClickOutside from "components/clickOutside/clickOutside";
+import React from "react";
 
 import style from "./style.module.css";
 
 function PopUp({ closepopup, children }: any) {
   const ClickClose = () => {
     closepopup(0);
-  };
-
-  const useClickOutside = (handler) => {
-    const ref = useRef(null);
-    useEffect(() => {
-      const handle = (event) => {
-        if (ref.current && !ref.current?.contains(event.target)) {
-          handler();
-        }
-      };
-      document.addEventListener("mousedown", handle);
-      return () => {
-        document.removeEventListener("mousedown", handle);
-      };
-    });
-    return ref;
   };
 
   const ref = useClickOutside(() => {

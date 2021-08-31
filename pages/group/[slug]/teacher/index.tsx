@@ -1,18 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import GroupAPI from "api/groupAPI";
 import NewClassAPI from "api/NewClassAPI";
 
 import ReviewPage from "components/class/page/reviewpage/reviewpage";
 import LayoutClass from "components/layout/ClassLayout";
+import { ReviewType, titleGroup } from "lib/models";
 
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 
+import { useAppSelector } from "redux/hooks";
+import { selectToken } from "redux/userSlice";
+
 type propApi = {
   status: string;
-  data: any;
-  review: any;
+  class: titleGroup;
+  review: Array<ReviewType>;
 };
 
 export const getServerSideProps: GetServerSideProps = async (params) => {
@@ -27,33 +31,32 @@ export const getServerSideProps: GetServerSideProps = async (params) => {
 
   return {
     props: {
-      status: res.data.status,
-      data: res.data.data,
-      review: rev.data.data,
+      status: res?.data?.status,
+      class: res?.data?.data,
+      review: rev?.data?.data,
     },
   };
 };
 
 const Item = function (props: propApi) {
-  const initProps = props.data;
+  const initProps = props.class;
 
-  const initTitle = {
-    academicId: {
-      schoolyear: initProps.academicId.schoolyear,
-    },
-    courseId: {
-      courseName: initProps.courseId.courseName,
-      facultyId: {
-        facultyName: initProps.courseId.facultyId.facultyName,
-      },
-    },
-    className: initProps.className,
-    instructorId: {
-      instructorName: initProps.instructorId.instructorName,
-    },
-    updateAt: initProps.updatedAt,
-    slug: initProps.slug,
-  };
+  const [role, setRole] = useState("");
+  const token = useAppSelector(selectToken);
+
+  useEffect(() => {
+    async function fetchRole() {
+      try {
+        const res = await GroupAPI.getRole(props.class._id, token);
+        const data = res?.data?.data?.result;
+        data[0] !== undefined && setRole(data[0].role);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    fetchRole();
+  }, []);
+
   const Id = {
     schoolyear: initProps.academicId.schoolyear,
     courseName: initProps.courseId.courseName,
@@ -67,7 +70,7 @@ const Item = function (props: propApi) {
     return <div>Loading...</div>;
   } else {
     return (
-      <LayoutClass initTitle={initTitle}>
+      <LayoutClass initTitle={props.class} role={role}>
         <ReviewPage data={props.review} id={Id} />
       </LayoutClass>
     );

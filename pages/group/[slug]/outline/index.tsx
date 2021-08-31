@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import GroupAPI from "api/groupAPI";
 import NewClassAPI from "api/NewClassAPI";
@@ -9,39 +9,15 @@ import LayoutClass from "components/layout/ClassLayout";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 
-type classType = {
-  className: string;
-  ratingsAverage: number;
-  ratingsQuantity: number;
-  nStudents: number;
-  _id: string;
-  instructorId: {
-    _id: string;
-    instructorName: string;
-    id: string;
-  };
-  academicId: {
-    schoolyear: string;
-    semester: number;
-  };
-  courseId: {
-    courseName: string;
-    _id: string;
-    facultyId: {
-      facultyName: string;
-      _id: string;
-    };
-  };
-  createdAt: string;
-  updatedAt: string;
-  slug: string;
-  __v: number;
-};
+import { ResourceType, titleGroup } from "lib/models";
+
+import { useAppSelector } from "redux/hooks";
+import { selectToken } from "redux/userSlice";
 
 type propApi = {
   status: string;
-  data: classType;
-  document: any;
+  class: titleGroup;
+  outline: Array<ResourceType>;
 };
 
 export const getServerSideProps: GetServerSideProps = async (params) => {
@@ -56,33 +32,31 @@ export const getServerSideProps: GetServerSideProps = async (params) => {
 
   return {
     props: {
-      status: res.data.status,
-      data: res.data.data,
-      document: moreRes.data.data,
+      status: res?.data?.status,
+      class: res?.data?.data,
+      outline: moreRes?.data?.data,
     },
   };
 };
 
 const Item = function (props: propApi) {
-  const initProps = props.data;
+  const initProps = props.class;
 
-  const initTitle = {
-    academicId: {
-      schoolyear: initProps.academicId.schoolyear,
-    },
-    courseId: {
-      courseName: initProps.courseId.courseName,
-      facultyId: {
-        facultyName: initProps.courseId.facultyId.facultyName,
-      },
-    },
-    className: initProps.className,
-    instructorId: {
-      instructorName: initProps.instructorId.instructorName,
-    },
-    updateAt: initProps.updatedAt,
-    slug: initProps.slug,
-  };
+  const [role, setRole] = useState("");
+  const token = useAppSelector(selectToken);
+
+  useEffect(() => {
+    async function fetchRole() {
+      try {
+        const res = await GroupAPI.getRole(props.class._id, token);
+        const data = res?.data?.data?.result;
+        data[0] !== undefined && setRole(data[0].role);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    fetchRole();
+  }, []);
 
   const Id = {
     schoolyear: initProps.academicId.schoolyear,
@@ -97,8 +71,8 @@ const Item = function (props: propApi) {
     return <div>Loading...</div>;
   } else {
     return (
-      <LayoutClass initTitle={initTitle}>
-        <DocumentPage document={props.document} id={Id} />
+      <LayoutClass initTitle={props.class} role={role}>
+        <DocumentPage document={props.outline} id={Id} />
       </LayoutClass>
     );
   }

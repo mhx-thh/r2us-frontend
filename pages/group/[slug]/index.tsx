@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import GroupAPI from "api/groupAPI";
 
@@ -8,37 +8,15 @@ import LayoutClass from "components/layout/ClassLayout";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 
+import { classInfo, titleGroup } from "lib/models";
+
+import { useAppSelector } from "redux/hooks";
+import { selectToken } from "redux/userSlice";
+
 type propApi = {
   status: string;
-  data: {
-    className: string;
-    nStudents: number;
-    _id: string;
-    instructorId: {
-      _id: string;
-      instructorName: string;
-      id: string;
-    };
-    academicId: {
-      schoolyear: string;
-      semester: number;
-      _id: string;
-    };
-    courseId: {
-      courseName: string;
-      _id: string;
-      facultyId: {
-        facultyName: string;
-        _id: string;
-      };
-    };
-    description: string;
-    createdAt: string;
-    createBy: string;
-    updatedAt: string;
-    slug: string;
-    __v: number;
-  };
+  title: titleGroup;
+  class: classInfo;
 };
 
 export const getServerSideProps: GetServerSideProps = async (params) => {
@@ -52,32 +30,29 @@ export const getServerSideProps: GetServerSideProps = async (params) => {
 
   return {
     props: {
-      status: res.data.status,
-      data: res.data.data,
+      status: res?.data?.status,
+      title: res?.data?.data,
+      class: res?.data?.data,
     },
   };
 };
 
 const Item = function (props: propApi) {
-  const initProps = props.data;
+  const [role, setRole] = useState("");
+  const token = useAppSelector(selectToken);
 
-  const initTitle = {
-    academicId: {
-      schoolyear: initProps.academicId.schoolyear,
-    },
-    courseId: {
-      courseName: initProps.courseId.courseName,
-      facultyId: {
-        facultyName: initProps.courseId.facultyId.facultyName,
-      },
-    },
-    className: initProps.className,
-    instructorId: {
-      instructorName: initProps.instructorId.instructorName,
-    },
-    updateAt: props.data.updatedAt,
-    slug: initProps.slug,
-  };
+  useEffect(() => {
+    async function fetchRole() {
+      try {
+        const res = await GroupAPI.getRole(props.class._id, token);
+        const data = res?.data?.data?.result;
+        data[0] !== undefined && setRole(data[0].role);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    fetchRole();
+  }, []);
 
   const router = useRouter();
 
@@ -85,8 +60,8 @@ const Item = function (props: propApi) {
     return <div>Loading...</div>;
   } else {
     return (
-      <LayoutClass initTitle={initTitle}>
-        <InformationPage data={props.data} />;
+      <LayoutClass initTitle={props.title} role={role}>
+        <InformationPage data={props.class} role={role} />;
       </LayoutClass>
     );
   }

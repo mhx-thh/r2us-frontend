@@ -9,14 +9,14 @@
     align-items: center;
     justify-content: center;
 }
-.button{
+.head{
     display: flex;
     background: #E0E7FF;
     border-radius: 12px;
     align-items: center;
     justify-content: center;
 }
-.button__text{
+.head__text{
     font-style: normal;
     font-weight: bold;
     font-size: 24px;
@@ -25,7 +25,7 @@
 
     padding: 10px;
 }
-.button__image{
+.head__image{
     padding: 10px;
 }
 

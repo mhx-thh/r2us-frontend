@@ -2,49 +2,9 @@ import React, { useState } from "react";
 
 import DropdownResource from "components/class/DropDown/dropdownResource";
 import ResourceItem from "components/Resource/ResourceItem";
-import style from "./style.module.css";
 
-type ResourceType = {
-  resourceType: string;
-  resourceDescription: string;
-  status: string;
-  isShare: string;
-  _id: string;
-  resourceLink: string;
-  classId: {
-    className: string;
-    _id: string;
-    courseId: {
-      _id: string;
-      courseName: string;
-      facultyId: {
-        facultyName: string;
-        _id: string;
-      };
-    };
-    instructorId: {
-      _id: string;
-      instructorName: string;
-      id: string;
-    };
-    academicId: {
-      _id: string;
-      schoolyear: string;
-      semester: string;
-    };
-  };
-  resourceName: string;
-  userId: {
-    _id: string;
-    givenName: string;
-    familyName: string;
-    photo: string;
-  };
-  createdAt: string;
-  updatedAt: string;
-  __v: string;
-  id: string;
-};
+import style from "./style.module.css";
+import { ResourceType } from "lib/models";
 
 type AppProps = {
   document: ResourceType;
@@ -83,12 +43,12 @@ const DocumentPage = function ({ document, id }: any) {
       <div>
         {/* Button Share Resource */}
         <div className={style.buttonarea}>
-          <button className={style.button}>
-            <div className={style.button__text}>Chia sẻ tài liệu</div>
-            <div className={style.button__image}>
+          <div className={style.head}>
+            <div className={style.head__text}>Chia sẻ tài liệu</div>
+            <div className={style.head__image}>
               <img src="/icons/resource.svg" />
             </div>
-          </button>
+          </div>
         </div>
 
         {/* Accepted Resource */}

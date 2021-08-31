@@ -4,43 +4,10 @@ import GroupAPI from "api/groupAPI";
 
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
-
-type ApiType = {
-  review: string;
-  reviewTitle: string;
-  reviewType: string;
-};
-
-type reviewType = {
-  reviewType: string;
-  reviewTitle: string;
-  _id: string;
-  classId: {
-    className: string;
-    courseId: {
-      courseName: string;
-      facultyId: {
-        facultyName: string;
-      };
-    };
-    instructorId: {
-      instructorName: string;
-    };
-    academicId: {
-      schoolyear: string;
-      semester: string;
-    };
-  };
-  review: string;
-  userId: {
-    givenName: string;
-    familyName: string;
-    photo: string;
-  };
-};
+import { ReviewType } from "lib/models";
 
 type AppProps = {
-  review: reviewType;
+  review: ReviewType;
 };
 
 const EditReview = function (props: AppProps) {
@@ -52,7 +19,7 @@ const EditReview = function (props: AppProps) {
     reviewTitle: ereview.reviewTitle,
     reviewType: ereview.reviewType,
   };
-  const [data, setData] = useState<ApiType>(initData);
+  const [data, setData] = useState(initData);
 
   const handleChange = (e) => {
     const name = e.target.name;

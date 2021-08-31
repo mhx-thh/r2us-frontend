@@ -61,6 +61,10 @@ const GroupAPI = {
     const url = `${apiV1}/groups/reviews/${id}`;
     return delele(url, token);
   },
+  getRole: function (classId: string, token: string) {
+    const url = `${apiV1}/groups/enrollment/me?classId__eq=${classId}`;
+    return get(url, token);
+  },
 };
 
 export default GroupAPI;
