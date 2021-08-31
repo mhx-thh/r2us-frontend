@@ -5,18 +5,19 @@ import queryString from "query-string";
 import Layout from "components/layout/SearchLayout";
 import Pagination from "components/search/Pagination/Pagination";
 import Reviews from "components/search/Reviews/reviews";
+import GroupAPI from "api/groupAPI";
 interface AppProps {
-  query: any;
+  data1: any;
 }
 
-const Resource = ({ query }: AppProps) => {
+const Review = ({ data1 }: AppProps) => {
   //declare variable
   const [pagination, setPagination] = useState({
     _limitperPage: 20,
     _totalRows: 21,
   });
   const [selected, setSelected] = useState(1);
-  const [documents, setDocuments] = useState([]);
+  const [documents, setDocuments] = useState(data1);
   const [skip, setSkip] = useState(0);
   const router = useRouter();
   const [data, setData] = useState([]);
@@ -36,7 +37,7 @@ const Resource = ({ query }: AppProps) => {
   //Chuyển trang
   const handlePageChange = (_page: number) => {
     setSelected(_page);
-    setSkip(_page - 1);
+    setSkip(_page);
   };
 
   //Update query
@@ -44,12 +45,16 @@ const Resource = ({ query }: AppProps) => {
     if (router.asPath.includes("?")) {
       delete router.query?.__skip;
       const param = queryString.stringify(router.query);
-      router.push(`/search/review?${param}&__skip=${skip}`, undefined, {
+      router.push(`/search/review?${param}&__skip=${skip - 1}`, undefined, {
         scroll: false,
+        shallow: true,
       });
     } else {
       const currentPath = router.asPath;
-      router.push(`${currentPath}?__skip=1`, undefined, { scroll: false });
+      router.push(`${currentPath}?__skip=0`, undefined, {
+        scroll: false,
+        shallow: true,
+      });
     }
   }, [skip]);
   return (
@@ -91,4 +96,14 @@ const Resource = ({ query }: AppProps) => {
     </div>
   );
 };
-export default Resource;
+export default Review;
+export const getServerSideProps = async (context) => {
+  const param = queryString.stringify(context.query, { skipEmptyString: true });
+  const res = await GroupAPI.getReview(param);
+  const data1 = res?.data?.data?.result;
+  return {
+    props: {
+      data1,
+    },
+  };
+};

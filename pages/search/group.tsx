@@ -5,19 +5,20 @@ import queryString from "query-string";
 import Layout from "components/layout/SearchLayout";
 import Pagination from "components/search/Pagination/Pagination";
 import Groups from "components/search/Groups/Groups";
+import GroupAPI from "api/groupAPI";
 
 interface AppProps {
-  query: any;
+  data1: any;
 }
 
-const Resource = ({ query }: AppProps) => {
+const Group = ({ data1 }: AppProps) => {
   //declare variable
   const [pagination, setPagination] = useState({
     _limitperPage: 20,
     _totalRows: 21,
   });
-  const [selected, setSelected] = useState(1);
-  const [documents, setDocuments] = useState([]);
+  const [selected, setSelected] = useState(0);
+  const [documents, setDocuments] = useState(data1);
   const [skip, setSkip] = useState(0);
   const router = useRouter();
   const [data, setData] = useState([]);
@@ -32,13 +33,12 @@ const Resource = ({ query }: AppProps) => {
       _limitperPage: 20,
       _totalRows: _totalRows,
     });
-    console.log("asddasd:", pagination);
   };
 
   //Chuyển trang
   const handlePageChange = (_page: number) => {
     setSelected(_page);
-    setSkip(_page - 1);
+    setSkip(_page);
   };
 
   //Update query
@@ -48,10 +48,14 @@ const Resource = ({ query }: AppProps) => {
       const param = queryString.stringify(router.query);
       router.push(`/search/group?${param}&__skip=${skip}`, undefined, {
         scroll: false,
+        shallow: true,
       });
     } else {
       const currentPath = router.asPath;
-      router.push(`${currentPath}?__skip=1`, undefined, { scroll: false });
+      router.push(`${currentPath}?__skip=0`, undefined, {
+        scroll: false,
+        shallow: true,
+      });
     }
   }, [skip]);
 
@@ -94,4 +98,14 @@ const Resource = ({ query }: AppProps) => {
     </div>
   );
 };
-export default Resource;
+export default Group;
+export const getServerSideProps = async (context) => {
+  const param = queryString.stringify(context.query, { skipEmptyString: true });
+  const res = await GroupAPI.getGroup(param);
+  const data1 = res?.data?.data?.result;
+  return {
+    props: {
+      data1,
+    },
+  };
+};

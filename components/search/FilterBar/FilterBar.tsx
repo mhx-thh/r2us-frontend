@@ -20,14 +20,9 @@ interface Props {
 
 function FilterBar({ getData, getPagination }: Props) {
   //declare variable
-  const [searchvalue, setSearchvalue] = useState("");
   const [resource_filtered, setResource_filtered] = useState([]);
   const [review_filtered, setReview_filtered] = useState([]);
   const [group_filtered, setGroup_filtered] = useState([]);
-
-  const [resourceLoading,setResourceLoading]=useState(true)
-  const [reviewLoading,setReviewLoading]=useState(true)
-  const [groupLoading,setGroupLoading]=useState(true)
 
   const [facultyList, setfacultyList] = useState([]);
   const [courseList, setCourseList] = useState([]);
@@ -36,23 +31,13 @@ function FilterBar({ getData, getPagination }: Props) {
 
   const router = useRouter();
   const { register, handleSubmit } = useForm();
-  const [filter, setFilter] = useState({
-    t__search: router.query?.search || "",
-    academicId: router.query?.academic || "",
-    facultyId: router.query?.faculty || "",
-    courseId: router.query?.course || "",
-    type: router.query?.type || "",
-    instructorId: router.query?.instructor || "",
-    _limit: router.query?._limit || 20,
-    _skip: router.query?._skip || 1,
-  });
 
   //filter list
   const filterListApi = {
     facultyId: courseApi,
     courseId: InstructorAPI,
   };
-  
+
   //filter change
   const handleChange = (e) => {
     const name = e.target.name;
@@ -90,11 +75,6 @@ function FilterBar({ getData, getPagination }: Props) {
 
   //Submit form
   const handleSubmitFilter = (values) => {
-    setFilter({
-      ...values,
-      _limit: 20,
-      _skip: 1,
-    });
     delete values?.facultyId;
     const paramString =
       "?" + queryString.stringify(values, { skipEmptyString: true });
@@ -153,23 +133,12 @@ function FilterBar({ getData, getPagination }: Props) {
     fetchFaculty();
     fetchAcademics();
   }, []);
-  console.log(router.asPath)
+  console.log(router.asPath);
   //fetch data
   useEffect(() => {
-    setFilter({
-      t__search: router.query.t__search || "",
-      academicId: router.query.academicId || "",
-      facultyId: router.query.facultyId || "",
-      courseId: router.query.courseId || "",
-      type: router.query.type || "",
-      instructorId: router.query.instructorId || "",
-      _limit: router.query._limit || 20,
-      _skip: router.query._skip || 1,
-    });
-
     //Bỏ trường facultyId
     delete router.query?.facultyId;
-    console.log(router.query)
+    console.log(router.query);
     const temQuery = { ...router.query };
     //Bỏ academic nếu id=0 (sort by academic)
     if (router.query?.academicId === "0") {
@@ -182,10 +151,10 @@ function FilterBar({ getData, getPagination }: Props) {
     async function fetchGroupFilter(id: string) {
       try {
         const res = await GroupAPI.getGroup(id);
-        console.log("dât:",res)
+        console.log("dât:", res);
         setGroup_filtered(res?.data?.data?.result);
         const total = res?.data?.data?.total;
-        getPagination(total)
+        getPagination(total);
       } catch (error) {
         console.error("fetchGroupFilter !!", error);
         setGroup_filtered([]);
@@ -198,7 +167,7 @@ function FilterBar({ getData, getPagination }: Props) {
         const res = await GroupAPI.getResource(id);
         setResource_filtered(res?.data?.data?.result);
         const total = res?.data?.data?.total;
-        getPagination(total,temQuery)
+        getPagination(total);
       } catch (error) {
         console.error("fetchResourceFilter !!", error);
         setResource_filtered([]);
@@ -211,7 +180,7 @@ function FilterBar({ getData, getPagination }: Props) {
         const res = await GroupAPI.getReview(id);
         setReview_filtered(res?.data?.data?.result);
         const total = res?.data?.data?.total;
-        getPagination(total,temQuery)
+        getPagination(total);
       } catch (error) {
         console.error("fetchReviewFilter !!", error);
         setReview_filtered([]);
@@ -235,10 +204,12 @@ function FilterBar({ getData, getPagination }: Props) {
     if (router.pathname === "/search/resource") {
       fetchResourceFilter(param);
     }
-    if (router.pathname === "/search/resource" && router.query?.academicId === "0") {
+    if (
+      router.pathname === "/search/resource" &&
+      router.query?.academicId === "0"
+    ) {
       const newa = temAcademicList.map((op) => {
         const a = {};
-        const b = [];
         a["label"] = op.label;
         a["value"] = [
           resource_filtered.filter((resource) => {
@@ -260,7 +231,6 @@ function FilterBar({ getData, getPagination }: Props) {
     ) {
       const newa = temAcademicList.map((op) => {
         const a = {};
-        const b = [];
         a["label"] = op.label;
         a["value"] = [
           review_filtered.filter((review) => {
@@ -274,15 +244,12 @@ function FilterBar({ getData, getPagination }: Props) {
 
     //grouplist cho sort by academic
     if (router.pathname === "/search/group") {
-      console.log("param:",param)
+      console.log("param:", param);
       fetchGroupFilter(param);
     }
-    if (
-      router.pathname === "/search/group"
-    ) {
+    if (router.pathname === "/search/group") {
       const newa = temAcademicList.map((op) => {
         const a = {};
-        const b = [];
         a["label"] = op.label;
         a["value"] = [
           group_filtered.filter((group) => {
@@ -295,7 +262,10 @@ function FilterBar({ getData, getPagination }: Props) {
     }
   }, [router.query]);
 
-  if (router.pathname === "/search/resource" && router.query?.academicId !== "0") {
+  if (
+    router.pathname === "/search/resource" &&
+    router.query?.academicId !== "0"
+  ) {
     getData(resource_filtered);
   }
   if (
@@ -304,13 +274,9 @@ function FilterBar({ getData, getPagination }: Props) {
   ) {
     getData(review_filtered);
   }
-  if (
-    router.pathname === "/search/group" &&
-    router.query?.academicId !== "0"
-  ) {
+  if (router.pathname === "/search/group" && router.query?.academicId !== "0") {
     getData(group_filtered);
   }
-
 
   return (
     <div className="w-full mt-0.5">

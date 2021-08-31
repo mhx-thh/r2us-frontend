@@ -1,5 +1,5 @@
 module.exports = {
-  mode: "jit",
+  // mode: "jit",
   important: true,
   // Active dark mode on class basis
   darkMode: "class",

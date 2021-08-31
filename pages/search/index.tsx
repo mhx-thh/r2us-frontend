@@ -1,12 +1,12 @@
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 
-function resource(props) {
+function Index() {
   const router = useRouter();
   useEffect(() => {
     router.push("/search/resource");
   }, []);
-  return <div></div>;
+  return <React.Fragment></React.Fragment>;
 }
 
-export default resource;
+export default Index;
