@@ -100,7 +100,6 @@ const CreateResource = function ({ data }: any) {
   };
 
   const handleClassName = (e) => {
-    console.log(create);
     group.map(
       (val) =>
         val.className === e.target.value &&

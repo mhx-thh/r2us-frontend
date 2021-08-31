@@ -32,7 +32,7 @@ export const getServerSideProps: GetServerSideProps = async (params) => {
 const User = function (props: AppProps) {
   return (
     <LayoutUser>
-      <DocumentPage />;
+      <DocumentPage props={props} />;
     </LayoutUser>
   );
 };

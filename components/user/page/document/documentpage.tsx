@@ -12,10 +12,17 @@ import userApi from "api/userApi";
 
 const DocumentPage = function (props: any) {
   const token = useAppSelector(selectToken);
+
+  const [create, setCreate] = useState(false);
+  const handleClick = () => {
+    setCreate(true);
+  };
+
   const [data, setData] = useState([]);
   useEffect(() => {
     async function getData() {
       try {
+        console.log(token);
         const res = await userApi.getMyResources(token);
         const data = res?.data?.data?.result;
         setData(data);
@@ -25,11 +32,6 @@ const DocumentPage = function (props: any) {
     }
     getData();
   }, []);
-
-  const [create, setCreate] = useState(false);
-  const handleClick = () => {
-    setCreate(true);
-  };
 
   return (
     <div className={style.page}>
@@ -59,7 +61,7 @@ const DocumentPage = function (props: any) {
 
         {create === true && (
           <PopUp closepopup={setCreate}>
-            <CreateResource data={props.data} />
+            <CreateResource data={props.props} />
           </PopUp>
         )}
 
