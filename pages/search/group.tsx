@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import queryString from "query-string";
 
@@ -19,7 +19,6 @@ const Group = ({ data1 }: AppProps) => {
   });
   const [selected, setSelected] = useState(0);
   const [documents, setDocuments] = useState(data1);
-  const [skip, setSkip] = useState(0);
   const router = useRouter();
   const [data, setData] = useState([]);
   const getDocuments = (_documents, _data) => {
@@ -38,26 +37,21 @@ const Group = ({ data1 }: AppProps) => {
   //Chuyển trang
   const handlePageChange = (_page: number) => {
     setSelected(_page);
-    setSkip(_page);
-  };
-
-  //Update query
-  useEffect(() => {
     if (router.asPath.includes("?")) {
       delete router.query?.__skip;
       const param = queryString.stringify(router.query);
-      router.push(`/search/group?${param}&__skip=${skip}`, undefined, {
+      router.push(`/search/group?${param}&__skip=${_page}`, undefined, {
         scroll: false,
         shallow: true,
       });
     } else {
       const currentPath = router.asPath;
-      router.push(`${currentPath}?__skip=0`, undefined, {
+      router.push(`${currentPath}?__skip=${_page}`, undefined, {
         scroll: false,
         shallow: true,
       });
     }
-  }, [skip]);
+  };
 
   return (
     <div>

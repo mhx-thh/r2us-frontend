@@ -11,7 +11,6 @@ function Pagination(props: typePagination) {
   const { selected, pagination, onPageChange } = props;
   const { _limitperPage, _totalRows } = pagination;
   const _page = selected;
-  // const totalPages = Math.ceil(_totalRows / _limitperPage);
   const totalPages = _totalRows - 1;
 
   const handlePageChange = (newPage) => {
@@ -20,7 +19,6 @@ function Pagination(props: typePagination) {
 
   //render số trang
   const createPagerButton = () => {
-    console.log("page:", _page);
     const arrayElement = [];
     for (let i = 0; i <= totalPages; i++) {
       arrayElement.push(
@@ -50,7 +48,7 @@ function Pagination(props: typePagination) {
         <button
           type="button"
           disabled={_page <= 0}
-          className={`w-12 h-12 
+          className={`w-12 h-12 flex items-center justify-center
             ${
               _page <= 0
                 ? " border border-gray-300 text-base rounded-xl  text-gray-600 bg-white mr-6"
@@ -79,7 +77,7 @@ function Pagination(props: typePagination) {
         {createPagerButton()}
         <button
           type="button"
-          className={`w-12 h-12 
+          className={`w-12 h-12 flex items-center justify-center
           ${
             _page >= _totalRows - 1
               ? " border border-gray-300 text-base rounded-xl  text-gray-600 bg-white mr-6"

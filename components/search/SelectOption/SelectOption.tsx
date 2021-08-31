@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 
 type typeSelectOption = {
   options: any;
@@ -7,16 +7,15 @@ type typeSelectOption = {
   onHandleChange: any;
   placeholder: string;
   name: string;
-  title:string;
+  title: string;
 };
 
 function SelectOption(props: typeSelectOption) {
-  
-  const { register, onHandleChange, options, placeholder, name,title } = props;
+  const { register, onHandleChange, options, placeholder, name, title } = props;
 
   return (
     <div>
-      {title === 'Khoa' &&
+      {title === "Khoa" && (
         <div className="w-56 h-24 relative">
           <p className="text-lg leading-7 font-semibold">{title}</p>
           <select
@@ -31,12 +30,13 @@ function SelectOption(props: typeSelectOption) {
               </option>
             ))}
           </select>
-          <p className="absolute top-8 -right-14 text-gray-300">______________</p>
+          <p className="absolute top-8 -right-14 text-gray-300">
+            ______________
+          </p>
         </div>
-        
-      }
-      { title !=='Khoa' &&
-         <div className="w-48">
+      )}
+      {title !== "Khoa" && (
+        <div className="w-48">
           <p className="text-lg leading-7 font-semibold">{title}</p>
           <select
             className="block w-48 text-gray-700 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
@@ -52,7 +52,7 @@ function SelectOption(props: typeSelectOption) {
             ))}
           </select>
         </div>
-}
+      )}
     </div>
   );
 }

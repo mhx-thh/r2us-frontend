@@ -8,41 +8,49 @@ type typeInputText = {
 };
 
 function InputText(props: typeInputText) {
-  const a="picked"
+  const a = "picked";
   const { register, name, placeholder } = props;
-  const list= [
-    {  label: "Tài liệu" },
-    {  label: "Cảm nhận" },
-    {  label: "Lớp học" },
-  ] 
-  const [searchType,setSearchType]=useState("Tài liệu")
-  const router=useRouter();
-  const handleChange=(e)=>{
-    console.log("list:" ,e.target.value)
-    if (e.target.value === "Tài liệu")
-      {
-        router.replace("/search/resource","/search/resource",{shallow:true,scroll:false});
-        
-      }
-    if (e.target.value === "Cảm nhận")
-    {
-      router.replace("/search/review","/search/review",{shallow:true,scroll:false});
-       setSearchType("Cảm nhận")
+  const list = [
+    { label: "Tài liệu" },
+    { label: "Cảm nhận" },
+    { label: "Lớp học" },
+  ];
+  const [searchType, setSearchType] = useState("Tài liệu");
+  const router = useRouter();
+  const handleChange = (e) => {
+    if (e.target.value === "Tài liệu") {
+      router.replace("/search/resource", "/search/resource", {
+        shallow: true,
+        scroll: false,
+      });
     }
-    if (e.target.value === "Lớp học")
-      {
-        router.replace("/search/group","/search/group",{shallow:true,scroll:false});
-        setSearchType("Lớp học")
-      }
-  }
+    if (e.target.value === "Cảm nhận") {
+      router.replace("/search/review", "/search/review", {
+        shallow: true,
+        scroll: false,
+      });
+      setSearchType("Cảm nhận");
+    }
+    if (e.target.value === "Lớp học") {
+      router.replace("/search/group", "/search/group", {
+        shallow: true,
+        scroll: false,
+      });
+      setSearchType("Lớp học");
+    }
+  };
 
-  useEffect(()=>{
-    if (router.pathname === "/search/resource") {setSearchType("Tài liệu")}
-    if (router.pathname === "/search/review") { setSearchType("Cảm nhận")}
-    if (router.pathname === "/search/group") {setSearchType("Lớp học")}
-  },[router.pathname])
-  
-
+  useEffect(() => {
+    if (router.pathname === "/search/resource") {
+      setSearchType("Tài liệu");
+    }
+    if (router.pathname === "/search/review") {
+      setSearchType("Cảm nhận");
+    }
+    if (router.pathname === "/search/group") {
+      setSearchType("Lớp học");
+    }
+  }, [router.pathname]);
 
   return (
     <div className="w-full flex justify-center">
@@ -74,27 +82,23 @@ function InputText(props: typeInputText) {
 
         <div className="absolute top-2 right-4 ">
           <select
-          placeholder={a}
-          className="block text-gray-700 py-2 px-3 border  border-l-2 border-r-0 border-b-0 border-t-0 border-gray-300 bg-white text-lg leading-7  focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-          name={name}
-          onChange={handleChange}
+            placeholder={a}
+            className="block text-gray-700 py-2 px-3 border  border-l-2 border-r-0 border-b-0 border-t-0 border-gray-300 bg-white text-lg leading-7  focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+            name={name}
+            onChange={handleChange}
           >
             <optgroup label="selected">
-              <option >{searchType}</option>
+              <option>{searchType}</option>
             </optgroup>
             <optgroup label="_________">
-              {list.map((value,idx)=>{
-                return(
-                <option value={value.label}>
-                  {value.label}
-                </option>
-                )
+              {list.map((value, idx) => {
+                // eslint-disable-next-line react/jsx-key
+                return <option value={value.label}>{value.label}</option>;
               })}
             </optgroup>
           </select>
         </div>
       </div>
-
     </div>
   );
 }

@@ -25,8 +25,8 @@ function FilterBar({ getData, getPagination }: Props) {
   const [group_filtered, setGroup_filtered] = useState([]);
 
   const [facultyList, setfacultyList] = useState([]);
-  const [courseList, setCourseList] = useState([]);
   const [academicList, setAcademicList] = useState([]);
+  const [courseList, setCourseList] = useState([]);
   const [instructorsList, setInstructorsList] = useState([]);
 
   const router = useRouter();
@@ -133,12 +133,11 @@ function FilterBar({ getData, getPagination }: Props) {
     fetchFaculty();
     fetchAcademics();
   }, []);
-  console.log(router.asPath);
+
   //fetch data
   useEffect(() => {
     //Bỏ trường facultyId
     delete router.query?.facultyId;
-    console.log(router.query);
     const temQuery = { ...router.query };
     //Bỏ academic nếu id=0 (sort by academic)
     if (router.query?.academicId === "0") {
@@ -151,7 +150,6 @@ function FilterBar({ getData, getPagination }: Props) {
     async function fetchGroupFilter(id: string) {
       try {
         const res = await GroupAPI.getGroup(id);
-        console.log("dât:", res);
         setGroup_filtered(res?.data?.data?.result);
         const total = res?.data?.data?.total;
         getPagination(total);
@@ -244,7 +242,6 @@ function FilterBar({ getData, getPagination }: Props) {
 
     //grouplist cho sort by academic
     if (router.pathname === "/search/group") {
-      console.log("param:", param);
       fetchGroupFilter(param);
     }
     if (router.pathname === "/search/group") {
