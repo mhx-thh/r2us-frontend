@@ -4,11 +4,13 @@ import PopUp from "components/class/PopUp/popup";
 import ReviewItem from "components/Review/ReviewItem";
 import React, { useEffect, useState } from "react";
 import { useAppSelector } from "redux/hooks";
-import { selectToken } from "redux/userSlice";
+import { selectStatus, selectToken } from "redux/userSlice";
 import style from "./style.module.css";
 
 const ReviewPage = function (props: any) {
   const token = useAppSelector(selectToken);
+  const status = useAppSelector(selectStatus);
+
   const [data, setData] = useState([]);
   useEffect(() => {
     async function getMyReviews() {
@@ -20,8 +22,10 @@ const ReviewPage = function (props: any) {
         console.log(error.message);
       }
     }
-    getMyReviews();
-  }, []);
+    if (status === "logined") {
+      getMyReviews();
+    }
+  }, [status]);
 
   const [create, setCreate] = useState(false);
   const handleClick = () => {
