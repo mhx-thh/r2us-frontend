@@ -20,7 +20,7 @@ function Pagination(props: typePagination) {
   //render số trang
   const createPagerButton = () => {
     const arrayElement = [];
-    for (let i = 0; i <= totalPages; i++) {
+    for (let i = 1; i <= totalPages; i++) {
       arrayElement.push(
         <button
           key={i}

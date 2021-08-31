@@ -5,19 +5,15 @@ import queryString from "query-string";
 import Layout from "components/layout/SearchLayout";
 import Pagination from "components/search/Pagination/Pagination";
 import Reviews from "components/search/Reviews/reviews";
-import GroupAPI from "api/groupAPI";
-interface AppProps {
-  data1: any;
-}
 
-const Review = ({ data1 }: AppProps) => {
+const Review = () => {
   //declare variable
   const [pagination, setPagination] = useState({
     _limitperPage: 20,
     _totalRows: 21,
   });
-  const [selected, setSelected] = useState(0);
-  const [documents, setDocuments] = useState(data1);
+  const [selected, setSelected] = useState(1);
+  const [documents, setDocuments] = useState([]);
   const router = useRouter();
   const [data, setData] = useState([]);
   const getDocuments = (_documents, _data) => {
@@ -92,24 +88,3 @@ const Review = ({ data1 }: AppProps) => {
   );
 };
 export default Review;
-export const getServerSideProps = async (context) => {
-  try {
-    const param = queryString.stringify(context.query, {
-      skipEmptyString: true,
-    });
-    const res = await GroupAPI.getReview(param);
-    const data1 = res?.data?.data?.result;
-    return {
-      props: {
-        data1,
-      },
-    };
-  } catch (error) {
-    const data1 = [];
-    return {
-      props: {
-        data1,
-      },
-    };
-  }
-};

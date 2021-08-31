@@ -7,8 +7,8 @@ import Button from "../Button/Button";
 import SearchBar from "components/search/SearchBar/SearchBar";
 import SelectOption from "components/search/SelectOption/SelectOption";
 
-import facultyApi from "components/search/api/facultyApi";
-import courseApi from "components/search/api/courseApi";
+import facultyApi from "api/facultyApi";
+import courseApi from "api/courseApi";
 import GroupAPI from "api/groupAPI";
 import InstructorAPI from "api/instructorApi";
 import AcademicAPI from "api/academicApi";
