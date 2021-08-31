@@ -50,7 +50,11 @@ const GroupAPI = {
     return post(url, data, token);
   },
   postResource: function (data: any, token: string) {
-    const url = `${apiV1}/groups/resources/create`;
+    const url = `${apiV1}/groups/resources`;
+    return post(url, data, token);
+  },
+  postReview: function (data: any, token: string) {
+    const url = `${apiV1}/groups/reviews`;
     return post(url, data, token);
   },
   deleteResource: function (id: string, token: string) {

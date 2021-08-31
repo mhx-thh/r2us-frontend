@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import GroupAPI from "api/groupAPI";
 import { apiV1, get } from "api/generic";
 import { useAppSelector } from "redux/hooks";
@@ -9,8 +10,6 @@ type Api = {
   resourceName: string;
   resourceLink: string;
   resourceDescription: string;
-  // status: "pending" | "accepted";
-  // isShare: boolean;
   classId: string;
 };
 
@@ -28,8 +27,6 @@ const CreateResource = function ({ data }: any) {
     resourceName: "",
     resourceLink: "",
     resourceDescription: "",
-    // status: "pending",
-    // isShare: false,
     classId: "",
   };
 

@@ -1,5 +1,5 @@
 import userApi from "api/userApi";
-import CreateReview from "components/class/CreateReview";
+import CreateReview from "components/class/CreateReview/createReview";
 import PopUp from "components/class/PopUp/popup";
 import ReviewItem from "components/Review/ReviewItem";
 import React, { useEffect, useState } from "react";
@@ -7,7 +7,7 @@ import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 import style from "./style.module.css";
 
-const ReviewPage = function () {
+const ReviewPage = function (props: any) {
   const token = useAppSelector(selectToken);
   const [data, setData] = useState([]);
   useEffect(() => {
@@ -22,11 +22,6 @@ const ReviewPage = function () {
     }
     getMyReviews();
   }, []);
-  const [addDoc, setAddDoc] = useState(0);
-  const ClickpopupDoc = () => {
-    setAddDoc(1);
-  };
-  const user = "admin";
 
   const [create, setCreate] = useState(false);
   const handleClick = () => {
@@ -61,7 +56,7 @@ const ReviewPage = function () {
 
         {create === true && (
           <PopUp closepopup={setCreate}>
-            <CreateReview />
+            <CreateReview data={props.props} />
           </PopUp>
         )}
 
