@@ -3,7 +3,7 @@ module.exports = {
   important: true,
   // Active dark mode on class basis
   darkMode: "class",
-  purge: ["./**/*.{js,jsx,ts,tsx}", "./**/**/*.{js,jsx,ts,tsx}"],
+  purge: ["./**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {},
   },
