@@ -4,9 +4,9 @@ import queryString from "query-string";
 
 import Layout from "components/layout/SearchLayout";
 import Pagination from "components/search/Pagination/Pagination";
-import Reviews from "components/search/Reviews/reviews";
+import Documents from "components/search/Documents/Documents";
 
-const Review = () => {
+const Resource = () => {
   //declare variable
   const [pagination, setPagination] = useState({
     _limitperPage: 20,
@@ -35,7 +35,7 @@ const Review = () => {
     if (router.asPath.includes("?")) {
       delete router.query?.__skip;
       const param = queryString.stringify(router.query);
-      router.push(`/search/review?${param}&__skip=${_page}`, undefined, {
+      router.push(`/search/resource?${param}&__skip=${_page}`, undefined, {
         scroll: false,
         shallow: true,
       });
@@ -54,7 +54,7 @@ const Review = () => {
         {pagination._totalRows === 0 && (
           <div>
             <span className="mx-24 text-xl leading-8 mr-2">
-              Không có cảm nhận nào rồi
+              Không có tài liệu nào rồi
             </span>
             <img
               className="inline-block pb-2"
@@ -65,7 +65,7 @@ const Review = () => {
           </div>
         )}
 
-        {(data !== [] &&
+        {data !== [] &&
           data?.map((idx) => {
             return (
               // eslint-disable-next-line react/jsx-key
@@ -73,10 +73,11 @@ const Review = () => {
                 <p className="px-24 text-base leading-6 font-semibold">
                   {idx?.label}
                 </p>
-                <Reviews review={idx?.value[0]} />
+                <Documents resource={idx?.value[0]} />
               </div>
             );
-          })) || <Reviews review={documents} />}
+          })}
+        <Documents resource={documents} />
       </Layout>
 
       <Pagination
@@ -87,4 +88,5 @@ const Review = () => {
     </div>
   );
 };
-export default Review;
+
+export default Resource;
