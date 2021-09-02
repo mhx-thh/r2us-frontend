@@ -9,6 +9,7 @@ import userApi from "api/userApi";
 
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
+import GroupAPI from "api/groupAPI";
 
 type AppProps = {
   data: classInfo;
@@ -16,13 +17,46 @@ type AppProps = {
 };
 
 const InformationPage = function (props: AppProps) {
-  const [enroll, setEnroll] = useState(props.role === undefined ? false : true);
   const token = useAppSelector(selectToken);
+  const [enroll, setEnroll] = useState(props.role === undefined ? false : true);
+  const [dataPatch, setDataPatch] = useState({
+    className: props.data.className,
+    description: props.data.description,
+  });
+
+  const handleChangeClassName = (e) => {
+    setDataPatch({
+      ...dataPatch,
+      className: e.target.value,
+    });
+  };
+
+  const handleChangeDescription = (e) => {
+    setDataPatch({
+      ...dataPatch,
+      description: e.target.value,
+    });
+  };
 
   const ClickEnroll = () => {
     setEnroll(true);
     userApi.postEnroll({ classId: props.data._id }, token);
   };
+
+  // vẫn chưa chạy được API cập nhập thông tin khóa học
+  const ClickUpdate = () => {
+    GroupAPI.patchClass(
+      {
+        data: {
+          className: dataPatch.className,
+          description: dataPatch.description,
+        },
+      },
+      props.data._id,
+      token
+    );
+  };
+
   return (
     <div className={style.page}>
       <div className={style.grid}>
@@ -30,32 +64,36 @@ const InformationPage = function (props: AppProps) {
         <div className={style.field}>
           {props.role === "provider" ? (
             <div className={style.field__m}>
-              <InputField
-                name="Tên nhóm"
-                editable
-                data={props.data.className}
-                multiline={false}
-              />
-              <InputField
-                name="Mô tả"
-                editable
-                data={props.data.description}
-                multiline={true}
-              />
+              <div onChange={handleChangeClassName}>
+                <InputField
+                  name="Tên nhóm"
+                  editable
+                  data={dataPatch.className}
+                  multiline={false}
+                />
+              </div>
+              <div onChange={handleChangeDescription}>
+                <InputField
+                  name="Mô tả"
+                  editable
+                  data={dataPatch.description}
+                  multiline={true}
+                />
+              </div>
             </div>
           ) : (
             <div className={style.field__m}>
               <InputField
                 name="Tên nhóm"
                 editable={false}
-                data={props.data.className}
+                data={dataPatch.className}
                 multiline={false}
               />
 
               <InputField
                 name="Mô tả"
                 editable={false}
-                data={props.data.description}
+                data={dataPatch.description}
                 multiline={true}
               />
             </div>
@@ -107,7 +145,13 @@ const InformationPage = function (props: AppProps) {
 
           {/* Button Enroll  */}
           {enroll ? (
-            <div></div>
+            props.role === "provider" && (
+              <div className={style.pbutton}>
+                <button className={style.button} onClick={ClickUpdate}>
+                  <img src="/icons/buttonSend.svg" />
+                </button>
+              </div>
+            )
           ) : (
             <div className={style.pbutton}>
               <button className={style.button} onClick={ClickEnroll}>

@@ -5,18 +5,18 @@ import NewClassAPI from "api/NewClassAPI";
 
 import ReviewPage from "components/class/page/reviewpage/reviewpage";
 import LayoutClass from "components/layout/ClassLayout";
+import { classInfo, ReviewType, titleGroup } from "lib/models";
 
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-
-import { ReviewType, titleGroup } from "lib/models";
 
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 
 type propApi = {
   status: string;
-  class: titleGroup;
+  title: titleGroup;
+  class: classInfo;
   review: Array<ReviewType>;
 };
 
@@ -33,8 +33,9 @@ export const getServerSideProps: GetServerSideProps = async (params) => {
   return {
     props: {
       status: res?.data?.status,
+      title: res?.data?.data,
       class: res?.data?.data,
-      review: rev?.data?.data,
+      review: rev?.data?.data?.result,
     },
   };
 };
@@ -59,19 +60,20 @@ const Item = function (props: propApi) {
   }, []);
 
   const Id = {
-    schoolyear: initProps.academicId.schoolyear,
-    courseName: initProps.courseId.courseName,
-    instructorName: initProps.instructorId.instructorName,
-    className: initProps.className,
+    academicId: initProps.academicId._id,
+    courseId: initProps.courseId._id,
+    instructorId: initProps.instructorId.id,
+    classId: initProps._id,
   };
 
   const router = useRouter();
+
   if (router.isFallback) {
     return <div>Loading...</div>;
   } else {
     return (
-      <LayoutClass initTitle={props.class} role={role}>
-        <ReviewPage data={props.review} id={Id} />
+      <LayoutClass initTitle={props.title} role={role}>
+        <ReviewPage review={props.review} id={Id} role={role} />
       </LayoutClass>
     );
   }

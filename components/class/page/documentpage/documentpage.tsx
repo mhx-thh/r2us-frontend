@@ -8,6 +8,7 @@ import { ResourceType } from "lib/models";
 
 type AppProps = {
   document: ResourceType;
+  role: string;
 };
 
 const Document = function (props: AppProps) {
@@ -18,26 +19,29 @@ const Document = function (props: AppProps) {
 
   return (
     <div className={style.document}>
-      <button className={style.document__button} onClick={handleOpen}>
-        <img src="/icons/threedot.svg" />
-      </button>
+      {props.role === "provider" && (
+        <div>
+          <button className={style.document__button} onClick={handleOpen}>
+            <img src="/icons/threedot.svg" />
+          </button>
 
+          <div className="absolute">
+            {open === true ? (
+              <DropdownResource close={setOpen} data={props.document} />
+            ) : (
+              <div></div>
+            )}
+          </div>
+        </div>
+      )}
       <div className={style.document__document}>
         <ResourceItem aresource={props.document} />
-      </div>
-
-      <div className="absolute">
-        {open === true ? (
-          <DropdownResource close={setOpen} data={props.document} />
-        ) : (
-          <div></div>
-        )}
       </div>
     </div>
   );
 };
 
-const DocumentPage = function ({ document, id }: any) {
+const DocumentPage = function ({ document, id, role }: any) {
   return (
     <div className={style.page}>
       <div>
@@ -59,7 +63,7 @@ const DocumentPage = function ({ document, id }: any) {
             data.classId.instructorId.instructorName === id.instructorName &&
             data.classId.academicId.academicName === id.academicName &&
             data.status === "accept" ? (
-              <Document key={data.resourceName} document={data} />
+              <Document key={data.resourceName} document={data} role={role} />
             ) : (
               <div></div>
             )
@@ -81,7 +85,7 @@ const DocumentPage = function ({ document, id }: any) {
             data.classId.instructorId.instructorName === id.instructorName &&
             data.classId.academicId.academicName === id.academicName &&
             data.status === "pending" ? (
-              <Document key={data.resourceName} document={data} />
+              <Document key={data.resourceName} document={data} role={role} />
             ) : (
               <div></div>
             )

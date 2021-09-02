@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import ReviewEditModal from "components/Review/ReviewEditModal";
 import PopUp from "../PopUp/popup";
+import useClickOutside from "components/clickOutside/clickOutside";
 
 import GroupAPI from "api/groupAPI";
 
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
-
-import useClickOutside from "components/clickOutside/clickOutside";
 
 function DropdownReview({ close, data }: any) {
   const token = useAppSelector(selectToken);
@@ -21,11 +20,11 @@ function DropdownReview({ close, data }: any) {
   };
 
   const ClickDelete = () => {
-    GroupAPI.deleteReview(data.id, token);
+    GroupAPI.deleteReview(data._id, token);
   };
 
   return (
-    <div ref={ref} className="absolute my-8 -mx-24">
+    <div ref={ref} className="absolute my-8 -mx-24 bg-white">
       <ul className="w-28  h-28 text-base leading-6 font-normal shadow rounded-xl py-1">
         <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 ">
           <button>Duyệt</button>

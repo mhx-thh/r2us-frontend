@@ -1,37 +1,97 @@
 import React, { useState } from "react";
-import DropdownReview from "components/class/DropDown/dropdownReview";
 import ReviewItem from "components/Review/ReviewItem";
 
 import style from "./style.module.css";
+import GroupAPI from "api/groupAPI";
+import PopUp from "components/class/PopUp/popup";
+import ReviewEditModal from "components/Review/ReviewEditModal";
+import useClickOutside from "components/clickOutside/clickOutside";
+import { useAppSelector } from "redux/hooks";
+import { selectToken } from "redux/userSlice";
 import { ReviewType } from "lib/models";
 
+type idType = {
+  academicId: string;
+  courseId: string;
+  instructorId: string;
+  classId: string;
+};
+
 type AppProps = {
-  reviewData: ReviewType;
+  role: string;
+  review: Array<ReviewType>;
+  id: idType;
 };
 
-const Review = function (props: AppProps) {
-  const reviewData = props.reviewData;
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => {
-    setOpen(true);
+const ReviewPage = function (props: AppProps) {
+  const [reviewArray, setReviewArray] = useState(props.review);
+
+  function DropdownReview({ close, data }: any) {
+    const token = useAppSelector(selectToken);
+    const ref = useClickOutside(() => {
+      close(0);
+    });
+
+    const [update, setUpdate] = useState(false);
+    const ClickUpdate = () => {
+      setUpdate(true);
+    };
+
+    const ClickDelete = () => {
+      GroupAPI.deleteReview(data._id, token);
+      const newSelect = reviewArray.filter((items) => items !== data);
+      setReviewArray(newSelect);
+    };
+
+    return (
+      <div ref={ref} className="absolute my-8 -mx-24 bg-white">
+        <ul className="w-28  h-28 text-base leading-6 font-normal shadow rounded-xl py-1">
+          <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 ">
+            <button>Duyệt</button>
+          </li>
+          <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 ">
+            <button onClick={ClickDelete}>Xóa</button>
+          </li>
+          <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200">
+            <button onClick={ClickUpdate}>Chỉnh sửa</button>
+          </li>
+        </ul>
+        {update === true && (
+          <PopUp closepopup={close}>
+            <ReviewEditModal review={data} />
+          </PopUp>
+        )}
+      </div>
+    );
+  }
+
+  const Review = function ({ reviewData }: any) {
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => {
+      setOpen(true);
+    };
+
+    return (
+      <div className={style.document}>
+        {props.role === "provider" && (
+          <div>
+            <button className={style.document__button} onClick={handleOpen}>
+              <img src="/icons/threedot.svg" />
+            </button>
+            <div className="absolute">
+              {open === true && (
+                <DropdownReview close={setOpen} data={reviewData} />
+              )}
+            </div>
+          </div>
+        )}
+        <div className={style.document__document}>
+          <ReviewItem areview={reviewData} />
+        </div>
+      </div>
+    );
   };
-  return (
-    <div className={style.document}>
-      <button className={style.document__button} onClick={handleOpen}>
-        <img src="/icons/threedot.svg" />
-      </button>
-      <div className={style.document__document}>
-        <ReviewItem areview={reviewData} />
-      </div>
-      <div className="absolute">
-        {open === true && <DropdownReview close={setOpen} data={reviewData} />}
-      </div>
-    </div>
-  );
-};
 
-const ReviewPage = function ({ data, id }: any) {
-  console.log(data);
   return (
     <div className={style.page}>
       <div>
@@ -45,11 +105,11 @@ const ReviewPage = function ({ data, id }: any) {
 
         {/* Document */}
         <div className={style.documentsection}>
-          {data.result.map((data) =>
-            data.classId.className === id.className &&
-            data.classId.courseId.courseName === id.courseName &&
-            data.classId.instructorId.instructorName === id.instructorName &&
-            data.classId.academicId.academicName === id.academicName ? (
+          {reviewArray.map((data) =>
+            data.classId._id === props.id.classId &&
+            data.classId.courseId._id === props.id.courseId &&
+            data.classId.instructorId.id === props.id.instructorId &&
+            data.classId.academicId._id === props.id.academicId ? (
               <Review reviewData={data} key={data._id} />
             ) : (
               <div></div>

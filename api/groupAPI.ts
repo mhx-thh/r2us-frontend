@@ -69,6 +69,10 @@ const GroupAPI = {
     const url = `${apiV1}/groups/enrollment/me?classId__eq=${classId}`;
     return get(url, token);
   },
+  patchClass: function (data: any, id: string, token: string) {
+    const url = `${apiV1}/groups/class/${id}`;
+    return patch(url, data, token);
+  },
 };
 
 export default GroupAPI;
