@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import InputField from "components/class/page/information/inputfield";
 import TitleField from "./titlefield";
@@ -14,31 +14,52 @@ type AppProps = {
   data: classInfo;
   role: string;
 };
+
 const InformationPage = function (props: AppProps) {
+  const [enroll, setEnroll] = useState(props.role === undefined ? false : true);
   const token = useAppSelector(selectToken);
+
   const ClickEnroll = () => {
+    setEnroll(true);
     userApi.postEnroll({ classId: props.data._id }, token);
   };
-
   return (
     <div className={style.page}>
       <div className={style.grid}>
         {/* Information field */}
         <div className={style.field}>
-          <div className={style.field__m}>
-            <InputField
-              name="Tên nhóm"
-              editable
-              data={props.data.className}
-              multiline={false}
-            />
-            <InputField
-              name="Mô tả"
-              editable
-              data={props.data.description}
-              multiline={true}
-            />
-          </div>
+          {props.role === "provider" ? (
+            <div className={style.field__m}>
+              <InputField
+                name="Tên nhóm"
+                editable
+                data={props.data.className}
+                multiline={false}
+              />
+              <InputField
+                name="Mô tả"
+                editable
+                data={props.data.description}
+                multiline={true}
+              />
+            </div>
+          ) : (
+            <div className={style.field__m}>
+              <InputField
+                name="Tên nhóm"
+                editable={false}
+                data={props.data.className}
+                multiline={false}
+              />
+
+              <InputField
+                name="Mô tả"
+                editable={false}
+                data={props.data.description}
+                multiline={true}
+              />
+            </div>
+          )}
         </div>
 
         {/* General Information */}
@@ -46,7 +67,7 @@ const InformationPage = function (props: AppProps) {
           {/* SchoolYear */}
           <div className={style.title__input}>
             <div className={style.title__image}>
-              <img src="/icons/calender.svg" width="25" />
+              <img src="/icons/calender.svg" width="23" />
             </div>
             <TitleField
               name="Năm học"
@@ -57,7 +78,7 @@ const InformationPage = function (props: AppProps) {
           {/* Faculty */}
           <div className={style.title__input}>
             <div className={style.title__image}>
-              <img src="/icons/facuty.svg" width="25" />
+              <img src="/icons/facuty.svg" width="23" />
             </div>
             <TitleField
               name="Môn học"
@@ -68,7 +89,7 @@ const InformationPage = function (props: AppProps) {
           {/* Course */}
           <div className={style.title__input}>
             <div className={style.title__image}>
-              <img src="/icons/course.svg" width="25" />
+              <img src="/icons/course.svg" width="23" />
             </div>
             <TitleField name="Nhóm học" data={props.data.courseId.courseName} />
           </div>
@@ -76,7 +97,7 @@ const InformationPage = function (props: AppProps) {
           {/* Giáo viên */}
           <div className={style.title__input}>
             <div className={style.title__image}>
-              <img src="/icons/teacher.svg" width="25" />
+              <img src="/icons/teacher.svg" width="23" />
             </div>
             <TitleField
               name="Giáo viên"
@@ -85,14 +106,14 @@ const InformationPage = function (props: AppProps) {
           </div>
 
           {/* Button Enroll  */}
-          {props.role === "" ? (
+          {enroll ? (
+            <div></div>
+          ) : (
             <div className={style.pbutton}>
               <button className={style.button} onClick={ClickEnroll}>
                 Tham gia
               </button>
             </div>
-          ) : (
-            <div></div>
           )}
         </div>
       </div>

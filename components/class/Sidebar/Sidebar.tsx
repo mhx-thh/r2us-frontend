@@ -22,7 +22,7 @@ function Sidebar(props: { param: string; id: string }) {
       Borderright: false,
     },
     {
-      Title: "Đề cương môn học",
+      Title: "Đề cương",
       Link: `/group/${props.id}/outline`,
       Borderright: true,
     },

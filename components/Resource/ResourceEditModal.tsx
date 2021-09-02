@@ -11,7 +11,7 @@ type AppProps = {
   resource: ResourceType;
 };
 
-const EditResource = function (props: AppProps) {
+const ResourceEditModal = function (props: AppProps) {
   const eresource = props.resource;
   const token = useAppSelector(selectToken);
 
@@ -127,4 +127,4 @@ const EditResource = function (props: AppProps) {
   );
 };
 
-export default EditResource;
+export default ResourceEditModal;

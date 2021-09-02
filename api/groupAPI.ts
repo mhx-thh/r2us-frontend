@@ -6,7 +6,7 @@ const GroupAPI = {
     return get(url, "");
   },
   getGroup: function (id: string) {
-    const url = `${apiV1}/groups/class?${id}`;
+    const url = `${apiV1}/groups/class/${id}`;
     return get(url, "");
   },
   getInstructors: function () {

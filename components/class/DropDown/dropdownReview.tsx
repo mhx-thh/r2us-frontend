@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import EditReview from "../../EditReview";
+import ReviewEditModal from "components/Review/ReviewEditModal";
 import PopUp from "../PopUp/popup";
 
 import GroupAPI from "api/groupAPI";
@@ -39,7 +39,7 @@ function DropdownReview({ close, data }: any) {
       </ul>
       {update === true && (
         <PopUp closepopup={close}>
-          <EditReview review={data} />
+          <ReviewEditModal review={data} />
         </PopUp>
       )}
     </div>

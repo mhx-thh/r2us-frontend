@@ -43,6 +43,7 @@ export type titleGroup = {
   description: string;
   updatedAt: string;
 };
+
 export type ResourceType = {
   resourceType: string;
   resourceDescription: string;
