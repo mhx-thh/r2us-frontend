@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import CreateReview from "components/class/CreateReview/createReview";
+import CreateReview from "components/Review/CreateReview/createReview";
 import PopUp from "components/class/PopUp/popup";
 import ReviewItem from "components/Review/ReviewItem";
 import style from "./style.module.css";

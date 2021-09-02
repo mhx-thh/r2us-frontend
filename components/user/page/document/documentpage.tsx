@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import CreateResource from "components/class/CreateResource/createResource";
+import CreateResource from "components/Resource/CreateResource/createResource";
 import PopUp from "components/class/PopUp/popup";
 import ResourceItem from "components/Resource/ResourceItem";
 import style from "./style.module.css";
