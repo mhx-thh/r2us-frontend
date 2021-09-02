@@ -53,9 +53,7 @@ const Item = function (props: propApi) {
     }
     fetchRole();
   }, []);
-
   const router = useRouter();
-
   if (router.isFallback) {
     return <div>Loading...</div>;
   } else {

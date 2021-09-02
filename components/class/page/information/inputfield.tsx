@@ -26,40 +26,60 @@ function InputField(props: AppProps) {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className={style.field__text}>{props?.name}</div>
-      <div className={style.field__input}>
-        {props.multiline ? (
-          <textarea
-            className={
-              isActive ? style.field__input_active : style.field__input_unactive
-            }
-            id={props.name}
-            disabled={!isActive}
-            value={data}
-            onChange={isActive ? handleChange : undefined}
-            rows={7}
-          />
-        ) : (
-          <input
-            className={
-              isActive ? style.field__input_active : style.field__input_unactive
-            }
-            id={props.name}
-            disabled={!isActive}
-            value={data}
-            onChange={isActive ? handleChange : undefined}
-          />
-        )}
-
-        {props?.editable ? (
+      {props.editable ? (
+        <div className={style.field__input}>
+          {props.multiline ? (
+            <textarea
+              className={
+                isActive
+                  ? style.field__input_active
+                  : style.field__input_unactive
+              }
+              id={props.name}
+              disabled={!isActive}
+              value={data}
+              onChange={isActive ? handleChange : undefined}
+              rows={7}
+            />
+          ) : (
+            <input
+              className={
+                isActive
+                  ? style.field__input_active
+                  : style.field__input_unactive
+              }
+              id={props.name}
+              disabled={!isActive}
+              value={data}
+              onChange={isActive ? handleChange : undefined}
+            />
+          )}
           <button type="submit">
             <img src="/icons/edit_pencil.svg" />
           </button>
-        ) : (
-          <button disabled>
-            <img src="/icons/edit_pencil.svg" />
-          </button>
-        )}
-      </div>
+        </div>
+      ) : (
+        <div className={style.field__input}>
+          {props.multiline ? (
+            <textarea
+              className={style.field__uneditable}
+              id={props.name}
+              disabled={!isActive}
+              value={data}
+              onChange={isActive ? handleChange : undefined}
+              rows={7}
+            />
+          ) : (
+            <input
+              className={style.field__uneditable}
+              id={props.name}
+              disabled={!isActive}
+              value={data}
+              onChange={isActive ? handleChange : undefined}
+            />
+          )}
+        </div>
+      )}
     </form>
   );
 }

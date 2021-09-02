@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import EditResource from "../../EditResource";
+import ResourceEditModal from "components/Resource/ResourceEditModal";
 import PopUp from "../PopUp/popup";
 
 import GroupAPI from "api/groupAPI";
@@ -48,7 +48,7 @@ function DropdownResource({ close, data }: any) {
 
       {update === true && (
         <PopUp closepopup={close}>
-          <EditResource resource={data} />
+          <ResourceEditModal resource={data} />
         </PopUp>
       )}
     </div>

@@ -10,7 +10,7 @@ type AppProps = {
   review: ReviewType;
 };
 
-const EditReview = function (props: AppProps) {
+const ReviewEditModal = function (props: AppProps) {
   const ereview = props.review;
   const token = useAppSelector(selectToken);
 
@@ -110,4 +110,4 @@ const EditReview = function (props: AppProps) {
   );
 };
 
-export default EditReview;
+export default ReviewEditModal;
