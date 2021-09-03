@@ -1,64 +1,61 @@
 import React, { useState } from "react";
 
+import DropdownResource from "components/class/DropDown/dropdownResource";
 import ResourceItem from "components/Resource/ResourceItem";
+
+import style from "./style.module.css";
+import { Id, ResourceType } from "lib/models";
+import GroupAPI from "api/groupAPI";
+import { useAppSelector } from "redux/hooks";
+import { selectToken } from "redux/userSlice";
 import useClickOutside from "components/clickOutside/clickOutside";
 import PopUp from "components/class/PopUp/popup";
 import ResourceEditModal from "components/Resource/ResourceEditModal";
 
-import style from "./style.module.css";
-import { Id, ResourceType } from "lib/models";
-
-import GroupAPI from "api/groupAPI";
-
-import { useAppSelector } from "redux/hooks";
-import { selectToken } from "redux/userSlice";
-
-type documentType = {
-  document: ResourceType;
+type ExamData = {
+  exam: ResourceType;
   role: string;
 };
 
 type AppProps = {
-  document: Array<ResourceType>;
-  id: Id;
+  exam: Array<ResourceType>;
   role: string;
+  id: Id;
 };
 
-const DocumentPage = function (props: AppProps) {
-  const [documentArray, setDocumentArray] = useState(props.document);
+const ExamPage = function (props: AppProps) {
+  const [examArray, setExamArray] = useState(props.exam);
 
-  // Document function
-  const Document = function (props: documentType) {
+  const Exam = function (props: ExamData) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
       setOpen(true);
     };
-
     return (
-      <div className={style.document}>
+      <div className={style.exam}>
         {props.role === "provider" && (
           <div>
-            <button className={style.document__button} onClick={handleOpen}>
+            <button className={style.exam__button} onClick={handleOpen}>
               <img src="/icons/threedot.svg" />
             </button>
 
             <div className="absolute">
               {open === true ? (
-                <DropdownResource close={setOpen} data={props.document} />
+                <DropdownResource close={setOpen} data={props.exam} />
               ) : (
                 <div></div>
               )}
             </div>
           </div>
         )}
-        <div className={style.document__document}>
-          <ResourceItem aresource={props.document} />
+        <div className={style.exam__exam}>
+          <ResourceItem aresource={props.exam} />
         </div>
       </div>
     );
   };
 
-  //  Dropdown function
+  // DropDown function
   function DropdownResource({ close, data }: any) {
     const token = useAppSelector(selectToken);
     const ref = useClickOutside(() => {
@@ -72,10 +69,9 @@ const DocumentPage = function (props: AppProps) {
 
     const ClickDelete = () => {
       GroupAPI.deleteResource(data.id, token);
-      const newSelect = documentArray.filter((items) => items !== data);
-      setDocumentArray(newSelect);
+      const newSelect = examArray.filter((items) => items !== data);
+      setExamArray(newSelect);
     };
-
     return (
       <div ref={ref} className="absolute my-8 -mx-24">
         <ul className="w-28  h-28 text-base leading-6 font-normal shadow rounded-xl py-1 bg-white">
@@ -121,19 +117,15 @@ const DocumentPage = function (props: AppProps) {
         </div>
 
         {/* Accepted Resource */}
-        <div className={style.documentsection}>
-          {documentArray.map((data) =>
+        <div className={style.examsection}>
+          {examArray.map((data) =>
             data.classId._id === props.id.classId &&
             data.classId.courseId._id === props.id.courseId &&
             data.classId.instructorId.id === props.id.instructorId &&
             data.classId.academicId._id === props.id.academicId &&
-            data.resourceType === "Resources" &&
+            data.resourceType === "Review Paper" &&
             data.status === "accept" ? (
-              <Document
-                key={data.resourceName}
-                document={data}
-                role={props.role}
-              />
+              <Exam key={data.resourceName} exam={data} role={props.role} />
             ) : (
               <div></div>
             )
@@ -148,19 +140,15 @@ const DocumentPage = function (props: AppProps) {
         </div>
 
         {/* Request Resource */}
-        <div className={style.documentsection}>
-          {documentArray.map((data) =>
+        <div className={style.examsection}>
+          {examArray.map((data) =>
             data.classId._id === props.id.classId &&
             data.classId.courseId._id === props.id.courseId &&
             data.classId.instructorId.id === props.id.instructorId &&
             data.classId.academicId._id === props.id.academicId &&
-            data.resourceType === "Resources" &&
+            data.resourceType === "Review Paper" &&
             data.status === "pending" ? (
-              <Document
-                key={data.resourceName}
-                document={data}
-                role={props.role}
-              />
+              <Exam key={data.resourceName} exam={data} role={props.role} />
             ) : (
               <div></div>
             )
@@ -171,4 +159,4 @@ const DocumentPage = function (props: AppProps) {
   );
 };
 
-export default DocumentPage;
+export default ExamPage;

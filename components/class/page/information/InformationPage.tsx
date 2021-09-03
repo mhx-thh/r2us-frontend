@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import InputField from "components/class/page/information/inputfield";
 import TitleField from "./titlefield";
@@ -6,10 +6,12 @@ import style from "./style.module.css";
 import { classInfo } from "lib/models";
 
 import userApi from "api/userApi";
+import GroupAPI from "api/groupAPI";
+
+import Link from "next/link";
 
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
-import GroupAPI from "api/groupAPI";
 
 type AppProps = {
   data: classInfo;
@@ -18,7 +20,14 @@ type AppProps = {
 
 const InformationPage = function (props: AppProps) {
   const token = useAppSelector(selectToken);
-  const [enroll, setEnroll] = useState(props.role === undefined ? false : true);
+
+  const [enroll, setEnroll] = useState(false);
+  useEffect(() => {
+    setEnroll(props.role === "" || props.role === undefined ? false : true);
+  }, [props.role]);
+
+  console.log(props.role, enroll);
+
   const [dataPatch, setDataPatch] = useState({
     className: props.data.className,
     description: props.data.description,
@@ -57,6 +66,10 @@ const InformationPage = function (props: AppProps) {
     );
   };
 
+  const ClickDelete = () => {
+    GroupAPI.deleteClass(props.data._id, token);
+  };
+
   return (
     <div className={style.page}>
       <div className={style.grid}>
@@ -67,6 +80,7 @@ const InformationPage = function (props: AppProps) {
               <div onChange={handleChangeClassName}>
                 <InputField
                   name="Tên nhóm"
+                  icon="/icons/write_pencil.svg"
                   editable
                   data={dataPatch.className}
                   multiline={false}
@@ -75,6 +89,7 @@ const InformationPage = function (props: AppProps) {
               <div onChange={handleChangeDescription}>
                 <InputField
                   name="Mô tả"
+                  icon="/icons/descriptionIcon.svg"
                   editable
                   data={dataPatch.description}
                   multiline={true}
@@ -84,6 +99,7 @@ const InformationPage = function (props: AppProps) {
           ) : (
             <div className={style.field__m}>
               <InputField
+                icon="/icons/write_pencil.svg"
                 name="Tên nhóm"
                 editable={false}
                 data={dataPatch.className}
@@ -92,6 +108,7 @@ const InformationPage = function (props: AppProps) {
 
               <InputField
                 name="Mô tả"
+                icon="/icons/descriptionIcon.svg"
                 editable={false}
                 data={dataPatch.description}
                 multiline={true}
@@ -149,6 +166,13 @@ const InformationPage = function (props: AppProps) {
               <div className={style.pbutton}>
                 <button className={style.button} onClick={ClickUpdate}>
                   <img src="/icons/buttonSend.svg" />
+                </button>
+                <button className={style.button} onClick={ClickDelete}>
+                  <Link href="/">
+                    <a>
+                      <img src="/icons/buttonReset.svg" />
+                    </a>
+                  </Link>
                 </button>
               </div>
             )

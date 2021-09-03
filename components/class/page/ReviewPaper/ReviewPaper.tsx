@@ -13,46 +13,46 @@ import GroupAPI from "api/groupAPI";
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 
-type documentType = {
-  document: ResourceType;
+type outlineType = {
+  outlineData: ResourceType;
   role: string;
 };
 
 type AppProps = {
-  document: Array<ResourceType>;
+  outline: Array<ResourceType>;
   id: Id;
   role: string;
 };
 
-const DocumentPage = function (props: AppProps) {
-  const [documentArray, setDocumentArray] = useState(props.document);
+const OutlinePage = function (props: AppProps) {
+  const [outlineArray, setOutlineArray] = useState(props.outline);
 
-  // Document function
-  const Document = function (props: documentType) {
+  // Outline function
+  const Outline = function (props: outlineType) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
       setOpen(true);
     };
 
     return (
-      <div className={style.document}>
+      <div className={style.outline}>
         {props.role === "provider" && (
           <div>
-            <button className={style.document__button} onClick={handleOpen}>
+            <button className={style.outline__button} onClick={handleOpen}>
               <img src="/icons/threedot.svg" />
             </button>
 
             <div className="absolute">
               {open === true ? (
-                <DropdownResource close={setOpen} data={props.document} />
+                <DropdownResource close={setOpen} data={props.outlineData} />
               ) : (
                 <div></div>
               )}
             </div>
           </div>
         )}
-        <div className={style.document__document}>
-          <ResourceItem aresource={props.document} />
+        <div className={style.outline__outline}>
+          <ResourceItem aresource={props.outlineData} />
         </div>
       </div>
     );
@@ -72,8 +72,8 @@ const DocumentPage = function (props: AppProps) {
 
     const ClickDelete = () => {
       GroupAPI.deleteResource(data.id, token);
-      const newSelect = documentArray.filter((items) => items !== data);
-      setDocumentArray(newSelect);
+      const newSelect = outlineArray.filter((items) => items !== data);
+      setOutlineArray(newSelect);
     };
 
     return (
@@ -122,16 +122,16 @@ const DocumentPage = function (props: AppProps) {
 
         {/* Accepted Resource */}
         <div className={style.documentsection}>
-          {documentArray.map((data) =>
+          {outlineArray.map((data) =>
             data.classId._id === props.id.classId &&
             data.classId.courseId._id === props.id.courseId &&
             data.classId.instructorId.id === props.id.instructorId &&
             data.classId.academicId._id === props.id.academicId &&
-            data.resourceType === "Resources" &&
+            data.resourceType === "Examination Paper" &&
             data.status === "accept" ? (
-              <Document
+              <Outline
                 key={data.resourceName}
-                document={data}
+                outlineData={data}
                 role={props.role}
               />
             ) : (
@@ -149,16 +149,16 @@ const DocumentPage = function (props: AppProps) {
 
         {/* Request Resource */}
         <div className={style.documentsection}>
-          {documentArray.map((data) =>
+          {outlineArray.map((data) =>
             data.classId._id === props.id.classId &&
             data.classId.courseId._id === props.id.courseId &&
             data.classId.instructorId.id === props.id.instructorId &&
             data.classId.academicId._id === props.id.academicId &&
-            data.resourceType === "Resources" &&
+            data.resourceType === "Examination Paper" &&
             data.status === "pending" ? (
-              <Document
+              <Outline
                 key={data.resourceName}
-                document={data}
+                outlineData={data}
                 role={props.role}
               />
             ) : (
@@ -171,4 +171,4 @@ const DocumentPage = function (props: AppProps) {
   );
 };
 
-export default DocumentPage;
+export default OutlinePage;

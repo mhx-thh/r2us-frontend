@@ -16,6 +16,7 @@
     padding-top: 60px;
 }
 .field__text {
+    display: flex;
     font-style: normal;
     font-weight: 600;
     font-size: 16px;
@@ -106,6 +107,7 @@
 }
 .button {
     background: #6366f1;
+    margin-left: 40px;
     border: 1px solid #6366f1;
     box-sizing: border-box;
     border-radius: 8px;

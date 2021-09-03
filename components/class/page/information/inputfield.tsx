@@ -8,6 +8,7 @@ type AppProps = {
   editable: boolean;
   data: string;
   multiline: boolean;
+  icon: string;
 };
 
 function InputField(props: AppProps) {
@@ -25,7 +26,12 @@ function InputField(props: AppProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className={style.field__text}>{props?.name}</div>
+      <div className={style.field__text}>
+        <div>{props?.name}</div>
+        <div>
+          <img src={props.icon} className="px-3" />
+        </div>
+      </div>
       {props.editable ? (
         <div className={style.field__input}>
           {props.multiline ? (

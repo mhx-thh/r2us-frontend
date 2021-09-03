@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { ResourceType, titleGroup } from "lib/models";
+import { classInfo, ResourceType, titleGroup } from "lib/models";
 
 import GroupAPI from "api/groupAPI";
 
-import DocumentPage from "components/class/page/documentpage/documentpage";
 import LayoutClass from "components/layout/ClassLayout";
 
 import { GetServerSideProps } from "next";
@@ -11,10 +10,12 @@ import { useRouter } from "next/router";
 
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
+import ExamPage from "components/class/page/exampage/examPage";
 
 type propApi = {
   status: string;
-  class: titleGroup;
+  title: titleGroup;
+  class: classInfo;
   exam: Array<ResourceType>;
 };
 
@@ -31,15 +32,14 @@ export const getServerSideProps: GetServerSideProps = async (params) => {
   return {
     props: {
       status: res?.data?.status,
+      title: res?.data?.data,
       class: res?.data?.data,
-      exam: moreRes?.data?.data,
+      exam: moreRes?.data?.data?.result,
     },
   };
 };
 
 const Item = function (props: propApi) {
-  const initProps = props.class;
-
   const [role, setRole] = useState("");
   const token = useAppSelector(selectToken);
 
@@ -57,10 +57,10 @@ const Item = function (props: propApi) {
   }, []);
 
   const Id = {
-    schoolyear: initProps.academicId.schoolyear,
-    courseName: initProps.courseId.courseName,
-    instructorName: initProps.instructorId.instructorName,
-    className: initProps.className,
+    academicId: props.class.academicId._id,
+    courseId: props.class.courseId._id,
+    instructorId: props.class.instructorId.id,
+    classId: props.class._id,
   };
 
   const router = useRouter();
@@ -69,8 +69,8 @@ const Item = function (props: propApi) {
     return <div>Loading...</div>;
   } else {
     return (
-      <LayoutClass initTitle={props.class} role={role}>
-        <DocumentPage document={props.exam} id={Id} />
+      <LayoutClass initTitle={props.title} role={role}>
+        <ExamPage exam={props.exam} id={Id} role={role} />
       </LayoutClass>
     );
   }

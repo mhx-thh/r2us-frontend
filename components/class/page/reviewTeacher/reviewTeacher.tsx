@@ -23,7 +23,12 @@ type AppProps = {
   id: idType;
 };
 
-const ReviewPage = function (props: AppProps) {
+type Review = {
+  reviewData: ReviewType;
+  role: string;
+};
+
+const ReviewTeacher = function (props: AppProps) {
   const [reviewArray, setReviewArray] = useState(props.review);
 
   function DropdownReview({ close, data }: any) {
@@ -65,7 +70,7 @@ const ReviewPage = function (props: AppProps) {
     );
   }
 
-  const Review = function ({ reviewData }: any) {
+  const Review = function (props: Review) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
       setOpen(true);
@@ -80,13 +85,13 @@ const ReviewPage = function (props: AppProps) {
             </button>
             <div className="absolute">
               {open === true && (
-                <DropdownReview close={setOpen} data={reviewData} />
+                <DropdownReview close={setOpen} data={props.reviewData} />
               )}
             </div>
           </div>
         )}
         <div className={style.document__document}>
-          <ReviewItem areview={reviewData} />
+          <ReviewItem areview={props.reviewData} />
         </div>
       </div>
     );
@@ -109,8 +114,9 @@ const ReviewPage = function (props: AppProps) {
             data.classId._id === props.id.classId &&
             data.classId.courseId._id === props.id.courseId &&
             data.classId.instructorId.id === props.id.instructorId &&
-            data.classId.academicId._id === props.id.academicId ? (
-              <Review reviewData={data} key={data._id} />
+            data.classId.academicId._id === props.id.academicId &&
+            data.reviewType === "Instructor" ? (
+              <Review reviewData={data} role={props.role} key={data._id} />
             ) : (
               <div></div>
             )
@@ -142,4 +148,4 @@ const ReviewPage = function (props: AppProps) {
   );
 };
 
-export default ReviewPage;
+export default ReviewTeacher;

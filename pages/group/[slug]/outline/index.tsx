@@ -9,14 +9,16 @@ import LayoutClass from "components/layout/ClassLayout";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 
-import { ResourceType, titleGroup } from "lib/models";
+import { classInfo, ResourceType, titleGroup } from "lib/models";
 
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
+import OutlinePage from "components/class/page/ReviewPaper/ReviewPaper";
 
 type propApi = {
   status: string;
-  class: titleGroup;
+  title: titleGroup;
+  class: classInfo;
   outline: Array<ResourceType>;
 };
 
@@ -34,7 +36,8 @@ export const getServerSideProps: GetServerSideProps = async (params) => {
     props: {
       status: res?.data?.status,
       class: res?.data?.data,
-      outline: moreRes?.data?.data,
+      title: res?.data?.data,
+      outline: moreRes?.data?.data?.result,
     },
   };
 };
@@ -59,10 +62,10 @@ const Item = function (props: propApi) {
   }, []);
 
   const Id = {
-    schoolyear: initProps.academicId.schoolyear,
-    courseName: initProps.courseId.courseName,
-    instructorName: initProps.instructorId.instructorName,
-    className: initProps.className,
+    academicId: initProps.academicId._id,
+    courseId: initProps.courseId._id,
+    instructorId: initProps.instructorId.id,
+    classId: initProps._id,
   };
 
   const router = useRouter();
@@ -71,8 +74,8 @@ const Item = function (props: propApi) {
     return <div>Loading...</div>;
   } else {
     return (
-      <LayoutClass initTitle={props.class} role={role}>
-        <DocumentPage document={props.outline} id={Id} />
+      <LayoutClass initTitle={props.title} role={role}>
+        <OutlinePage outline={props.outline} id={Id} role={role} />
       </LayoutClass>
     );
   }

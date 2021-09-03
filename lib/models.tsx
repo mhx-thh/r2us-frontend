@@ -121,3 +121,10 @@ export type ReviewType = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type Id = {
+  academicId: string;
+  courseId: string;
+  instructorId: string;
+  classId: string;
+};

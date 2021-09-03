@@ -73,6 +73,10 @@ const GroupAPI = {
     const url = `${apiV1}/groups/class/${id}`;
     return patch(url, data, token);
   },
+  deleteClass: function (id: string, token: string) {
+    const url = `${apiV1}/groups/class/${id}`;
+    return delele(url, token);
+  },
 };
 
 export default GroupAPI;

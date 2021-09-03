@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import GroupAPI from "api/groupAPI";
 import NewClassAPI from "api/NewClassAPI";
 
-import ReviewPage from "components/class/page/reviewpage/reviewpage";
 import LayoutClass from "components/layout/ClassLayout";
 import { classInfo, ReviewType, titleGroup } from "lib/models";
+import ReviewCourse from "components/class/page/reviewCourse/reviewCourse";
 
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
@@ -73,7 +73,7 @@ const Item = function (props: propApi) {
   } else {
     return (
       <LayoutClass initTitle={props.title} role={role}>
-        <ReviewPage review={props.review} id={Id} role={role} />
+        <ReviewCourse review={props.review} id={Id} role={role} />
       </LayoutClass>
     );
   }

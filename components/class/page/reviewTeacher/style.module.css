@@ -1,0 +1,99 @@
+.page{
+    padding-left: 100px;
+    padding-right: 100px;
+}
+.buttonarea{
+    padding-top: 100px;
+    padding-bottom: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.head{
+    display: flex;
+    background: #E0E7FF;
+    border-radius: 12px;
+    align-items: center;
+    justify-content: center;
+}
+.head__text{
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 28px;
+    /* identical to box height, or 117% */
+    color: #6366F1;
+
+    padding: 10px;
+}
+.head__image{
+    padding: 10px;
+}
+
+.documentsection{
+    display: flex;
+    flex-wrap: wrap;
+    
+}
+.document{
+    display: flex;
+    align-items: flex-start;
+    padding-bottom: 50px;
+}
+.document__button{
+    border: 1px solid #6366F1;
+    box-sizing: border-box;
+    /* /shadow/base */
+
+    filter: drop-shadow(0px 1px 3px rgba(0, 0, 0, 0.1)) drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.06));
+    border-radius: 4px;
+    display: flex;
+    width: 20px;
+    height: 20px;
+    align-items: center;
+    justify-content: center;
+}
+.document__button__text{
+    /* text-xl/leading-none/font-normal */
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 20px;
+    color: #6366F1;
+    /* or 100% */
+
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+.document__document{
+    padding-left: 5px;
+    padding-right: 20px;
+}
+
+
+.prebox{
+    padding-top: 25px;
+    padding-bottom: 50px;
+    padding-left: 45px;
+}
+.box{
+    width: 150px;
+    height: 50px;
+
+    background: #6366F1;
+    /* /shadow/base */
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.06);
+    border-radius: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.box__text{
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 28px;
+    color: #FFFFFF;
+}
