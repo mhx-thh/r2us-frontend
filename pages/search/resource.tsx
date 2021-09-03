@@ -5,6 +5,7 @@ import queryString from "query-string";
 import Layout from "components/layout/SearchLayout";
 import Pagination from "components/search/Pagination/Pagination";
 import Documents from "components/search/Documents/Documents";
+import ResourceLoading from "components/search/Loading/ResourceLoading";
 
 const Resource = () => {
   //declare variable
@@ -15,6 +16,7 @@ const Resource = () => {
   const [selected, setSelected] = useState(1);
   const [documents, setDocuments] = useState([]);
   const router = useRouter();
+  const [done, setDone] = useState(false);
   const [data, setData] = useState([]);
   const getDocuments = (_documents, _data) => {
     setDocuments(_documents);
@@ -27,6 +29,9 @@ const Resource = () => {
       _limitperPage: 20,
       _totalRows: _totalRows,
     });
+  };
+  const handleDoneStatus = (isDone) => {
+    setDone(isDone);
   };
 
   //Chuyển trang
@@ -50,36 +55,53 @@ const Resource = () => {
 
   return (
     <div>
-      <Layout getData={getDocuments} getPagination={handleTotalRowsChange}>
-        {pagination._totalRows === 0 && (
+      <Layout
+        getData={getDocuments}
+        getPagination={handleTotalRowsChange}
+        setDone={handleDoneStatus}
+      >
+        {!done ? (
+          <div className="grid lg:grid-cols-4 gap-12 md:grid-cols-3 sm:grid-cols-2 px-24 py-10">
+            <ResourceLoading />
+            <ResourceLoading />
+            <ResourceLoading />
+            <ResourceLoading />
+            <ResourceLoading />
+            <ResourceLoading />
+          </div>
+        ) : (
           <div>
-            <span className="mx-24 text-xl leading-8 mr-2">
-              Không có tài liệu nào rồi
-            </span>
-            <img
-              className="inline-block pb-2"
-              src="/icons/crying.svg"
-              width="50"
-              height="50"
-            />
+            {pagination._totalRows === 0 && (
+              <div>
+                <span className="mx-24 text-xl leading-8 mr-2">
+                  Không có tài liệu nào rồi
+                </span>
+                <img
+                  className="inline-block pb-2"
+                  src="/icons/crying.svg"
+                  width="50"
+                  height="50"
+                />
+              </div>
+            )}
+
+            {data !== [] &&
+              data?.map((idx) => {
+                return (
+                  // eslint-disable-next-line react/jsx-key
+                  <div>
+                    <p className="px-24 text-base leading-6 font-semibold">
+                      {idx?.label}
+                    </p>
+                    <Documents resource={idx?.value[0]} />
+                  </div>
+                );
+              })}
+            <Documents resource={documents} />
           </div>
         )}
-
-        {data !== [] &&
-          data?.map((idx) => {
-            return (
-              // eslint-disable-next-line react/jsx-key
-              <div>
-                <p className="px-24 text-base leading-6 font-semibold">
-                  {idx?.label}
-                </p>
-                <Documents resource={idx?.value[0]} />
-              </div>
-            );
-          })}
-        <Documents resource={documents} />
       </Layout>
-
+      <ResourceLoading />
       <Pagination
         pagination={pagination}
         selected={selected}
