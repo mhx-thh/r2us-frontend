@@ -1,40 +1,14 @@
+import { ResourceType } from "lib/models";
 import React from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-
-type ResourceType = {
-  resourceType: string;
-  resourceDescription: string;
-  resourceLink: string;
-  classId: {
-    className: string;
-    courseId: {
-      courseName: string;
-      facultyId: {
-        facultyName: string;
-      };
-    };
-    instructorId: {
-      instructorName: string;
-    };
-    academicId: {
-      schoolyear: string;
-      semester: string;
-    };
-  };
-  resourceName: string;
-  userId: {
-    givenName: string;
-    familyName: string;
-    photo: string;
-  };
-  _id: string;
-};
+import Link from "next/link";
 
 type AppProps = {
   sresource: ResourceType;
 };
 
 function ResourceShowModal({ sresource }: AppProps) {
+  const url = `/group/${sresource.classId.slug}`;
   return (
     <div className="absolute bg-indigo-200 w-full left-0 top-0 h-80 rounded-t-2xl tracking-normal  text-base leading-6 font-medium">
       {/* Title */}
@@ -62,7 +36,11 @@ function ResourceShowModal({ sresource }: AppProps) {
       <div className="flex px-56 pt-2">
         <img className="my-3" width="20" src="/icons/destination_group.svg" />
         <div className="px-8 my-3 w-11/12">{sresource.classId.className}</div>
-        <img className="px-0.5" src="/icons/gotoGroup.svg" />
+        <Link href={url}>
+          <a>
+            <img className="px-0.5 pt-3" src="/icons/gotoGroup.svg" />
+          </a>
+        </Link>
       </div>
 
       {/* Link */}
