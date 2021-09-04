@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import CreateReview from "components/Review/CreateReview/createReview";
+import CreateReview from "components/Review/ReviewCreateModal";
 import PopUp from "components/class/PopUp/popup";
 import ReviewItem from "components/Review/ReviewItem";
 import style from "./style.module.css";
@@ -68,11 +68,9 @@ const ReviewPage = function (props: any) {
         )}
 
         {/* Document */}
-        <div className={style.documentsection}>
+        <div className="w-full grid grid-cols-4 gap-11 justify-around">
           {data.map((val, key) => (
-            <div className="px-[25px] py-[15px]" key={key}>
-              <ReviewItem areview={val} />
-            </div>
+            <ReviewItem areview={val} key={key} />
           ))}
         </div>
       </div>

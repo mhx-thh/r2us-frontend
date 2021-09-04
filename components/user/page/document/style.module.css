@@ -33,7 +33,6 @@
 .documentsection{
     display: flex;
     flex-wrap: wrap;
-    
 }
 .document{
     display: flex;

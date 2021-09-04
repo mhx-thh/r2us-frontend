@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import CreateResource from "components/Resource/CreateResource/createResource";
+import CreateResource from "components/Resource/ResourceCreateModal";
 import PopUp from "components/class/PopUp/popup";
 import ResourceItem from "components/Resource/ResourceItem";
 import style from "./style.module.css";
@@ -69,11 +69,11 @@ const DocumentPage = function (props: any) {
 
         {/* Document */}
         <div className={style.documentsection}>
-          {data.map((val, key) => (
-            <div className="px-[25px] py-[15px]" key={key}>
+          <div className="w-full grid grid-cols-4 gap-11 justify-around">
+            {data.map((val, key) => (
               <ResourceItem aresource={val} key={key} />
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>
