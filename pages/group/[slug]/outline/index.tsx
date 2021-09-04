@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import GroupAPI from "api/groupAPI";
 import NewClassAPI from "api/NewClassAPI";
 
-import DocumentPage from "components/class/page/documentpage/documentpage";
 import LayoutClass from "components/layout/ClassLayout";
 
 import { GetServerSideProps } from "next";
