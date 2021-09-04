@@ -27,7 +27,7 @@ type AppProps = {
 const OutlinePage = function (props: AppProps) {
   const [outlineArray, setOutlineArray] = useState(props.outline);
 
-  // Outline function
+  // Outline Item
   const Outline = function (props: outlineType) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
@@ -119,7 +119,7 @@ const OutlinePage = function (props: AppProps) {
             </div>
           </div>
         </div>
-
+        <div className="w-64 h-96 bg-indigo-50 absolute right-0 rounded-l-3xl px-20 py-10" />
         {/* Accepted Resource */}
         <div className={style.documentsection}>
           {outlineArray.map((data) =>

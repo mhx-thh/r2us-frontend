@@ -31,6 +31,7 @@ type Review = {
 const ReviewTeacher = function (props: AppProps) {
   const [reviewArray, setReviewArray] = useState(props.review);
 
+  // Dropdown function
   function DropdownReview({ close, data }: any) {
     const token = useAppSelector(selectToken);
     const ref = useClickOutside(() => {
@@ -70,6 +71,7 @@ const ReviewTeacher = function (props: AppProps) {
     );
   }
 
+  // Review Item
   const Review = function (props: Review) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
@@ -109,29 +111,30 @@ const ReviewTeacher = function (props: AppProps) {
         </div>
 
         {/* Document */}
-        <div className={style.documentsection}>
-          {reviewArray.map((data) =>
-            data.classId._id === props.id.classId &&
-            data.classId.courseId._id === props.id.courseId &&
-            data.classId.instructorId.id === props.id.instructorId &&
-            data.classId.academicId._id === props.id.academicId &&
-            data.reviewType === "Instructor" ? (
-              <Review reviewData={data} role={props.role} key={data._id} />
-            ) : (
-              <div></div>
-            )
-          )}
-        </div>
+        <div className="w-48 h-72 bg-indigo-50 absolute left-0 rounded-r-2xl px-20 py-10">
+          <div className={style.documentsection}>
+            {reviewArray.map((data) =>
+              data.classId._id === props.id.classId &&
+              data.classId.courseId._id === props.id.courseId &&
+              data.classId.instructorId.id === props.id.instructorId &&
+              data.classId.academicId._id === props.id.academicId &&
+              data.reviewType === "Instructor" ? (
+                <Review reviewData={data} role={props.role} key={data._id} />
+              ) : (
+                <div></div>
+              )
+            )}
+          </div>
 
-        {/* Request */}
-        {/* <div className={style.prebox}>
+          {/* Request */}
+          {/* <div className={style.prebox}>
           <div className={style.box}>
             <div className={style.box__text}>Yêu cầu</div>
           </div>
         </div> */}
 
-        {/* Request document */}
-        {/* <div className={style.documentsection}>
+          {/* Request document */}
+          {/* <div className={style.documentsection}>
           {data.result.map((data) =>
             data.classId.className === id.className &&
             data.classId.courseId.courseName === id.courseName &&
@@ -143,6 +146,7 @@ const ReviewTeacher = function (props: AppProps) {
             )
           )}
         </div> */}
+        </div>
       </div>
     </div>
   );

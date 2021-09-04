@@ -3,15 +3,14 @@ import React, { useEffect, useState } from "react";
 import GroupAPI from "api/groupAPI";
 
 import InformationPage from "components/class/page/information/InformationPage";
-import LayoutClass from "components/layout/ClassLayout";
+import { classInfo, titleGroup } from "lib/models";
 
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 
-import { classInfo, titleGroup } from "lib/models";
-
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
+import GroupHeaderLayout from "components/layout/GroupLayout";
 
 type propApi = {
   status: string;
@@ -59,9 +58,13 @@ const Item = function (props: propApi) {
     return <div>Loading...</div>;
   } else {
     return (
-      <LayoutClass initTitle={props.title} role={role}>
-        <InformationPage data={props.class} role={role} />;
-      </LayoutClass>
+      <GroupHeaderLayout initTitle={props.title} role={role}>
+        <InformationPage
+          data={props.class}
+          initTitle={props.title}
+          role={role}
+        />
+      </GroupHeaderLayout>
     );
   }
 };

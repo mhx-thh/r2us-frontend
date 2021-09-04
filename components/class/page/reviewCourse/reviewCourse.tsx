@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import ReviewItem from "components/Review/ReviewItem";
 
-import style from "./style.module.css";
-import GroupAPI from "api/groupAPI";
+import ReviewItem from "components/Review/ReviewItem";
 import PopUp from "components/class/PopUp/popup";
 import ReviewEditModal from "components/Review/ReviewEditModal";
 import useClickOutside from "components/clickOutside/clickOutside";
+
+import style from "./style.module.css";
+import { Id, ReviewType } from "lib/models";
+
+import GroupAPI from "api/groupAPI";
+
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
-import { Id, ReviewType } from "lib/models";
 
 type AppProps = {
   role: string;
@@ -63,6 +66,7 @@ const ReviewCourse = function (props: AppProps) {
       </div>
     );
   }
+
   // Review Component
   const Review = function (props: Review) {
     const [open, setOpen] = useState(false);
