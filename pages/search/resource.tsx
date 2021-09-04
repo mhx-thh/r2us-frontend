@@ -101,7 +101,6 @@ const Resource = () => {
           </div>
         )}
       </Layout>
-      <ResourceLoading />
       <Pagination
         pagination={pagination}
         selected={selected}
