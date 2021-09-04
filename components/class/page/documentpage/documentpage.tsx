@@ -5,7 +5,7 @@ import useClickOutside from "components/clickOutside/clickOutside";
 import PopUp from "components/class/PopUp/popup";
 import ResourceEditModal from "components/Resource/ResourceEditModal";
 
-import style from "./style.module.css";
+import style from "../groupPage.module.css";
 import { Id, ResourceType } from "lib/models";
 
 import GroupAPI from "api/groupAPI";
@@ -33,7 +33,6 @@ const DocumentPage = function (props: AppProps) {
     const handleOpen = () => {
       setOpen(true);
     };
-
     return (
       <div className={style.document}>
         {props.role === "provider" && (
@@ -75,10 +74,9 @@ const DocumentPage = function (props: AppProps) {
       const newSelect = documentArray.filter((items) => items !== data);
       setDocumentArray(newSelect);
     };
-
     return (
       <div ref={ref} className="absolute my-8 -mx-24">
-        <ul className="w-28  h-28 text-base leading-6 font-normal shadow rounded-xl py-1 bg-white">
+        <ul className="w-28 h-28 text-base leading-6 font-normal shadow rounded-xl py-1 bg-white">
           {data.status === "accept" ? (
             <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 ">
               <button>Duyệt</button>

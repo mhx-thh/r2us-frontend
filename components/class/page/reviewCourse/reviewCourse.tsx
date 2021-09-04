@@ -5,7 +5,7 @@ import PopUp from "components/class/PopUp/popup";
 import ReviewEditModal from "components/Review/ReviewEditModal";
 import useClickOutside from "components/clickOutside/clickOutside";
 
-import style from "./style.module.css";
+import style from "../groupPage.module.css";
 import { Id, ReviewType } from "lib/models";
 
 import GroupAPI from "api/groupAPI";

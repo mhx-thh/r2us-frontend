@@ -5,7 +5,7 @@ import useClickOutside from "components/clickOutside/clickOutside";
 import PopUp from "components/class/PopUp/popup";
 import ResourceEditModal from "components/Resource/ResourceEditModal";
 
-import style from "./style.module.css";
+import style from "../groupPage.module.css";
 import { Id, ResourceType } from "lib/models";
 
 import GroupAPI from "api/groupAPI";
@@ -33,12 +33,11 @@ const OutlinePage = function (props: AppProps) {
     const handleOpen = () => {
       setOpen(true);
     };
-
     return (
-      <div className={style.outline}>
+      <div className={style.document}>
         {props.role === "provider" && (
           <div>
-            <button className={style.outline__button} onClick={handleOpen}>
+            <button className={style.document__button} onClick={handleOpen}>
               <img src="/icons/threedot.svg" />
             </button>
 
@@ -51,7 +50,7 @@ const OutlinePage = function (props: AppProps) {
             </div>
           </div>
         )}
-        <div className={style.outline__outline}>
+        <div className={style.document__document}>
           <ResourceItem aresource={props.outlineData} />
         </div>
       </div>
@@ -119,7 +118,6 @@ const OutlinePage = function (props: AppProps) {
             </div>
           </div>
         </div>
-        <div className="w-64 h-96 bg-indigo-50 absolute right-0 rounded-l-3xl px-20 py-10" />
         {/* Accepted Resource */}
         <div className={style.documentsection}>
           {outlineArray.map((data) =>
@@ -127,7 +125,7 @@ const OutlinePage = function (props: AppProps) {
             data.classId.courseId._id === props.id.courseId &&
             data.classId.instructorId.id === props.id.instructorId &&
             data.classId.academicId._id === props.id.academicId &&
-            data.resourceType === "Examination Paper" &&
+            data.resourceType === "Review Paper" &&
             data.status === "accept" ? (
               <Outline
                 key={data.resourceName}
@@ -154,7 +152,7 @@ const OutlinePage = function (props: AppProps) {
             data.classId.courseId._id === props.id.courseId &&
             data.classId.instructorId.id === props.id.instructorId &&
             data.classId.academicId._id === props.id.academicId &&
-            data.resourceType === "Examination Paper" &&
+            data.resourceType === "Review Paper" &&
             data.status === "pending" ? (
               <Outline
                 key={data.resourceName}

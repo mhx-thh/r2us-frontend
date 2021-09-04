@@ -37,7 +37,7 @@ const Title = function (props: AppProps) {
                   {/* Vai trò */}
                   <div className="w-36 h-8 rounded-md border-solid border border-indigo-500">
                     <div className="font-Inter font-semibold text-base leading-6 text-indigo-500 flex justify-center pt-0.5">
-                      {props.role}
+                      {props.role === "member" ? "Thành viên" : "Quản trị viên"}
                     </div>
                   </div>
                 </div>

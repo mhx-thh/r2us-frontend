@@ -5,7 +5,7 @@ import useClickOutside from "components/clickOutside/clickOutside";
 import PopUp from "components/class/PopUp/popup";
 import ResourceEditModal from "components/Resource/ResourceEditModal";
 
-import style from "./style.module.css";
+import style from "../groupPage.module.css";
 import { Id, ResourceType } from "lib/models";
 
 import GroupAPI from "api/groupAPI";
@@ -33,10 +33,10 @@ const ExamPage = function (props: AppProps) {
       setOpen(true);
     };
     return (
-      <div className={style.exam}>
+      <div className={style.document}>
         {props.role === "provider" && (
           <div>
-            <button className={style.exam__button} onClick={handleOpen}>
+            <button className={style.document__button} onClick={handleOpen}>
               <img src="/icons/threedot.svg" />
             </button>
 
@@ -49,7 +49,7 @@ const ExamPage = function (props: AppProps) {
             </div>
           </div>
         )}
-        <div className={style.exam__exam}>
+        <div className={style.document__document}>
           <ResourceItem aresource={props.exam} />
         </div>
       </div>
@@ -118,47 +118,44 @@ const ExamPage = function (props: AppProps) {
         </div>
 
         {/* Accepted Resource */}
-        <div className="w-48 h-72 bg-indigo-50 absolute left-0 rounded-r-2xl px-20 py-10">
-          <div className={style.examsection}>
-            {examArray.map((data) =>
-              data.classId._id === props.id.classId &&
-              data.classId.courseId._id === props.id.courseId &&
-              data.classId.instructorId.id === props.id.instructorId &&
-              data.classId.academicId._id === props.id.academicId &&
-              data.resourceType === "Review Paper" &&
-              data.status === "accept" ? (
-                <Exam key={data.resourceName} exam={data} role={props.role} />
-              ) : (
-                <div></div>
-              )
-            )}
-          </div>
+        <div className={style.documentsection}>
+          {examArray.map((data) =>
+            data.classId._id === props.id.classId &&
+            data.classId.courseId._id === props.id.courseId &&
+            data.classId.instructorId.id === props.id.instructorId &&
+            data.classId.academicId._id === props.id.academicId &&
+            data.resourceType === "Examination Paper" &&
+            data.status === "accept" ? (
+              <Exam key={data.resourceName} exam={data} role={props.role} />
+            ) : (
+              <div></div>
+            )
+          )}
+        </div>
 
-          {/* Request */}
-          <div className={style.prebox}>
-            <div className={style.box}>
-              <div className={style.box__text}>Yêu cầu</div>
-            </div>
-          </div>
-
-          {/* Request Resource */}
-          <div className={style.examsection}>
-            {examArray.map((data) =>
-              data.classId._id === props.id.classId &&
-              data.classId.courseId._id === props.id.courseId &&
-              data.classId.instructorId.id === props.id.instructorId &&
-              data.classId.academicId._id === props.id.academicId &&
-              data.resourceType === "Review Paper" &&
-              data.status === "pending" ? (
-                <Exam key={data.resourceName} exam={data} role={props.role} />
-              ) : (
-                <div></div>
-              )
-            )}
+        {/* Request */}
+        <div className={style.prebox}>
+          <div className={style.box}>
+            <div className={style.box__text}>Yêu cầu</div>
           </div>
         </div>
+
+        {/* Request Resource */}
+        <div className={style.documentsection}>
+          {examArray.map((data) =>
+            data.classId._id === props.id.classId &&
+            data.classId.courseId._id === props.id.courseId &&
+            data.classId.instructorId.id === props.id.instructorId &&
+            data.classId.academicId._id === props.id.academicId &&
+            data.resourceType === "Examination Paper" &&
+            data.status === "pending" ? (
+              <Exam key={data.resourceName} exam={data} role={props.role} />
+            ) : (
+              <div></div>
+            )
+          )}
+        </div>
       </div>
-      FF
     </div>
   );
 };
