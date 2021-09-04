@@ -67,13 +67,12 @@ const GroupPage = function (props: any) {
         </div>
 
         {/* Group */}
-        <div className={style.groupsection}>
+        <div className="w-full grid grid-cols-4 gap-11 justify-around">
           {myClass.map((val, key) => (
-            <div className="px-[25px] py-[15px]" key={key}>
-              <GroupItem key={key} agroup={val.classId} />
-            </div>
+            <GroupItem key={key} agroup={val.classId} />
           ))}
         </div>
+
         {isCreated === true && (
           <PopUp closepopup={setIsCreated}>
             <GroupCreateModal data={props.props} />

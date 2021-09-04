@@ -1,18 +1,19 @@
-import { apiV1, get } from "api/generic";
-import GroupAPI from "api/groupAPI";
 import React, { useEffect, useState } from "react";
 
+import GroupAPI from "api/groupAPI";
+import { apiV1, get } from "api/generic";
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 
 type Api = {
-  reviewType: "Class" | "Instructor";
-  reviewTitle: string;
-  review: string;
+  resourceType: "Resources" | "Examination Paper" | "Review Paper";
+  resourceName: string;
+  resourceLink: string;
+  resourceDescription: string;
   classId: string;
 };
 
-const CreateReview = function ({ data }: any) {
+const CreateResource = function ({ data }: any) {
   const token = useAppSelector(selectToken);
 
   const [schoolyear, setSchoolyear] = useState("");
@@ -22,9 +23,10 @@ const CreateReview = function ({ data }: any) {
   const [group, setGroup] = useState([]);
 
   const initCreate: Api = {
-    reviewType: "Class",
-    reviewTitle: "",
-    review: "",
+    resourceType: "Resources",
+    resourceName: "",
+    resourceLink: "",
+    resourceDescription: "",
     classId: "",
   };
 
@@ -48,27 +50,34 @@ const CreateReview = function ({ data }: any) {
   }, [schoolyear, courseId, instructorId]);
 
   useEffect(() => {
-    console.log(create);
+    console.log(create, token);
   }, [create]);
 
-  const handleTypeReview = (e) => {
+  const handleTypeResource = (e) => {
     setCreate({
       ...create,
-      reviewType: e.target.value,
+      resourceType: e.target.value,
     });
   };
 
-  const handleReviewTitle = (e) => {
+  const handleResourceName = (e) => {
     setCreate({
       ...create,
-      reviewTitle: e.target.value,
+      resourceName: e.target.value,
     });
   };
 
-  const handleReview = (e) => {
+  const handleResourceLink = (e) => {
     setCreate({
       ...create,
-      review: e.target.value,
+      resourceLink: e.target.value,
+    });
+  };
+
+  const handleResourceDescription = (e) => {
+    setCreate({
+      ...create,
+      resourceDescription: e.target.value,
     });
   };
 
@@ -102,7 +111,7 @@ const CreateReview = function ({ data }: any) {
     );
   };
 
-  const handleReset = () => {
+  const clickReset = () => {
     setFacultyId("");
     setCourseId("");
     setCreate({
@@ -111,25 +120,20 @@ const CreateReview = function ({ data }: any) {
     });
   };
 
-  const handleRecommend = (e) => {
-    // setCreate({
-    //   ...create,
-    //   classId: {
-    //     ...create.classId,
-    //     className: e.target.value,
-    //   },
-    // });
-  };
-
-  const handleSend = () => {
-    create.reviewTitle !== "" &&
-      create.review !== "" &&
-      create.classId !== "" &&
-      GroupAPI.postReview(create, token);
+  const clickSend = () => {
+    if (
+      create.resourceName !== "" &&
+      create.resourceLink !== "" &&
+      create.resourceDescription !== "" &&
+      create.classId !== ""
+    ) {
+      const res = GroupAPI.postResource(create, token);
+      console.log(res);
+    }
   };
 
   return (
-    <div>
+    <form onSubmit={clickSend}>
       <div className="absolute bg-indigo-100 w-8/12 h-full top-0 left-0 rounded-l-2xl">
         {/* Title */}
         <div className="relative flex m-16 ">
@@ -148,18 +152,18 @@ const CreateReview = function ({ data }: any) {
             />
           </svg>
           <div className="text-2xl leading-9 text-indigo-500 font-medium -mt-2 ml-4 tracking-normal ">
-            Tạo cảm nhận
+            Tạo mới tài liệu
           </div>
         </div>
         {/* Type Document */}
         <div className="pl-20 -mt-28 ml-64">
           <select
             className="px-2 bg-indigo-50 w-48 rounded-2xl h-10 border border-solid border-indigo-500"
-            onChange={handleTypeReview}
+            onChange={handleTypeResource}
           >
-            <option value="">Chọn cảm nhận cho</option>
-            <option value="Class">Môn học</option>
-            <option value="Instructor">Giáo viên</option>
+            <option value="Examination Paper">Đề thi</option>
+            <option value="Review Paper">Đề cương</option>
+            <option value="Resources">Tài liệu</option>
           </select>
         </div>
         {/* DocumentName */}
@@ -178,12 +182,42 @@ const CreateReview = function ({ data }: any) {
           </svg>
           <input
             className="p-2 ml-8 w-9/12 h-10 bg-indigo-50 w-48 rounded-xl border border-solid border-indigo-500"
-            placeholder="Nhập tên giáo viên/môn học"
-            onChange={handleReviewTitle}
+            placeholder="Nhập tên tài liệu"
+            onChange={handleResourceName}
+          />
+        </div>
+        {/* Link */}
+        <div className="flex pt-5 pl-16">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M11.5443 8.45621C10.7252 7.63744 9.61445 7.17749 8.4563 7.17749C7.29815 7.17749 6.18741 7.63744 5.3683 8.45621L2.2793 11.5442C1.46018 12.3633 1 13.4743 1 14.6327C1 15.7911 1.46018 16.9021 2.2793 17.7212C3.09842 18.5403 4.20939 19.0005 5.3678 19.0005C6.52621 19.0005 7.63718 18.5403 8.4563 17.7212L10.0003 16.1772"
+              stroke="#6366F1"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M8.45605 11.5443C9.27516 12.3631 10.3859 12.823 11.5441 12.823C12.7022 12.823 13.8129 12.3631 14.6321 11.5443L17.7211 8.4563C18.5402 7.63718 19.0004 6.52621 19.0004 5.3678C19.0004 4.20939 18.5402 3.09842 17.7211 2.2793C16.9019 1.46018 15.791 1 14.6326 1C13.4741 1 12.3632 1.46018 11.5441 2.2793L10.0001 3.8233"
+              stroke="#6366F1"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <input
+            className="p-2 ml-9 w-9/12 h-10 bg-indigo-50 w-48 rounded-xl border border-solid border-indigo-500"
+            placeholder="Link tài liệu"
+            onChange={handleResourceLink}
           />
         </div>
         {/* Desc */}
-        <div className="flex pt-6 pl-16">
+        <div className="flex pt-5 pl-16">
           <svg
             width="20"
             height="14"
@@ -199,39 +233,41 @@ const CreateReview = function ({ data }: any) {
           <textarea
             rows={10}
             className="p-2 ml-9 w-9/12 bg-indigo-50 w-48 rounded-xl border border-solid border-indigo-500 resize-none"
-            placeholder="Viết cảm nhận tại đây"
-            onChange={handleReview}
+            placeholder="Mô tả tại đây"
+            onChange={handleResourceDescription}
           />
         </div>
         {/* Button ResetData */}
-        <svg
-          className="float-right mt-20 mr-10"
-          width="125"
-          height="41"
-          viewBox="0 0 125 41"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <rect
-            x="0.5"
-            y="0.5"
-            width="124"
-            height="40"
-            rx="9.5"
-            fill="#EEF2FF"
-            stroke="#6366F1"
-          />
-          <path
-            d="M24.3636 28C28.7955 28 31.4233 25.2585 31.4233 20.7131C31.4233 16.1818 28.7955 13.4545 24.4631 13.4545H19.4347V19.5696H17.3395V21.196H19.4347V28H24.3636ZM22.0696 25.7202V21.196H24.1435V19.5696H22.0696V15.7344H24.3139C27.2685 15.7344 28.8097 17.3821 28.8097 20.7131C28.8097 24.0582 27.2685 25.7202 24.2358 25.7202H22.0696ZM36.9524 28.2202C38.6641 28.2202 39.6868 27.4176 40.1555 26.5014H40.2408V28H42.7124V20.6989C42.7124 17.8153 40.3615 16.9489 38.2805 16.9489C35.9865 16.9489 34.2251 17.9716 33.657 19.9602L36.0575 20.3011C36.3132 19.5554 37.0376 18.9162 38.2947 18.9162C39.4879 18.9162 40.1413 19.527 40.1413 20.5994V20.642C40.1413 21.3807 39.3672 21.4162 37.4425 21.6222C35.326 21.8494 33.3018 22.4815 33.3018 24.9389C33.3018 27.0838 34.8714 28.2202 36.9524 28.2202ZM39.8004 13.3409C39.7933 14.0369 39.3956 14.6548 38.3942 14.6548C37.3786 14.6548 36.995 14.0227 36.995 13.3409H35.0845C35.0774 15.0028 36.3629 16.125 38.3942 16.125C40.4396 16.125 41.7251 15.0028 41.7251 13.3409H39.8004ZM37.62 26.331C36.5476 26.331 35.7805 25.8409 35.7805 24.8963C35.7805 23.9091 36.6399 23.4972 37.7905 23.3338C38.4652 23.2415 39.8146 23.071 40.1484 22.8011V24.0866C40.1484 25.3011 39.1683 26.331 37.62 26.331ZM38.2947 31.9205C39.1115 31.9205 39.7791 31.2955 39.7791 30.5284C39.7791 29.7543 39.1115 29.1293 38.2947 29.1293C37.4709 29.1293 36.8033 29.7543 36.8033 30.5284C36.8033 31.2955 37.4709 31.9205 38.2947 31.9205ZM50.745 17.0909H48.593V14.4773H46.022V17.0909H44.4737V19.0795H46.022V25.1449C46.0078 27.1974 47.4993 28.206 49.4311 28.1491C50.1626 28.1278 50.6669 27.9858 50.9439 27.8935L50.5107 25.8835C50.3686 25.919 50.0774 25.983 49.7578 25.983C49.1115 25.983 48.593 25.7557 48.593 24.7188V19.0795H50.745V17.0909ZM60.4272 13.4545H57.8562V28H60.4272V13.4545ZM66.2102 28.2202C67.9219 28.2202 68.9446 27.4176 69.4134 26.5014H69.4986V28H71.9702V20.6989C71.9702 17.8153 69.6193 16.9489 67.5384 16.9489C65.2443 16.9489 63.483 17.9716 62.9148 19.9602L65.3153 20.3011C65.571 19.5554 66.2955 18.9162 67.5526 18.9162C68.7457 18.9162 69.3991 19.527 69.3991 20.5994V20.642C69.3991 21.3807 68.625 21.4162 66.7003 21.6222C64.5838 21.8494 62.5597 22.4815 62.5597 24.9389C62.5597 27.0838 64.1293 28.2202 66.2102 28.2202ZM66.8778 26.331C65.8054 26.331 65.0384 25.8409 65.0384 24.8963C65.0384 23.9091 65.8977 23.4972 67.0483 23.3338C67.723 23.2415 69.0724 23.071 69.4062 22.8011V24.0866C69.4062 25.3011 68.4261 26.331 66.8778 26.331ZM67.5526 31.9205C68.3693 31.9205 69.0369 31.2955 69.0369 30.5284C69.0369 29.7543 68.3693 29.1293 67.5526 29.1293C66.7287 29.1293 66.0611 29.7543 66.0611 30.5284C66.0611 31.2955 66.7287 31.9205 67.5526 31.9205ZM74.5554 28H77.1264V17.0909H74.5554V28ZM75.848 15.5426C76.6648 15.5426 77.3324 14.9176 77.3324 14.1506C77.3324 13.3764 76.6648 12.7514 75.848 12.7514C75.0241 12.7514 74.3565 13.3764 74.3565 14.1506C74.3565 14.9176 75.0241 15.5426 75.848 15.5426Z"
-            fill="#6366F1"
-          />
-          <path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="M97.5008 23.294L102.679 28.596C103.199 29.132 103.537 29.1375 104.066 28.596L105.105 27.532C105.614 27.011 105.648 26.669 105.105 26.1125L99.6223 20.5L105.105 14.8875C105.619 14.36 105.629 14.004 105.105 13.4675L104.066 12.404C103.527 11.852 103.194 11.8775 102.68 12.404L97.5008 17.706L92.3223 12.4045C91.8078 11.878 91.4748 11.8525 90.9358 12.4045L89.8968 13.468C89.3728 14.0045 89.3823 14.3605 89.8968 14.888L95.3793 20.5L89.8968 26.1125C89.3533 26.669 89.3823 27.011 89.8968 27.532L90.9353 28.596C91.4598 29.1375 91.7978 29.132 92.3218 28.596L97.5008 23.294Z"
-            fill="#6366F1"
-          />
-        </svg>
+        <button type="reset" onClick={clickReset}>
+          <svg
+            className="float-right mt-5 mr-10"
+            width="125"
+            height="41"
+            viewBox="0 0 125 41"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect
+              x="0.5"
+              y="0.5"
+              width="124"
+              height="40"
+              rx="9.5"
+              fill="#EEF2FF"
+              stroke="#6366F1"
+            />
+            <path
+              d="M24.3636 28C28.7955 28 31.4233 25.2585 31.4233 20.7131C31.4233 16.1818 28.7955 13.4545 24.4631 13.4545H19.4347V19.5696H17.3395V21.196H19.4347V28H24.3636ZM22.0696 25.7202V21.196H24.1435V19.5696H22.0696V15.7344H24.3139C27.2685 15.7344 28.8097 17.3821 28.8097 20.7131C28.8097 24.0582 27.2685 25.7202 24.2358 25.7202H22.0696ZM36.9524 28.2202C38.6641 28.2202 39.6868 27.4176 40.1555 26.5014H40.2408V28H42.7124V20.6989C42.7124 17.8153 40.3615 16.9489 38.2805 16.9489C35.9865 16.9489 34.2251 17.9716 33.657 19.9602L36.0575 20.3011C36.3132 19.5554 37.0376 18.9162 38.2947 18.9162C39.4879 18.9162 40.1413 19.527 40.1413 20.5994V20.642C40.1413 21.3807 39.3672 21.4162 37.4425 21.6222C35.326 21.8494 33.3018 22.4815 33.3018 24.9389C33.3018 27.0838 34.8714 28.2202 36.9524 28.2202ZM39.8004 13.3409C39.7933 14.0369 39.3956 14.6548 38.3942 14.6548C37.3786 14.6548 36.995 14.0227 36.995 13.3409H35.0845C35.0774 15.0028 36.3629 16.125 38.3942 16.125C40.4396 16.125 41.7251 15.0028 41.7251 13.3409H39.8004ZM37.62 26.331C36.5476 26.331 35.7805 25.8409 35.7805 24.8963C35.7805 23.9091 36.6399 23.4972 37.7905 23.3338C38.4652 23.2415 39.8146 23.071 40.1484 22.8011V24.0866C40.1484 25.3011 39.1683 26.331 37.62 26.331ZM38.2947 31.9205C39.1115 31.9205 39.7791 31.2955 39.7791 30.5284C39.7791 29.7543 39.1115 29.1293 38.2947 29.1293C37.4709 29.1293 36.8033 29.7543 36.8033 30.5284C36.8033 31.2955 37.4709 31.9205 38.2947 31.9205ZM50.745 17.0909H48.593V14.4773H46.022V17.0909H44.4737V19.0795H46.022V25.1449C46.0078 27.1974 47.4993 28.206 49.4311 28.1491C50.1626 28.1278 50.6669 27.9858 50.9439 27.8935L50.5107 25.8835C50.3686 25.919 50.0774 25.983 49.7578 25.983C49.1115 25.983 48.593 25.7557 48.593 24.7188V19.0795H50.745V17.0909ZM60.4272 13.4545H57.8562V28H60.4272V13.4545ZM66.2102 28.2202C67.9219 28.2202 68.9446 27.4176 69.4134 26.5014H69.4986V28H71.9702V20.6989C71.9702 17.8153 69.6193 16.9489 67.5384 16.9489C65.2443 16.9489 63.483 17.9716 62.9148 19.9602L65.3153 20.3011C65.571 19.5554 66.2955 18.9162 67.5526 18.9162C68.7457 18.9162 69.3991 19.527 69.3991 20.5994V20.642C69.3991 21.3807 68.625 21.4162 66.7003 21.6222C64.5838 21.8494 62.5597 22.4815 62.5597 24.9389C62.5597 27.0838 64.1293 28.2202 66.2102 28.2202ZM66.8778 26.331C65.8054 26.331 65.0384 25.8409 65.0384 24.8963C65.0384 23.9091 65.8977 23.4972 67.0483 23.3338C67.723 23.2415 69.0724 23.071 69.4062 22.8011V24.0866C69.4062 25.3011 68.4261 26.331 66.8778 26.331ZM67.5526 31.9205C68.3693 31.9205 69.0369 31.2955 69.0369 30.5284C69.0369 29.7543 68.3693 29.1293 67.5526 29.1293C66.7287 29.1293 66.0611 29.7543 66.0611 30.5284C66.0611 31.2955 66.7287 31.9205 67.5526 31.9205ZM74.5554 28H77.1264V17.0909H74.5554V28ZM75.848 15.5426C76.6648 15.5426 77.3324 14.9176 77.3324 14.1506C77.3324 13.3764 76.6648 12.7514 75.848 12.7514C75.0241 12.7514 74.3565 13.3764 74.3565 14.1506C74.3565 14.9176 75.0241 15.5426 75.848 15.5426Z"
+              fill="#6366F1"
+            />
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M97.5008 23.294L102.679 28.596C103.199 29.132 103.537 29.1375 104.066 28.596L105.105 27.532C105.614 27.011 105.648 26.669 105.105 26.1125L99.6223 20.5L105.105 14.8875C105.619 14.36 105.629 14.004 105.105 13.4675L104.066 12.404C103.527 11.852 103.194 11.8775 102.68 12.404L97.5008 17.706L92.3223 12.4045C91.8078 11.878 91.4748 11.8525 90.9358 12.4045L89.8968 13.468C89.3728 14.0045 89.3823 14.3605 89.8968 14.888L95.3793 20.5L89.8968 26.1125C89.3533 26.669 89.3823 27.011 89.8968 27.532L90.9353 28.596C91.4598 29.1375 91.7978 29.132 92.3218 28.596L97.5008 23.294Z"
+              fill="#6366F1"
+            />
+          </svg>
+        </button>
       </div>
 
       <div className="absolute left-96 top-36 ">
@@ -486,7 +522,7 @@ const CreateReview = function ({ data }: any) {
 
         {/* Submit */}
         <div className="relative flex left-56 top-4 mb-4">
-          <button onClick={handleSend}>
+          <button type="submit">
             <svg
               width="125"
               height="41"
@@ -515,8 +551,8 @@ const CreateReview = function ({ data }: any) {
           </button>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 
-export default CreateReview;
+export default CreateResource;
