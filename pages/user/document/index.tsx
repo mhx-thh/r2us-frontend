@@ -1,14 +1,10 @@
-import AcademicAPI from "api/academicApi";
-import Footer from "components/footer/FooterComponent";
-import MetaLayout from "components/layout/MegaLayout";
-import DocumentPage from "components/user/page/document/documentpage";
-import Sidebar from "components/user/Sidebar/UserSidebar";
-import UserHeader from "components/user/userheader/header";
-import { GetServerSideProps } from "next";
-import { useRouter } from "next/router";
 import React from "react";
-import { useAppSelector } from "redux/hooks";
-import { selectUser } from "redux/userSlice";
+import { GetServerSideProps } from "next";
+
+import LayoutUser from "components/layout/UserLayout";
+import DocumentPage from "components/user/page/document/documentpage";
+
+import AcademicAPI from "api/academicApi";
 
 type AppProps = {
   schoolyear: any;
@@ -17,7 +13,7 @@ type AppProps = {
   teacher: any;
 };
 
-export const getServerSideProps: GetServerSideProps = async (params) => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const schoolyear = await AcademicAPI.getSchoolYears();
   const falcuty = await AcademicAPI.getFalcuties();
   const course = await AcademicAPI.getCourses();
@@ -34,19 +30,10 @@ export const getServerSideProps: GetServerSideProps = async (params) => {
 };
 
 const User = function (props: AppProps) {
-  const user = useAppSelector(selectUser);
-
-  const router = useRouter();
-  const path = router.asPath;
-  const title = `R2us | ${user.familyName} ${user.givenName}`;
   return (
-    <MetaLayout title={title} desc="User" icon="icons/logo.svg">
-      <UserHeader user={user} />
-      <Sidebar param={path} />
-      <hr></hr>
-      <DocumentPage />;
-      <Footer />
-    </MetaLayout>
+    <LayoutUser>
+      <DocumentPage props={props} />;
+    </LayoutUser>
   );
 };
 

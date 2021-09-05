@@ -31,16 +31,10 @@
     font-size: x-large;
     color: #6366f1;
     height: 33.33px;
-    width: 33.33px;
+    width: 43px;
 }
-.Top {
-    position: absolute;
-    width: 860px;
-    height: 310px;
-    background-color: #e0e7ff;
-    top: 0;
-    left: 0px;
-}
+
 .close :hover {
-    color: blanchedalmond;
+    background-color: #bcbff7;
+    border-radius: 30%;
 }

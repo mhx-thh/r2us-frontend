@@ -1,12 +1,12 @@
-import Footer from "components/footer/FooterComponent";
-import MetaLayout from "components/layout/MegaLayout";
-import Sidebar from "components/user/Sidebar/UserSidebar";
-import UserHeader from "components/user/userheader/header";
-import UserPage from "components/user/userpage/userpage";
-import { useRouter } from "next/router";
 import React from "react";
+import { useRouter } from "next/router";
+
+import UserPage from "components/user/userpage/userpage";
+import LayoutUser from "components/layout/UserLayout";
+
 import { useAppSelector } from "redux/hooks";
 import { selectUser } from "redux/userSlice";
+
 // export const getServerSideProps: GetServerSideProps = async (params) => {
 //   const res = await NewClassAPI.getGroup(temp);
 //   const schoolyear = await AcademicAPI.getAcademic(res.data.data.academicId);
@@ -26,17 +26,11 @@ import { selectUser } from "redux/userSlice";
 
 const User = function (props) {
   const user = useAppSelector(selectUser);
-  const router = useRouter();
-  const path = router.asPath;
-  const title = `R2us | ${user.familyName} ${user.givenName}`;
+
   return (
-    <MetaLayout title={title} desc="User" icon="icons/logo.svg">
-      <UserHeader user={user} />
-      <Sidebar param={path} />
-      <hr></hr>
+    <LayoutUser>
       <UserPage user={user} />
-      <Footer />
-    </MetaLayout>
+    </LayoutUser>
   );
 };
 

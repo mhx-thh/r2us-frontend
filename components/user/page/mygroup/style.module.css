@@ -3,7 +3,7 @@
     padding-right: 100px;
 }
 .buttonarea{
-    padding-top: 100px;
+    padding-top: 50px;
     padding-bottom: 50px;
     display: flex;
     align-items: center;
@@ -21,7 +21,7 @@
     font-weight: bold;
     font-size: 24px;
     line-height: 28px;
-    /* identical to box height, or 117% */
+
     color: #6366F1;
 
     padding: 10px;

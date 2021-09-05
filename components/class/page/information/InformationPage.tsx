@@ -1,227 +1,224 @@
-import userApi from "api/userApi";
+import React, { useEffect, useState } from "react";
+
 import InputField from "components/class/page/information/inputfield";
-import React, { useState } from "react";
-import { useAppSelector } from "redux/hooks";
-import { selectToken } from "redux/userSlice";
-import style from "./style.module.css";
+import Title from "components/class/Title/Title";
+import Sidebar from "components/class/Sidebar/Sidebar";
 import TitleField from "./titlefield";
 
-type classInfo = {
-  data: {
-    className: string;
-    nStudents: number;
-    _id: string;
-    instructorId: {
-      _id: string;
-      instructorName: string;
-      id: string;
-    };
-    academicId: {
-      schoolyear: string;
-      semester: number;
-      _id: string;
-    };
-    courseId: {
-      courseName: string;
-      _id: string;
-      facultyId: {
-        facultyName: string;
-        _id: string;
-      };
-    };
-    description: string;
-    createdAt: string;
-    createBy: string;
-    updatedAt: string;
-    slug: string;
-    __v: number;
-  };
+import style from "./style.module.css";
+import { classInfo, titleGroup } from "lib/models";
+
+import userApi from "api/userApi";
+import GroupAPI from "api/groupAPI";
+
+import Link from "next/link";
+import { useRouter } from "next/router";
+
+import { useAppSelector } from "redux/hooks";
+import { selectToken } from "redux/userSlice";
+
+type AppProps = {
+  data: classInfo;
+  role: string;
+  initTitle: titleGroup;
 };
 
-const InformationPage = function (data: classInfo) {
-  const [classInfo, setClassInfo] = useState(data.data);
-  const token = useAppSelector(selectToken);
-  const editNameClass = () => {
-    const newClassInfo = { ...classInfo, className: "newName" };
-    setClassInfo(newClassInfo);
-    // Call Api
-  };
+const InformationPage = function (props: AppProps) {
+  const [info, setInfo] = useState(props.data);
+  const [role, setRole] = useState(props.role);
+  const [title, setTitle] = useState(props.initTitle);
+  const [enroll, setEnroll] = useState(false);
 
-  const editDescriptionClass = () => {
-    const newClassInfo = { ...classInfo, description: "newDescription" };
-    setClassInfo(newClassInfo);
+  const [dataPatch, setDataPatch] = useState({
+    className: props.data.className,
+    description: props.data.description,
+  });
+
+  const router = useRouter();
+  const path = router.asPath;
+  const [name, setName] = useState(props.data.className); // Để tạm để effect
+
+  const token = useAppSelector(selectToken);
+
+  useEffect(() => {
+    setEnroll(props.role === "" || props.role === undefined ? false : true);
+    setRole(props.role);
+  }, [props.role]);
+
+  // Effect cái này
+  useEffect(() => {
+    async function fetchSlug() {
+      try {
+        const res = await GroupAPI.getGroups();
+        const data = res?.data?.data;
+        data?.result.map(
+          (val) =>
+            val._id === props.data._id &&
+            (setInfo(val),
+            window.history.replaceState({}, null, `/group/${val.slug}`),
+            setTitle({ ...title, updatedAt: val.updatedAt }))
+        );
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    fetchSlug();
+  }, [name]);
+
+  const handleChangeClassName = (e) => {
+    setDataPatch({
+      ...dataPatch,
+      className: e.target.value,
+    });
+  };
+  const handleChangeDescription = (e) => {
+    setDataPatch({
+      ...dataPatch,
+      description: e.target.value,
+    });
   };
 
   const ClickEnroll = () => {
-    userApi.postEnroll(data.data, token);
+    setEnroll(true);
+    userApi.postEnroll({ classId: props.data._id }, token);
   };
+
+  const ClickUpdate = async () => {
+    await GroupAPI.patchClass(dataPatch, props.data._id, token);
+    setTitle({
+      ...title,
+      className: dataPatch.className,
+    });
+    setName(dataPatch.className); // để tạm
+  };
+
+  const ClickDelete = () => {
+    GroupAPI.deleteClass(props.data._id, token);
+  };
+
   return (
-    <div className={style.page}>
-      <div className={style.grid}>
-        {/* Information field */}
-        <div className={style.field}>
-          <div className={style.field__m}>
-            {/* Note: Sẽ truyền thêm vào Api thay đổi nữa... */}
-            <InputField
-              name="Tên nhóm"
-              editable
-              data={data.data.className}
-              multiline={false}
-            />
-            <InputField
-              name="Mô tả"
-              editable
-              data={data.data.description}
-              multiline={true}
-            />
-          </div>
-        </div>
-        {/* Title information field, or something like that, idk */}
-        <div className={style.title}>
-          {/* Năm học */}
-          <div className={style.title__input}>
-            <div className={style.title__image}>
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 20 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M18.1946 2.4812H15.2416C15.1824 2.4812 15.1257 2.5047 15.0839 2.54652C15.042 2.58834 15.0186 2.64506 15.0186 2.7042C15.0186 2.7422 15.0306 2.7762 15.0471 2.8072V4.5062C15.0471 4.56847 15.0349 4.63013 15.0111 4.68767C14.9873 4.74521 14.9524 4.79749 14.9084 4.84152C14.8643 4.88555 14.8121 4.92046 14.7545 4.94425C14.697 4.96805 14.6353 4.98027 14.5731 4.9802H13.6541C13.5963 4.9802 13.5391 4.96882 13.4857 4.94671C13.4323 4.9246 13.3838 4.89219 13.3429 4.85133C13.3021 4.81047 13.2697 4.76197 13.2475 4.70858C13.2254 4.6552 13.2141 4.59798 13.2141 4.5402V2.8347C13.2435 2.7975 13.26 2.75167 13.2611 2.7042C13.2611 2.6749 13.2554 2.64587 13.2442 2.61879C13.233 2.5917 13.2166 2.56709 13.1959 2.54637C13.1752 2.52565 13.1506 2.50923 13.1235 2.49804C13.0964 2.48686 13.0674 2.48114 13.0381 2.4812H7.08555C7.02641 2.4812 6.96969 2.5047 6.92787 2.54652C6.88605 2.58834 6.86255 2.64506 6.86255 2.7042C6.86255 2.7387 6.87205 2.7702 6.88605 2.7997V4.5182C6.88605 4.57894 6.87409 4.63908 6.85085 4.69519C6.8276 4.75131 6.79354 4.80229 6.75059 4.84524C6.70764 4.88819 6.65666 4.92225 6.60054 4.9455C6.54443 4.96874 6.48429 4.9807 6.42355 4.9807H5.60755C5.4837 4.9807 5.36491 4.9315 5.27733 4.84392C5.18975 4.75634 5.14055 4.63756 5.14055 4.5137V2.8122C5.16041 2.77962 5.17128 2.74235 5.17205 2.7042C5.17212 2.6749 5.1664 2.64587 5.15521 2.61879C5.14403 2.5917 5.12761 2.56709 5.10688 2.54637C5.08616 2.52565 5.06155 2.50923 5.03447 2.49804C5.00738 2.48686 4.97836 2.48114 4.94905 2.4812H1.83755C1.70613 2.48133 1.58013 2.53356 1.48715 2.62645C1.39418 2.71933 1.34182 2.84528 1.34155 2.9767V17.7437C1.34155 18.0177 1.56405 18.2402 1.83755 18.2402H18.1946C18.3261 18.2399 18.4521 18.1875 18.545 18.0944C18.6379 18.0013 18.6901 17.8752 18.6901 17.7437V2.9767C18.6898 2.84537 18.6375 2.71949 18.5446 2.62662C18.4518 2.53376 18.3259 2.48147 18.1946 2.4812ZM18.1946 17.7942H1.83755C1.83094 17.7942 1.8244 17.7929 1.8183 17.7903C1.8122 17.7878 1.80667 17.7841 1.80202 17.7794C1.79737 17.7747 1.7937 17.7691 1.79121 17.763C1.78873 17.7569 1.78749 17.7503 1.78755 17.7437V6.6072H18.2441V17.7432C18.2442 17.7498 18.243 17.7564 18.2406 17.7625C18.2382 17.7687 18.2345 17.7743 18.2299 17.779C18.2253 17.7838 18.2198 17.7876 18.2138 17.7902C18.2077 17.7928 18.2012 17.7941 18.1946 17.7942Z"
-                  fill="#6366F1"
+    <div>
+      <Title
+        initTitle={title}
+        role={!enroll ? "" : enroll && role === "" ? " " : role}
+      />
+      {/* Vẫn còn lỗi mất hiển thị thông tin khi thay đổi tên lớp*/}
+      <Sidebar param={path} id={info.slug} />
+      <hr />
+      <div className={style.page}>
+        <div className={style.grid}>
+          {/* Information field */}
+          <div className={style.field}>
+            {props.role === "provider" ? (
+              <div className={style.field__m}>
+                <div onChange={handleChangeClassName}>
+                  <InputField
+                    name="Tên nhóm"
+                    icon="/icons/write_pencil.svg"
+                    editable
+                    data={dataPatch.className}
+                    multiline={false}
+                  />
+                </div>
+                <div onChange={handleChangeDescription}>
+                  <InputField
+                    name="Mô tả"
+                    icon="/icons/descriptionIcon.svg"
+                    editable
+                    data={dataPatch.description}
+                    multiline={true}
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className={style.field__m}>
+                <InputField
+                  icon="/icons/write_pencil.svg"
+                  name="Tên nhóm"
+                  editable={false}
+                  data={dataPatch.className}
+                  multiline={false}
                 />
-                <path
-                  d="M6.07359 4.4721C6.19659 4.4721 6.29659 4.3721 6.29659 4.2491V1.2501C6.29659 1.22081 6.29082 1.19182 6.27961 1.16476C6.2684 1.13771 6.25198 1.11312 6.23127 1.09241C6.21056 1.07171 6.18598 1.05528 6.15892 1.04407C6.13187 1.03287 6.10287 1.0271 6.07359 1.0271C6.0443 1.0271 6.0153 1.03287 5.98825 1.04407C5.96119 1.05528 5.93661 1.07171 5.9159 1.09241C5.89519 1.11312 5.87877 1.13771 5.86756 1.16476C5.85635 1.19182 5.85059 1.22081 5.85059 1.2501V4.2496C5.85059 4.3726 5.95059 4.4721 6.07359 4.4721Z"
-                  fill="#6366F1"
+                <InputField
+                  name="Mô tả"
+                  icon="/icons/descriptionIcon.svg"
+                  editable={false}
+                  data={dataPatch.description}
+                  multiline={true}
                 />
-                <path
-                  d="M14.1505 4.4721C14.2735 4.4721 14.3735 4.3721 14.3735 4.2491V1.2501C14.3735 1.19096 14.35 1.13424 14.3082 1.09241C14.2664 1.05059 14.2096 1.0271 14.1505 1.0271C14.0913 1.0271 14.0346 1.05059 13.9928 1.09241C13.951 1.13424 13.9275 1.19096 13.9275 1.2501V4.2496C13.9275 4.3726 14.027 4.4721 14.1505 4.4721Z"
-                  fill="#6366F1"
-                />
-                <path
-                  d="M4.92114 9.98071C5.5999 9.98071 6.15014 9.43046 6.15014 8.75171C6.15014 8.07295 5.5999 7.52271 4.92114 7.52271C4.24238 7.52271 3.69214 8.07295 3.69214 8.75171C3.69214 9.43046 4.24238 9.98071 4.92114 9.98071Z"
-                  fill="#6366F1"
-                />
-                <path
-                  d="M8.45312 9.98071C9.13188 9.98071 9.68212 9.43046 9.68212 8.75171C9.68212 8.07295 9.13188 7.52271 8.45312 7.52271C7.77436 7.52271 7.22412 8.07295 7.22412 8.75171C7.22412 9.43046 7.77436 9.98071 8.45312 9.98071Z"
-                  fill="#6366F1"
-                />
-                <path
-                  d="M11.9846 9.98071C12.6634 9.98071 13.2136 9.43046 13.2136 8.75171C13.2136 8.07295 12.6634 7.52271 11.9846 7.52271C11.3059 7.52271 10.7556 8.07295 10.7556 8.75171C10.7556 9.43046 11.3059 9.98071 11.9846 9.98071Z"
-                  fill="#6366F1"
-                />
-                <path
-                  d="M4.92114 13.4031C5.5999 13.4031 6.15014 12.8528 6.15014 12.1741C6.15014 11.4953 5.5999 10.9451 4.92114 10.9451C4.24238 10.9451 3.69214 11.4953 3.69214 12.1741C3.69214 12.8528 4.24238 13.4031 4.92114 13.4031Z"
-                  fill="#6366F1"
-                />
-                <path
-                  d="M8.45312 13.4031C9.13188 13.4031 9.68212 12.8528 9.68212 12.1741C9.68212 11.4953 9.13188 10.9451 8.45312 10.9451C7.77436 10.9451 7.22412 11.4953 7.22412 12.1741C7.22412 12.8528 7.77436 13.4031 8.45312 13.4031Z"
-                  fill="#6366F1"
-                />
-                <path
-                  d="M11.9846 13.4031C12.6634 13.4031 13.2136 12.8528 13.2136 12.1741C13.2136 11.4953 12.6634 10.9451 11.9846 10.9451C11.3059 10.9451 10.7556 11.4953 10.7556 12.1741C10.7556 12.8528 11.3059 13.4031 11.9846 13.4031Z"
-                  fill="#6366F1"
-                />
-                <path
-                  d="M4.92114 16.8257C5.5999 16.8257 6.15014 16.2754 6.15014 15.5967C6.15014 14.9179 5.5999 14.3677 4.92114 14.3677C4.24238 14.3677 3.69214 14.9179 3.69214 15.5967C3.69214 16.2754 4.24238 16.8257 4.92114 16.8257Z"
-                  fill="#6366F1"
-                />
-                <path
-                  d="M8.45312 16.8257C9.13188 16.8257 9.68212 16.2754 9.68212 15.5967C9.68212 14.9179 9.13188 14.3677 8.45312 14.3677C7.77436 14.3677 7.22412 14.9179 7.22412 15.5967C7.22412 16.2754 7.77436 16.8257 8.45312 16.8257Z"
-                  fill="#6366F1"
-                />
-                <path
-                  d="M11.9846 16.8257C12.6634 16.8257 13.2136 16.2754 13.2136 15.5967C13.2136 14.9179 12.6634 14.3677 11.9846 14.3677C11.3059 14.3677 10.7556 14.9179 10.7556 15.5967C10.7556 16.2754 11.3059 16.8257 11.9846 16.8257Z"
-                  fill="#6366F1"
-                />
-                <path
-                  d="M15.4336 9.98071C16.1123 9.98071 16.6626 9.43046 16.6626 8.75171C16.6626 8.07295 16.1123 7.52271 15.4336 7.52271C14.7548 7.52271 14.2046 8.07295 14.2046 8.75171C14.2046 9.43046 14.7548 9.98071 15.4336 9.98071Z"
-                  fill="#6366F1"
-                />
-                <path
-                  d="M15.4336 13.4031C16.1123 13.4031 16.6626 12.8528 16.6626 12.1741C16.6626 11.4953 16.1123 10.9451 15.4336 10.9451C14.7548 10.9451 14.2046 11.4953 14.2046 12.1741C14.2046 12.8528 14.7548 13.4031 15.4336 13.4031Z"
-                  fill="#6366F1"
-                />
-                <path
-                  d="M15.4336 16.8257C16.1123 16.8257 16.6626 16.2754 16.6626 15.5967C16.6626 14.9179 16.1123 14.3677 15.4336 14.3677C14.7548 14.3677 14.2046 14.9179 14.2046 15.5967C14.2046 16.2754 14.7548 16.8257 15.4336 16.8257Z"
-                  fill="#6366F1"
-                />
-              </svg>
-            </div>
-            <TitleField
-              name="Năm học"
-              data={`${data.data.academicId.schoolyear} - học kì ${data.data.academicId.semester}`}
-            />
+              </div>
+            )}
           </div>
 
-          {/* Khoa */}
-          <div className={style.title__input}>
-            <div className={style.title__image}>
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 28 28"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M9.09912 19.0745C9.191 19.1435 9.29558 19.1937 9.40688 19.2223C9.51818 19.2509 9.63403 19.2573 9.7478 19.2412C9.86158 19.225 9.97105 19.1866 10.07 19.1281C10.1689 19.0696 10.2553 18.9922 10.3243 18.9003C10.8542 18.1939 11.5412 17.6205 12.3311 17.2256C13.1209 16.8307 13.9918 16.6251 14.8749 16.6251C15.7579 16.6251 16.6289 16.8306 17.4187 17.2255C18.2086 17.6204 18.8957 18.1937 19.4255 18.9001C19.4942 18.9929 19.5806 19.0711 19.6796 19.1304C19.7787 19.1896 19.8885 19.2287 20.0027 19.2453C20.1169 19.262 20.2333 19.2558 20.3451 19.2273C20.457 19.1988 20.5621 19.1484 20.6544 19.0791C20.7466 19.0097 20.8243 18.9228 20.8829 18.8234C20.9414 18.7239 20.9797 18.6138 20.9955 18.4995C21.0114 18.3852 21.0044 18.2688 20.9751 18.1572C20.9458 18.0455 20.8946 17.9408 20.8247 17.849C20.0492 16.81 19.0149 15.9924 17.825 15.4778C18.4765 14.8829 18.9329 14.105 19.1344 13.2461C19.3359 12.3872 19.273 11.4874 18.9539 10.6649C18.6349 9.84236 18.0747 9.1355 17.3468 8.63706C16.6188 8.13863 15.7572 7.87191 14.875 7.87191C13.9928 7.87191 13.1312 8.13863 12.4032 8.63706C11.6753 9.1355 11.1151 9.84236 10.7961 10.6649C10.477 11.4874 10.4141 12.3872 10.6156 13.2461C10.8171 14.105 11.2735 14.8829 11.925 15.4778C10.735 15.9924 9.7006 16.8101 8.92511 17.8492C8.85608 17.9411 8.80582 18.0457 8.77721 18.157C8.74859 18.2683 8.74218 18.3841 8.75834 18.4979C8.7745 18.6117 8.81291 18.7211 8.87139 18.8201C8.92986 18.919 9.00724 19.0054 9.09912 19.0745ZM12.25 12.25C12.25 11.7308 12.404 11.2233 12.6924 10.7916C12.9808 10.3599 13.3908 10.0235 13.8705 9.82482C14.3501 9.62614 14.8779 9.57415 15.3871 9.67544C15.8963 9.77672 16.364 10.0267 16.7312 10.3938C17.0983 10.761 17.3483 11.2287 17.4496 11.7379C17.5508 12.2471 17.4989 12.7749 17.3002 13.2545C17.1015 13.7342 16.765 14.1442 16.3334 14.4326C15.9017 14.721 15.3942 14.875 14.875 14.875C14.179 14.8742 13.5118 14.5974 13.0197 14.1053C12.5276 13.6132 12.2508 12.946 12.25 12.25ZM22.75 2.625H7C6.53603 2.62552 6.09121 2.81006 5.76314 3.13814C5.43506 3.46621 5.25052 3.91103 5.25 4.375V6.5625H3.5C3.26794 6.5625 3.04538 6.65469 2.88128 6.81878C2.71719 6.98288 2.625 7.20544 2.625 7.4375C2.625 7.66956 2.71719 7.89212 2.88128 8.05622C3.04538 8.22031 3.26794 8.3125 3.5 8.3125H5.25V10.9375H3.5C3.26794 10.9375 3.04538 11.0297 2.88128 11.1938C2.71719 11.3579 2.625 11.5804 2.625 11.8125C2.625 12.0446 2.71719 12.2671 2.88128 12.4312C3.04538 12.5953 3.26794 12.6875 3.5 12.6875H5.25V15.3125H3.5C3.26794 15.3125 3.04538 15.4047 2.88128 15.5688C2.71719 15.7329 2.625 15.9554 2.625 16.1875C2.625 16.4196 2.71719 16.6421 2.88128 16.8062C3.04538 16.9703 3.26794 17.0625 3.5 17.0625H5.25V19.6875H3.5C3.26794 19.6875 3.04538 19.7797 2.88128 19.9438C2.71719 20.1079 2.625 20.3304 2.625 20.5625C2.625 20.7946 2.71719 21.0171 2.88128 21.1812C3.04538 21.3453 3.26794 21.4375 3.5 21.4375H5.25V23.625C5.25052 24.089 5.43506 24.5338 5.76314 24.8619C6.09121 25.1899 6.53603 25.3745 7 25.375H22.75C23.214 25.3745 23.6588 25.1899 23.9869 24.8619C24.3149 24.5338 24.4995 24.089 24.5 23.625V4.375C24.4995 3.91103 24.3149 3.46621 23.9869 3.13814C23.6588 2.81006 23.214 2.62552 22.75 2.625ZM22.75 23.625L7 23.6261V4.375H22.75V23.625Z"
-                  fill="#6366F1"
-                />
-              </svg>
+          {/* General Information */}
+          <div className={style.title}>
+            {/* SchoolYear */}
+            <div className={style.title__input}>
+              <div className={style.title__image}>
+                <img src="/icons/calender.svg" width="23" />
+              </div>
+              <TitleField
+                name="Năm học"
+                data={`${props.data.academicId.schoolyear} - học kì ${props.data.academicId.semester}`}
+              />
             </div>
-            <TitleField
-              name="Môn học"
-              data={data.data.courseId.facultyId.facultyName}
-            />
-          </div>
 
-          {/* Môn học */}
-          <div className={style.title__input}>
-            <div className={style.title__image}>
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M7.01 17.0833H19.5V5.41667C19.5 4.97464 19.3244 4.55072 19.0118 4.23816C18.6993 3.92559 18.2754 3.75 17.8333 3.75H7C5.995 3.75 4.5 4.41583 4.5 6.25V17.9167C4.5 19.7508 5.995 20.4167 7 20.4167H19.5V18.75H7.01C6.625 18.74 6.16667 18.5875 6.16667 17.9167C6.16667 17.2458 6.625 17.0933 7.01 17.0833ZM8.66667 7.08333H16.1667V8.75H8.66667V7.08333Z"
-                  fill="#6366F1"
-                />
-              </svg>
+            {/* Faculty */}
+            <div className={style.title__input}>
+              <div className={style.title__image}>
+                <img src="/icons/facuty.svg" width="23" />
+              </div>
+              <TitleField
+                name="Môn học"
+                data={props.data.courseId.facultyId.facultyName}
+              />
             </div>
-            <TitleField name="Nhóm học" data={data.data.courseId.courseName} />
-          </div>
 
-          {/* Giáo viên */}
-          <div className={style.title__input}>
-            <div className={style.title__image}>
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 21 21"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M10.5 10.5C11.5443 10.5 12.5458 10.0852 13.2842 9.34673C14.0227 8.60831 14.4375 7.60679 14.4375 6.5625C14.4375 5.51821 14.0227 4.51669 13.2842 3.77827C12.5458 3.03984 11.5443 2.625 10.5 2.625C9.45571 2.625 8.45419 3.03984 7.71577 3.77827C6.97734 4.51669 6.5625 5.51821 6.5625 6.5625C6.5625 7.60679 6.97734 8.60831 7.71577 9.34673C8.45419 10.0852 9.45571 10.5 10.5 10.5ZM13.125 6.5625C13.125 7.25869 12.8484 7.92637 12.3562 8.41866C11.8639 8.91094 11.1962 9.1875 10.5 9.1875C9.80381 9.1875 9.13613 8.91094 8.64384 8.41866C8.15156 7.92637 7.875 7.25869 7.875 6.5625C7.875 5.86631 8.15156 5.19863 8.64384 4.70634C9.13613 4.21406 9.80381 3.9375 10.5 3.9375C11.1962 3.9375 11.8639 4.21406 12.3562 4.70634C12.8484 5.19863 13.125 5.86631 13.125 6.5625ZM18.375 17.0625C18.375 18.375 17.0625 18.375 17.0625 18.375H3.9375C3.9375 18.375 2.625 18.375 2.625 17.0625C2.625 15.75 3.9375 11.8125 10.5 11.8125C17.0625 11.8125 18.375 15.75 18.375 17.0625ZM17.0625 17.0573C17.0612 16.7344 16.8604 15.7631 15.9705 14.8733C15.1147 14.0175 13.5043 13.125 10.5 13.125C7.49438 13.125 5.88525 14.0175 5.0295 14.8733C4.13963 15.7631 3.94012 16.7344 3.9375 17.0573H17.0625Z"
-                  fill="#6366F1"
-                />
-              </svg>
+            {/* Course */}
+            <div className={style.title__input}>
+              <div className={style.title__image}>
+                <img src="/icons/course.svg" width="23" />
+              </div>
+              <TitleField
+                name="Nhóm học"
+                data={props.data.courseId.courseName}
+              />
             </div>
-            <TitleField
-              name="Giáo viên"
-              data={data.data.instructorId.instructorName}
-            />
-          </div>
-          <div className={style.pbutton}>
-            <button className={style.button} onClick={ClickEnroll}>
-              Tham gia
-            </button>
+
+            {/* Giáo viên */}
+            <div className={style.title__input}>
+              <div className={style.title__image}>
+                <img src="/icons/teacher.svg" width="23" />
+              </div>
+              <TitleField
+                name="Giáo viên"
+                data={props.data.instructorId.instructorName}
+              />
+            </div>
+
+            {/* Button Enroll  */}
+            {enroll ? (
+              props.role === "provider" && (
+                <div className={style.pbutton}>
+                  <button className={style.button} onClick={ClickUpdate}>
+                    <img src="/icons/buttonSend.svg" />
+                  </button>
+                  <button className={style.button} onClick={ClickDelete}>
+                    <Link href="/">
+                      <a>
+                        <img src="/icons/buttonReset.svg" />
+                      </a>
+                    </Link>
+                  </button>
+                </div>
+              )
+            ) : (
+              <div className={style.pbutton}>
+                <button className={style.button} onClick={ClickEnroll}>
+                  Tham gia
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

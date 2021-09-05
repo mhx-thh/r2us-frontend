@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from "react";
 
-import CreateResource from "components/class/CreateResource/createResource";
+import CreateResource from "components/Resource/ResourceCreateModal";
 import PopUp from "components/class/PopUp/popup";
 import ResourceItem from "components/Resource/ResourceItem";
 import style from "./style.module.css";
 
 import { useAppSelector } from "redux/hooks";
-import { selectToken } from "redux/userSlice";
+import { selectStatus, selectToken } from "redux/userSlice";
 
 import userApi from "api/userApi";
 
 const DocumentPage = function (props: any) {
   const token = useAppSelector(selectToken);
+  const status = useAppSelector(selectStatus);
+
+  const [create, setCreate] = useState(false);
+  const handleClick = () => {
+    setCreate(true);
+  };
+
   const [data, setData] = useState([]);
   useEffect(() => {
     async function getData() {
@@ -23,13 +30,10 @@ const DocumentPage = function (props: any) {
         console.log(error.message);
       }
     }
-    getData();
-  }, []);
-
-  const [create, setCreate] = useState(false);
-  const handleClick = () => {
-    setCreate(true);
-  };
+    if (status === "logined") {
+      getData();
+    }
+  }, [status]);
 
   return (
     <div className={style.page}>
@@ -59,15 +63,17 @@ const DocumentPage = function (props: any) {
 
         {create === true && (
           <PopUp closepopup={setCreate}>
-            <CreateResource data={props.data} />
+            <CreateResource data={props.props} />
           </PopUp>
         )}
 
         {/* Document */}
         <div className={style.documentsection}>
-          {data.map((val, key) => (
-            <ResourceItem aresource={val} key={key} />
-          ))}
+          <div className="w-full grid grid-cols-4 gap-11 justify-around">
+            {data.map((val, key) => (
+              <ResourceItem aresource={val} key={key} />
+            ))}
+          </div>
         </div>
       </div>
     </div>

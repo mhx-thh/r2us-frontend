@@ -1,15 +1,39 @@
-import userApi from "api/userApi";
-import Footer from "components/footer/FooterComponent";
-import MetaLayout from "components/layout/MegaLayout";
-import ReviewPage from "components/user/page/review/reviewpage";
-import Sidebar from "components/user/Sidebar/UserSidebar";
-import UserHeader from "components/user/userheader/header";
-import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { useAppSelector } from "redux/hooks";
-import { selectToken, selectUser } from "redux/userSlice";
+import { GetServerSideProps } from "next";
 
-const User = function () {
+import LayoutUser from "components/layout/UserLayout";
+import ReviewPage from "components/user/page/review/reviewpage";
+
+import { useAppSelector } from "redux/hooks";
+import { selectToken } from "redux/userSlice";
+
+import userApi from "api/userApi";
+import AcademicAPI from "api/academicApi";
+
+type AppProps = {
+  schoolyear: any;
+  falcuty: any;
+  course: any;
+  teacher: any;
+};
+
+export const getServerSideProps: GetServerSideProps = async (params) => {
+  const schoolyear = await AcademicAPI.getSchoolYears();
+  const falcuty = await AcademicAPI.getFalcuties();
+  const course = await AcademicAPI.getCourses();
+  const teacher = await AcademicAPI.getIntructors();
+
+  return {
+    props: {
+      schoolyear: schoolyear.data.data,
+      falcuty: falcuty.data.data,
+      course: course.data.data,
+      teacher: teacher.data,
+    },
+  };
+};
+
+const User = function (props) {
   const token = useAppSelector(selectToken);
   const [myReview, setMyReview] = useState([]);
   useEffect(() => {
@@ -24,18 +48,10 @@ const User = function () {
     }
     fetchMyReview();
   }, []);
-  const user = useAppSelector(selectUser);
-  const router = useRouter();
-  const path = router.asPath;
-  const title = `R2us | ${user.familyName} ${user.givenName}`;
   return (
-    <MetaLayout title={title} desc="User" icon="icons/logo.svg">
-      <UserHeader user={user} />
-      <Sidebar param={path} />
-      <hr></hr>
-      <ReviewPage />;
-      <Footer />
-    </MetaLayout>
+    <LayoutUser>
+      <ReviewPage props={props} />;
+    </LayoutUser>
   );
 };
 

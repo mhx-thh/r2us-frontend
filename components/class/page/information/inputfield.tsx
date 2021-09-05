@@ -1,19 +1,24 @@
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
 import style from "./style.module.css";
 
-function InputField(props: {
+import { useForm } from "react-hook-form";
+
+type AppProps = {
   name: string;
   editable: boolean;
   data: string;
   multiline: boolean;
-}) {
-  const { handleSubmit } = useForm();
+  icon: string;
+};
+
+function InputField(props: AppProps) {
   const [data, setData] = useState(props.data);
   const [isActive, setIsActive] = useState(false);
+
+  const { handleSubmit } = useForm();
+
   const onSubmit = () => {
-    setIsActive(!!!isActive);
-    // Push Api
+    setIsActive(!isActive);
   };
   const handleChange = (e) => {
     setData(e.target.value);
@@ -21,82 +26,66 @@ function InputField(props: {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className={style.field__text}>{props?.name}</div>
-      <div className={style.field__input}>
-        {props.multiline ? (
-          <textarea
-            className={
-              isActive ? style.field__input_active : style.field__input_unactive
-            }
-            id={props.name}
-            disabled={!!!isActive}
-            value={data}
-            onChange={isActive ? handleChange : undefined}
-            rows={7}
-          />
-        ) : (
-          <input
-            className={
-              isActive ? style.field__input_active : style.field__input_unactive
-            }
-            id={props.name}
-            disabled={!!!isActive}
-            value={data}
-            onChange={isActive ? handleChange : undefined}
-          />
-        )}
-
-        {props?.editable ? (
-          <button type="submit">
-            <svg
-              width="44"
-              height="42"
-              viewBox="0 0 44 42"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M26.6754 13.723L29.1672 16.1171L26.6754 13.723ZM28.2778 11.6139L21.5401 18.0905C21.1919 18.4247 20.9545 18.8505 20.8577 19.3142L20.2354 22.3088L23.3507 21.7094C23.833 21.6167 24.2754 21.3894 24.6236 21.0546L31.3614 14.578C31.5638 14.3833 31.7245 14.1523 31.834 13.898C31.9436 13.6437 32 13.3712 32 13.0959C32 12.8207 31.9436 12.5481 31.834 12.2938C31.7245 12.0396 31.5638 11.8085 31.3614 11.6139C31.1589 11.4193 30.9185 11.2649 30.654 11.1595C30.3895 11.0542 30.1059 11 29.8196 11C29.5333 11 29.2497 11.0542 28.9852 11.1595C28.7206 11.2649 28.4803 11.4193 28.2778 11.6139V11.6139Z"
-                stroke="#6366F1"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M29.6472 24.5707V27.9634C29.6472 28.5633 29.3993 29.1386 28.958 29.5628C28.5168 29.9869 27.9183 30.2252 27.2943 30.2252H14.353C13.7289 30.2252 13.1304 29.9869 12.6892 29.5628C12.2479 29.1386 12 28.5633 12 27.9634V15.5235C12 14.9237 12.2479 14.3484 12.6892 13.9242C13.1304 13.5 13.7289 13.2617 14.353 13.2617H17.8824"
-                stroke="#6366F1"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            {/* <img src="public\icons\edit_pencil.svg" alt="edit-pencil" /> */}
-          </button>
-        ) : (
-          <button disabled>
-            <svg
-              width="44"
-              height="42"
-              viewBox="0 0 30 35"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M11.9601 20.25C11.2261 20.2501 10.5086 20.0325 9.89823 19.6247C9.28789 19.2169 8.81219 18.6373 8.53128 17.9592C8.25038 17.2811 8.17689 16.5348 8.32011 15.8149C8.46333 15.095 8.81682 14.4338 9.33588 13.9148L13.1654 10.0868C13.8614 9.39076 14.8054 8.99976 15.7896 8.99976C16.7739 8.99976 17.7179 9.39076 18.4139 10.0868C19.1099 10.7828 19.5009 11.7267 19.5009 12.711C19.5009 13.6953 19.1099 14.6393 18.4139 15.3353L17.9991 15.7493L16.9379 14.6895L17.3556 14.2718C17.7688 13.8566 18.0005 13.2946 17.9999 12.7089C17.9994 12.1232 17.7666 11.5616 17.3526 11.1473C16.9313 10.7452 16.3713 10.5208 15.7889 10.5208C15.2065 10.5208 14.6465 10.7452 14.2251 11.1473L10.3971 14.9753C10.1916 15.1805 10.0286 15.4243 9.91738 15.6926C9.80615 15.9609 9.7489 16.2485 9.7489 16.539C9.7489 16.8295 9.80615 17.1171 9.91738 17.3854C10.0286 17.6537 10.1916 17.8975 10.3971 18.1028C10.8185 18.5048 11.3785 18.7292 11.9609 18.7292C12.5433 18.7292 13.1033 18.5048 13.5246 18.1028L14.5851 19.1633C14.2412 19.5089 13.832 19.783 13.3815 19.9695C12.9309 20.156 12.4478 20.2514 11.9601 20.25Z"
-                fill="#6366F1"
-              />
-              <path
-                d="M17.9601 18.75C17.2261 18.7501 16.5086 18.5325 15.8982 18.1247C15.2879 17.7169 14.8122 17.1373 14.5313 16.4592C14.2504 15.7811 14.1769 15.0348 14.3201 14.3149C14.4633 13.595 14.8168 12.9338 15.3359 12.4148L15.7506 12.0008L16.8111 13.062L16.3971 13.476C15.9825 13.8906 15.7496 14.453 15.7496 15.0394C15.7496 15.6258 15.9825 16.1881 16.3971 16.6028C16.8185 17.0048 17.3785 17.2292 17.9609 17.2292C18.5433 17.2292 19.1033 17.0048 19.5246 16.6028L23.3534 12.774C23.7672 12.3591 23.9996 11.797 23.9996 11.211C23.9996 10.625 23.7672 10.0629 23.3534 9.64801C22.9321 9.24592 22.372 9.02158 21.7896 9.02158C21.2072 9.02158 20.6472 9.24592 20.2259 9.64801L19.1654 8.58676C19.8614 7.89076 20.8053 7.49976 21.7896 7.49976C22.7739 7.49976 23.7179 7.89076 24.4139 8.58676C25.1099 9.28275 25.5009 10.2267 25.5009 11.211C25.5009 12.1953 25.1099 13.1393 24.4139 13.8353L20.5859 17.6625C20.2419 18.0083 19.8328 18.2824 19.3823 18.469C18.9317 18.6557 18.4486 18.7512 17.9609 18.75H17.9601Z"
-                fill="#6366F1"
-              />
-              <path
-                d="M21 28.5H6C5.6023 28.4996 5.221 28.3414 4.93978 28.0602C4.65856 27.779 4.5004 27.3977 4.5 27V12C4.5004 11.6023 4.65856 11.221 4.93978 10.9398C5.221 10.6586 5.6023 10.5004 6 10.5H9V12H6V27H21V19.5H22.5V27C22.4996 27.3977 22.3414 27.779 22.0602 28.0602C21.779 28.3414 21.3977 28.4996 21 28.5Z"
-                fill="#6366F1"
-              />
-            </svg>
-          </button>
-        )}
+      <div className={style.field__text}>
+        <div>{props?.name}</div>
+        <div>
+          <img src={props.icon} className="px-3" />
+        </div>
       </div>
+      {props.editable ? (
+        <div className={style.field__input}>
+          {props.multiline ? (
+            <textarea
+              className={
+                isActive
+                  ? style.field__input_active
+                  : style.field__input_unactive
+              }
+              id={props.name}
+              disabled={!isActive}
+              value={data}
+              onChange={isActive ? handleChange : undefined}
+              rows={7}
+            />
+          ) : (
+            <input
+              className={
+                isActive
+                  ? style.field__input_active
+                  : style.field__input_unactive
+              }
+              id={props.name}
+              disabled={!isActive}
+              value={data}
+              onChange={isActive ? handleChange : undefined}
+            />
+          )}
+          <button type="submit">
+            <img src="/icons/edit_pencil.svg" />
+          </button>
+        </div>
+      ) : (
+        <div className={style.field__input}>
+          {props.multiline ? (
+            <textarea
+              className={style.field__uneditable}
+              id={props.name}
+              disabled={!isActive}
+              value={data}
+              onChange={isActive ? handleChange : undefined}
+              rows={7}
+            />
+          ) : (
+            <input
+              className={style.field__uneditable}
+              id={props.name}
+              disabled={!isActive}
+              value={data}
+              onChange={isActive ? handleChange : undefined}
+            />
+          )}
+        </div>
+      )}
     </form>
   );
 }

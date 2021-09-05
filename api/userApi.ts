@@ -1,4 +1,4 @@
-import { apiV1, config, get, post } from "api/generic";
+import { apiV1, get, post } from "api/generic";
 
 const userApi = {
   getInfo: function (token: string) {

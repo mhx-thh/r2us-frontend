@@ -1,12 +1,8 @@
-import Link from "next/link";
-import React, { useState } from "react";
-import { useAppSelector } from "redux/hooks";
-import { selectStatus, selectUser } from "redux/userSlice";
-import style from "./style.module.css";
+import React from "react";
 
-interface Props {
-  param: string;
-}
+import Link from "next/link";
+
+import style from "./style.module.css";
 
 function Sidebar(props: { param: string; id: string }) {
   const SideBarData = [
@@ -26,7 +22,7 @@ function Sidebar(props: { param: string; id: string }) {
       Borderright: false,
     },
     {
-      Title: "Đề cương môn học",
+      Title: "Đề cương",
       Link: `/group/${props.id}/outline`,
       Borderright: true,
     },

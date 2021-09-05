@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import MemberSection from "./membersection";
 import style from "./style.module.css";
 

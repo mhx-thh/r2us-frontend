@@ -1,14 +1,24 @@
-import userApi from "api/userApi";
-import CreateReview from "components/class/CreateReview";
+import React, { useEffect, useState } from "react";
+
+import CreateReview from "components/Review/ReviewCreateModal";
 import PopUp from "components/class/PopUp/popup";
 import ReviewItem from "components/Review/ReviewItem";
-import React, { useEffect, useState } from "react";
-import { useAppSelector } from "redux/hooks";
-import { selectToken } from "redux/userSlice";
 import style from "./style.module.css";
 
-const ReviewPage = function () {
+import { useAppSelector } from "redux/hooks";
+import { selectStatus, selectToken } from "redux/userSlice";
+
+import userApi from "api/userApi";
+
+const ReviewPage = function (props: any) {
   const token = useAppSelector(selectToken);
+  const status = useAppSelector(selectStatus);
+
+  const [create, setCreate] = useState(false);
+  const handleClick = () => {
+    setCreate(true);
+  };
+
   const [data, setData] = useState([]);
   useEffect(() => {
     async function getMyReviews() {
@@ -20,18 +30,10 @@ const ReviewPage = function () {
         console.log(error.message);
       }
     }
-    getMyReviews();
-  }, []);
-  const [addDoc, setAddDoc] = useState(0);
-  const ClickpopupDoc = () => {
-    setAddDoc(1);
-  };
-  const user = "admin";
-
-  const [create, setCreate] = useState(false);
-  const handleClick = () => {
-    setCreate(true);
-  };
+    if (status === "logined") {
+      getMyReviews();
+    }
+  }, [status]);
 
   return (
     <div className={style.page}>
@@ -61,12 +63,12 @@ const ReviewPage = function () {
 
         {create === true && (
           <PopUp closepopup={setCreate}>
-            <CreateReview />
+            <CreateReview data={props.props} />
           </PopUp>
         )}
 
         {/* Document */}
-        <div className={style.documentsection}>
+        <div className="w-full grid grid-cols-4 gap-11 justify-around">
           {data.map((val, key) => (
             <ReviewItem areview={val} key={key} />
           ))}

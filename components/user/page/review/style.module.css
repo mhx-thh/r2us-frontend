@@ -3,7 +3,7 @@
     padding-right: 100px;
 }
 .buttonarea{
-    padding-top: 100px;
+    padding-top: 50px;
     padding-bottom: 50px;
     display: flex;
     align-items: center;
@@ -33,16 +33,6 @@
 .documentsection{
     display: flex;
     flex-wrap: wrap;
-    
-}
-.document{
-    display: flex;
-    align-items: flex-start;
-    padding-bottom: 50px;
-}
-.document__document{
-    padding-left: 5px;
-    padding-right: 20px;
 }
 
 

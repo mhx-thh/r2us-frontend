@@ -1,12 +1,24 @@
-import LayoutClass from "components/layout/layoutClass";
 import React, { useEffect, useState } from "react";
-import Sidebar from "components/class/Sidebar/Sidebar";
-import Title from "components/class/Title/Title";
+
+import GroupAPI from "api/groupAPI";
 import NewClassAPI from "api/NewClassAPI";
+
+import LayoutClass from "components/layout/ClassLayout";
+import { classInfo, ReviewType, titleGroup } from "lib/models";
+import ReviewCourse from "components/class/page/reviewCourse/reviewCourse";
+
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import ReviewPage from "components/class/page/reviewpage/reviewpage";
-import GroupAPI from "api/groupAPI";
+
+import { useAppSelector } from "redux/hooks";
+import { selectToken } from "redux/userSlice";
+
+type propApi = {
+  status: string;
+  title: titleGroup;
+  class: classInfo;
+  review: Array<ReviewType>;
+};
 
 export const getServerSideProps: GetServerSideProps = async (params) => {
   const temp = params.params.slug.toString();
@@ -20,84 +32,48 @@ export const getServerSideProps: GetServerSideProps = async (params) => {
 
   return {
     props: {
-      status: res.data.status,
-      data: res.data.data,
-      review: rev.data.data,
+      status: res?.data?.status,
+      title: res?.data?.data,
+      class: res?.data?.data,
+      review: rev?.data?.data?.result,
     },
   };
-};
-
-type classType = {
-  className: string;
-  ratingsAverage: number;
-  ratingsQuantity: number;
-  nStudents: number;
-  _id: string;
-  instructorId: {
-    _id: string;
-    instructorName: string;
-    id: string;
-  };
-  academicId: {
-    schoolyear: string;
-    semester: number;
-  };
-  courseId: {
-    courseName: string;
-    _id: string;
-    facultyId: {
-      facultyName: string;
-      _id: string;
-    };
-  };
-  createdAt: string;
-  updatedAt: string;
-  slug: string;
-  __v: number;
-};
-
-type propApi = {
-  status: string;
-  data: classType;
-  review: any;
 };
 
 const Item = function (props: propApi) {
-  const initProps = props.data;
-  const initTitle = {
-    academicId: {
-      schoolyear: initProps.academicId.schoolyear,
-    },
-    courseId: {
-      courseName: initProps.courseId.courseName,
-      facultyId: {
-        facultyName: initProps.courseId.facultyId.facultyName,
-      },
-    },
-    className: initProps.className,
-    instructorId: {
-      instructorName: initProps.instructorId.instructorName,
-    },
-    updateAt: initProps.updatedAt,
-  };
+  const initProps = props.class;
+
+  const [role, setRole] = useState("");
+  const token = useAppSelector(selectToken);
+
+  useEffect(() => {
+    async function fetchRole() {
+      try {
+        const res = await GroupAPI.getRole(props.class._id, token);
+        const data = res?.data?.data?.result;
+        data[0] !== undefined && setRole(data[0].role);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    fetchRole();
+  }, []);
+
   const Id = {
-    schoolyear: initProps.academicId.schoolyear,
-    courseName: initProps.courseId.courseName,
-    instructorName: initProps.instructorId.instructorName,
-    className: initProps.className,
+    academicId: initProps.academicId._id,
+    courseId: initProps.courseId._id,
+    instructorId: initProps.instructorId.id,
+    classId: initProps._id,
   };
+
   const router = useRouter();
-  const path = router.asPath;
-  const title = `R2us | ${initProps.className}`;
+
   if (router.isFallback) {
     return <div>Loading...</div>;
   } else {
     return (
-      <LayoutClass title={title} desc="ClassPage" icon="icons/logo.svg">
-        <Title data={initTitle} />
-        <Sidebar param={path} id={initProps.slug} />
-        <hr></hr>
-        <ReviewPage data={props.review} id={Id} />
+      <LayoutClass initTitle={props.title} role={role}>
+        <ReviewCourse review={props.review} id={Id} role={role} />
       </LayoutClass>
     );
   }
