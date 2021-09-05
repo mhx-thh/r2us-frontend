@@ -54,6 +54,7 @@ export type ResourceType = {
   classId: {
     className: string;
     _id: string;
+    slug: string;
     courseId: {
       _id: string;
       courseName: string;
@@ -99,6 +100,7 @@ export type ReviewType = {
   classId: {
     className: string;
     _id: string;
+    slug: string;
     courseId: {
       courseName: string;
       _id: string;

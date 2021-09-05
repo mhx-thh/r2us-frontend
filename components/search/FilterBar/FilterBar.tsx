@@ -16,9 +16,10 @@ import AcademicAPI from "api/academicApi";
 interface Props {
   getData: any;
   getPagination: any;
+  setDone: any;
 }
 
-function FilterBar({ getData, getPagination }: Props) {
+function FilterBar({ getData, getPagination, setDone }: Props) {
   //declare variable
   const [resource_filtered, setResource_filtered] = useState([]);
   const [review_filtered, setReview_filtered] = useState([]);
@@ -153,6 +154,7 @@ function FilterBar({ getData, getPagination }: Props) {
         setGroup_filtered(res?.data?.data?.result);
         const total = res?.data?.data?.total;
         getPagination(total);
+        setDone(true);
       } catch (error) {
         console.error("fetchGroupFilter !!", error);
         setGroup_filtered([]);
@@ -166,6 +168,7 @@ function FilterBar({ getData, getPagination }: Props) {
         setResource_filtered(res?.data?.data?.result);
         const total = res?.data?.data?.total;
         getPagination(total);
+        setDone(true);
       } catch (error) {
         console.error("fetchResourceFilter !!", error);
         setResource_filtered([]);
@@ -179,6 +182,7 @@ function FilterBar({ getData, getPagination }: Props) {
         setReview_filtered(res?.data?.data?.result);
         const total = res?.data?.data?.total;
         getPagination(total);
+        setDone(true);
       } catch (error) {
         console.error("fetchReviewFilter !!", error);
         setReview_filtered([]);

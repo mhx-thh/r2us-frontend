@@ -24,20 +24,46 @@ type AppProps = {
 };
 
 const InformationPage = function (props: AppProps) {
-  const token = useAppSelector(selectToken);
-  const router = useRouter();
-  const path = router.asPath;
-
+  const [info, setInfo] = useState(props.data);
+  const [role, setRole] = useState(props.role);
   const [title, setTitle] = useState(props.initTitle);
   const [enroll, setEnroll] = useState(false);
+
   const [dataPatch, setDataPatch] = useState({
     className: props.data.className,
     description: props.data.description,
   });
 
+  const router = useRouter();
+  const path = router.asPath;
+  const [name, setName] = useState(props.data.className); // Để tạm để effect
+
+  const token = useAppSelector(selectToken);
+
   useEffect(() => {
     setEnroll(props.role === "" || props.role === undefined ? false : true);
+    setRole(props.role);
   }, [props.role]);
+
+  // Effect cái này
+  useEffect(() => {
+    async function fetchSlug() {
+      try {
+        const res = await GroupAPI.getGroups();
+        const data = res?.data?.data;
+        data?.result.map(
+          (val) =>
+            val._id === props.data._id &&
+            (setInfo(val),
+            window.history.replaceState({}, null, `/group/${val.slug}`),
+            setTitle({ ...title, updatedAt: val.updatedAt }))
+        );
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    fetchSlug();
+  }, [name]);
 
   const handleChangeClassName = (e) => {
     setDataPatch({
@@ -56,31 +82,29 @@ const InformationPage = function (props: AppProps) {
     setEnroll(true);
     userApi.postEnroll({ classId: props.data._id }, token);
   };
-  const ClickUpdate = () => {
-    GroupAPI.patchClass(dataPatch, props.data._id, token);
+
+  const ClickUpdate = async () => {
+    await GroupAPI.patchClass(dataPatch, props.data._id, token);
     setTitle({
       ...title,
       className: dataPatch.className,
     });
+    setName(dataPatch.className); // để tạm
   };
+
   const ClickDelete = () => {
     GroupAPI.deleteClass(props.data._id, token);
   };
+
   return (
     <div>
       <Title
         initTitle={title}
-        role={
-          !enroll
-            ? ""
-            : props.role === "provider"
-            ? "Quản trị viên"
-            : "Thành viên"
-        }
+        role={!enroll ? "" : enroll && role === "" ? " " : role}
       />
-      <Sidebar param={path} id={props.initTitle.slug} />
+      {/* Vẫn còn lỗi mất hiển thị thông tin khi thay đổi tên lớp*/}
+      <Sidebar param={path} id={info.slug} />
       <hr />
-
       <div className={style.page}>
         <div className={style.grid}>
           {/* Information field */}

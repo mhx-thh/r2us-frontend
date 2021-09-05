@@ -1,36 +1,13 @@
 import React from "react";
+import Link from "next/link";
+import { ReviewType } from "lib/models";
 
-type reviewType = {
-  reviewType: string;
-  reviewTitle: string;
-  classId: {
-    className: string;
-    courseId: {
-      courseName: string;
-      facultyId: {
-        facultyName: string;
-      };
-    };
-    instructorId: {
-      instructorName: string;
-    };
-    academicId: {
-      schoolyear: string;
-      semester: string;
-    };
-  };
-  review: string;
-  userId: {
-    givenName: string;
-    familyName: string;
-    photo: string;
-  };
-};
 type AppProps = {
-  sreview: reviewType;
+  sreview: ReviewType;
 };
 
 function ReviewShowModal({ sreview }: AppProps) {
+  const url = `/group/${sreview.classId.slug}`;
   return (
     <div className="absolute bg-indigo-200 w-full left-0 top-0 h-80 rounded-t-2xl tracking-normal text-base leading-6 font-medium">
       {/* Title */}
@@ -56,7 +33,11 @@ function ReviewShowModal({ sreview }: AppProps) {
       <div className="flex px-56">
         <img className="my-3" width="20" src="/icons/destination_group.svg" />
         <div className="px-8 my-3 w-11/12">{sreview.classId.className}</div>
-        <img className="pt-2" src="/icons/gotoGroup.svg" />
+        <Link href={url}>
+          <a>
+            <img className="pt-2" src="/icons/gotoGroup.svg" />
+          </a>
+        </Link>
       </div>
       {/* Review */}
       <div className="absolute top-72 my-3 flex mx-36 w-8/12 h-52 bg-white shadow-xl rounded-3xl z-10 text-center text-base leading-6 font-medium">
