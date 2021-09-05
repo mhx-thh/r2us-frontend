@@ -1,5 +1,6 @@
-import PopUp from "components/class/PopUp/popup";
 import React, { useState } from "react";
+
+import PopUp from "components/class/PopUp/popup";
 import ResourceShowModal from "./ResourceShowModal";
 
 type AppProps = {

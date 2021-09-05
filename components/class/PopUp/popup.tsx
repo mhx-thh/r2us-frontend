@@ -1,5 +1,6 @@
-import useClickOutside from "components/clickOutside/clickOutside";
 import React from "react";
+
+import useClickOutside from "components/clickOutside/clickOutside";
 
 import style from "./style.module.css";
 
