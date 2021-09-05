@@ -6,7 +6,6 @@ import Layout from "components/layout/SearchLayout";
 import Pagination from "components/search/Pagination/Pagination";
 import Groups from "components/search/Groups/Groups";
 import GroupLoading from "components/search/Loading/GroupLoading";
-import ReactLoading from "react-loading";
 
 const Group = () => {
   //declare variable
