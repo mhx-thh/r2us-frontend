@@ -13,6 +13,8 @@ type Api = {
   classId: string;
 };
 
+type classStatus = "loading" | "done" | "gotNone";
+
 const CreateResource = function ({ data }: any) {
   const token = useAppSelector(selectToken);
 
@@ -21,6 +23,8 @@ const CreateResource = function ({ data }: any) {
   const [courseId, setCourseId] = useState("");
   const [instructorId, setInstructorId] = useState("");
   const [group, setGroup] = useState([]);
+
+  const [classStatus, setClassStatus] = useState<classStatus>("loading");
 
   const initCreate: Api = {
     resourceType: "Resources",
@@ -39,14 +43,14 @@ const CreateResource = function ({ data }: any) {
       setGroup(data.data.data.result);
     }
 
-    schoolyear !== "" &&
-      courseId !== "" &&
-      instructorId !== "" &&
+    if (schoolyear !== "" && courseId !== "" && instructorId !== "") {
       fetchGroup({
         courseId: courseId,
         instructorId: instructorId,
         academicId: schoolyear,
       });
+      console.log(group);
+    }
   }, [schoolyear, courseId, instructorId]);
 
   useEffect(() => {
@@ -127,8 +131,12 @@ const CreateResource = function ({ data }: any) {
       create.resourceDescription !== "" &&
       create.classId !== ""
     ) {
-      const res = GroupAPI.postResource(create, token);
-      console.log(res);
+      try {
+        const res = GroupAPI.postResource(create, token);
+      } catch (err) {
+        console.log("Error123");
+        console.log(err);
+      }
     }
   };
 
@@ -183,6 +191,7 @@ const CreateResource = function ({ data }: any) {
           <input
             className="p-2 ml-8 w-9/12 h-10 bg-indigo-50 w-48 rounded-xl border border-solid border-indigo-500"
             placeholder="Nhập tên tài liệu"
+            minLength={10}
             onChange={handleResourceName}
           />
         </div>

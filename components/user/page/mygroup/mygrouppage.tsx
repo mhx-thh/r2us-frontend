@@ -26,6 +26,7 @@ const GroupPage = function (props: any) {
         const res = await userApi.getMyClass(token);
         const myClass = res?.data?.data?.result;
         setMyClass(myClass);
+        console.log(myClass);
       } catch (error) {
         console.log(error.message);
       }
