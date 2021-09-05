@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReviewItem from "components/Review/ReviewItem";
 import PopUp from "components/class/PopUp/popup";
 import ReviewEditModal from "components/Review/ReviewEditModal";
@@ -11,19 +11,12 @@ import GroupAPI from "api/groupAPI";
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 
-import { ReviewType } from "lib/models";
-
-type idType = {
-  academicId: string;
-  courseId: string;
-  instructorId: string;
-  classId: string;
-};
+import { Id, ReviewType } from "lib/models";
 
 type AppProps = {
   role: string;
   review: Array<ReviewType>;
-  id: idType;
+  id: Id;
 };
 
 type Review = {
@@ -33,6 +26,20 @@ type Review = {
 
 const ReviewTeacher = function (props: AppProps) {
   const [reviewArray, setReviewArray] = useState(props.review);
+  const [flag, setFlag] = useState(false);
+
+  useEffect(() => {
+    async function fetchReviews() {
+      try {
+        const res = await GroupAPI.getReviews();
+        const data = res?.data?.data?.result;
+        setReviewArray(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchReviews();
+  }, [flag]);
 
   // Dropdown function
   function DropdownReview({ close, data }: any) {
@@ -46,10 +53,13 @@ const ReviewTeacher = function (props: AppProps) {
       setUpdate(true);
     };
 
-    const ClickDelete = () => {
-      GroupAPI.deleteReview(data._id, token);
-      const newSelect = reviewArray.filter((items) => items !== data);
-      setReviewArray(newSelect);
+    const ClickDelete = async () => {
+      try {
+        await GroupAPI.deleteReview(data._id, token);
+        setFlag(!flag);
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     return (

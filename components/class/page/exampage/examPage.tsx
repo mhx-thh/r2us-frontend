@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import ResourceItem from "components/Resource/ResourceItem";
 import useClickOutside from "components/clickOutside/clickOutside";
@@ -26,7 +26,22 @@ type AppProps = {
 
 const ExamPage = function (props: AppProps) {
   const [examArray, setExamArray] = useState(props.exam);
+  const [flag, setFlag] = useState(false);
 
+  useEffect(() => {
+    async function fetchResources() {
+      try {
+        const res = await GroupAPI.getResources();
+        const data = res?.data?.data?.result;
+        setExamArray(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchResources();
+  }, [flag]);
+
+  // Exam functions
   const Exam = function (props: ExamData) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
@@ -68,10 +83,13 @@ const ExamPage = function (props: AppProps) {
       setUpdate(true);
     };
 
-    const ClickDelete = () => {
-      GroupAPI.deleteResource(data.id, token);
-      const newSelect = examArray.filter((items) => items !== data);
-      setExamArray(newSelect);
+    const ClickDelete = async () => {
+      try {
+        await GroupAPI.deleteResource(data.id, token);
+        setFlag(!flag);
+      } catch (error) {
+        console.log(error);
+      }
     };
     return (
       <div ref={ref} className="absolute my-8 -mx-24">

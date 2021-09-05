@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import ReviewItem from "components/Review/ReviewItem";
 import PopUp from "components/class/PopUp/popup";
@@ -26,6 +26,20 @@ type Review = {
 
 const ReviewCourse = function (props: AppProps) {
   const [reviewArray, setReviewArray] = useState(props.review);
+  const [flag, setFlag] = useState(false);
+
+  useEffect(() => {
+    async function fetchResources() {
+      try {
+        const res = await GroupAPI.getReviews();
+        const data = res?.data?.data?.result;
+        setReviewArray(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchResources();
+  }, [flag]);
 
   // DropDown Component
   function DropdownReview({ close, data }: any) {
@@ -39,10 +53,13 @@ const ReviewCourse = function (props: AppProps) {
       setUpdate(true);
     };
 
-    const ClickDelete = () => {
-      GroupAPI.deleteReview(data._id, token);
-      const newSelect = reviewArray.filter((items) => items !== data);
-      setReviewArray(newSelect);
+    const ClickDelete = async () => {
+      try {
+        await GroupAPI.deleteReview(data._id, token);
+        setFlag(!flag);
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     return (

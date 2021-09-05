@@ -28,24 +28,22 @@ const InformationPage = function (props: AppProps) {
   const [role, setRole] = useState(props.role);
   const [title, setTitle] = useState(props.initTitle);
   const [enroll, setEnroll] = useState(false);
+  const [flag, setFlag] = useState(false);
 
   const [dataPatch, setDataPatch] = useState({
     className: props.data.className,
     description: props.data.description,
   });
 
+  const token = useAppSelector(selectToken);
   const router = useRouter();
   const path = router.asPath;
-  const [name, setName] = useState(props.data.className); // Để tạm để effect
-
-  const token = useAppSelector(selectToken);
 
   useEffect(() => {
     setEnroll(props.role === "" || props.role === undefined ? false : true);
     setRole(props.role);
   }, [props.role]);
 
-  // Effect cái này
   useEffect(() => {
     async function fetchSlug() {
       try {
@@ -55,6 +53,7 @@ const InformationPage = function (props: AppProps) {
           (val) =>
             val._id === props.data._id &&
             (setInfo(val),
+            setTitle(val.className),
             window.history.replaceState({}, null, `/group/${val.slug}`),
             setTitle({ ...title, updatedAt: val.updatedAt }))
         );
@@ -63,7 +62,7 @@ const InformationPage = function (props: AppProps) {
       }
     }
     fetchSlug();
-  }, [name]);
+  }, [flag]);
 
   const handleChangeClassName = (e) => {
     setDataPatch({
@@ -78,22 +77,30 @@ const InformationPage = function (props: AppProps) {
     });
   };
 
-  const ClickEnroll = () => {
-    setEnroll(true);
-    userApi.postEnroll({ classId: props.data._id }, token);
+  const ClickEnroll = async () => {
+    try {
+      setEnroll(true);
+      await userApi.postEnroll({ classId: props.data._id }, token);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const ClickUpdate = async () => {
-    await GroupAPI.patchClass(dataPatch, props.data._id, token);
-    setTitle({
-      ...title,
-      className: dataPatch.className,
-    });
-    setName(dataPatch.className); // để tạm
+    try {
+      await GroupAPI.patchClass(dataPatch, props.data._id, token);
+      setFlag(!flag);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const ClickDelete = () => {
-    GroupAPI.deleteClass(props.data._id, token);
+  const ClickDelete = async () => {
+    try {
+      await GroupAPI.deleteClass(props.data._id, token);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -102,7 +109,6 @@ const InformationPage = function (props: AppProps) {
         initTitle={title}
         role={!enroll ? "" : enroll && role === "" ? " " : role}
       />
-      {/* Vẫn còn lỗi mất hiển thị thông tin khi thay đổi tên lớp*/}
       <Sidebar param={path} id={info.slug} />
       <hr />
       <div className={style.page}>

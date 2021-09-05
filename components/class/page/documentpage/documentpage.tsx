@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import ResourceItem from "components/Resource/ResourceItem";
 import useClickOutside from "components/clickOutside/clickOutside";
@@ -26,6 +26,20 @@ type AppProps = {
 
 const DocumentPage = function (props: AppProps) {
   const [documentArray, setDocumentArray] = useState(props.document);
+  const [flag, setFlag] = useState(false);
+
+  useEffect(() => {
+    async function fetchResources() {
+      try {
+        const res = await GroupAPI.getResources();
+        const data = res?.data?.data?.result;
+        setDocumentArray(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchResources();
+  }, [flag]);
 
   // Document function
   const Document = function (props: documentType) {
@@ -69,10 +83,13 @@ const DocumentPage = function (props: AppProps) {
       setUpdate(true);
     };
 
-    const ClickDelete = () => {
-      GroupAPI.deleteResource(data.id, token);
-      const newSelect = documentArray.filter((items) => items !== data);
-      setDocumentArray(newSelect);
+    const ClickDelete = async () => {
+      try {
+        await GroupAPI.deleteResource(data.id, token);
+        setFlag(!flag);
+      } catch (error) {
+        console.log(error);
+      }
     };
     return (
       <div ref={ref} className="absolute my-8 -mx-24">

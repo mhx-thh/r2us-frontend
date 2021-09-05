@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import ResourceItem from "components/Resource/ResourceItem";
 import useClickOutside from "components/clickOutside/clickOutside";
@@ -26,6 +26,20 @@ type AppProps = {
 
 const OutlinePage = function (props: AppProps) {
   const [outlineArray, setOutlineArray] = useState(props.outline);
+  const [flag, setFlag] = useState(false);
+
+  useEffect(() => {
+    async function fetchResources() {
+      try {
+        const res = await GroupAPI.getResources();
+        const data = res?.data?.data?.result;
+        setOutlineArray(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchResources();
+  }, [flag]);
 
   // Outline Item
   const Outline = function (props: outlineType) {
@@ -69,10 +83,13 @@ const OutlinePage = function (props: AppProps) {
       setUpdate(true);
     };
 
-    const ClickDelete = () => {
-      GroupAPI.deleteResource(data.id, token);
-      const newSelect = outlineArray.filter((items) => items !== data);
-      setOutlineArray(newSelect);
+    const ClickDelete = async () => {
+      try {
+        await GroupAPI.deleteResource(data.id, token);
+        setFlag(!flag);
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     return (
