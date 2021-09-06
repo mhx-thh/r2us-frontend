@@ -53,9 +53,12 @@ const InformationPage = function (props: AppProps) {
           (val) =>
             val._id === props.data._id &&
             (setInfo(val),
-            setTitle(val.className),
-            window.history.replaceState({}, null, `/group/${val.slug}`),
-            setTitle({ ...title, updatedAt: val.updatedAt }))
+            setTitle({
+              ...title,
+              className: val.className,
+              updatedAt: val.updatedAt,
+            }),
+            window.history.replaceState({}, null, `/group/${val.slug}`))
         );
       } catch (error) {
         console.log(error.message);
@@ -105,6 +108,7 @@ const InformationPage = function (props: AppProps) {
 
   return (
     <div>
+      {/* Title & SideBar */}
       <Title
         initTitle={title}
         role={!enroll ? "" : enroll && role === "" ? " " : role}

@@ -28,6 +28,8 @@ const OutlinePage = function (props: AppProps) {
   const [outlineArray, setOutlineArray] = useState(props.outline);
   const [flag, setFlag] = useState(false);
 
+  const token = useAppSelector(selectToken);
+
   useEffect(() => {
     async function fetchResources() {
       try {
@@ -72,8 +74,7 @@ const OutlinePage = function (props: AppProps) {
   };
 
   //  Dropdown function
-  function DropdownResource({ close, data }: any) {
-    const token = useAppSelector(selectToken);
+  const DropdownResource = function ({ close, data }: any) {
     const ref = useClickOutside(() => {
       close(0);
     });
@@ -104,7 +105,6 @@ const OutlinePage = function (props: AppProps) {
               <button>Thêm</button>
             </li>
           )}
-
           <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 ">
             <button onClick={ClickDelete}>Xóa</button>
           </li>
@@ -113,7 +113,6 @@ const OutlinePage = function (props: AppProps) {
             <button onClick={handleUpdate}>Chỉnh sửa</button>
           </li>
         </ul>
-
         {update === true && (
           <PopUp closepopup={close}>
             <ResourceEditModal resource={data} />
@@ -121,7 +120,7 @@ const OutlinePage = function (props: AppProps) {
         )}
       </div>
     );
-  }
+  };
 
   return (
     <div className={style.page}>
@@ -144,13 +143,9 @@ const OutlinePage = function (props: AppProps) {
             data.classId.academicId._id === props.id.academicId &&
             data.resourceType === "Review Paper" &&
             data.status === "accept" ? (
-              <Outline
-                key={data.resourceName}
-                outlineData={data}
-                role={props.role}
-              />
+              <Outline key={data._id} outlineData={data} role={props.role} />
             ) : (
-              <div></div>
+              <div key={data._id}></div>
             )
           )}
         </div>
@@ -171,13 +166,9 @@ const OutlinePage = function (props: AppProps) {
             data.classId.academicId._id === props.id.academicId &&
             data.resourceType === "Review Paper" &&
             data.status === "pending" ? (
-              <Outline
-                key={data.resourceName}
-                outlineData={data}
-                role={props.role}
-              />
+              <Outline key={data._id} outlineData={data} role={props.role} />
             ) : (
-              <div></div>
+              <div key={data._id}></div>
             )
           )}
         </div>

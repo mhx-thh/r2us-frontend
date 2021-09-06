@@ -32,9 +32,13 @@ const ResourceEditModal = function (props: AppProps) {
     });
   };
 
-  const handleSend = (e) => {
+  const handleSend = async (e) => {
     e.preventDefault();
-    GroupAPI.patchResource(data, eresource._id, token);
+    try {
+      await GroupAPI.patchResource(data, eresource._id, token);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

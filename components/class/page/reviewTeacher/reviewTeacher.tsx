@@ -28,6 +28,8 @@ const ReviewTeacher = function (props: AppProps) {
   const [reviewArray, setReviewArray] = useState(props.review);
   const [flag, setFlag] = useState(false);
 
+  const token = useAppSelector(selectToken);
+
   useEffect(() => {
     async function fetchReviews() {
       try {
@@ -41,9 +43,35 @@ const ReviewTeacher = function (props: AppProps) {
     fetchReviews();
   }, [flag]);
 
+  // Review Item
+  const Review = function (props: Review) {
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => {
+      setOpen(true);
+    };
+    return (
+      <div className={style.document}>
+        {props.role === "provider" && (
+          <div>
+            <button className={style.document__button} onClick={handleOpen}>
+              <img src="/icons/threedot.svg" />
+            </button>
+            <div className="absolute">
+              {open === true && (
+                <DropdownReview close={setOpen} data={props.reviewData} />
+              )}
+            </div>
+          </div>
+        )}
+        <div className={style.document__document}>
+          <ReviewItem areview={props.reviewData} />
+        </div>
+      </div>
+    );
+  };
+
   // Dropdown function
-  function DropdownReview({ close, data }: any) {
-    const token = useAppSelector(selectToken);
+  const DropdownReview = function ({ close, data }: any) {
     const ref = useClickOutside(() => {
       close(0);
     });
@@ -61,7 +89,6 @@ const ReviewTeacher = function (props: AppProps) {
         console.log(error);
       }
     };
-
     return (
       <div ref={ref} className="absolute my-8 -mx-24 bg-white">
         <ul className="w-28  h-28 text-base leading-6 font-normal shadow rounded-xl py-1">
@@ -80,34 +107,6 @@ const ReviewTeacher = function (props: AppProps) {
             <ReviewEditModal review={data} />
           </PopUp>
         )}
-      </div>
-    );
-  }
-
-  // Review Item
-  const Review = function (props: Review) {
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => {
-      setOpen(true);
-    };
-
-    return (
-      <div className={style.document}>
-        {props.role === "provider" && (
-          <div>
-            <button className={style.document__button} onClick={handleOpen}>
-              <img src="/icons/threedot.svg" />
-            </button>
-            <div className="absolute">
-              {open === true && (
-                <DropdownReview close={setOpen} data={props.reviewData} />
-              )}
-            </div>
-          </div>
-        )}
-        <div className={style.document__document}>
-          <ReviewItem areview={props.reviewData} />
-        </div>
       </div>
     );
   };
@@ -133,7 +132,7 @@ const ReviewTeacher = function (props: AppProps) {
             data.reviewType === "Instructor" ? (
               <Review reviewData={data} role={props.role} key={data._id} />
             ) : (
-              <div></div>
+              <div key={data._id}></div>
             )
           )}
         </div>

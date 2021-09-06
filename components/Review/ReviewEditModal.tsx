@@ -30,9 +30,13 @@ const ReviewEditModal = function (props: AppProps) {
     });
   };
 
-  const handleSend = (e) => {
+  const handleSend = async (e) => {
     e.preventDefault();
-    GroupAPI.patchReview(data, ereview._id, token);
+    try {
+      await GroupAPI.patchReview(data, ereview._id, token);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

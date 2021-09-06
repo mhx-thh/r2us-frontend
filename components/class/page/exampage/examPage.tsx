@@ -12,6 +12,7 @@ import GroupAPI from "api/groupAPI";
 
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
+import CreateResource from "components/Resource/ResourceCreateModal";
 
 type ExamData = {
   exam: ResourceType;
@@ -27,6 +28,8 @@ type AppProps = {
 const ExamPage = function (props: AppProps) {
   const [examArray, setExamArray] = useState(props.exam);
   const [flag, setFlag] = useState(false);
+
+  const token = useAppSelector(selectToken);
 
   useEffect(() => {
     async function fetchResources() {
@@ -72,8 +75,7 @@ const ExamPage = function (props: AppProps) {
   };
 
   // DropDown function
-  function DropdownResource({ close, data }: any) {
-    const token = useAppSelector(selectToken);
+  const DropdownResource = function ({ close, data }: any) {
     const ref = useClickOutside(() => {
       close(0);
     });
@@ -103,7 +105,6 @@ const ExamPage = function (props: AppProps) {
               <button>Thêm</button>
             </li>
           )}
-
           <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 ">
             <button onClick={ClickDelete}>Xóa</button>
           </li>
@@ -112,7 +113,6 @@ const ExamPage = function (props: AppProps) {
             <button onClick={handleUpdate}>Chỉnh sửa</button>
           </li>
         </ul>
-
         {update === true && (
           <PopUp closepopup={close}>
             <ResourceEditModal resource={data} />
@@ -120,19 +120,19 @@ const ExamPage = function (props: AppProps) {
         )}
       </div>
     );
-  }
+  };
 
   return (
     <div className={style.page}>
       <div>
         {/* Button Share Resource */}
         <div className={style.buttonarea}>
-          <div className={style.head}>
+          <button className={style.head}>
             <div className={style.head__text}>Chia sẻ tài liệu</div>
             <div className={style.head__image}>
               <img src="/icons/resource.svg" />
             </div>
-          </div>
+          </button>
         </div>
 
         {/* Accepted Resource */}
@@ -144,9 +144,9 @@ const ExamPage = function (props: AppProps) {
             data.classId.academicId._id === props.id.academicId &&
             data.resourceType === "Examination Paper" &&
             data.status === "accept" ? (
-              <Exam key={data.resourceName} exam={data} role={props.role} />
+              <Exam key={data._id} exam={data} role={props.role} />
             ) : (
-              <div></div>
+              <div key={data._id}></div>
             )
           )}
         </div>
@@ -169,7 +169,7 @@ const ExamPage = function (props: AppProps) {
             data.status === "pending" ? (
               <Exam key={data.resourceName} exam={data} role={props.role} />
             ) : (
-              <div></div>
+              <div key={data._id}></div>
             )
           )}
         </div>

@@ -28,6 +28,8 @@ const DocumentPage = function (props: AppProps) {
   const [documentArray, setDocumentArray] = useState(props.document);
   const [flag, setFlag] = useState(false);
 
+  const token = useAppSelector(selectToken);
+
   useEffect(() => {
     async function fetchResources() {
       try {
@@ -72,8 +74,7 @@ const DocumentPage = function (props: AppProps) {
   };
 
   //  Dropdown function
-  function DropdownResource({ close, data }: any) {
-    const token = useAppSelector(selectToken);
+  const DropdownResource = function ({ close, data }: any) {
     const ref = useClickOutside(() => {
       close(0);
     });
@@ -120,7 +121,7 @@ const DocumentPage = function (props: AppProps) {
         )}
       </div>
     );
-  }
+  };
 
   return (
     <div className={style.page}>
@@ -144,13 +145,9 @@ const DocumentPage = function (props: AppProps) {
             data.classId.academicId._id === props.id.academicId &&
             data.resourceType === "Resources" &&
             data.status === "accept" ? (
-              <Document
-                key={data.resourceName}
-                document={data}
-                role={props.role}
-              />
+              <Document key={data._id} document={data} role={props.role} />
             ) : (
-              <div></div>
+              <div key={data._id}></div>
             )
           )}
         </div>
@@ -171,13 +168,9 @@ const DocumentPage = function (props: AppProps) {
             data.classId.academicId._id === props.id.academicId &&
             data.resourceType === "Resources" &&
             data.status === "pending" ? (
-              <Document
-                key={data.resourceName}
-                document={data}
-                role={props.role}
-              />
+              <Document key={data._id} document={data} role={props.role} />
             ) : (
-              <div></div>
+              <div key={data._id}></div>
             )
           )}
         </div>
