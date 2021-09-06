@@ -16,18 +16,16 @@ const AdminLayout: FC = ({ children }: Props) => {
   const isAdmin = useAppSelector(selectIsAdmin);
   return (
     <>
-      {!isAdmin && <Error statusCode={404} />}
-      {isAdmin && (
-        <>
-          <SideBar />
-          <div className="relative md:ml-64 bg-blueGray-100">
-            <NavBar />
-            {/* Header */}
-            <HeaderStats />
-            <div className="px-4 md:px-10 mx-auto w-full -m-24">{children}</div>
+      {/* {!isAdmin && <Error statusCode={404} />} */}
+      {/* {isAdmin && ( */}
+      <>
+        <SideBar />
+        <div className="">
+          <div className=" w-full h-screen bg-indigo-100 pt-28 pl-96">
+            {children}
           </div>
-        </>
-      )}
+        </div>
+      </>
     </>
   );
 };
