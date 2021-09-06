@@ -104,7 +104,7 @@ function FilterBar({ getData, getPagination, setDone }: Props) {
     //Lấy danh sách Khoa
     async function fetchFaculty() {
       const response = await facultyApi.getAll();
-      const newFaculties = response?.data?.result.map((op) => {
+      const newFaculties = response?.data?.data?.result?.map((op) => {
         const newOp = {};
         newOp["label"] = op.facultyName;
         newOp["_id"] = op._id;
