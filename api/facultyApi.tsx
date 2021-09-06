@@ -2,12 +2,12 @@ import { apiV1, config, get, post } from "api/generic";
 
 const facultyApi = {
   getAll() {
-    const url = "/academic/faculties";
+    const url = `${apiV1}/academic/faculties`;
     return get(url, "");
   },
 
   get(id) {
-    const url = `/${id}`;
+    const url = `${apiV1}/${id}`;
     return get(url, "");
   },
 

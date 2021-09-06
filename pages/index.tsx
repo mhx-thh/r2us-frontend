@@ -17,7 +17,7 @@ const TogglePage: FC = () => {
   useEffect(() => {
     async function fetchNewClass() {
       try {
-        const res = await GroupAPI.getGroups();
+        const res = await GroupAPI.getNewGroups();
         const data = res?.data?.data?.result;
         setNewClass(data);
       } catch (error) {
@@ -26,7 +26,7 @@ const TogglePage: FC = () => {
     }
     async function fetchNewResource() {
       try {
-        const res = await GroupAPI.getResources();
+        const res = await GroupAPI.getNewResources();
         const data = res?.data?.data?.result;
         console.log(data);
         setNewResource(data);
@@ -36,7 +36,7 @@ const TogglePage: FC = () => {
     }
     async function fetchNewReview() {
       try {
-        const res = await GroupAPI.getReviews();
+        const res = await GroupAPI.getNewReviews();
         const data = res?.data?.data?.result;
         console.log(data);
         setNewReview(data);

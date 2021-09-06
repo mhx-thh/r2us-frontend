@@ -1,8 +1,12 @@
 import { apiV1, delele, get, patch, post, put } from "api/generic";
 
 const GroupAPI = {
-  getGroups: function () {
+  getNewGroups: function () {
     const url = `${apiV1}/groups/class/new-groups`;
+    return get(url, "");
+  },
+  getGroups: function () {
+    const url = `${apiV1}/groups/class`;
     return get(url, "");
   },
   getGroup: function (id: string) {
@@ -31,6 +35,10 @@ const GroupAPI = {
   },
   getReviews: function () {
     const url = `${apiV1}/groups/reviews`;
+    return get(url, "");
+  },
+  getNewReviews: function () {
+    const url = `${apiV1}/groups/reviews/new-reviews`;
     return get(url, "");
   },
   getReview: function (id: string) {
