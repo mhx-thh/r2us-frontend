@@ -1,17 +1,40 @@
+import { memberType } from "lib/models";
 import React from "react";
 import MemberSection from "./membersection";
 import style from "./style.module.css";
 
-const MemberPage = function () {
+type AppProps = {
+  members: Array<memberType>;
+};
+
+const MemberPage = function (props: AppProps) {
   return (
     <div className={style.page}>
       <div className={style.grid}>
         <div className={style.grid_left}>
-          <MemberSection name="Quản trị viên" />
-          <MemberSection name="Yêu cầu" />
+          <div className="bg-indigo-50 relative right-28 top-16 rounded-r-3xl pl-32">
+            <div className="relative -top-12">
+              <MemberSection
+                title="Quản trị viên"
+                role="provider"
+                members={props.members}
+              />
+            </div>
+          </div>
+          <div className="pl-4 pt-8">
+            <MemberSection
+              title="Yêu cầu"
+              role="member"
+              members={props.members}
+            />
+          </div>
         </div>
         <div className={style.grid_right}>
-          <MemberSection name="Thành viên" />
+          <MemberSection
+            title="Thành viên"
+            role="member"
+            members={props.members}
+          />
         </div>
       </div>
     </div>

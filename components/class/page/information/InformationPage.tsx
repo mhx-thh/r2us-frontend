@@ -58,7 +58,7 @@ const InformationPage = function (props: AppProps) {
               className: val.className,
               updatedAt: val.updatedAt,
             }),
-            window.history.replaceState({}, null, `/group/${val.slug}`))
+            router.push(`/group/${val.slug}`))
         );
       } catch (error) {
         console.log(error.message);

@@ -47,14 +47,14 @@ function Sidebar(props: { param: string; id: string }) {
     <div className={style.sidebar}>
       {SideBarData.map((val) => (
         <div key={val.Title} className="flex">
-          <button
-            className={
-              props.param === val.Link
-                ? style.button_highlight
-                : style.button_normal
-            }
-          >
-            <Link href={val.Link}>
+          <Link href={val.Link}>
+            <button
+              className={
+                props.param === val.Link
+                  ? style.button_highlight
+                  : style.button_normal
+              }
+            >
               <a
                 className={
                   props.param === val.Link
@@ -64,8 +64,8 @@ function Sidebar(props: { param: string; id: string }) {
               >
                 {val.Title}
               </a>
-            </Link>
-          </button>
+            </button>
+          </Link>
           <div className={val.Borderright ? style.line : undefined} />
         </div>
       ))}

@@ -130,3 +130,42 @@ export type Id = {
   instructorId: string;
   classId: string;
 };
+
+export type memberType = {
+  role: string;
+  _id: string;
+  userId: {
+    studentCardNumber: string;
+    dateOfBirth: string;
+    _id: string;
+    givenName: string;
+    familyName: string;
+    email: string;
+    photo: string;
+  };
+  classId: {
+    className: string;
+    _id: string;
+    academicId: {
+      _id: string;
+      schoolyear: string;
+      semester: string;
+    };
+    courseId: {
+      _id: string;
+      courseName: string;
+      facultyId: {
+        facultyName: string;
+        _id: string;
+      };
+    };
+    instructorId: {
+      _id: string;
+      instructorName: string;
+      id: string;
+    };
+    slug: string;
+  };
+  __v: string;
+  id: string;
+};
