@@ -1,6 +1,8 @@
+import router from "next/router";
 import React, { useState } from "react";
+import Image from "next/image";
 
-function CourseTable(props) {
+function FacultyTable(props) {
   const [collapse, setCollapse] = useState(false);
   const [threedots, setThreedots] = useState(false);
   const clickcollapse = () => {
@@ -10,10 +12,10 @@ function CourseTable(props) {
     setThreedots(!threedots);
   };
   return (
-    <table className=" w-11/12 p-2 border">
+    <table className=" w-full p-2 border">
       <thead className="">
         <tr className=" border-b border-indigo-500 bg-indigo-200 py-4">
-          <th className=" p-2 py-4 rounded-tl-xl">
+          <th className=" p-2 py-4 ">
             <input type="checkbox" />
           </th>
           <th className="p-2 py-4">
@@ -21,10 +23,10 @@ function CourseTable(props) {
           </th>
           <th className="p-2 py-4">
             <div className="flex items-center text-left pl-8 text-xl leading-7 font-medium uppercase">
-              TÊN KHOA
+              TÊN MÔN HỌC
             </div>
           </th>
-          <th className="p-2 py-4 rounded-tr-xl">
+          <th className="p-2 py-4 ">
             <div className="flex items-center justify-center"></div>
           </th>
         </tr>
@@ -33,15 +35,32 @@ function CourseTable(props) {
         <tr className="bg-gray-50 text-center border-b border-indigo-400">
           <td className="p-2 "></td>
           <td className="p-2 "></td>
-          <td className="p-2 text-left">
-            <input
-              type="text"
-              className="border border-indigo-200 p-1 w-full h-8 rounded-lg"
-              placeholder="Nhập tên khoa mới . . . "
-            />
-          </td>
-          <td className="p-2 pt-3 bg-transparent pl-12 border-r relative  flex justify-center">
-            <img
+          {(router.pathname === "/admin/general/courses" && (
+            <td className="p-2 text-left">
+              <input
+                type="text"
+                className="border border-indigo-200 p-1 w-full h-8 rounded-lg"
+                placeholder="Nhập tên môn mới . . . "
+              />
+            </td>
+          )) || (
+            <td className="p-2 text-left grid grid-cols-2 gap-4">
+              <select className="border border-indigo-200 p-1 w-3/4 h-8 rounded-lg">
+                <option value="" disabled selected>
+                  Chọn Khoa . . .{" "}
+                </option>
+                <option value="">Toan-Tin hoc</option>
+              </select>
+              <select className="border border-indigo-200 p-1 w-3/4 h-8 rounded-lg">
+                <option value="" disabled selected>
+                  Chọn Môn học . . .
+                </option>
+                <option value="">Dai so tuyen tinh</option>
+              </select>
+            </td>
+          )}
+          <td className="p-2 pt-3 bg-transparent pl-12 border-r relative ">
+            <Image
               src="/icons/adminpage/check.svg"
               height={24}
               width={24}
@@ -53,25 +72,7 @@ function CourseTable(props) {
           <td className="p-2  ">
             <input type="checkbox" />
           </td>
-          <td className="p-2  text-center ">
-            {(collapse && (
-              <img
-                src="/icons/adminpage/collapse_active.svg"
-                height={28}
-                width={28}
-                className="cursor-pointer"
-                onClick={clickcollapse}
-              />
-            )) || (
-              <img
-                src="/icons/adminpage/collapse.svg"
-                height={28}
-                width={28}
-                className="cursor-pointer"
-                onClick={clickcollapse}
-              />
-            )}
-          </td>
+          <td className="p-2  text-center "></td>
           <td className="p-2 border-r border-transparent text-left text-base leading-6 font-normal">
             Khoa Công nghệ thông tin
           </td>
@@ -98,10 +99,7 @@ function CourseTable(props) {
           </td>
         </tr>
         <tr className="bg-gray-50 text-left  ">
-          <td
-            className="p-2 pl-8 bg-white Table Footer rounded-b-2xl "
-            colSpan={4}
-          >
+          <td className="p-2 pl-8 bg-white Table Footer  " colSpan={4}>
             Tổng cộng{" "}
           </td>
         </tr>
@@ -110,4 +108,4 @@ function CourseTable(props) {
   );
 }
 
-export default CourseTable;
+export default FacultyTable;

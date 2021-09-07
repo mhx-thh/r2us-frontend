@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 
 import AdminLayout from "components/layout/AdminLayout";
-import CourseTable from "components/adminPage/CourseTable";
+import FacultyTable from "components/adminPage/FacultyTable";
 import { selectUser } from "redux/userSlice";
 import { useAppSelector } from "redux/hooks";
 
@@ -15,7 +15,7 @@ const AdminPage: FC = () => {
   return (
     <AdminLayout>
       <div className="mb-24 ml-12">
-        <CourseTable />
+        <FacultyTable />
       </div>
     </AdminLayout>
   );
