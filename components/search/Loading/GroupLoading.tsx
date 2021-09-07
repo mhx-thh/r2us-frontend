@@ -18,7 +18,6 @@ function GroupLoading() {
           <div className="h-4 rounded-sm bg-gray-200 animate-pulse"></div>
           <div className="col-span-3 h-4 rounded-sm bg-gray-200 animate-pulse"></div>
           <div className="col-span-2 h-4 rounded-sm bg-gray-200 animate-pulse"></div>
-          {/* <div className="h-4 rounded-sm bg-gray-200 animate-pulse"></div> */}
         </div>
       </div>
     </div>

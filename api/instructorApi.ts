@@ -1,7 +1,11 @@
-import { apiV1, config, get } from "api/generic";
+import { apiV1, config, delele, get, post } from "api/generic";
 
 const InstructorAPI = {
   get: function () {
+    const url = `${apiV1}/academic/intructors`;
+    return get(url, "");
+  },
+  getAll() {
     const url = `${apiV1}/academic/intructors`;
     return get(url, "");
   },
@@ -12,6 +16,14 @@ const InstructorAPI = {
   getInstructors: function () {
     const url = `${apiV1}/academic/intructors`;
     return get(url, "");
+  },
+  postInstructor: function (data: any, token: string) {
+    const url = `${apiV1}/academic/intructors/create`;
+    return post(url, data, token);
+  },
+  deleteInstructor: function (id: string, token: string) {
+    const url = `${apiV1}/academic/intructors/delete/${id}`;
+    return delele(url, token);
   },
 };
 

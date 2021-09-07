@@ -1,4 +1,4 @@
-import { apiV1, config, get, post } from "api/generic";
+import { apiV1, config, delele, get, post } from "api/generic";
 
 const facultyApi = {
   getAll() {
@@ -14,6 +14,14 @@ const facultyApi = {
   add(data) {
     const url = "";
     return post(url, data, "");
+  },
+  postFaculty: function (data: any, token: string) {
+    const url = `${apiV1}/academic/faculties/create`;
+    return post(url, data, token);
+  },
+  deleteFaculty: function (id: string, token: string) {
+    const url = `${apiV1}/academic/faculties/delete/${id}`;
+    return delele(url, token);
   },
 };
 

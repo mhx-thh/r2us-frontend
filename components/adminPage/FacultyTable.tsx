@@ -1,15 +1,71 @@
-import React, { useState } from "react";
+import facultyApi from "api/facultyApi";
+import React, { useEffect, useState } from "react";
 import CourseTable from "./CourseTable";
+import FacultyRow from "./facultyRow";
+import { selectUser } from "redux/userSlice";
+import { useAppSelector } from "redux/hooks";
+import Threedots from "./Threedots";
 
+// interface Props {
+//   getThreedots: any;
+//   getCollapse: any;
+// }
+type Api = {
+  facultyName: string;
+};
 function FacultyTable(props) {
   const [collapse, setCollapse] = useState(false);
   const [threedots, setThreedots] = useState(false);
+  const [reloading, setReloading] = useState(0);
+  const token = useAppSelector(selectUser);
+  const initCreate: Api = {
+    facultyName: "",
+  };
+
+  const [create, setCreate] = useState<Api>(initCreate);
+
   const clickcollapse = () => {
     setCollapse(!collapse);
+    // getThreedots(threedots);
   };
   const clickthreedots = () => {
     setThreedots(!threedots);
+    // getCollapse(collapse);
   };
+
+  const handleChange = (e) => {
+    const val = e.target.value;
+    setCreate({ ...create, facultyName: e.target.value });
+  };
+  const hanldeSubmit = (e) => {
+    e.preventDefault();
+    create.facultyName !== "" && facultyApi.postFaculty(create, token);
+    const newre = reloading + 1;
+    setReloading(newre);
+  };
+  const handleReloadingForDelete = (e) => {
+    const newre = reloading + 2;
+    setReloading(newre);
+  };
+  useEffect(() => {
+    console.log(create);
+  }, [create]);
+
+  const [facultylist, setFacultylist] = useState([]);
+  useEffect(() => {
+    async function fetchFacultyList() {
+      try {
+        const res = await facultyApi.getAll();
+        const data = res?.data?.data?.result;
+        setFacultylist(data);
+        console.log("data", data);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    fetchFacultyList();
+  }, [reloading]);
+
   return (
     <table className=" w-11/12 p-2 border">
       <thead className="">
@@ -37,68 +93,33 @@ function FacultyTable(props) {
           <td className="p-2 text-left">
             <input
               type="text"
+              onChange={handleChange}
               className="border border-indigo-200 p-1 w-full h-8 rounded-lg"
               placeholder="Nhập tên khoa mới . . . "
             />
           </td>
+
           <td className="p-2 pt-3 bg-transparent pl-12 border-r relative  flex justify-center">
-            <img
-              src="/icons/adminpage/check.svg"
-              height={24}
-              width={24}
-              className="cursor-pointer"
-            />
+            <button type="submit" onClick={hanldeSubmit}>
+              <img
+                src="/icons/adminpage/check.svg"
+                height={24}
+                width={24}
+                className="cursor-pointer"
+              />
+            </button>
           </td>
         </tr>
-        <tr className="bg-white text-center border-b border-indigo-300 text-sm ">
-          <td className="p-2  ">
-            <input type="checkbox" />
-          </td>
-          <td className="p-2  text-center ">
-            {(collapse && (
-              <img
-                src="/icons/adminpage/collapse_active.svg"
-                height={28}
-                width={28}
-                className="cursor-pointer"
-                onClick={clickcollapse}
-              />
-            )) || (
-              <img
-                src="/icons/adminpage/collapse.svg"
-                height={28}
-                width={28}
-                className="cursor-pointer"
-                onClick={clickcollapse}
-              />
-            )}
-          </td>
-          <td className="p-2 border-r border-transparent text-left text-base leading-6 font-normal">
-            Khoa Công nghệ thông tin
-          </td>
-          <td className="p-2 pt-3 bg-transparent pl-12 border-r relative  flex justify-center">
-            <img
-              src="/icons/adminpage/threedots.svg"
-              height={20}
-              width={20}
-              className="cursor-pointer text-center"
-              onClick={clickthreedots}
-            />
-            {threedots && (
-              <div className="absolute flex items-center px-3 top-4 left-3 border border-indigo-300 rounded-2xl w-28 h-16 bg-white">
-                <ul className="w-full">
-                  <li className="mb-1 hover:bg-indigo-50 rounded-lg cursor-pointer">
-                    Sửa
-                  </li>
-                  <li className="mb-1 hover:bg-indigo-50 rounded-lg cursor-pointer">
-                    Xóa
-                  </li>
-                </ul>
-              </div>
-            )}
-          </td>
-        </tr>
-        {collapse && (
+        {/* // Khoa công nghệ thông tin */}
+        {facultylist.map((data, index) => (
+          <FacultyRow
+            key={index}
+            faculty={data}
+            setReloading={handleReloadingForDelete}
+          />
+        ))}
+
+        {/* {collapse && (
           <tr className="bg-white">
             <td></td>
             <td className="" colSpan={3}>
@@ -113,7 +134,7 @@ function FacultyTable(props) {
           >
             Tổng cộng{" "}
           </td>
-        </tr>
+        </tr> */}
       </tbody>
     </table>
   );
