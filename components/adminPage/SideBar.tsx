@@ -10,6 +10,24 @@ export default function Sidebar() {
   const [collapseShow, setCollapseShow] = React.useState("hidden");
   const router = useRouter();
   const path = router.pathname;
+  const clickCourse = () => {
+    router.push("/admin/general/courses");
+  };
+  const clickInstructor = () => {
+    router.push("/admin/general/instructor");
+  };
+  const clickAcademic = () => {
+    router.push("/admin/general/academic");
+  };
+  const clickGroup = () => {
+    router.push("/admin/group/group");
+  };
+  const clickResource = () => {
+    router.push("/admin/group/resource");
+  };
+  const clickReview = () => {
+    router.push("/admin/group/review");
+  };
   return (
     <>
       <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-80 z-10 py-4 px-6">
@@ -163,68 +181,62 @@ export default function Sidebar() {
                 </a>
               </Link>
               <ul className="text-lg leading-7 font-normal ml-2 ">
-                <li className="flex p-0 mb-1">
-                  <a href="admin/general/course">
-                    <button className="flex p-0">
-                      {(router.pathname === "admin/general/course" && (
-                        <img
-                          src="/icons/adminpage/polygon.svg"
-                          height={15}
-                          width={15}
-                          className="ml-4"
-                        />
-                      )) || <div className="ml-8"></div>}
+                <li className="flex p-0 mb-2">
+                  <button className="flex p-0" onClick={clickCourse}>
+                    {(router.pathname === "/admin/general/courses" && (
                       <img
-                        src="/icons/adminpage/course.svg"
-                        height={24}
-                        width={24}
-                        className="ml-4 mr-2"
+                        src="/icons/adminpage/polygon.svg"
+                        height={15}
+                        width={15}
+                        className="ml-8 pt-1"
                       />
-                      Môn học
-                    </button>
-                  </a>
+                    )) || <div className="ml-12"></div>}
+                    <img
+                      src="/icons/adminpage/course.svg"
+                      height={24}
+                      width={24}
+                      className="ml-4 mr-2"
+                    />
+                    Môn học
+                  </button>
                 </li>
-                <li className="flex p-0 mb-1">
-                  <a href="admin/general/instructor">
-                    <button className="flex p-0">
-                      {(router.pathname === "admin/general/instructor" && (
-                        <img
-                          src="/icons/adminpage/polygon.svg"
-                          height={15}
-                          width={15}
-                          className="ml-4"
-                        />
-                      )) || <div className="ml-8"></div>}
+                <li className="flex p-0 mb-2">
+                  <button className="flex p-0" onClick={clickInstructor}>
+                    {(router.pathname === "/admin/general/instructor" && (
                       <img
-                        src="/icons/adminpage/instructor.svg"
-                        height={24}
-                        width={24}
-                        className="ml-4 mr-2"
+                        src="/icons/adminpage/polygon.svg"
+                        height={15}
+                        width={15}
+                        className="ml-8 pt-1"
                       />
-                      Giáo viên
-                    </button>
-                  </a>
+                    )) || <div className="ml-12"></div>}
+                    <img
+                      src="/icons/adminpage/instructor.svg"
+                      height={24}
+                      width={24}
+                      className="ml-4 mr-2"
+                    />
+                    Giáo viên
+                  </button>
                 </li>
-                <li className="flex p-0 mb-1">
-                  <a href="admin/general/academic">
-                    <button className="flex p-0">
-                      {(router.pathname === "admin/general/academic" && (
-                        <img
-                          src="/icons/adminpage/polygon.svg"
-                          height={15}
-                          width={15}
-                          className="ml-4"
-                        />
-                      )) || <div className="ml-8"></div>}
+                <li className="flex p-0 mb-2">
+                  <button className="flex p-0" onClick={clickAcademic}>
+                    {(router.pathname === "/admin/general/academic" && (
                       <img
-                        src="/icons/adminpage/academic.svg"
-                        height={24}
-                        width={24}
-                        className="ml-4 mr-2"
+                        src="/icons/adminpage/polygon.svg"
+                        height={15}
+                        width={15}
+                        className="ml-8 pt-1"
                       />
-                      Năm học
-                    </button>
-                  </a>
+                    )) || <div className="ml-12"></div>}
+                    <img
+                      src="/icons/adminpage/academic.svg"
+                      height={24}
+                      width={24}
+                      className="ml-4 mr-2"
+                    />
+                    Năm học
+                  </button>
                 </li>
               </ul>
             </div>
@@ -269,68 +281,62 @@ export default function Sidebar() {
                 </a>
               </Link>
               <ul className="text-lg leading-7 font-normal ml-2 ">
-                <li className="flex p-0 mb-1">
-                  <a href="admin/group/group">
-                    <button className="flex p-0">
-                      {(router.pathname === "admin/group/group" && (
-                        <img
-                          src="/icons/adminpage/polygon.svg"
-                          height={15}
-                          width={15}
-                          className="ml-4"
-                        />
-                      )) || <div className="ml-8"></div>}
+                <li className="flex p-0 mb-2">
+                  <button className="flex p-0" onClick={clickGroup}>
+                    {(router.pathname === "/admin/group/group" && (
                       <img
-                        src="/icons/adminpage/groupChild.svg"
-                        height={24}
-                        width={24}
-                        className="ml-4 mr-2"
+                        src="/icons/adminpage/polygon.svg"
+                        height={15}
+                        width={15}
+                        className="ml-8 pt-1"
                       />
-                      Nhóm lớp
-                    </button>
-                  </a>
+                    )) || <div className="ml-12"></div>}
+                    <img
+                      src="/icons/adminpage/groupChild.svg"
+                      height={24}
+                      width={24}
+                      className="ml-4 mr-2"
+                    />
+                    Nhóm lớp
+                  </button>
                 </li>
-                <li className="flex p-0 mb-1">
-                  <a href="admin/group/resource">
-                    <button className="flex p-0">
-                      {(router.pathname === "admin/group/resource" && (
-                        <img
-                          src="/icons/adminpage/polygon.svg"
-                          height={15}
-                          width={15}
-                          className="ml-4"
-                        />
-                      )) || <div className="ml-8"></div>}
+                <li className="flex p-0 mb-2" onClick={clickResource}>
+                  <button className="flex p-0">
+                    {(router.pathname === "/admin/group/resource" && (
                       <img
-                        src="/icons/adminpage/resource.svg"
-                        height={24}
-                        width={24}
-                        className="ml-4 mr-2"
+                        src="/icons/adminpage/polygon.svg"
+                        height={15}
+                        width={15}
+                        className="ml-8 pt-1"
                       />
-                      Tài liệu
-                    </button>
-                  </a>
+                    )) || <div className="ml-12"></div>}
+                    <img
+                      src="/icons/adminpage/resource.svg"
+                      height={24}
+                      width={24}
+                      className="ml-4 mr-2"
+                    />
+                    Tài liệu
+                  </button>
                 </li>
-                <li className="flex p-0 mb-1">
-                  <a href="admin/group/review">
-                    <button className="flex p-0">
-                      {(router.pathname === "admin/group/review" && (
-                        <img
-                          src="/icons/adminpage/polygon.svg"
-                          height={15}
-                          width={15}
-                          className="ml-4"
-                        />
-                      )) || <div className="ml-8"></div>}
+                <li className="flex p-0 mb-2">
+                  <button className="flex p-0" onClick={clickReview}>
+                    {(router.pathname === "/admin/group/review" && (
                       <img
-                        src="/icons/adminpage/review.svg"
-                        height={24}
-                        width={24}
-                        className="ml-4 mr-2"
+                        src="/icons/adminpage/polygon.svg"
+                        height={15}
+                        width={15}
+                        className="ml-8 pt-1"
                       />
-                      Cảm nhận
-                    </button>
-                  </a>
+                    )) || <div className="ml-12"></div>}
+                    <img
+                      src="/icons/adminpage/review.svg"
+                      height={24}
+                      width={24}
+                      className="ml-4 mr-2"
+                    />
+                    Cảm nhận
+                  </button>
                 </li>
               </ul>
             </div>
