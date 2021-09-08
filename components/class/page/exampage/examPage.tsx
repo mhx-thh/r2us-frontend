@@ -12,7 +12,6 @@ import GroupAPI from "api/groupAPI";
 
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
-import CreateResource from "components/Resource/ResourceCreateModal";
 
 type ExamData = {
   exam: ResourceType;
@@ -20,13 +19,25 @@ type ExamData = {
 };
 
 type AppProps = {
-  exam: Array<ResourceType>;
   role: string;
   id: Id;
 };
 
 const ExamPage = function (props: AppProps) {
-  const [examArray, setExamArray] = useState(props.exam);
+  const [examArray, setExamArray] = useState([]);
+  useEffect(() => {
+    async function fetchResources() {
+      try {
+        const res = await GroupAPI.getResources();
+        const data = res?.data?.data?.result;
+        setExamArray(data);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    fetchResources();
+  }, []);
+
   const [flag, setFlag] = useState(false);
 
   const token = useAppSelector(selectToken);
@@ -151,28 +162,33 @@ const ExamPage = function (props: AppProps) {
           )}
         </div>
 
-        {/* Request */}
-        <div className={style.prebox}>
-          <div className={style.box}>
-            <div className={style.box__text}>Yêu cầu</div>
-          </div>
-        </div>
+        {/* Check role */}
+        {props.role === "provider" && (
+          <div>
+            {/* Request */}
+            <div className={style.prebox}>
+              <div className={style.box}>
+                <div className={style.box__text}>Yêu cầu</div>
+              </div>
+            </div>
 
-        {/* Request Resource */}
-        <div className={style.documentsection}>
-          {examArray.map((data) =>
-            data.classId._id === props.id.classId &&
-            data.classId.courseId._id === props.id.courseId &&
-            data.classId.instructorId.id === props.id.instructorId &&
-            data.classId.academicId._id === props.id.academicId &&
-            data.resourceType === "Examination Paper" &&
-            data.status === "pending" ? (
-              <Exam key={data.resourceName} exam={data} role={props.role} />
-            ) : (
-              <div key={data._id}></div>
-            )
-          )}
-        </div>
+            {/* Request Resource */}
+            <div className={style.documentsection}>
+              {examArray.map((data) =>
+                data.classId._id === props.id.classId &&
+                data.classId.courseId._id === props.id.courseId &&
+                data.classId.instructorId.id === props.id.instructorId &&
+                data.classId.academicId._id === props.id.academicId &&
+                data.resourceType === "Examination Paper" &&
+                data.status === "pending" ? (
+                  <Exam key={data.resourceName} exam={data} role={props.role} />
+                ) : (
+                  <div key={data._id}></div>
+                )
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

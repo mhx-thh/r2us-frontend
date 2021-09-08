@@ -69,7 +69,7 @@ const Item = function (props: propApi) {
   } else {
     return (
       <LayoutClass initTitle={props.title} role={role}>
-        <MemberPage members={members} />
+        <MemberPage members={members} role={role} />
       </LayoutClass>
     );
   }

@@ -5,6 +5,7 @@ import style from "./style.module.css";
 
 type AppProps = {
   members: Array<memberType>;
+  role: string;
 };
 
 const MemberPage = function (props: AppProps) {
@@ -21,13 +22,16 @@ const MemberPage = function (props: AppProps) {
               />
             </div>
           </div>
-          <div className="pl-4 pt-8">
-            <MemberSection
-              title="Yêu cầu"
-              role="member"
-              members={props.members}
-            />
-          </div>
+          {/* Check role */}
+          {props.role === "provider" && (
+            <div className="pl-4 pt-8">
+              <MemberSection
+                title="Yêu cầu"
+                role="member"
+                members={props.members}
+              />
+            </div>
+          )}
         </div>
         <div className={style.grid_right}>
           <MemberSection

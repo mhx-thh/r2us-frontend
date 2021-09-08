@@ -150,28 +150,37 @@ const OutlinePage = function (props: AppProps) {
           )}
         </div>
 
-        {/* Request */}
-        <div className={style.prebox}>
-          <div className={style.box}>
-            <div className={style.box__text}>Yêu cầu</div>
-          </div>
-        </div>
+        {/* Check role */}
+        {props.role === "provider" && (
+          <div>
+            {/* Request */}
+            <div className={style.prebox}>
+              <div className={style.box}>
+                <div className={style.box__text}>Yêu cầu</div>
+              </div>
+            </div>
 
-        {/* Request Resource */}
-        <div className={style.documentsection}>
-          {outlineArray.map((data) =>
-            data.classId._id === props.id.classId &&
-            data.classId.courseId._id === props.id.courseId &&
-            data.classId.instructorId.id === props.id.instructorId &&
-            data.classId.academicId._id === props.id.academicId &&
-            data.resourceType === "Review Paper" &&
-            data.status === "pending" ? (
-              <Outline key={data._id} outlineData={data} role={props.role} />
-            ) : (
-              <div key={data._id}></div>
-            )
-          )}
-        </div>
+            {/* Request Resource */}
+            <div className={style.documentsection}>
+              {outlineArray.map((data) =>
+                data.classId._id === props.id.classId &&
+                data.classId.courseId._id === props.id.courseId &&
+                data.classId.instructorId.id === props.id.instructorId &&
+                data.classId.academicId._id === props.id.academicId &&
+                data.resourceType === "Review Paper" &&
+                data.status === "pending" ? (
+                  <Outline
+                    key={data._id}
+                    outlineData={data}
+                    role={props.role}
+                  />
+                ) : (
+                  <div key={data._id}></div>
+                )
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
