@@ -19,24 +19,13 @@ type ExamData = {
 };
 
 type AppProps = {
+  exams: Array<ResourceType>;
   role: string;
   id: Id;
 };
 
 const ExamPage = function (props: AppProps) {
-  const [examArray, setExamArray] = useState([]);
-  useEffect(() => {
-    async function fetchResources() {
-      try {
-        const res = await GroupAPI.getResources();
-        const data = res?.data?.data?.result;
-        setExamArray(data);
-      } catch (error) {
-        console.log(error.message);
-      }
-    }
-    fetchResources();
-  }, []);
+  const [examArray, setExamArray] = useState(props.exams);
 
   const [flag, setFlag] = useState(false);
 
@@ -53,7 +42,7 @@ const ExamPage = function (props: AppProps) {
       }
     }
     fetchResources();
-  }, [flag]);
+  }, [flag, props.exams]);
 
   // Exam functions
   const Exam = function (props: ExamData) {

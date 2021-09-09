@@ -41,7 +41,7 @@ const OutlinePage = function (props: AppProps) {
       }
     }
     fetchResources();
-  }, [flag]);
+  }, [flag, props.outline]);
 
   // Outline Item
   const Outline = function (props: outlineType) {

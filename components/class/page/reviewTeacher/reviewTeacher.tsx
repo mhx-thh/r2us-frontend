@@ -41,7 +41,7 @@ const ReviewTeacher = function (props: AppProps) {
       }
     }
     fetchReviews();
-  }, [flag]);
+  }, [flag, props.review]);
 
   // Review Item
   const Review = function (props: Review) {

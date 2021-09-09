@@ -41,7 +41,7 @@ const DocumentPage = function (props: AppProps) {
       }
     }
     fetchResources();
-  }, [flag]);
+  }, [flag, props.document]);
 
   // Document function
   const Document = function (props: documentType) {

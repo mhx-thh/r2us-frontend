@@ -41,7 +41,7 @@ const ReviewCourse = function (props: AppProps) {
       }
     }
     fetchResources();
-  }, [flag]);
+  }, [flag, props.review]);
 
   // Review Component
   const Review = function (props: Review) {

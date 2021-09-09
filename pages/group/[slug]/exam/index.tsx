@@ -16,12 +16,13 @@ type propApi = {
   status: string;
   title: titleGroup;
   class: classInfo;
+  exams: Array<ResourceType>;
 };
 
 export const getServerSideProps: GetServerSideProps = async (params) => {
   const temp = params.params.slug.toString();
   const res = await GroupAPI.getGroup(temp);
-
+  const moreRes = await GroupAPI.getResources();
   params.res.setHeader(
     "Cache-control",
     "public, s-maxage=10, stale-while-revalidate=10"
@@ -32,6 +33,7 @@ export const getServerSideProps: GetServerSideProps = async (params) => {
       status: res?.data?.status,
       title: res?.data?.data,
       class: res?.data?.data,
+      exams: moreRes?.data?.data?.result,
     },
   };
 };
@@ -66,7 +68,7 @@ const Item = function (props: propApi) {
   } else {
     return (
       <LayoutClass initTitle={props.title} role={role}>
-        <ExamPage id={Id} role={role} />
+        <ExamPage exams={props.exams} id={Id} role={role} />
       </LayoutClass>
     );
   }
