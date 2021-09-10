@@ -137,7 +137,6 @@ const CreateReview = function ({ classgroup, data }: any) {
   };
 
   const clickSend = (ev) => {
-    ev.preventDefault();
     console.log(create);
     async function postReview() {
       setCreateStatus("loading");
@@ -148,6 +147,7 @@ const CreateReview = function ({ classgroup, data }: any) {
         Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thành công." });
       } else {
         Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thất bại." });
+        ev.preventDefault();
       }
     }
 
