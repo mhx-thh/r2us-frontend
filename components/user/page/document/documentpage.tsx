@@ -35,6 +35,22 @@ const DocumentPage = function (props: any) {
     }
   }, [status]);
 
+  const [myClass, setMyClass] = useState([]);
+  useEffect(() => {
+    async function fetchMyClass() {
+      try {
+        const res = await userApi.getMyClass(token);
+        const myClass = res?.data?.data?.result;
+        setMyClass(myClass);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    if (status === "logined") {
+      fetchMyClass();
+    }
+  }, [status]);
+
   return (
     <div className={style.page}>
       <div>
@@ -63,7 +79,7 @@ const DocumentPage = function (props: any) {
 
         {create === true && (
           <PopUp closepopup={setCreate}>
-            <CreateResource data={props.props} />
+            <CreateResource data={props.props} classgroup={data} />
           </PopUp>
         )}
 

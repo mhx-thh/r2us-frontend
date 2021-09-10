@@ -35,6 +35,22 @@ const ReviewPage = function (props: any) {
     }
   }, [status]);
 
+  const [myClass, setMyClass] = useState([]);
+  useEffect(() => {
+    async function fetchMyClass() {
+      try {
+        const res = await userApi.getMyClass(token);
+        const myClass = res?.data?.data?.result;
+        setMyClass(myClass);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    if (status === "logined") {
+      fetchMyClass();
+    }
+  }, [status]);
+
   return (
     <div className={style.page}>
       <div>
@@ -63,7 +79,7 @@ const ReviewPage = function (props: any) {
 
         {create === true && (
           <PopUp closepopup={setCreate}>
-            <CreateReview data={props.props} />
+            <CreateReview data={props.props} classgroup={myClass} />
           </PopUp>
         )}
 

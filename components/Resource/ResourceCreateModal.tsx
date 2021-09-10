@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import GroupAPI from "api/groupAPI";
 import { apiV1, get } from "api/generic";
+
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 
@@ -14,17 +15,28 @@ type Api = {
 };
 
 type classStatus = "loading" | "done" | "gotNone";
+type enrollStatus = "enrolled" | "notEnrolled";
 
-const CreateResource = function ({ data }: any) {
+const CreateResource = function ({ data, classgroup }: any) {
   const token = useAppSelector(selectToken);
 
   const [schoolyear, setSchoolyear] = useState("");
   const [facultyId, setFacultyId] = useState("");
   const [courseId, setCourseId] = useState("");
   const [instructorId, setInstructorId] = useState("");
-  const [group, setGroup] = useState([]);
 
+  const [className, setClassName] = useState("");
   const [classStatus, setClassStatus] = useState<classStatus>("loading");
+  const [group, setGroup] = useState([]);
+  const [enrollStatus, setEnrollStatus] = useState<enrollStatus>("enrolled");
+
+  const handleClassName = () => {
+    setClassName(group[0].className);
+    setCreate({
+      ...create,
+      classId: group[0]._id,
+    });
+  };
 
   const initCreate: Api = {
     resourceType: "Resources",
@@ -43,19 +55,35 @@ const CreateResource = function ({ data }: any) {
       setGroup(data.data.data.result);
     }
 
+    setEnrollStatus("enrolled");
+    setClassStatus("loading");
+
     if (schoolyear !== "" && courseId !== "" && instructorId !== "") {
       fetchGroup({
         courseId: courseId,
         instructorId: instructorId,
         academicId: schoolyear,
       });
-      console.log(group);
     }
   }, [schoolyear, courseId, instructorId]);
 
   useEffect(() => {
-    console.log(create, token);
-  }, [create]);
+    if (!(schoolyear !== "" && courseId !== "" && instructorId !== "")) {
+      setClassStatus("loading");
+    } else if (group.length == 0) {
+      setClassStatus("gotNone");
+    } else {
+      handleClassName();
+      setClassStatus("done");
+      setEnrollStatus("notEnrolled");
+      classgroup.map((val) => {
+        console.log(val, " ", group[0]);
+        if (val.classId._id === group[0]._id) {
+          setEnrollStatus("enrolled");
+        }
+      });
+    }
+  }, [group]);
 
   const handleTypeResource = (e) => {
     setCreate({
@@ -104,17 +132,6 @@ const CreateResource = function ({ data }: any) {
     setInstructorId("");
   };
 
-  const handleClassName = (e) => {
-    group.map(
-      (val) =>
-        val.className === e.target.value &&
-        setCreate({
-          ...create,
-          classId: val._id,
-        })
-    );
-  };
-
   const clickReset = () => {
     setFacultyId("");
     setCourseId("");
@@ -133,9 +150,9 @@ const CreateResource = function ({ data }: any) {
     ) {
       try {
         const res = GroupAPI.postResource(create, token);
+        console.log("Response: ", res);
       } catch (err) {
-        console.log("Error123");
-        console.log(err);
+        console.log("Res: ", err);
       }
     }
   };
@@ -453,79 +470,91 @@ const CreateResource = function ({ data }: any) {
               )}
             </select>
           </div>
-          <div className="flex relative left-16">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+          {/* Class has not opened yet */}
+          <div className={classStatus === "gotNone" ? "visible" : "invisible"}>
+            <div className="flex relative left-16">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M10.8751 16.875C10.8751 17.1734 10.9936 17.4595 11.2046 17.6705C11.4156 17.8815 11.7017 18 12.0001 18C12.2985 18 12.5846 17.8815 12.7956 17.6705C13.0066 17.4595 13.1251 17.1734 13.1251 16.875C13.1251 16.5766 13.0066 16.2905 12.7956 16.0795C12.5846 15.8685 12.2985 15.75 12.0001 15.75C11.7017 15.75 11.4156 15.8685 11.2046 16.0795C10.9936 16.2905 10.8751 16.5766 10.8751 16.875ZM11.2501 9.75V14.0625C11.2501 14.1656 11.3345 14.25 11.4376 14.25H12.5626C12.6657 14.25 12.7501 14.1656 12.7501 14.0625V9.75C12.7501 9.64687 12.6657 9.5625 12.5626 9.5625H11.4376C11.3345 9.5625 11.2501 9.64687 11.2501 9.75ZM22.3993 20.0625L12.6493 3.1875C12.504 2.93672 12.2532 2.8125 12.0001 2.8125C11.747 2.8125 11.4939 2.93672 11.3509 3.1875L1.60089 20.0625C1.31261 20.5641 1.67354 21.1875 2.25011 21.1875H21.7501C22.3267 21.1875 22.6876 20.5641 22.3993 20.0625ZM4.03604 19.4086L12.0001 5.62266L19.9642 19.4086H4.03604Z"
+                  fill="black"
+                />
+              </svg>
+              <p className="text-xs leading-none font-normal w-44 tracking-normal px-2">
+                Nhóm chưa được mở, bạn có thể mở nhóm.
+              </p>
+            </div>
+            <a
+              className="relative left-20 mx-2 text-sm leading-none font-normal w-48 tracking-normal px-2 font-bold "
+              href={`${process.env.NEXT_PUBLIC_WEB_URL}/user/mygroup`}
             >
-              <path
-                d="M10.8751 16.875C10.8751 17.1734 10.9936 17.4595 11.2046 17.6705C11.4156 17.8815 11.7017 18 12.0001 18C12.2985 18 12.5846 17.8815 12.7956 17.6705C13.0066 17.4595 13.1251 17.1734 13.1251 16.875C13.1251 16.5766 13.0066 16.2905 12.7956 16.0795C12.5846 15.8685 12.2985 15.75 12.0001 15.75C11.7017 15.75 11.4156 15.8685 11.2046 16.0795C10.9936 16.2905 10.8751 16.5766 10.8751 16.875ZM11.2501 9.75V14.0625C11.2501 14.1656 11.3345 14.25 11.4376 14.25H12.5626C12.6657 14.25 12.7501 14.1656 12.7501 14.0625V9.75C12.7501 9.64687 12.6657 9.5625 12.5626 9.5625H11.4376C11.3345 9.5625 11.2501 9.64687 11.2501 9.75ZM22.3993 20.0625L12.6493 3.1875C12.504 2.93672 12.2532 2.8125 12.0001 2.8125C11.747 2.8125 11.4939 2.93672 11.3509 3.1875L1.60089 20.0625C1.31261 20.5641 1.67354 21.1875 2.25011 21.1875H21.7501C22.3267 21.1875 22.6876 20.5641 22.3993 20.0625ZM4.03604 19.4086L12.0001 5.62266L19.9642 19.4086H4.03604Z"
-                fill="black"
-              />
-            </svg>
-            <p className="text-xs leading-none font-normal w-44 tracking-normal px-2">
-              Nhóm chưa được mở, bạn có thể mở nhóm.
-            </p>
+              Tại đây
+            </a>
           </div>
-          <a
-            className="relative left-20 mx-2 text-sm leading-none font-normal w-48 tracking-normal px-2 font-bold "
-            href="#"
-          >
-            Tại đây
-          </a>
         </div>
         {/* Location */}
         <div className="relative left-48 top-0 mb-4">
-          <div className="flex">
-            <svg
-              className="m-3"
-              width="23"
-              height="24"
-              viewBox="0 0 18 22"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M9 12C10.6569 12 12 10.6569 12 9C12 7.34315 10.6569 6 9 6C7.34315 6 6 7.34315 6 9C6 10.6569 7.34315 12 9 12Z"
-                stroke="#6366F1"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+          {/* Input Classname Field */}
+          <div className={classStatus === "done" ? "visible" : "invisible"}>
+            <div className="flex">
+              <svg
+                className="m-3"
+                width="23"
+                height="24"
+                viewBox="0 0 18 22"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M9 12C10.6569 12 12 10.6569 12 9C12 7.34315 10.6569 6 9 6C7.34315 6 6 7.34315 6 9C6 10.6569 7.34315 12 9 12Z"
+                  stroke="#6366F1"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M9 1C6.87827 1 4.84344 1.84285 3.34315 3.34315C1.84285 4.84344 1 6.87827 1 9C1 10.892 1.402 12.13 2.5 13.5L9 21L15.5 13.5C16.598 12.13 17 10.892 17 9C17 6.87827 16.1571 4.84344 14.6569 3.34315C13.1566 1.84285 11.1217 1 9 1V1Z"
+                  stroke="#6366F1"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <input
+                className="px-2 bg-indigo-50 w-48 rounded-2xl h-10 border border-solid border-indigo-500"
+                disabled
+                value={className}
               />
-              <path
-                d="M9 1C6.87827 1 4.84344 1.84285 3.34315 3.34315C1.84285 4.84344 1 6.87827 1 9C1 10.892 1.402 12.13 2.5 13.5L9 21L15.5 13.5C16.598 12.13 17 10.892 17 9C17 6.87827 16.1571 4.84344 14.6569 3.34315C13.1566 1.84285 11.1217 1 9 1V1Z"
-                stroke="#6366F1"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <input
-              className="px-2 bg-indigo-50 w-48 rounded-2xl h-10 border border-solid border-indigo-500"
-              placeholder="Tài liệu được đăng ở"
-              onChange={handleClassName}
-            />
+            </div>
           </div>
-          <div className="flex relative left-16">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M10.8751 16.875C10.8751 17.1734 10.9936 17.4595 11.2046 17.6705C11.4156 17.8815 11.7017 18 12.0001 18C12.2985 18 12.5846 17.8815 12.7956 17.6705C13.0066 17.4595 13.1251 17.1734 13.1251 16.875C13.1251 16.5766 13.0066 16.2905 12.7956 16.0795C12.5846 15.8685 12.2985 15.75 12.0001 15.75C11.7017 15.75 11.4156 15.8685 11.2046 16.0795C10.9936 16.2905 10.8751 16.5766 10.8751 16.875ZM11.2501 9.75V14.0625C11.2501 14.1656 11.3345 14.25 11.4376 14.25H12.5626C12.6657 14.25 12.7501 14.1656 12.7501 14.0625V9.75C12.7501 9.64687 12.6657 9.5625 12.5626 9.5625H11.4376C11.3345 9.5625 11.2501 9.64687 11.2501 9.75ZM22.3993 20.0625L12.6493 3.1875C12.504 2.93672 12.2532 2.8125 12.0001 2.8125C11.747 2.8125 11.4939 2.93672 11.3509 3.1875L1.60089 20.0625C1.31261 20.5641 1.67354 21.1875 2.25011 21.1875H21.7501C22.3267 21.1875 22.6876 20.5641 22.3993 20.0625ZM4.03604 19.4086L12.0001 5.62266L19.9642 19.4086H4.03604Z"
-                fill="black"
-              />
-            </svg>
-            <p className="text-xs leading-none font-normal w-44 tracking-normal px-2">
-              Bạn chưa tham gia vào nhóm này, khi gửi tài liệu, bạn xác nhận
-              tham gia vào nhóm
-            </p>
+
+          {/* Not enroll in class */}
+          <div
+            className={enrollStatus === "notEnrolled" ? "visible" : "invisible"}
+          >
+            <div className="flex relative left-16">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M10.8751 16.875C10.8751 17.1734 10.9936 17.4595 11.2046 17.6705C11.4156 17.8815 11.7017 18 12.0001 18C12.2985 18 12.5846 17.8815 12.7956 17.6705C13.0066 17.4595 13.1251 17.1734 13.1251 16.875C13.1251 16.5766 13.0066 16.2905 12.7956 16.0795C12.5846 15.8685 12.2985 15.75 12.0001 15.75C11.7017 15.75 11.4156 15.8685 11.2046 16.0795C10.9936 16.2905 10.8751 16.5766 10.8751 16.875ZM11.2501 9.75V14.0625C11.2501 14.1656 11.3345 14.25 11.4376 14.25H12.5626C12.6657 14.25 12.7501 14.1656 12.7501 14.0625V9.75C12.7501 9.64687 12.6657 9.5625 12.5626 9.5625H11.4376C11.3345 9.5625 11.2501 9.64687 11.2501 9.75ZM22.3993 20.0625L12.6493 3.1875C12.504 2.93672 12.2532 2.8125 12.0001 2.8125C11.747 2.8125 11.4939 2.93672 11.3509 3.1875L1.60089 20.0625C1.31261 20.5641 1.67354 21.1875 2.25011 21.1875H21.7501C22.3267 21.1875 22.6876 20.5641 22.3993 20.0625ZM4.03604 19.4086L12.0001 5.62266L19.9642 19.4086H4.03604Z"
+                  fill="black"
+                />
+              </svg>
+              <p className="text-xs leading-none font-normal w-44 tracking-normal px-2">
+                Bạn chưa tham gia vào nhóm này, khi gửi tài liệu, bạn xác nhận
+                tham gia vào nhóm
+              </p>
+            </div>
           </div>
         </div>
 
