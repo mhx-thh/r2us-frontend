@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 import GroupAPI from "api/groupAPI";
 import { apiV1, get } from "api/generic";
@@ -16,6 +17,7 @@ type Api = {
 
 type classStatus = "loading" | "done" | "gotNone";
 type enrollStatus = "enrolled" | "notEnrolled";
+type createStatus = "loading" | "done";
 
 const CreateResource = function ({ data, classgroup }: any) {
   const token = useAppSelector(selectToken);
@@ -29,6 +31,8 @@ const CreateResource = function ({ data, classgroup }: any) {
   const [classStatus, setClassStatus] = useState<classStatus>("loading");
   const [group, setGroup] = useState([]);
   const [enrollStatus, setEnrollStatus] = useState<enrollStatus>("enrolled");
+
+  const [createStatus, setCreateStatus] = useState("done");
 
   const handleClassName = () => {
     setClassName(group[0].className);
@@ -141,19 +145,27 @@ const CreateResource = function ({ data, classgroup }: any) {
     });
   };
 
-  const clickSend = () => {
+  const clickSend = (ev) => {
+    async function postResource() {
+      setCreateStatus("loading");
+      const res = await GroupAPI.postResource(create, token);
+      console.log("Res: ", res);
+      setCreateStatus("done");
+      if (res?.data?.status === "success") {
+        Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thành công." });
+      } else {
+        Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thất bại." });
+        ev.preventDefault();
+      }
+    }
+
     if (
       create.resourceName !== "" &&
       create.resourceLink !== "" &&
       create.resourceDescription !== "" &&
       create.classId !== ""
     ) {
-      try {
-        const res = GroupAPI.postResource(create, token);
-        console.log("Response: ", res);
-      } catch (err) {
-        console.log("Res: ", err);
-      }
+      postResource();
     }
   };
 

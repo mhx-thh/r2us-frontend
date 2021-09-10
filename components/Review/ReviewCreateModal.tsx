@@ -136,33 +136,27 @@ const CreateReview = function ({ classgroup, data }: any) {
     });
   };
 
-  const clickSend = () => {
-    async function postResource() {
-      try {
-        setCreateStatus("loading");
-        const res = await GroupAPI.postResource(create, token);
-        console.log("Res: ", res);
-        setCreateStatus("done");
-        // if (res.data._id !== undefined) {
-        //   Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thành công." });
-        // } else {
-        //   Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thất bại." });
-        // }
-      } catch (error) {
-        console.log("Error in postResource.", error);
+  const clickSend = (ev) => {
+    ev.preventDefault();
+    console.log(create);
+    async function postReview() {
+      setCreateStatus("loading");
+      const res = await GroupAPI.postReview(create, token);
+      console.log("Res: ", res);
+      setCreateStatus("done");
+      if (res?.data?.status === "success") {
+        Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thành công." });
+      } else {
+        Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thất bại." });
       }
     }
+
     if (
       create.reviewTitle !== "" &&
       create.review !== "" &&
-      create.classId !== "" &&
-      createStatus === "done"
+      create.classId !== ""
     ) {
-      try {
-        postResource();
-      } catch (err) {
-        console.log("Error in handleSend: ", err);
-      }
+      postReview();
     }
   };
 
@@ -195,7 +189,6 @@ const CreateReview = function ({ classgroup, data }: any) {
             className="px-2 bg-indigo-50 w-48 rounded-2xl h-10 border border-solid border-indigo-500"
             onChange={handleTypeReview}
           >
-            <option value="">Chọn cảm nhận cho</option>
             <option value="Class">Môn học</option>
             <option value="Instructor">Giáo viên</option>
           </select>
@@ -514,11 +507,7 @@ const CreateReview = function ({ classgroup, data }: any) {
 
           {/* Not enroll in class */}
           <div
-            className={
-              enrollStatus === "notEnrolled" && group[0] != undefined
-                ? "visible"
-                : "invisible"
-            }
+            className={enrollStatus === "notEnrolled" ? "visible" : "invisible"}
           >
             <div className="flex relative left-16">
               <svg
