@@ -50,7 +50,6 @@ const DocumentPage = function (props: any) {
       fetchMyClass();
     }
   }, [status]);
-
   return (
     <div className={style.page}>
       <div>

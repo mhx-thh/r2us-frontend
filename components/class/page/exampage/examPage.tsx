@@ -52,7 +52,7 @@ const ExamPage = function (props: AppProps) {
     };
     return (
       <div className={style.document}>
-        {props.role === "provider" && (
+        {(props.role === "provider" || props.role === "member") && (
           <div>
             <button className={style.document__button} onClick={handleOpen}>
               <img src="/icons/threedot.svg" />
@@ -95,14 +95,10 @@ const ExamPage = function (props: AppProps) {
     };
     return (
       <div ref={ref} className="absolute my-8 -mx-24">
-        <ul className="w-28  h-28 text-base leading-6 font-normal shadow rounded-xl py-1 bg-white">
-          {data.status === "accept" ? (
+        <ul className="w-28 text-base leading-6 font-normal shadow rounded-xl bg-white">
+          {data.status === "pending" && props.role === "provider" && (
             <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 ">
               <button>Duyệt</button>
-            </li>
-          ) : (
-            <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 ">
-              <button>Thêm</button>
             </li>
           )}
           <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 ">
@@ -152,32 +148,32 @@ const ExamPage = function (props: AppProps) {
         </div>
 
         {/* Check role */}
-        {props.role === "provider" && (
-          <div>
-            {/* Request */}
-            <div className={style.prebox}>
-              <div className={style.box}>
-                <div className={style.box__text}>Yêu cầu</div>
-              </div>
-            </div>
-
-            {/* Request Resource */}
-            <div className={style.documentsection}>
-              {examArray.map((data) =>
-                data.classId._id === props.id.classId &&
-                data.classId.courseId._id === props.id.courseId &&
-                data.classId.instructorId.id === props.id.instructorId &&
-                data.classId.academicId._id === props.id.academicId &&
-                data.resourceType === "Examination Paper" &&
-                data.status === "pending" ? (
-                  <Exam key={data.resourceName} exam={data} role={props.role} />
-                ) : (
-                  <div key={data._id}></div>
-                )
-              )}
+        {/* {props.role === "provider" && ( */}
+        <div>
+          {/* Request */}
+          <div className={style.prebox}>
+            <div className={style.box}>
+              <div className={style.box__text}>Yêu cầu</div>
             </div>
           </div>
-        )}
+
+          {/* Request Resource */}
+          <div className={style.documentsection}>
+            {examArray.map((data) =>
+              data.classId._id === props.id.classId &&
+              data.classId.courseId._id === props.id.courseId &&
+              data.classId.instructorId.id === props.id.instructorId &&
+              data.classId.academicId._id === props.id.academicId &&
+              data.resourceType === "Examination Paper" &&
+              data.status === "pending" ? (
+                <Exam key={data.resourceName} exam={data} role={props.role} />
+              ) : (
+                <div key={data._id}></div>
+              )
+            )}
+          </div>
+        </div>
+        {/* )} */}
       </div>
     </div>
   );
