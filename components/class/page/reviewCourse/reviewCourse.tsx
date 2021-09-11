@@ -52,7 +52,7 @@ const ReviewCourse = function (props: AppProps) {
 
     return (
       <div className={style.document}>
-        {props.role === "provider" && (
+        {(props.role === "provider" || props.role === "member") && (
           <div>
             <button className={style.document__button} onClick={handleOpen}>
               <img src="/icons/threedot.svg" />
@@ -93,10 +93,12 @@ const ReviewCourse = function (props: AppProps) {
 
     return (
       <div ref={ref} className="absolute my-8 -mx-24 bg-white">
-        <ul className="w-28  h-28 text-base leading-6 font-normal shadow rounded-xl py-1">
-          <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 ">
-            <button>Duyệt</button>
-          </li>
+        <ul className="w-28 text-base leading-6 font-normal shadow rounded-xl bg-white">
+          {data.status === "pending" && props.role === "provider" && (
+            <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 ">
+              <button>Duyệt</button>
+            </li>
+          )}
           <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 ">
             <button onClick={ClickDelete}>Xóa</button>
           </li>
