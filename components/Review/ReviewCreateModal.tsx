@@ -154,7 +154,8 @@ const CreateReview = function ({ classgroup, data }: any) {
     if (
       create.reviewTitle !== "" &&
       create.review !== "" &&
-      create.classId !== ""
+      create.classId !== "" &&
+      createStatus == "done"
     ) {
       postReview();
     }

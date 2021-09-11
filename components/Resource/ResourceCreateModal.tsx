@@ -32,7 +32,7 @@ const CreateResource = function ({ data, classgroup }: any) {
   const [group, setGroup] = useState([]);
   const [enrollStatus, setEnrollStatus] = useState<enrollStatus>("enrolled");
 
-  const [createStatus, setCreateStatus] = useState("done");
+  const [createStatus, setCreateStatus] = useState<createStatus>("done");
 
   const handleClassName = () => {
     setClassName(group[0].className);
@@ -149,7 +149,6 @@ const CreateResource = function ({ data, classgroup }: any) {
     async function postResource() {
       setCreateStatus("loading");
       const res = await GroupAPI.postResource(create, token);
-      console.log("Res: ", res);
       setCreateStatus("done");
       if (res?.data?.status === "success") {
         Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thành công." });
@@ -163,7 +162,8 @@ const CreateResource = function ({ data, classgroup }: any) {
       create.resourceName !== "" &&
       create.resourceLink !== "" &&
       create.resourceDescription !== "" &&
-      create.classId !== ""
+      create.classId !== "" &&
+      createStatus === "done"
     ) {
       postResource();
     }

@@ -1,12 +1,17 @@
 import React, { useState } from "react";
+import Swal from "sweetalert2";
 
 import GroupAPI from "api/groupAPI";
 
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 
+type createStatus = "loading" | "done";
+
 const GroupCreateModal = function ({ data }: any) {
   const token = useAppSelector(selectToken);
+
+  const [createStatus, setCreateStatus] = useState<createStatus>("done");
 
   const [facultyId, setFacultyId] = useState("");
   const [create, setCreate] = useState({
@@ -51,12 +56,27 @@ const GroupCreateModal = function ({ data }: any) {
   };
 
   const ClickSend = (e) => {
-    e.preventDefault();
-    create.academicId !== "" &&
+    async function postGroup() {
+      setCreateStatus("loading");
+      const res = await GroupAPI.postResource(create, token);
+      setCreateStatus("done");
+      if (res?.data?.status === "success") {
+        Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thành công." });
+      } else {
+        Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thất bại." });
+        e.preventDefault();
+      }
+    }
+
+    if (
+      create.academicId !== "" &&
       create.className !== "" &&
       create.courseId !== "" &&
       create.instructorId !== "" &&
-      GroupAPI.postClass(create, token);
+      createStatus === "done"
+    ) {
+      postGroup();
+    }
   };
 
   return (
