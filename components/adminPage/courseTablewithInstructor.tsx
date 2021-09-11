@@ -4,10 +4,10 @@ import Image from "next/image";
 import courseApi from "api/courseApi";
 
 type AppProps = {
-  faculty: any;
+  instructor: any;
 };
 
-function CourseTable({ faculty }: AppProps) {
+function CourseTablewithInstructor({ instructor }: AppProps) {
   const [collapse, setCollapse] = useState(false);
   const [threedots, setThreedots] = useState(false);
   const clickcollapse = () => {
@@ -18,20 +18,8 @@ function CourseTable({ faculty }: AppProps) {
   };
   const [total, setTotal] = useState(0);
   const [courseList, setCourseList] = useState([]);
-  useEffect(() => {
-    async function fetchCourseList() {
-      try {
-        const res = await courseApi.getCoursetoFaculty(faculty._id);
-        const data = res?.data?.data?.result;
-        setCourseList(data);
-        setTotal(res?.data?.data?.total);
-        console.log("data course", data);
-      } catch (error) {
-        console.log(error.message);
-      }
-    }
-    fetchCourseList();
-  }, []);
+  setCourseList(instructor.courseId);
+
   return (
     <table className=" w-full p-2 border">
       <thead className="">
@@ -164,4 +152,4 @@ function CourseTable({ faculty }: AppProps) {
   );
 }
 
-export default CourseTable;
+export default CourseTablewithInstructor;

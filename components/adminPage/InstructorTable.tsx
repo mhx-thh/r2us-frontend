@@ -18,6 +18,7 @@ function InstructorTable(props) {
   const [threedots, setThreedots] = useState(false);
   const [reloading, setReloading] = useState(0);
   const token = useAppSelector(selectUser);
+  const [total, setTotal] = useState(0);
   const initCreate: Api = {
     instructorName: "",
   };
@@ -57,6 +58,7 @@ function InstructorTable(props) {
       try {
         const res = await instructorApi.getAll();
         const data = res?.data?.data?.result;
+        setTotal(res?.data?.data?.total);
         setinstructorlist(data);
         console.log("data", data);
       } catch (error) {
@@ -126,15 +128,15 @@ function InstructorTable(props) {
               <CourseTable />
             </td>
           </tr>
-        )}
+        )} */}
         <tr className="bg-gray-50 text-left  ">
           <td
             className="p-2 pl-8 bg-white Table Footer rounded-b-2xl "
             colSpan={4}
           >
-            Tổng cộng{" "}
+            Tổng cộng {total}
           </td>
-        </tr> */}
+        </tr>
       </tbody>
     </table>
   );

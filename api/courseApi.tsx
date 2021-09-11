@@ -5,7 +5,7 @@ const courseApi = {
     const url = `/academic/courses/?facultyId=${id}`;
     return get(url, "");
   },
-  getCoursetoFaculty(id) {
+  getCoursetoFaculty(id: string) {
     const url = `${apiV1}/academic/courses?facultyId__eq=${id}`;
     return get(url, "");
   },

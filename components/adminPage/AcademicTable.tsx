@@ -2,7 +2,7 @@ import AcademicAPI from "api/academicApi";
 import React, { useEffect, useState } from "react";
 import CourseTable from "./CourseTable";
 import AcademicRow from "./AcademicRow";
-import { selectUser } from "redux/userSlice";
+import { selectToken, selectUser } from "redux/userSlice";
 import { useAppSelector } from "redux/hooks";
 import Threedots from "./Threedots";
 import academicApi from "api/academicApi";
@@ -19,7 +19,8 @@ function AcademicTable(props) {
   const [collapse, setCollapse] = useState(false);
   const [threedots, setThreedots] = useState(false);
   const [reloading, setReloading] = useState(0);
-  const token = useAppSelector(selectUser);
+  const [total, setTotal] = useState(0);
+  const token = useAppSelector(selectToken);
   const initCreate: Api = {
     schoolyear: "",
     semester: 0,
@@ -42,7 +43,8 @@ function AcademicTable(props) {
     setCreate({ ...create, schoolyear: e.target.value });
   };
   const handleChange = (e) => {
-    setCreate({ ...create, semester: e.target.value });
+    const semes = parseFloat(e.target.value);
+    setCreate({ ...create, semester: semes });
   };
 
   const hanldeSubmit = (e) => {
@@ -68,6 +70,7 @@ function AcademicTable(props) {
       try {
         const res = await academicApi.getSchoolYears();
         const data = res?.data?.data?.result;
+        setTotal(res?.data?.data?.total);
         setacademiclist(data);
         console.log("data", data);
       } catch (error) {
@@ -121,19 +124,6 @@ function AcademicTable(props) {
                 // eslint-disable-next-line react/jsx-key
                 return <option value={value}>{value}</option>;
               })}
-              {/* <select
-            className="block w-48 text-gray-700 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
-            {...register(name)}
-            name={name}
-            onChange={onHandleChange}
-          >
-            <option value="">{placeholder}</option>
-            {options?.map((optionItem) => (
-              <option key={optionItem._id} value={optionItem._id}>
-                {optionItem.label}
-              </option>
-            ))}
-          </select> */}
             </select>
           </td>
 
@@ -164,15 +154,15 @@ function AcademicTable(props) {
               <CourseTable />
             </td>
           </tr>
-        )}
+        )} */}
         <tr className="bg-gray-50 text-left  ">
           <td
             className="p-2 pl-8 bg-white Table Footer rounded-b-2xl "
             colSpan={4}
           >
-            Tổng cộng{" "}
+            Tổng cộng {total}
           </td>
-        </tr> */}
+        </tr>
       </tbody>
     </table>
   );
