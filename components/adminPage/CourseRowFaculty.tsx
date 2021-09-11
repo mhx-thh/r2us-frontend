@@ -4,26 +4,25 @@ import CourseTable from "./CourseTable";
 import Threedots from "./Threedots";
 import { selectUser } from "redux/userSlice";
 import { useAppSelector } from "redux/hooks";
+import courseApi from "api/courseApi";
 type AppProps = {
-  faculty: any;
+  course: any;
   setReloading: any;
 };
 
-function FacultyRow({ faculty, setReloading }: AppProps) {
+function FacultyRow({ course, setReloading }: AppProps) {
   const [collapse, setCollapse] = useState(false);
-  const [nowthreedots, setNowThreedots] = useState(false);
-  const [beforethreedots, setBeforeThreedots] = useState(false);
+  const [threedots, setThreedots] = useState(false);
   const token = useAppSelector(selectUser);
 
   const clickcollapse = () => {
     setCollapse(!collapse);
   };
   const clickthreedots = () => {
-    setNowThreedots(!beforethreedots);
-    setBeforeThreedots(!beforethreedots);
+    setThreedots(!threedots);
   };
   const handleClickDelete = () => {
-    facultyApi.deleteFaculty(faculty._id, token);
+    courseApi.deleteCourse(course._id, token);
     setReloading(1);
   };
 
@@ -33,29 +32,10 @@ function FacultyRow({ faculty, setReloading }: AppProps) {
         <td className="p-2  ">
           <input type="checkbox" />
         </td>
-        <td className="p-2  text-center ">
-          {(collapse && (
-            <img
-              src="/icons/adminpage/collapse_active.svg"
-              height={28}
-              width={28}
-              className="cursor-pointer"
-              onClick={clickcollapse}
-            />
-          )) || (
-            <img
-              src="/icons/adminpage/collapse.svg"
-              height={28}
-              width={28}
-              className="cursor-pointer"
-              onClick={clickcollapse}
-            />
-          )}
-        </td>
+        <td className="p-2  text-center "></td>
         <td className="p-2 border-r border-transparent text-left text-base leading-6 font-normal">
-          Khoa {faculty.facultyName}
+          Môn {course.courseName}
         </td>
-
         <td className="p-2 pt-3 bg-transparent pl-12 border-r relative  flex justify-center">
           <img
             src="/icons/adminpage/threedots.svg"
@@ -64,31 +44,23 @@ function FacultyRow({ faculty, setReloading }: AppProps) {
             className="cursor-pointer text-center"
             onClick={clickthreedots}
           />
-          {beforethreedots && (
-            <div className="absolute flex items-center px-3 top-1 -left-10 border border-indigo-300 rounded-2xl w-28 h-16 bg-white">
+          {threedots && (
+            <div className="absolute flex items-center px-3 top-4 left-3 border border-indigo-300 rounded-2xl w-28 h-16 bg-white">
               <ul className="w-full">
-                <li className="mb-1 hover:bg-indigo-200 rounded-lg cursor-pointer">
+                <li className="mb-1 hover:bg-indigo-50 rounded-lg cursor-pointer">
                   Sửa
                 </li>
                 <li
-                  className="mb-1 hover:bg-indigo-200 rounded-lg cursor-pointer"
+                  className="mb-1 hover:bg-indigo-50 rounded-lg cursor-pointer"
                   onClick={handleClickDelete}
                 >
-                  Xóa
+                  Xoa
                 </li>
               </ul>
             </div>
           )}
         </td>
       </tr>
-      {collapse && (
-        <tr className="bg-white">
-          <td></td>
-          <td className="" colSpan={3}>
-            <CourseTable faculty={faculty} />
-          </td>
-        </tr>
-      )}
     </React.Fragment>
   );
 }

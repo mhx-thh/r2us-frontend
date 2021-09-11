@@ -1,24 +1,139 @@
+import courseApi from "api/courseApi";
+import NewClassAPI from "api/NewClassAPI";
+import Image from "next/image";
 import router from "next/router";
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import courseApi from "api/courseApi";
+import { useAppSelector } from "redux/hooks";
+import { selectToken } from "redux/userSlice";
+import CourseRowInstructor from "./CourseRowInstructor";
+import facultyApi from "api/facultyApi";
+import SelectOption from "components/adminPage/SelectOption";
+import InstructorAPI from "api/instructorApi";
 
 type AppProps = {
   instructor: any;
 };
-
-function CourseTablewithInstructor({ instructor }: AppProps) {
+type Keys = string;
+type Values = string;
+type T = string;
+type Api = {
+  instructorName: string;
+  courseIds: Array<T>;
+};
+function CourseTable({ instructor }: AppProps) {
   const [collapse, setCollapse] = useState(false);
   const [threedots, setThreedots] = useState(false);
+  const [reloading, setReloading] = useState(0);
+  const token = useAppSelector(selectToken);
+  const [total, setTotal] = useState(0);
+  const [mycourseList, setMyCourseList] = useState([]);
+  const [facultylist, setFacultylist] = useState([]);
+  const [courseList, setCourseList] = useState([]);
+  const [arraycourse, setArraycourse] = useState(instructor.courseId);
+  const [mycourseId, setMyCourseId] = useState("");
+
+  const initCreate: Api = {
+    instructorName: instructor.instructorName,
+    courseIds: instructor.courseId,
+  };
+  const [create, setCreate] = useState<Api>(initCreate);
+
   const clickcollapse = () => {
     setCollapse(!collapse);
   };
   const clickthreedots = () => {
     setThreedots(!threedots);
   };
-  const [total, setTotal] = useState(0);
-  const [courseList, setCourseList] = useState([]);
-  setCourseList(instructor.courseId);
+  const handleGetCourseName = (e) => {
+    mycourseList.push(e.target.value);
+  };
+  const handleChange = (e) => {
+    // const val = e.target.value;
+    // setCreate({ ...create, courseName: e.target.value });
+  };
+
+  const hanldeSubmit = (e) => {
+    e.preventDefault();
+    arraycourse.push(mycourseId);
+    setCreate({ ...create, courseIds: arraycourse });
+    InstructorAPI.patchInstructor(create, instructor._id, token);
+    const newre = reloading + 1;
+    console.log("now create", create);
+    setReloading(newre);
+  };
+  const handleReloadingForDelete = (e) => {
+    const newre = reloading + 2;
+    setReloading(newre);
+  };
+  const handleClickDelete = () => {
+    // courseApi.deleteCourse(faculty._id, token);
+    // setReloading(1);
+  };
+  useEffect(() => {
+    async function fetchMyCourseList() {
+      try {
+        const res = await NewClassAPI.getGrouptoInstructor(instructor._id);
+        const data = res?.data?.data?.result;
+        setMyCourseList(data);
+        setTotal(res?.data?.data?.total);
+        console.log("data course", data);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    fetchMyCourseList();
+  }, [reloading]);
+  const filterListApi = {
+    facultyId: courseApi,
+    courseId: InstructorAPI,
+  };
+
+  const handleSearchChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    const api = filterListApi[name];
+    const fetchData = async (api) => {
+      switch (name) {
+        case "facultyId":
+          const res = await courseApi.getCoursetoFaculty(value);
+          const options = res?.data?.data?.result;
+          const newCourses = options?.map((op) => {
+            const newOp = {};
+            newOp["label"] = op.courseName;
+            newOp["_id"] = op._id;
+            return newOp;
+          });
+          setCourseList(newCourses);
+          console.log("now courses", newCourses);
+          break;
+        case "courseId":
+          setMyCourseId(value);
+          break;
+      }
+    };
+
+    if (api) fetchData(api);
+  };
+
+  useEffect(() => {
+    async function fetchFacultyList() {
+      try {
+        const res = await facultyApi.getAll();
+        const data = res?.data?.data?.result;
+        const newFaculties = data?.map((op) => {
+          const newOp = {};
+          newOp["label"] = op.facultyName;
+          newOp["_id"] = op._id;
+          return newOp;
+        });
+        setFacultylist(newFaculties);
+        console.log("data faculties", data);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    fetchFacultyList();
+  }, []);
 
   return (
     <table className=" w-full p-2 border">
@@ -44,107 +159,45 @@ function CourseTablewithInstructor({ instructor }: AppProps) {
         <tr className="bg-gray-50 text-center border-b border-indigo-400">
           <td className="p-2 "></td>
           <td className="p-2 "></td>
-          {(router.pathname === "/admin/general/courses" && (
-            <td className="p-2 text-left">
-              <input
-                type="text"
-                className="border border-indigo-200 p-1 w-full h-8 rounded-lg"
-                placeholder="Nhập tên môn mới . . . "
+          {
+            <td className="p-2 text-left grid grid-cols-2 gap-4">
+              <SelectOption
+                name="facultyId"
+                title="Khoa"
+                onHandleChange={handleSearchChange}
+                options={facultylist}
+                placeholder="Chọn Khoa . . ."
+              />
+              <SelectOption
+                name="courseId"
+                title="Mon"
+                onHandleChange={handleSearchChange}
+                options={courseList}
+                placeholder="Chọn Môn hoc . . ."
               />
             </td>
-          )) || (
-            <td className="p-2 text-left grid grid-cols-2 gap-4">
-              <select className="border border-indigo-200 p-1 w-3/4 h-8 rounded-lg">
-                <option value="" disabled selected>
-                  Chọn Khoa . . .{" "}
-                </option>
-                <option value="">Toan-Tin hoc</option>
-              </select>
-              <select className="border border-indigo-200 p-1 w-3/4 h-8 rounded-lg">
-                <option value="" disabled selected>
-                  Chọn Môn học . . .
-                </option>
-                <option value="">Dai so tuyen tinh</option>
-              </select>
-            </td>
-          )}
+          }
           <td className="p-2 pt-3 bg-transparent pl-12 border-r relative ">
-            <Image
-              src="/icons/adminpage/check.svg"
-              height={24}
-              width={24}
-              className="cursor-pointer"
-            />
+            <button type="submit" onClick={hanldeSubmit}>
+              <Image
+                src="/icons/adminpage/check.svg"
+                height={24}
+                width={24}
+                className="cursor-pointer"
+              />
+            </button>
           </td>
         </tr>
-        {courseList.map((data, index) => (
-          <tr
-            className="bg-white text-center border-b border-indigo-300 text-sm "
+        {mycourseList.map((data, index) => (
+          <CourseRowInstructor
             key={index}
-          >
-            <td className="p-2  ">
-              <input type="checkbox" />
-            </td>
-            <td className="p-2  text-center "></td>
-            <td className="p-2 border-r border-transparent text-left text-base leading-6 font-normal">
-              Môn {data.courseName}
-            </td>
-            <td className="p-2 pt-3 bg-transparent pl-12 border-r relative  flex justify-center">
-              <img
-                src="/icons/adminpage/threedots.svg"
-                height={20}
-                width={20}
-                className="cursor-pointer text-center"
-                onClick={clickthreedots}
-              />
-              {threedots && (
-                <div className="absolute flex items-center px-3 top-4 left-3 border border-indigo-300 rounded-2xl w-28 h-16 bg-white">
-                  <ul className="w-full">
-                    <li className="mb-1 hover:bg-indigo-50 rounded-lg cursor-pointer">
-                      Sửa
-                    </li>
-                    <li className="mb-1 hover:bg-indigo-50 rounded-lg cursor-pointer">
-                      Xóa
-                    </li>
-                  </ul>
-                </div>
-              )}
-            </td>
-          </tr>
+            course={data}
+            setReloading={handleReloadingForDelete}
+          />
         ))}
-        {/* <tr className="bg-white text-center border-b border-indigo-300 text-sm ">
-          <td className="p-2  ">
-            <input type="checkbox" />
-          </td>
-          <td className="p-2  text-center "></td>
-          <td className="p-2 border-r border-transparent text-left text-base leading-6 font-normal">
-            Khoa Công nghệ thông tin
-          </td>
-          <td className="p-2 pt-3 bg-transparent pl-12 border-r relative  flex justify-center">
-            <img
-              src="/icons/adminpage/threedots.svg"
-              height={20}
-              width={20}
-              className="cursor-pointer text-center"
-              onClick={clickthreedots}
-            />
-            {threedots && (
-              <div className="absolute flex items-center px-3 top-4 left-3 border border-indigo-300 rounded-2xl w-28 h-16 bg-white">
-                <ul className="w-full">
-                  <li className="mb-1 hover:bg-indigo-50 rounded-lg cursor-pointer">
-                    Sửa
-                  </li>
-                  <li className="mb-1 hover:bg-indigo-50 rounded-lg cursor-pointer">
-                    Xóa
-                  </li>
-                </ul>
-              </div>
-            )}
-          </td>
-        </tr> */}
         <tr className="bg-gray-50 text-left  ">
           <td className="p-2 pl-8 bg-white Table Footer  " colSpan={4}>
-            Tổng cộng{" "}
+            Tổng cộng {total}
           </td>
         </tr>
       </tbody>
@@ -152,4 +205,4 @@ function CourseTablewithInstructor({ instructor }: AppProps) {
   );
 }
 
-export default CourseTablewithInstructor;
+export default CourseTable;

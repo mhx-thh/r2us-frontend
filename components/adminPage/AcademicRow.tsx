@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import CourseTable from "./CourseTable";
 import Threedots from "./Threedots";
-import { selectUser } from "redux/userSlice";
+import { selectToken, selectUser } from "redux/userSlice";
 import { useAppSelector } from "redux/hooks";
 import academicApi from "api/academicApi";
 type AppProps = {
@@ -13,7 +13,7 @@ function academicRow({ academic, setReloading }: AppProps) {
   const [collapse, setCollapse] = useState(false);
   const [nowthreedots, setNowThreedots] = useState(false);
   const [beforethreedots, setBeforeThreedots] = useState(false);
-  const token = useAppSelector(selectUser);
+  const token = useAppSelector(selectToken);
 
   const clickcollapse = () => {
     setCollapse(!collapse);
@@ -32,25 +32,7 @@ function academicRow({ academic, setReloading }: AppProps) {
       <td className="p-2  ">
         <input type="checkbox" />
       </td>
-      <td className="p-2  text-center ">
-        {(collapse && (
-          <img
-            src="/icons/adminpage/collapse_active.svg"
-            height={28}
-            width={28}
-            className="cursor-pointer"
-            onClick={clickcollapse}
-          />
-        )) || (
-          <img
-            src="/icons/adminpage/collapse.svg"
-            height={28}
-            width={28}
-            className="cursor-pointer"
-            onClick={clickcollapse}
-          />
-        )}
-      </td>
+      <td className="p-2  text-center "></td>
       <td className="p-2 border-r border-transparent text-left text-base leading-6 font-normal">
         {academic.schoolyear}
       </td>
@@ -67,15 +49,16 @@ function academicRow({ academic, setReloading }: AppProps) {
           onClick={clickthreedots}
         />
         {beforethreedots && (
-          <div className="absolute flex items-center px-3 top-4 -left-4 border border-indigo-300 rounded-2xl w-28 h-16 bg-white">
+          <div className="absolute flex items-center px-3 top-1 -left-10 border border-indigo-300 rounded-2xl w-28 h-16 bg-white">
             <ul className="w-full">
-              <li className="mb-1 hover:bg-indigo-50 rounded-lg cursor-pointer">
-                <button type="submit" onClick={handleClickDelete}>
-                  Xóa
-                </button>
+              <li className="mb-1 hover:bg-indigo-200 rounded-lg cursor-pointer">
+                Sửa
               </li>
-              <li className="mb-1 hover:bg-indigo-50 rounded-lg cursor-pointer">
-                <button>Sửa</button>
+              <li
+                className="mb-1 hover:bg-indigo-200 rounded-lg cursor-pointer"
+                onClick={handleClickDelete}
+              >
+                Xóa
               </li>
             </ul>
           </div>

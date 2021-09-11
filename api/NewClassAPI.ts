@@ -9,6 +9,10 @@ const NewClassAPI = {
     const url = `${apiV1}/groups/class/${id}`;
     return get(url, "");
   },
+  getGrouptoInstructor: function (id: string) {
+    const url = `${apiV1}/groups/class?instructorId=${id}`;
+    return get(url, "");
+  },
 };
 
 export default NewClassAPI;

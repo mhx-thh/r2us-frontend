@@ -1,9 +1,7 @@
 import instructorApi from "api/instructorApi";
 import React, { useEffect, useState } from "react";
-import CourseTable from "./CourseTable";
-import { selectUser } from "redux/userSlice";
 import { useAppSelector } from "redux/hooks";
-import Threedots from "./Threedots";
+import { selectToken } from "redux/userSlice";
 import InstructorRow from "./InstructorRow";
 
 // interface Props {
@@ -17,7 +15,7 @@ function InstructorTable(props) {
   const [collapse, setCollapse] = useState(false);
   const [threedots, setThreedots] = useState(false);
   const [reloading, setReloading] = useState(0);
-  const token = useAppSelector(selectUser);
+  const token = useAppSelector(selectToken);
   const [total, setTotal] = useState(0);
   const initCreate: Api = {
     instructorName: "",
@@ -39,10 +37,10 @@ function InstructorTable(props) {
     setCreate({ ...create, instructorName: e.target.value });
   };
   const hanldeSubmit = (e) => {
-    e.preventDefault();
-    create.instructorName !== "" && instructorApi.postInstructor(create, token);
-    const newre = reloading + 1;
-    setReloading(newre);
+    // e.preventDefault();
+    // create.instructorName !== "" && instructorApi.postInstructor(create, token);
+    // const newre = reloading + 1;
+    // setReloading(newre);
   };
   const handleReloadingForDelete = (e) => {
     const newre = reloading + 1;
@@ -66,7 +64,7 @@ function InstructorTable(props) {
       }
     }
     fetchinstructorList();
-  }, [reloading]);
+  }, []);
 
   return (
     <table className=" w-11/12 p-2 border">

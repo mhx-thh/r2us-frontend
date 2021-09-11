@@ -1,4 +1,4 @@
-import { apiV1, config, delele, get, post } from "api/generic";
+import { apiV1, config, delele, get, patch, post } from "api/generic";
 
 const InstructorAPI = {
   get: function () {
@@ -24,6 +24,10 @@ const InstructorAPI = {
   deleteInstructor: function (id: string, token: string) {
     const url = `${apiV1}/academic/intructors/delete/${id}`;
     return delele(url, token);
+  },
+  patchInstructor: function (data: any, id: string, token: string) {
+    const url = `${apiV1}/academic/intructors/update/${id}`;
+    return patch(url, data, token);
   },
 };
 

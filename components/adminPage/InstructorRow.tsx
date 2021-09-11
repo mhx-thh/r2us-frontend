@@ -4,6 +4,7 @@ import Threedots from "./Threedots";
 import { selectUser } from "redux/userSlice";
 import { useAppSelector } from "redux/hooks";
 import instructorApi from "api/instructorApi";
+import CourseTablewithInstructor from "./courseTablewithInstructor";
 type AppProps = {
   instructor: any;
   setReloading: any;
@@ -65,15 +66,16 @@ function InstructorRow({ instructor, setReloading }: AppProps) {
             onClick={clickthreedots}
           />
           {beforethreedots && (
-            <div className="absolute flex items-center px-3 top-4 -left-4 border border-indigo-300 rounded-2xl w-28 h-16 bg-white">
+            <div className="absolute flex items-center px-3 top-1 -left-10 border border-indigo-300 rounded-2xl w-28 h-16 bg-white">
               <ul className="w-full">
-                <li className="mb-1 hover:bg-indigo-50 rounded-lg cursor-pointer">
-                  <button type="submit" onClick={handleClickDelete}>
-                    Xóa
-                  </button>
+                <li className="mb-1 hover:bg-indigo-200 rounded-lg cursor-pointer">
+                  Sửa
                 </li>
-                <li className="mb-1 hover:bg-indigo-50 rounded-lg cursor-pointer">
-                  <button>Sửa</button>
+                <li
+                  className="mb-1 hover:bg-indigo-200 rounded-lg cursor-pointer"
+                  onClick={handleClickDelete}
+                >
+                  Xóa
                 </li>
               </ul>
             </div>
@@ -84,7 +86,7 @@ function InstructorRow({ instructor, setReloading }: AppProps) {
         <tr className="bg-white">
           <td></td>
           <td className="" colSpan={3}>
-            <CourseTable instructor={instructor} />
+            <CourseTablewithInstructor instructor={instructor} />
           </td>
         </tr>
       )}

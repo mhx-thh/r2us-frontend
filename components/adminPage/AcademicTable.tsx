@@ -6,6 +6,7 @@ import { selectToken, selectUser } from "redux/userSlice";
 import { useAppSelector } from "redux/hooks";
 import Threedots from "./Threedots";
 import academicApi from "api/academicApi";
+import { isFulfilled } from "@reduxjs/toolkit";
 
 // interface Props {
 //   getThreedots: any;
@@ -155,10 +156,10 @@ function AcademicTable(props) {
             </td>
           </tr>
         )} */}
-        <tr className="bg-gray-50 text-left  ">
+        <tr className="bg-gray-50 text-left w-full">
           <td
             className="p-2 pl-8 bg-white Table Footer rounded-b-2xl "
-            colSpan={4}
+            colSpan={5}
           >
             Tổng cộng {total}
           </td>

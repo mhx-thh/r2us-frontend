@@ -2,19 +2,65 @@ import router from "next/router";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import courseApi from "api/courseApi";
+import { useAppSelector } from "redux/hooks";
+import { selectToken } from "redux/userSlice";
+import { Stringifiable } from "query-string";
+import CourseRowFaculty from "./CourseRowFaculty";
 
 type AppProps = {
   faculty: any;
 };
+type Keys = string;
+type Values = string;
 
+type Api = {
+  courseName: string;
+  facultyId: Record<Keys, Values>;
+  courseDescription: string;
+};
 function CourseTable({ faculty }: AppProps) {
   const [collapse, setCollapse] = useState(false);
   const [threedots, setThreedots] = useState(false);
+  const [reloading, setReloading] = useState(0);
+  const token = useAppSelector(selectToken);
+  const currentfaculty: Record<Keys, Values> = {
+    facultyName: faculty.facultyName,
+    _id: faculty._id,
+  };
+  const initCreate: Api = {
+    courseName: "",
+    facultyId: currentfaculty,
+    courseDescription: "create by admin",
+  };
   const clickcollapse = () => {
     setCollapse(!collapse);
   };
   const clickthreedots = () => {
     setThreedots(!threedots);
+  };
+
+  const [create, setCreate] = useState<Api>(initCreate);
+
+  const handleChange = (e) => {
+    const val = e.target.value;
+    setCreate({ ...create, courseName: e.target.value });
+  };
+
+  const hanldeSubmit = (e) => {
+    e.preventDefault();
+    create.courseName !== "" &&
+      create.facultyId !== {} &&
+      courseApi.postCourse(create, token);
+    const newre = reloading + 1;
+    setReloading(newre);
+  };
+  const handleReloadingForDelete = (e) => {
+    const newre = reloading + 2;
+    setReloading(newre);
+  };
+  const handleClickDelete = () => {
+    courseApi.deleteCourse(faculty._id, token);
+    setReloading(1);
   };
   const [total, setTotal] = useState(0);
   const [courseList, setCourseList] = useState([]);
@@ -31,7 +77,7 @@ function CourseTable({ faculty }: AppProps) {
       }
     }
     fetchCourseList();
-  }, []);
+  }, [reloading]);
   return (
     <table className=" w-full p-2 border">
       <thead className="">
@@ -60,6 +106,7 @@ function CourseTable({ faculty }: AppProps) {
             <td className="p-2 text-left">
               <input
                 type="text"
+                onChange={handleChange}
                 className="border border-indigo-200 p-1 w-full h-8 rounded-lg"
                 placeholder="Nhập tên môn mới . . . "
               />
@@ -81,82 +128,26 @@ function CourseTable({ faculty }: AppProps) {
             </td>
           )}
           <td className="p-2 pt-3 bg-transparent pl-12 border-r relative ">
-            <Image
-              src="/icons/adminpage/check.svg"
-              height={24}
-              width={24}
-              className="cursor-pointer"
-            />
+            <button type="submit" onClick={hanldeSubmit}>
+              <Image
+                src="/icons/adminpage/check.svg"
+                height={24}
+                width={24}
+                className="cursor-pointer"
+              />
+            </button>
           </td>
         </tr>
         {courseList.map((data, index) => (
-          <tr
-            className="bg-white text-center border-b border-indigo-300 text-sm "
+          <CourseRowFaculty
             key={index}
-          >
-            <td className="p-2  ">
-              <input type="checkbox" />
-            </td>
-            <td className="p-2  text-center "></td>
-            <td className="p-2 border-r border-transparent text-left text-base leading-6 font-normal">
-              Môn {data.courseName}
-            </td>
-            <td className="p-2 pt-3 bg-transparent pl-12 border-r relative  flex justify-center">
-              <img
-                src="/icons/adminpage/threedots.svg"
-                height={20}
-                width={20}
-                className="cursor-pointer text-center"
-                onClick={clickthreedots}
-              />
-              {threedots && (
-                <div className="absolute flex items-center px-3 top-4 left-3 border border-indigo-300 rounded-2xl w-28 h-16 bg-white">
-                  <ul className="w-full">
-                    <li className="mb-1 hover:bg-indigo-50 rounded-lg cursor-pointer">
-                      Sửa
-                    </li>
-                    <li className="mb-1 hover:bg-indigo-50 rounded-lg cursor-pointer">
-                      Xóa
-                    </li>
-                  </ul>
-                </div>
-              )}
-            </td>
-          </tr>
+            course={data}
+            setReloading={handleReloadingForDelete}
+          />
         ))}
-        {/* <tr className="bg-white text-center border-b border-indigo-300 text-sm ">
-          <td className="p-2  ">
-            <input type="checkbox" />
-          </td>
-          <td className="p-2  text-center "></td>
-          <td className="p-2 border-r border-transparent text-left text-base leading-6 font-normal">
-            Khoa Công nghệ thông tin
-          </td>
-          <td className="p-2 pt-3 bg-transparent pl-12 border-r relative  flex justify-center">
-            <img
-              src="/icons/adminpage/threedots.svg"
-              height={20}
-              width={20}
-              className="cursor-pointer text-center"
-              onClick={clickthreedots}
-            />
-            {threedots && (
-              <div className="absolute flex items-center px-3 top-4 left-3 border border-indigo-300 rounded-2xl w-28 h-16 bg-white">
-                <ul className="w-full">
-                  <li className="mb-1 hover:bg-indigo-50 rounded-lg cursor-pointer">
-                    Sửa
-                  </li>
-                  <li className="mb-1 hover:bg-indigo-50 rounded-lg cursor-pointer">
-                    Xóa
-                  </li>
-                </ul>
-              </div>
-            )}
-          </td>
-        </tr> */}
         <tr className="bg-gray-50 text-left  ">
           <td className="p-2 pl-8 bg-white Table Footer  " colSpan={4}>
-            Tổng cộng{" "}
+            Tổng cộng {total}
           </td>
         </tr>
       </tbody>

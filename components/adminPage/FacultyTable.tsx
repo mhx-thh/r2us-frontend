@@ -2,7 +2,7 @@ import facultyApi from "api/facultyApi";
 import React, { useEffect, useState } from "react";
 import CourseTable from "./CourseTable";
 import FacultyRow from "./facultyRow";
-import { selectUser } from "redux/userSlice";
+import { selectToken, selectUser } from "redux/userSlice";
 import { useAppSelector } from "redux/hooks";
 import Threedots from "./Threedots";
 
@@ -17,7 +17,7 @@ function FacultyTable(props) {
   const [collapse, setCollapse] = useState(false);
   const [threedots, setThreedots] = useState(false);
   const [reloading, setReloading] = useState(0);
-  const token = useAppSelector(selectUser);
+  const token = useAppSelector(selectToken);
   const [total, setTotal] = useState(0);
   const initCreate: Api = {
     facultyName: "",
@@ -129,7 +129,7 @@ function FacultyTable(props) {
             </td>
           </tr>
         )} */}
-        <tr className="bg-gray-50 text-left  ">
+        <tr className="bg-gray-50 text-left ">
           <td
             className="p-2 pl-8 bg-white Table Footer rounded-b-2xl "
             colSpan={4}
