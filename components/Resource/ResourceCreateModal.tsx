@@ -3,9 +3,13 @@ import Swal from "sweetalert2";
 
 import GroupAPI from "api/groupAPI";
 import { apiV1, get } from "api/generic";
+import AcademicAPI from "api/academicApi";
+import userApi from "api/userApi";
 
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
+import courseApi from "api/courseApi";
+import InstructorAPI from "api/instructorApi";
 
 type Api = {
   resourceType: "Resources" | "Examination Paper" | "Review Paper";
@@ -18,9 +22,45 @@ type Api = {
 type classStatus = "loading" | "done" | "gotNone";
 type enrollStatus = "enrolled" | "notEnrolled";
 type createStatus = "loading" | "done";
+type dataCreate = {
+  schoolyear: any;
+  falcuty: any;
+  course: any;
+  teacher: any;
+};
 
-const CreateResource = function ({ data, classgroup }: any) {
+const CreateResource = function () {
   const token = useAppSelector(selectToken);
+
+  // Get data for create modal
+  const [data, setData] = useState<dataCreate>();
+  const [myClass, setMyClass] = useState([]);
+
+  useEffect(() => {
+    console.log("Data: ", data);
+  }, [data]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const schoolyear = await AcademicAPI.getSchoolYears();
+      const falcuty = await AcademicAPI.getFalcuties();
+
+      const res = await userApi.getMyClass(token);
+      const myClass = res?.data?.data?.result;
+
+      const data = {
+        schoolyear: schoolyear.data.data,
+        falcuty: falcuty.data.data,
+        course: [],
+        teacher: [],
+      };
+
+      setData(data);
+      setMyClass(myClass);
+    }
+
+    fetchData();
+  }, []);
 
   const [schoolyear, setSchoolyear] = useState("");
   const [facultyId, setFacultyId] = useState("");
@@ -80,8 +120,7 @@ const CreateResource = function ({ data, classgroup }: any) {
       handleClassName();
       setClassStatus("done");
       setEnrollStatus("notEnrolled");
-      classgroup.map((val) => {
-        console.log(val, " ", group[0]);
+      myClass.map((val) => {
         if (val.classId._id === group[0]._id) {
           setEnrollStatus("enrolled");
         }
@@ -125,15 +164,40 @@ const CreateResource = function ({ data, classgroup }: any) {
     setFacultyId(e.target.value);
     setCourseId("");
     setInstructorId("");
-  };
 
-  const handleInstructor = (e) => {
-    setInstructorId(e.target.value);
+    async function fetchCourse() {
+      const course = await courseApi.getCoursetoFaculty(e.target.value);
+
+      setData({
+        ...data,
+        course: course?.data?.data,
+        teacher: [],
+      });
+    }
+
+    fetchCourse();
   };
 
   const handleCourseId = (e) => {
     setCourseId(e.target.value);
     setInstructorId("");
+
+    async function fetchInstructor() {
+      const instructor = await InstructorAPI.getInstructortoCourse(
+        e.target.value
+      );
+
+      setData({
+        ...data,
+        teacher: instructor?.data?.data,
+      });
+    }
+
+    fetchInstructor();
+  };
+
+  const handleInstructor = (e) => {
+    setInstructorId(e.target.value);
   };
 
   const clickReset = () => {
@@ -387,7 +451,7 @@ const CreateResource = function ({ data, classgroup }: any) {
             onChange={handleAcademicId}
           >
             <option value="">Chọn năm học</option>
-            {data.schoolyear.result.map((val, key) => (
+            {data?.schoolyear?.result?.map((val, key) => (
               <option value={val._id} key={key}>
                 {val.schoolyear} - học kì {val.semester}
               </option>
@@ -414,7 +478,7 @@ const CreateResource = function ({ data, classgroup }: any) {
             onChange={handleFacultyId}
           >
             <option value="">Chọn khoa</option>
-            {data.falcuty.result.map((val, key) => (
+            {data?.falcuty?.result?.map((val, key) => (
               <option value={val._id} key={key}>
                 {val.facultyName}
               </option>
@@ -441,14 +505,11 @@ const CreateResource = function ({ data, classgroup }: any) {
             onChange={handleCourseId}
           >
             <option value="">Chọn môn</option>
-            {data.course.result.map(
-              (val, key) =>
-                facultyId === val.facultyId._id && (
-                  <option value={val._id} key={key}>
-                    {val.courseName}
-                  </option>
-                )
-            )}
+            {data?.course?.result?.map((val, key) => (
+              <option value={val._id} key={key}>
+                {val.courseName}
+              </option>
+            ))}
           </select>
         </div>
         {/* Teacher */}
@@ -472,16 +533,11 @@ const CreateResource = function ({ data, classgroup }: any) {
               onChange={handleInstructor}
             >
               <option value="">Chọn giáo viên</option>
-              {data.teacher.data.result.map((val, key) =>
-                val.courseId.map(
-                  (id) =>
-                    id === courseId && (
-                      <option value={val._id} key={key}>
-                        {val.instructorName}
-                      </option>
-                    )
-                )
-              )}
+              {data?.teacher?.result?.map((val, key) => (
+                <option value={val._id} key={key}>
+                  {val.instructorName}
+                </option>
+              ))}
             </select>
           </div>
           {/* Class has not opened yet */}
