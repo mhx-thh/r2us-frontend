@@ -2,7 +2,7 @@ import facultyApi from "api/facultyApi";
 import React, { useState } from "react";
 import CourseTable from "./CourseTable";
 import Threedots from "./Threedots";
-import { selectUser } from "redux/userSlice";
+import { selectToken } from "redux/userSlice";
 import { useAppSelector } from "redux/hooks";
 type AppProps = {
   faculty: any;
@@ -13,7 +13,7 @@ function FacultyRow({ faculty, setReloading }: AppProps) {
   const [collapse, setCollapse] = useState(false);
   const [nowthreedots, setNowThreedots] = useState(false);
   const [beforethreedots, setBeforeThreedots] = useState(false);
-  const token = useAppSelector(selectUser);
+  const token = useAppSelector(selectToken);
 
   const clickcollapse = () => {
     setCollapse(!collapse);

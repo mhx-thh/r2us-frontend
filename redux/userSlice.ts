@@ -86,6 +86,9 @@ export const { logout, initToken } = userSlice.actions;
 export const selectToken = (state: RootState) => state.user.token;
 export const selectUser = (state: RootState) => state.user.user;
 export const selectStatus = (state: RootState) => state.user.status;
+export const selectIsAdmin = function (state: RootState) {
+  return state.user.user?.role === "admin";
+};
 
 // We can also write thunks by hand, which may contain both sync and async logic.
 // Here's an example of conditionally dispatching actions based on current state.

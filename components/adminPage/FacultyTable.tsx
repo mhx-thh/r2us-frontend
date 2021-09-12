@@ -1,5 +1,6 @@
 import facultyApi from "api/facultyApi";
 import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import CourseTable from "./CourseTable";
 import FacultyRow from "./facultyRow";
 import { selectToken, selectUser } from "redux/userSlice";
@@ -55,6 +56,14 @@ function FacultyTable(props) {
   const [facultylist, setFacultylist] = useState([]);
   useEffect(() => {
     async function fetchFacultyList() {
+      Swal.fire({
+        title: "Loading data",
+        icon: "info",
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       try {
         const res = await facultyApi.getAll();
         const data = res?.data?.data?.result;
@@ -64,6 +73,7 @@ function FacultyTable(props) {
       } catch (error) {
         console.log(error.message);
       }
+      Swal.close();
     }
     fetchFacultyList();
   }, [reloading]);

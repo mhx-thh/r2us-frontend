@@ -37,10 +37,10 @@ function InstructorTable(props) {
     setCreate({ ...create, instructorName: e.target.value });
   };
   const hanldeSubmit = (e) => {
-    // e.preventDefault();
-    // create.instructorName !== "" && instructorApi.postInstructor(create, token);
-    // const newre = reloading + 1;
-    // setReloading(newre);
+    e.preventDefault();
+    create.instructorName !== "" && instructorApi.postInstructor(create, token);
+    const newre = reloading + 1;
+    setReloading(newre);
   };
   const handleReloadingForDelete = (e) => {
     const newre = reloading + 1;

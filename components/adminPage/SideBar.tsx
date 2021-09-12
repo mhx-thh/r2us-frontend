@@ -41,7 +41,7 @@ export default function Sidebar() {
             <img src="/icons/close.svg" alt="icon close" />
           </button>
           {/* Brand */}
-          <Link href="/admin">
+          <Link href="/">
             <a
               href="#"
               className="md: flex justify-content items-center md: text-blueGray-600 mr-0  p-12 pl-16"

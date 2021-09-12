@@ -1,6 +1,12 @@
 import React from "react";
 import Link from "next/link";
+
+import { useAppSelector } from "redux/hooks";
+import { selectIsAdmin } from "redux/userSlice";
+
 const Footer = () => {
+  const isAdmin = useAppSelector(selectIsAdmin);
+
   return (
     <footer className="mb-0 mt-32">
       <div className="w-full bg-white px-28 flex justify-between py-0 mb-6">
@@ -73,6 +79,13 @@ const Footer = () => {
             <li>
               <a href="#">Tin tức</a>
             </li>
+            {isAdmin && (
+              <li>
+                <Link href="/admin">
+                  <a href="#">Quản lý</a>
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
         <div>
