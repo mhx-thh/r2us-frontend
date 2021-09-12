@@ -2,7 +2,7 @@ import { apiV1, config, delele, get, post } from "api/generic";
 
 const courseApi = {
   get(id) {
-    const url = `/academic/courses/?facultyId=${id}`;
+    const url = `${apiV1}/academic/courses/?facultyId=${id}`;
     return get(url, "");
   },
   getCoursetoFaculty(id: string) {
