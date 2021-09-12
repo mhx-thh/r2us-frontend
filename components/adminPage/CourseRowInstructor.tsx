@@ -31,7 +31,7 @@ function FacultyRow({ course, setReloading }: AppProps) {
         </td>
         <td className="p-2  text-center "></td>
         <td className="p-2 border-r border-transparent text-left text-base leading-6 font-normal">
-          Môn {course.courseId.courseName}
+          Môn {course.courseName}
         </td>
         <td className="p-2 pt-3 bg-transparent pl-12 border-r relative  flex justify-center">
           <img

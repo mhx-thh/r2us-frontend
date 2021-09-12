@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 
 import GroupAPI from "api/groupAPI";
-import NewClassAPI from "api/NewClassAPI";
 
 import LayoutClass from "components/layout/ClassLayout";
 
@@ -23,7 +22,7 @@ type propApi = {
 
 export const getServerSideProps: GetServerSideProps = async (params) => {
   const temp = params.params.slug.toString();
-  const res = await NewClassAPI.getGroup(temp);
+  const res = await GroupAPI.getGroup(temp);
   const moreRes = await GroupAPI.getResources();
 
   params.res.setHeader(

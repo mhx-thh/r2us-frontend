@@ -1,5 +1,5 @@
 import courseApi from "api/courseApi";
-import NewClassAPI from "api/NewClassAPI";
+import intructorAPI from "api/instructorApi";
 import Image from "next/image";
 import router from "next/router";
 import React, { useEffect, useState } from "react";
@@ -29,7 +29,7 @@ function CourseTable({ instructor }: AppProps) {
   const [mycourseList, setMyCourseList] = useState([]);
   const [facultylist, setFacultylist] = useState([]);
   const [courseList, setCourseList] = useState([]);
-  const [arraycourse, setArraycourse] = useState(instructor.courseId);
+  const [arraycourse, setArraycourse] = useState([]);
   const [mycourseId, setMyCourseId] = useState("");
 
   const initCreate: Api = {
@@ -72,10 +72,11 @@ function CourseTable({ instructor }: AppProps) {
   useEffect(() => {
     async function fetchMyCourseList() {
       try {
-        const res = await NewClassAPI.getGrouptoInstructor(instructor._id);
-        const data = res?.data?.data?.result;
+        const res = await intructorAPI.getInstructor(instructor._id);
+        const data = res?.data?.data?.courseId;
+        console.log("here", data);
         setMyCourseList(data);
-        setTotal(res?.data?.data?.total);
+        setTotal(data.length);
         console.log("data course", data);
       } catch (error) {
         console.log(error.message);
@@ -197,7 +198,7 @@ function CourseTable({ instructor }: AppProps) {
         ))}
         <tr className="bg-gray-50 text-left  ">
           <td className="p-2 pl-8 bg-white Table Footer  " colSpan={4}>
-            Tổng cộng {total}
+            Tổng cộng {mycourseList.length}
           </td>
         </tr>
       </tbody>
