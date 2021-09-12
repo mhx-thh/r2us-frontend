@@ -80,7 +80,7 @@ const OutlinePage = function (props: AppProps) {
     });
 
     const [update, setUpdate] = useState(false);
-    const handleUpdate = () => {
+    const ClickUpdate = () => {
       setUpdate(true);
     };
 
@@ -93,20 +93,40 @@ const OutlinePage = function (props: AppProps) {
       }
     };
 
+    const acceptedStatus = {
+      status: "accepted",
+    };
+    const ClickAccept = async () => {
+      try {
+        await GroupAPI.patchReview(acceptedStatus, data._id, token);
+        setFlag(!flag);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     return (
       <div ref={ref} className="absolute my-8 -mx-24">
         <ul className="w-28 text-base leading-6 font-normal shadow rounded-xl bg-white">
-          {data.status === "pending" && props.role === "provider" && (
-            <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 ">
-              <button>Duyệt</button>
-            </li>
-          )}
-          <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 ">
-            <button onClick={ClickDelete}>Xóa</button>
+          {/* {data.status === "pending" && props.role === "provider" && ( */}
+          <li
+            className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-green-200 cursor-pointer"
+            onClick={ClickAccept}
+          >
+            Duyệt
           </li>
-
-          <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200">
-            <button onClick={handleUpdate}>Chỉnh sửa</button>
+          {/* )} */}
+          <li
+            className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-red-300 cursor-pointer"
+            onClick={ClickDelete}
+          >
+            Xóa
+          </li>
+          <li
+            className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 cursor-pointer"
+            onClick={ClickUpdate}
+          >
+            Chỉnh sửa
           </li>
         </ul>
         {update === true && (
@@ -138,7 +158,7 @@ const OutlinePage = function (props: AppProps) {
             data.classId.instructorId.id === props.id.instructorId &&
             data.classId.academicId._id === props.id.academicId &&
             data.resourceType === "Review Paper" &&
-            data.status === "accept" ? (
+            data.status === "accepted" ? (
               <Outline key={data._id} outlineData={data} role={props.role} />
             ) : (
               <div key={data._id}></div>

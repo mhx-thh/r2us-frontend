@@ -90,7 +90,7 @@ const Title = function (props: AppProps) {
                 Cập nhật lần cuối:
               </div>
               <div className={style.title__lower__right__text_normal}>
-                <ConvertTime time={props.initTitle.updatedAt} />
+                {ConvertTime(props.initTitle.updatedAt)}
               </div>
             </div>
           </div>

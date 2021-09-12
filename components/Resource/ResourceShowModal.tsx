@@ -21,7 +21,7 @@ function ResourceShowModal({ sresource }: AppProps) {
   return (
     <div className="absolute bg-indigo-200 w-full left-0 top-0 h-80 rounded-t-2xl tracking-normal  text-base leading-6 font-medium">
       {/* Title */}
-      <div className="flex px-16 mt-16 mb-8 tracking-normal">
+      <div className="flex pl-16 mt-16 mb-9 tracking-normal">
         <img src="/icons/resource.svg" width="37" />
         <div className="mx-6 text-2xl leading-9 font-medium text-indigo-500">
           {sresource.resourceName}
@@ -29,26 +29,26 @@ function ResourceShowModal({ sresource }: AppProps) {
       </div>
 
       {/* Teacher */}
-      <div className="flex px-56 ml-0 m-3">
+      <div className="flex pl-56 ml-0 m-3 pr-20">
         <img className="my-2" width="20" src="/icons/teacher.svg" />
-        <div className="px-8 py-2 my-1">
+        <div className="pl-8 py-1 my-1">
           {sresource.classId.instructorId.instructorName}
         </div>
       </div>
 
       {/* course */}
-      <div className="flex px-56 pb-2">
-        <img className="" width="20" src="/icons/course.svg" />
-        <div className="mx-8">{sresource.classId.courseId.courseName}</div>
+      <div className="flex pl-56 pb-3 pr-20">
+        <img className="my-1" width="20" src="/icons/course.svg" />
+        <div className="ml-8 my-1">{sresource.classId.courseId.courseName}</div>
       </div>
 
       {/* class */}
-      <div className="flex px-56 pt-2">
+      <div className="flex pl-56 pr-20">
         <img className="my-3" width="20" src="/icons/destination_group.svg" />
-        <div className="px-8 my-3 w-11/12">{sresource.classId.className}</div>
+        <div className="pl-8 my-3">{sresource.classId.className}</div>
         <Link href={url}>
           <a>
-            <img className="px-0.5 pt-3" src="/icons/gotoGroup.svg" />
+            <img className="px-10 pt-2.5" src="/icons/gotoGroup.svg" />
           </a>
         </Link>
       </div>

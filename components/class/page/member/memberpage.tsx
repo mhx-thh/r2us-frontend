@@ -12,6 +12,7 @@ const MemberPage = function (props: AppProps) {
   return (
     <div className={style.page}>
       <div className={style.grid}>
+        {/* Providers */}
         <div className={style.grid_left}>
           <div className="bg-indigo-50 relative right-28 top-16 rounded-r-3xl pl-32">
             <div className="relative -top-12">
@@ -22,17 +23,8 @@ const MemberPage = function (props: AppProps) {
               />
             </div>
           </div>
-          {/* Check role */}
-          {props.role === "provider" && (
-            <div className="pl-4 pt-8">
-              <MemberSection
-                title="Yêu cầu"
-                role="member"
-                members={props.members}
-              />
-            </div>
-          )}
         </div>
+        {/* Members */}
         <div className={style.grid_right}>
           <MemberSection
             title="Thành viên"

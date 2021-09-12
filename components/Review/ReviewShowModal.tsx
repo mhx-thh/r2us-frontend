@@ -14,32 +14,32 @@ function ReviewShowModal({ sreview }: AppProps) {
       {/* Title */}
       <div className="flex pl-16 mt-16 mb-9 tracking-normal">
         <img src="/icons/review.svg" width="37" />
-        <div className="mx-6 text-3xl leading-9 font-medium text-indigo-500">
+        <div className="mx-6 text-2xl leading-9 font-medium text-indigo-500">
           {sreview.reviewTitle}
         </div>
       </div>
 
       {/* Teacher */}
-      <div className="flex px-56 ml-0 m-3">
+      <div className="flex pl-56 ml-0 m-3 pr-20">
         <img className="my-2" width="20" src="/icons/teacher.svg" />
-        <div className="px-8 py-1 my-1">
+        <div className="pl-8 py-1 my-1">
           {sreview.classId.instructorId.instructorName}
         </div>
       </div>
 
       {/* course */}
-      <div className="flex px-56 pb-3">
+      <div className="flex pl-56 pb-3 pr-20">
         <img className="my-1" width="20" src="/icons/course.svg" />
-        <div className="mx-8 my-1">{sreview.classId.courseId.courseName}</div>
+        <div className="ml-8 my-1">{sreview.classId.courseId.courseName}</div>
       </div>
 
       {/* class */}
-      <div className="flex px-56">
+      <div className="flex pl-56 pr-20">
         <img className="my-3" width="20" src="/icons/destination_group.svg" />
-        <div className="px-8 my-3 w-11/12">{sreview.classId.className}</div>
+        <div className="pl-8 my-3">{sreview.classId.className}</div>
         <Link href={url}>
           <a>
-            <img className="pt-2" src="/icons/gotoGroup.svg" />
+            <img className="pl-10 pt-2.5" src="/icons/gotoGroup.svg" />
           </a>
         </Link>
       </div>
@@ -56,7 +56,7 @@ function ReviewShowModal({ sreview }: AppProps) {
       </div>
 
       {/* Avatar */}
-      <div className="float-right mr-8 -mt-52 relative -top-2">
+      <div className="float-right mr-8 -mt-52 relative -top-1">
         <img
           src={`${sreview.userId.photo}`}
           width="50"

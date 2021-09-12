@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
+import Swal from "sweetalert2";
 
 type AppProps = {
   data: classInfo;
@@ -100,7 +101,22 @@ const InformationPage = function (props: AppProps) {
 
   const ClickDelete = async () => {
     try {
-      await GroupAPI.deleteClass(props.data._id, token);
+      await Swal.fire({
+        title: `Bạn chắc chắn muốn xóa lớp ${title.className}`,
+        text: "Bạn sẽ không thể hoàn tác nếu đã xóa lớp này !!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Chắc chắn !",
+        cancelButtonText: "Quay lại",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          GroupAPI.deleteClass(props.data._id, token);
+          Swal.fire("Xóa thành công", `Lớp "${title.className}"`, "success");
+        }
+        router.push("/");
+      });
     } catch (error) {
       console.log(error);
     }
@@ -214,11 +230,7 @@ const InformationPage = function (props: AppProps) {
                     <img src="/icons/buttonSend.svg" />
                   </button>
                   <button className={style.button} onClick={ClickDelete}>
-                    <Link href="/">
-                      <a>
-                        <img src="/icons/buttonReset.svg" />
-                      </a>
-                    </Link>
+                    <img src="/icons/buttonReset.svg" />
                   </button>
                 </div>
               )

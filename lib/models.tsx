@@ -90,6 +90,7 @@ export type ReviewType = {
   reviewType: string;
   reviewTitle: string;
   review: string;
+  status: string;
   _id: string;
   userId: {
     _id: string;

@@ -6,6 +6,7 @@ import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 import { ReviewType } from "lib/models";
 import { useRouter } from "next/router";
+import Swal from "sweetalert2";
 
 type AppProps = {
   review: ReviewType;
@@ -35,11 +36,23 @@ const ReviewEditModal = function (props: AppProps) {
   const handleSend = async (e) => {
     e.preventDefault();
     try {
-      await GroupAPI.patchReview(data, ereview._id, token);
+      await Swal.fire({
+        title: "Do you want to save the changes?",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Save",
+        denyButtonText: `Don't save`,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          GroupAPI.patchReview(data, ereview._id, token);
+          Swal.fire("Saved!", "", "success");
+          router.push(`/group/${ereview.classId.slug}/${title}`);
+        } else if (result.isDenied) {
+          Swal.fire("Changes are not saved", "", "info");
+        }
+      });
     } catch (error) {
       console.log(error);
-    } finally {
-      router.push(`/group/${ereview.classId.slug}/${title}`);
     }
   };
 
