@@ -193,7 +193,7 @@ const GroupCreateModal = function ({ data }: any) {
             <option value="">Chọn giáo viên</option>
             {data.teacher.data.result.map((val, key) =>
               val.courseId.map((id) =>
-                id === create.courseId ? (
+                id._id === create.courseId ? (
                   <option value={val.id} key={key}>
                     {val.instructorName}
                   </option>
