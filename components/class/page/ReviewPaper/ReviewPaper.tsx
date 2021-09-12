@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import ResourceItem from "components/Resource/ResourceItem";
 import useClickOutside from "components/clickOutside/clickOutside";
@@ -26,6 +26,22 @@ type AppProps = {
 
 const OutlinePage = function (props: AppProps) {
   const [outlineArray, setOutlineArray] = useState(props.outline);
+  const [flag, setFlag] = useState(false);
+
+  const token = useAppSelector(selectToken);
+
+  useEffect(() => {
+    async function fetchResources() {
+      try {
+        const res = await GroupAPI.getResources();
+        const data = res?.data?.data?.result;
+        setOutlineArray(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchResources();
+  }, [flag, props.outline]);
 
   // Outline Item
   const Outline = function (props: outlineType) {
@@ -35,7 +51,7 @@ const OutlinePage = function (props: AppProps) {
     };
     return (
       <div className={style.document}>
-        {props.role === "provider" && (
+        {(props.role === "provider" || props.role === "member") && (
           <div>
             <button className={style.document__button} onClick={handleOpen}>
               <img src="/icons/threedot.svg" />
@@ -58,8 +74,7 @@ const OutlinePage = function (props: AppProps) {
   };
 
   //  Dropdown function
-  function DropdownResource({ close, data }: any) {
-    const token = useAppSelector(selectToken);
+  const DropdownResource = function ({ close, data }: any) {
     const ref = useClickOutside(() => {
       close(0);
     });
@@ -69,25 +84,23 @@ const OutlinePage = function (props: AppProps) {
       setUpdate(true);
     };
 
-    const ClickDelete = () => {
-      GroupAPI.deleteResource(data.id, token);
-      const newSelect = outlineArray.filter((items) => items !== data);
-      setOutlineArray(newSelect);
+    const ClickDelete = async () => {
+      try {
+        await GroupAPI.deleteResource(data.id, token);
+        setFlag(!flag);
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     return (
       <div ref={ref} className="absolute my-8 -mx-24">
-        <ul className="w-28  h-28 text-base leading-6 font-normal shadow rounded-xl py-1 bg-white">
-          {data.status === "accept" ? (
+        <ul className="w-28 text-base leading-6 font-normal shadow rounded-xl bg-white">
+          {data.status === "pending" && props.role === "provider" && (
             <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 ">
               <button>Duyệt</button>
             </li>
-          ) : (
-            <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 ">
-              <button>Thêm</button>
-            </li>
           )}
-
           <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 ">
             <button onClick={ClickDelete}>Xóa</button>
           </li>
@@ -96,7 +109,6 @@ const OutlinePage = function (props: AppProps) {
             <button onClick={handleUpdate}>Chỉnh sửa</button>
           </li>
         </ul>
-
         {update === true && (
           <PopUp closepopup={close}>
             <ResourceEditModal resource={data} />
@@ -104,7 +116,7 @@ const OutlinePage = function (props: AppProps) {
         )}
       </div>
     );
-  }
+  };
 
   return (
     <div className={style.page}>
@@ -127,43 +139,40 @@ const OutlinePage = function (props: AppProps) {
             data.classId.academicId._id === props.id.academicId &&
             data.resourceType === "Review Paper" &&
             data.status === "accept" ? (
-              <Outline
-                key={data.resourceName}
-                outlineData={data}
-                role={props.role}
-              />
+              <Outline key={data._id} outlineData={data} role={props.role} />
             ) : (
-              <div></div>
+              <div key={data._id}></div>
             )
           )}
         </div>
 
-        {/* Request */}
-        <div className={style.prebox}>
-          <div className={style.box}>
-            <div className={style.box__text}>Yêu cầu</div>
+        {/* Check role */}
+        {/* {props.role === "provider" && ( */}
+        <div>
+          {/* Request */}
+          <div className={style.prebox}>
+            <div className={style.box}>
+              <div className={style.box__text}>Yêu cầu</div>
+            </div>
+          </div>
+
+          {/* Request Resource */}
+          <div className={style.documentsection}>
+            {outlineArray.map((data) =>
+              data.classId._id === props.id.classId &&
+              data.classId.courseId._id === props.id.courseId &&
+              data.classId.instructorId.id === props.id.instructorId &&
+              data.classId.academicId._id === props.id.academicId &&
+              data.resourceType === "Review Paper" &&
+              data.status === "pending" ? (
+                <Outline key={data._id} outlineData={data} role={props.role} />
+              ) : (
+                <div key={data._id}></div>
+              )
+            )}
           </div>
         </div>
-
-        {/* Request Resource */}
-        <div className={style.documentsection}>
-          {outlineArray.map((data) =>
-            data.classId._id === props.id.classId &&
-            data.classId.courseId._id === props.id.courseId &&
-            data.classId.instructorId.id === props.id.instructorId &&
-            data.classId.academicId._id === props.id.academicId &&
-            data.resourceType === "Review Paper" &&
-            data.status === "pending" ? (
-              <Outline
-                key={data.resourceName}
-                outlineData={data}
-                role={props.role}
-              />
-            ) : (
-              <div></div>
-            )
-          )}
-        </div>
+        {/* )} */}
       </div>
     </div>
   );

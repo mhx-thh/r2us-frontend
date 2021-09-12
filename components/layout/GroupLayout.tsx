@@ -3,8 +3,6 @@ import React from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-import { useAppSelector } from "redux/hooks";
-import { selectUser } from "redux/userSlice";
 import { titleGroup } from "lib/models";
 
 interface Props {
@@ -14,13 +12,11 @@ interface Props {
 }
 
 const GroupHeaderLayout = (props: Props) => {
-  const user = useAppSelector(selectUser);
-
   const router = useRouter();
   const url = process.env.NEXT_PUBLIC_WEB_URL;
   const path = router.asPath;
 
-  const title = `R2us | ${user.familyName} ${user.givenName}`;
+  const title = `R2us | ${props.initTitle.className}`;
   const desc = "user";
   const icon = "icons/logo.svg";
   return (

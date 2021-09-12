@@ -7,6 +7,8 @@ import { selectToken } from "redux/userSlice";
 
 import { ResourceType } from "lib/models";
 
+import { useRouter } from "next/router";
+
 type AppProps = {
   resource: ResourceType;
 };
@@ -14,6 +16,13 @@ type AppProps = {
 const ResourceEditModal = function (props: AppProps) {
   const eresource = props.resource;
   const token = useAppSelector(selectToken);
+  const router = useRouter();
+  const title =
+    props.resource.resourceType === "Resources"
+      ? "document"
+      : props.resource.resourceType === "Examination Paper"
+      ? "exam"
+      : "outline";
 
   const initData = {
     resourceType: eresource.resourceType,
@@ -32,9 +41,15 @@ const ResourceEditModal = function (props: AppProps) {
     });
   };
 
-  const handleSend = (e) => {
+  const handleSend = async (e) => {
     e.preventDefault();
-    GroupAPI.patchResource(data, eresource._id, token);
+    try {
+      await GroupAPI.patchResource(data, eresource._id, token);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      router.push(`/group/${props.resource.classId.slug}/${title}`);
+    }
   };
 
   return (

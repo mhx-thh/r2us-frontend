@@ -3,8 +3,6 @@ import React from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-import { useAppSelector } from "redux/hooks";
-import { selectUser } from "redux/userSlice";
 import Sidebar from "components/class/Sidebar/Sidebar";
 import { titleGroup } from "lib/models";
 import Title from "components/class/Title/Title";
@@ -16,13 +14,10 @@ interface Props {
 }
 
 const LayoutClass = (props: Props) => {
-  const user = useAppSelector(selectUser);
-
   const router = useRouter();
   const url = process.env.NEXT_PUBLIC_WEB_URL;
   const path = router.asPath;
-
-  const title = `R2us | ${user.familyName} ${user.givenName}`;
+  const title = `R2us | ${props.initTitle.className}`;
   const desc = "user";
   const icon = "icons/logo.svg";
   return (

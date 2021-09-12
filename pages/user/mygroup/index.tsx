@@ -21,6 +21,7 @@ export const getServerSideProps: GetServerSideProps = async (params) => {
   const falcuty = await AcademicAPI.getFalcuties();
   const course = await AcademicAPI.getCourses();
   const teacher = await AcademicAPI.getIntructors();
+
   return {
     props: {
       schoolyear: schoolyear.data.data,

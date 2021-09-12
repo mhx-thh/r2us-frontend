@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import ReviewItem from "components/Review/ReviewItem";
 import PopUp from "components/class/PopUp/popup";
@@ -26,46 +26,22 @@ type Review = {
 
 const ReviewCourse = function (props: AppProps) {
   const [reviewArray, setReviewArray] = useState(props.review);
+  const [flag, setFlag] = useState(false);
 
-  // DropDown Component
-  function DropdownReview({ close, data }: any) {
-    const token = useAppSelector(selectToken);
-    const ref = useClickOutside(() => {
-      close(0);
-    });
+  const token = useAppSelector(selectToken);
 
-    const [update, setUpdate] = useState(false);
-    const ClickUpdate = () => {
-      setUpdate(true);
-    };
-
-    const ClickDelete = () => {
-      GroupAPI.deleteReview(data._id, token);
-      const newSelect = reviewArray.filter((items) => items !== data);
-      setReviewArray(newSelect);
-    };
-
-    return (
-      <div ref={ref} className="absolute my-8 -mx-24 bg-white">
-        <ul className="w-28  h-28 text-base leading-6 font-normal shadow rounded-xl py-1">
-          <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 ">
-            <button>Duyệt</button>
-          </li>
-          <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 ">
-            <button onClick={ClickDelete}>Xóa</button>
-          </li>
-          <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200">
-            <button onClick={ClickUpdate}>Chỉnh sửa</button>
-          </li>
-        </ul>
-        {update === true && (
-          <PopUp closepopup={close}>
-            <ReviewEditModal review={data} />
-          </PopUp>
-        )}
-      </div>
-    );
-  }
+  useEffect(() => {
+    async function fetchResources() {
+      try {
+        const res = await GroupAPI.getReviews();
+        const data = res?.data?.data?.result;
+        setReviewArray(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchResources();
+  }, [flag, props.review]);
 
   // Review Component
   const Review = function (props: Review) {
@@ -76,7 +52,7 @@ const ReviewCourse = function (props: AppProps) {
 
     return (
       <div className={style.document}>
-        {props.role === "provider" && (
+        {(props.role === "provider" || props.role === "member") && (
           <div>
             <button className={style.document__button} onClick={handleOpen}>
               <img src="/icons/threedot.svg" />
@@ -91,6 +67,50 @@ const ReviewCourse = function (props: AppProps) {
         <div className={style.document__document}>
           <ReviewItem areview={props.reviewData} />
         </div>
+      </div>
+    );
+  };
+
+  // DropDown Component
+  const DropdownReview = function ({ close, data }: any) {
+    const ref = useClickOutside(() => {
+      close(0);
+    });
+
+    const [update, setUpdate] = useState(false);
+    const ClickUpdate = () => {
+      setUpdate(true);
+    };
+
+    const ClickDelete = async () => {
+      try {
+        await GroupAPI.deleteReview(data._id, token);
+        setFlag(!flag);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    return (
+      <div ref={ref} className="absolute my-8 -mx-24 bg-white">
+        <ul className="w-28 text-base leading-6 font-normal shadow rounded-xl bg-white">
+          {data.status === "pending" && props.role === "provider" && (
+            <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 ">
+              <button>Duyệt</button>
+            </li>
+          )}
+          <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 ">
+            <button onClick={ClickDelete}>Xóa</button>
+          </li>
+          <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200">
+            <button onClick={ClickUpdate}>Chỉnh sửa</button>
+          </li>
+        </ul>
+        {update === true && (
+          <PopUp closepopup={close}>
+            <ReviewEditModal review={data} />
+          </PopUp>
+        )}
       </div>
     );
   };
@@ -116,7 +136,7 @@ const ReviewCourse = function (props: AppProps) {
             data.reviewType === "Class" ? (
               <Review reviewData={data} role={props.role} key={data._id} />
             ) : (
-              <div></div>
+              <div key={data._id}></div>
             )
           )}
         </div>

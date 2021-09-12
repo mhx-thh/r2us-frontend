@@ -5,6 +5,7 @@ import GroupAPI from "api/groupAPI";
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 import { ReviewType } from "lib/models";
+import { useRouter } from "next/router";
 
 type AppProps = {
   review: ReviewType;
@@ -13,7 +14,8 @@ type AppProps = {
 const ReviewEditModal = function (props: AppProps) {
   const ereview = props.review;
   const token = useAppSelector(selectToken);
-
+  const router = useRouter();
+  const title = ereview.reviewType === "Class" ? "course" : "teacher";
   const initData = {
     review: ereview.review,
     reviewTitle: ereview.reviewTitle,
@@ -30,9 +32,15 @@ const ReviewEditModal = function (props: AppProps) {
     });
   };
 
-  const handleSend = (e) => {
+  const handleSend = async (e) => {
     e.preventDefault();
-    GroupAPI.patchReview(data, ereview._id, token);
+    try {
+      await GroupAPI.patchReview(data, ereview._id, token);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      router.push(`/group/${ereview.classId.slug}/${title}`);
+    }
   };
 
   return (

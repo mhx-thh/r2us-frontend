@@ -1,27 +1,39 @@
+import { memberType } from "lib/models";
 import React from "react";
 import style from "./style.module.css";
 
-const Member = function () {
-  const tempImg =
-    "https://64.media.tumblr.com/7df6b6950a6731869e53b8a556aeb7c5/a249d0532f9a3100-1a/s2048x3072/f195ef08b8ae5053af86738f4371bdd0e9f9afba.png";
+type AppProps = {
+  member: memberType;
+};
 
+const Member = function (props: AppProps) {
+  const image = props.member.userId.photo;
   return (
     <div className={style.member}>
+      {/* Image */}
       <div className={style.member__preimg}>
-        <img className={style.member__img} src={tempImg} alt="a"></img>
+        <img
+          className={style.member__img}
+          src={image}
+          alt={`${props.member.userId._id}`}
+        />
       </div>
+
+      {/* Text */}
       <div className={style.member__text}>
+        {/* Name */}
         <div>
           <input
             disabled
-            value="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAaAAAAAAAAAAAAAaAAAAAAAAAAAAAa"
+            value={`${props.member.userId.familyName} ${props.member.userId.givenName}`}
             className={style.member__text__name}
           />
         </div>
         <div>
+          {/* Email */}
           <input
             disabled
-            value="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAaAAAAAAAAAAAAAaAAAAAAAAAAAAAa"
+            value={props.member.userId.email}
             className={style.member__text__email}
           />
         </div>

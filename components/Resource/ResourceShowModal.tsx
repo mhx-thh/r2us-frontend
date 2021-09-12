@@ -1,5 +1,5 @@
 import { ResourceType } from "lib/models";
-import React from "react";
+import React, { useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Link from "next/link";
 
@@ -9,6 +9,15 @@ type AppProps = {
 
 function ResourceShowModal({ sresource }: AppProps) {
   const url = `/group/${sresource.classId.slug}`;
+  const [copy, setCopy] = useState(false);
+
+  const ClickCopied = async () => {
+    setCopy(!copy);
+    setTimeout(function () {
+      setCopy(!!copy);
+    }, 5000);
+  };
+
   return (
     <div className="absolute bg-indigo-200 w-full left-0 top-0 h-80 rounded-t-2xl tracking-normal  text-base leading-6 font-medium">
       {/* Title */}
@@ -18,6 +27,7 @@ function ResourceShowModal({ sresource }: AppProps) {
           {sresource.resourceName}
         </div>
       </div>
+
       {/* Teacher */}
       <div className="flex px-56 ml-0 m-3">
         <img className="my-2" width="20" src="/icons/teacher.svg" />
@@ -49,22 +59,28 @@ function ResourceShowModal({ sresource }: AppProps) {
           {sresource.resourceLink}
         </div>
         <CopyToClipboard text={sresource.resourceLink}>
-          <button>
+          <button onClick={ClickCopied}>
             <img className="mr-8" src="/icons/copyLink.svg" />
+            {copy === true && (
+              <div className="absolute right-16 bottom-3">Copied</div>
+            )}
           </button>
         </CopyToClipboard>
       </div>
+
       {/* SchoolYear */}
       <div className="mx-44 mt-16 bg-white text-lg leading-6 font-medium text-indigo-500 m-10 py-10">
         {sresource.classId.academicId.schoolyear}, học kì{" "}
         {sresource.classId.academicId.semester}
       </div>
+
       {/* Description */}
       <div className="ml-40 px-1 -mt-16 my-3 flex mx-36 w-7/12 h-40">
         <div className="mx-3 overflow-auto ">
           {sresource.resourceDescription}
         </div>
       </div>
+
       {/* Avatar */}
       <div className="float-right mr-8 -mt-60 relative -top-2">
         <img

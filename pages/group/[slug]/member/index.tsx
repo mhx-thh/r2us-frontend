@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import NewClassAPI from "api/NewClassAPI";
 import GroupAPI from "api/groupAPI";
 
 import MemberPage from "components/class/page/member/memberpage";
@@ -9,19 +8,19 @@ import LayoutClass from "components/layout/ClassLayout";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 
-import { titleGroup } from "lib/models";
+import { memberType, titleGroup } from "lib/models";
 
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 
 type propApi = {
-  status: string;
-  class: titleGroup;
+  title: titleGroup;
+  members: Array<memberType>;
 };
 
 export const getServerSideProps: GetServerSideProps = async (params) => {
   const temp = params.params.slug.toString();
-  const res = await NewClassAPI.getGroup(temp);
+  const res = await GroupAPI.getGroup(temp);
 
   params.res.setHeader(
     "Cache-control",
@@ -30,28 +29,38 @@ export const getServerSideProps: GetServerSideProps = async (params) => {
 
   return {
     props: {
-      status: res?.data?.status,
-      class: res?.data?.data,
+      title: res?.data?.data,
     },
   };
 };
 
 const Item = function (props: propApi) {
   const router = useRouter();
-
+  const [members, setMembers] = useState([]);
   const [role, setRole] = useState("");
   const token = useAppSelector(selectToken);
 
   useEffect(() => {
     async function fetchRole() {
       try {
-        const res = await GroupAPI.getRole(props.class._id, token);
+        const res = await GroupAPI.getRole(props.title._id, token);
         const data = res?.data?.data?.result;
         data[0] !== undefined && setRole(data[0].role);
       } catch (error) {
         console.log(error.message);
       }
     }
+
+    async function fetchMembers() {
+      try {
+        const res = await GroupAPI.getMembers(props.title._id, token);
+        const data = res?.data?.data?.result;
+        setMembers(data);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+    fetchMembers();
     fetchRole();
   }, []);
 
@@ -59,8 +68,8 @@ const Item = function (props: propApi) {
     return <div>Loading...</div>;
   } else {
     return (
-      <LayoutClass initTitle={props.class} role={role}>
-        <MemberPage />
+      <LayoutClass initTitle={props.title} role={role}>
+        <MemberPage members={members} role={role} />
       </LayoutClass>
     );
   }
