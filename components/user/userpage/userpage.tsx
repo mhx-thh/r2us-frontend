@@ -1,12 +1,12 @@
 import InputField from "components/user/userpage/inputfield";
 import React from "react";
-import style from "./style.module.css";
 
 type AppProps = {
   user: any;
 };
 
 const UserPage = function ({ user }: AppProps) {
+  console.log(user);
   return (
     <div className="pl-56 grid grid-cols-12">
       {/* User field */}
