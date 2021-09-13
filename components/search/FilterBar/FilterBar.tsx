@@ -48,7 +48,7 @@ function FilterBar({ getData, getPagination, setDone }: Props) {
       switch (name) {
         case "facultyId":
           const data = await api.get(value);
-          const options = data?.data?.result;
+          const options = data?.data?.data?.result;
           const newCourses = options?.map((op) => {
             const newOp = {};
             newOp["label"] = op.courseName;

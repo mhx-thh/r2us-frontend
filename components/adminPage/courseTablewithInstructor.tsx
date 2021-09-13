@@ -135,7 +135,6 @@ function CourseTable({ instructor }: AppProps) {
     }
     fetchFacultyList();
   }, []);
-
   return (
     <table className=" w-full p-2 border">
       <thead className="">
