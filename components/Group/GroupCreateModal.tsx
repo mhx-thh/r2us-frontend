@@ -57,23 +57,25 @@ const GroupCreateModal = function ({ data }: any) {
 
   const ClickSend = (e) => {
     async function postGroup() {
-      setCreateStatus("loading");
+      // setCreateStatus("loading");
+      e.preventDefault();
+      console.log(create);
       const res = await GroupAPI.postResource(create, token);
-      setCreateStatus("done");
-      if (res?.data?.status === "success") {
-        Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thành công." });
-      } else {
-        Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thất bại." });
-        e.preventDefault();
-      }
+      // setCreateStatus("done");
+      // if (res?.data?.status === "success") {
+      //   Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thành công." });
+      // } else {
+      //   Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thất bại." });
+      //   e.preventDefault();
+      // }
     }
 
     if (
       create.academicId !== "" &&
       create.className !== "" &&
       create.courseId !== "" &&
-      create.instructorId !== "" &&
-      createStatus === "done"
+      create.instructorId !== ""
+      // createStatus === "done"
     ) {
       postGroup();
     }

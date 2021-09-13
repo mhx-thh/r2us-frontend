@@ -8,6 +8,7 @@ import { selectToken } from "redux/userSlice";
 import { ResourceType } from "lib/models";
 
 import { useRouter } from "next/router";
+import Swal from "sweetalert2";
 
 type AppProps = {
   resource: ResourceType;
@@ -45,10 +46,10 @@ const ResourceEditModal = function (props: AppProps) {
     e.preventDefault();
     try {
       await GroupAPI.patchResource(data, eresource._id, token);
+      Swal.fire("Lưu thành công", "Đã chỉnh sửa tài liệu !", "success");
+      router.push(`/group/${props.resource.classId.slug}/${title}`);
     } catch (error) {
       console.log(error);
-    } finally {
-      router.push(`/group/${props.resource.classId.slug}/${title}`);
     }
   };
 

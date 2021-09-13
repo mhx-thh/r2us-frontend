@@ -12,6 +12,7 @@ import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 
 import { Id, ReviewType } from "lib/models";
+import Swal from "sweetalert2";
 
 type AppProps = {
   role: string;
@@ -32,6 +33,14 @@ const ReviewTeacher = function (props: AppProps) {
 
   useEffect(() => {
     async function fetchReviews() {
+      Swal.fire({
+        title: "Đang lấy dữ liệu",
+        icon: "info",
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       try {
         const res = await GroupAPI.getReviews();
         const data = res?.data?.data?.result;
@@ -39,6 +48,7 @@ const ReviewTeacher = function (props: AppProps) {
       } catch (error) {
         console.log(error);
       }
+      Swal.close();
     }
     fetchReviews();
   }, [flag, props.review]);
@@ -56,7 +66,7 @@ const ReviewTeacher = function (props: AppProps) {
             <button className={style.document__button} onClick={handleOpen}>
               <img src="/icons/threedot.svg" />
             </button>
-            <div className="absolute">
+            <div className="relative -top-6">
               {open === true && (
                 <DropdownReview close={setOpen} data={props.reviewData} />
               )}
@@ -83,8 +93,26 @@ const ReviewTeacher = function (props: AppProps) {
 
     const ClickDelete = async () => {
       try {
-        await GroupAPI.deleteReview(data._id, token);
-        setFlag(!flag);
+        await Swal.fire({
+          title: "Bạn chắc chắn muốn xóa ?",
+          text: "Bạn sẽ không thể hoàn tác lại nếu đã xóa!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Tôi chắc chắn !",
+          cancelButtonText: "Không, quay lại !",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            GroupAPI.deleteReview(data._id, token);
+            Swal.fire(
+              "Xóa thành công",
+              "Cảm nhận đã được xóa khỏi lớp",
+              "success"
+            );
+            setFlag(!flag);
+          }
+        });
       } catch (error) {
         console.log(error);
       }
@@ -93,9 +121,16 @@ const ReviewTeacher = function (props: AppProps) {
     const acceptedStatus = {
       status: "accepted",
     };
+
     const ClickAccept = async () => {
       try {
         await GroupAPI.patchReview(acceptedStatus, data._id, token);
+        Swal.fire({
+          icon: "success",
+          title: "Đã duyệt cảm nhận thành công",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         setFlag(!flag);
       } catch (error) {
         console.log(error);
@@ -104,14 +139,20 @@ const ReviewTeacher = function (props: AppProps) {
 
     return (
       <div ref={ref} className="absolute my-8 -mx-24 bg-white">
-        <ul className="w-28 text-base leading-6 font-normal shadow rounded-xl bg-white">
+        <ul className="w-28 text-base leading-6 font-normal shadow rounded-xl bg-white border-2 border-solid border-blue-700">
           {/* {data.status === "pending" && props.role === "provider" && ( */}
-          <li
-            className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-green-200 cursor-pointer"
-            onClick={ClickAccept}
-          >
-            Duyệt
-          </li>
+          {data.status === "pending" ? (
+            <li
+              className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-green-200 cursor-pointer"
+              onClick={ClickAccept}
+            >
+              Duyệt
+            </li>
+          ) : (
+            <li className="flex w-full h-auto p-1.5 justify-center rounded-xl bg-green-200">
+              Đã duyệt <img src="/icons/tickIcon.svg" className="pl-2" />
+            </li>
+          )}
           {/* )} */}
           <li
             className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-red-300 cursor-pointer"

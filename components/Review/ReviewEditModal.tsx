@@ -36,21 +36,9 @@ const ReviewEditModal = function (props: AppProps) {
   const handleSend = async (e) => {
     e.preventDefault();
     try {
-      await Swal.fire({
-        title: "Do you want to save the changes?",
-        showDenyButton: true,
-        showCancelButton: true,
-        confirmButtonText: "Save",
-        denyButtonText: `Don't save`,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          GroupAPI.patchReview(data, ereview._id, token);
-          Swal.fire("Saved!", "", "success");
-          router.push(`/group/${ereview.classId.slug}/${title}`);
-        } else if (result.isDenied) {
-          Swal.fire("Changes are not saved", "", "info");
-        }
-      });
+      await GroupAPI.patchReview(data, ereview._id, token);
+      Swal.fire("Lưu thành công", "Đã chỉnh sửa tài liệu !", "success");
+      router.push(`/group/${ereview.classId.slug}/${title}`);
     } catch (error) {
       console.log(error);
     }
