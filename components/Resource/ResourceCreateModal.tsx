@@ -37,10 +37,6 @@ const CreateResource = function () {
   const [myClass, setMyClass] = useState([]);
 
   useEffect(() => {
-    console.log("Data: ", data);
-  }, [data]);
-
-  useEffect(() => {
     async function fetchData() {
       const schoolyear = await AcademicAPI.getSchoolYears();
       const falcuty = await AcademicAPI.getFalcuties();
@@ -163,7 +159,9 @@ const CreateResource = function () {
   const handleFacultyId = (e) => {
     setFacultyId(e.target.value);
     setCourseId("");
+    data.course = [];
     setInstructorId("");
+    data.teacher = [];
 
     async function fetchCourse() {
       const course = await courseApi.getCoursetoFaculty(e.target.value);
@@ -181,6 +179,7 @@ const CreateResource = function () {
   const handleCourseId = (e) => {
     setCourseId(e.target.value);
     setInstructorId("");
+    data.teacher = [];
 
     async function fetchInstructor() {
       const instructor = await InstructorAPI.getInstructortoCourse(
@@ -203,6 +202,9 @@ const CreateResource = function () {
   const clickReset = () => {
     setFacultyId("");
     setCourseId("");
+    data.course = [];
+    setInstructorId("");
+    data.teacher = [];
     setCreate({
       ...create,
       classId: initCreate.classId,
@@ -331,6 +333,7 @@ const CreateResource = function () {
             <select
               className="px-2 bg-indigo-50 w-48 rounded-2xl h-10 border border-solid border-indigo-500"
               onChange={handleFacultyId}
+              value={facultyId}
             >
               <option value="">Chọn khoa</option>
               {data?.falcuty?.result?.map((val, key) => (
@@ -351,6 +354,7 @@ const CreateResource = function () {
             <select
               className="px-2 bg-indigo-50 w-48 rounded-2xl h-10 border border-solid border-indigo-500"
               onChange={handleCourseId}
+              value={courseId}
             >
               <option value="">Chọn môn</option>
               {data?.course?.result?.map((val, key) => (
@@ -371,6 +375,7 @@ const CreateResource = function () {
             <select
               className="px-2 bg-indigo-50 w-48 rounded-2xl h-10 border border-solid border-indigo-500"
               onChange={handleInstructor}
+              value={instructorId}
             >
               <option value="">Chọn giáo viên</option>
               {data?.teacher?.result?.map((val, key) => (
@@ -383,14 +388,14 @@ const CreateResource = function () {
 
           {/* Class has not opened yet */}
           <div className={classStatus === "gotNone" ? "visible" : "invisible"}>
-            <div className="flex left-16">
+            <div className="flex pl-12">
               <img src="/icons/warning.svg" width="21" height="18" />
               <p className="text-xs leading-none font-normal w-44 tracking-normal px-2">
                 Nhóm chưa được mở, bạn có thể mở nhóm.
               </p>
             </div>
             <a
-              className="left-20 mx-2 text-sm leading-none font-normal w-48 tracking-normal px-2 font-bold "
+              className="pl-16 mx-2 text-sm leading-none font-normal w-48 tracking-normal px-2 font-bold "
               href={`${process.env.NEXT_PUBLIC_WEB_URL}/user/mygroup`}
             >
               Tại đây
@@ -421,7 +426,7 @@ const CreateResource = function () {
                 enrollStatus === "notEnrolled" ? "visible" : "invisible"
               }
             >
-              <div className="flex left-16">
+              <div className="flex pl-12">
                 <img src="/icons/warning.svg" width="21" height="18" />
                 <p className="text-xs leading-none font-normal w-44 tracking-normal px-2">
                   Bạn chưa tham gia vào nhóm này, khi gửi tài liệu, bạn xác nhận
