@@ -5,18 +5,18 @@ import Title from "components/class/Title/Title";
 import Sidebar from "components/class/Sidebar/Sidebar";
 import TitleField from "./titlefield";
 
+import Swal from "sweetalert2";
+
 import style from "./style.module.css";
 import { classInfo, titleGroup } from "lib/models";
 
 import userApi from "api/userApi";
 import GroupAPI from "api/groupAPI";
 
-import Link from "next/link";
 import { useRouter } from "next/router";
 
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
-import Swal from "sweetalert2";
 
 type AppProps = {
   data: classInfo;
@@ -47,6 +47,14 @@ const InformationPage = function (props: AppProps) {
 
   useEffect(() => {
     async function fetchSlug() {
+      Swal.fire({
+        title: "Đang lấy dữ liệu",
+        icon: "info",
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       try {
         const res = await GroupAPI.getGroups();
         const data = res?.data?.data;
@@ -64,6 +72,7 @@ const InformationPage = function (props: AppProps) {
       } catch (error) {
         console.log(error.message);
       }
+      Swal.close();
     }
     fetchSlug();
   }, [flag]);
@@ -85,6 +94,11 @@ const InformationPage = function (props: AppProps) {
     try {
       setEnroll(true);
       await userApi.postEnroll({ classId: props.data._id }, token);
+      Swal.fire(
+        "Tham gia lớp học thành công",
+        `Đã thêm bạn vào danh sách lớp ${dataPatch.className}`,
+        "success"
+      );
     } catch (error) {
       console.log(error);
     }
@@ -94,6 +108,11 @@ const InformationPage = function (props: AppProps) {
     try {
       await GroupAPI.patchClass(dataPatch, props.data._id, token);
       setFlag(!flag);
+      Swal.fire(
+        "Cập nhập thành công",
+        `Đã cập nhập thông tin lớp ${dataPatch.className}`,
+        "success"
+      );
     } catch (error) {
       console.log(error);
     }
@@ -108,12 +127,16 @@ const InformationPage = function (props: AppProps) {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Chắc chắn !",
+        confirmButtonText: "Tôi chắc chắn!",
         cancelButtonText: "Quay lại",
       }).then((result) => {
         if (result.isConfirmed) {
           GroupAPI.deleteClass(props.data._id, token);
-          Swal.fire("Xóa thành công", `Lớp "${title.className}"`, "success");
+          Swal.fire(
+            "Xóa thành công",
+            `Lớp học "${title.className}"`,
+            "success"
+          );
         }
         router.push("/");
       });

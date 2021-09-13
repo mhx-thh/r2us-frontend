@@ -89,6 +89,14 @@ const GroupAPI = {
     const url = `${apiV1}/groups/enrollment?classId__eq=${classId}`;
     return get(url, token);
   },
+  patchRole: function (data: any, id: string, token: string) {
+    const url = `${apiV1}/groups/enrollment/${id}`;
+    return patch(url, data, token);
+  },
+  deleteMember: function (id: string, token: string) {
+    const url = `${apiV1}/groups/enrollment/${id}`;
+    return delele(url, token);
+  },
 };
 
 export default GroupAPI;
