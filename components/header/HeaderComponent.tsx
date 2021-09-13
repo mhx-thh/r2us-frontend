@@ -1,25 +1,27 @@
 import Link from "next/link";
 import React, { FC, useState } from "react";
-import { useAppSelector } from "redux/hooks";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
 import IconSearch from "./IconSearch";
 import Logo from "./Logo";
 import { logout, selectStatus, selectUser } from "redux/userSlice";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
 
 const HeaderComponent: FC = () => {
   const [openUser, setOpenUser] = useState(false);
+  const dispatch = useDispatch();
   const defaultstatus = useAppSelector(selectStatus);
-  const [status, setStatus] = useState(defaultstatus);
   const user = useAppSelector(selectUser);
   // status = "logined";
   // console.log(status);
 
   const router = useRouter();
   const path = router.pathname;
-
+  console.log(defaultstatus);
   const logOut = () => {
     localStorage.removeItem("token");
-    setStatus("nologin");
+    const action = logout();
+    dispatch(action);
     setOpenUser(!openUser);
   };
   const userpage = () => {
@@ -84,7 +86,7 @@ const HeaderComponent: FC = () => {
               </Link>
             </div>
 
-            {status === "nologin" && (
+            {defaultstatus === "nologin" && (
               <div>
                 <Link href="/login">
                   <div className="py-1 px-1.5 rounded-lg bg-indigo-100 flex items-center cursor-pointer">
