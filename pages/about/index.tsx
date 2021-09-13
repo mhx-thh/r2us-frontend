@@ -1,8 +1,8 @@
-import style from "../style.module.css";
 import Footer from "components/footer/FooterComponent";
 import React, { FC, useEffect, useState } from "react";
 import IconContact from "./icon";
 import InforContact from "./InforContact";
+import APP1 from "./carouselInfor";
 const TogglePage: FC = () => {
   return (
     <React.Fragment>
@@ -21,8 +21,7 @@ const TogglePage: FC = () => {
       </div>
 
       {/* Image */}
-      <img src="picture/about.png" alt="about picture" />
-
+      <img src="picture/about.png" alt="about picture" className="w-full" />
       <div className="w-full flex items-center  py-24 ">
         <div>
           <svg
@@ -331,11 +330,11 @@ const TogglePage: FC = () => {
             Đội hình Tin học hóa, CDTN MHX 2021
           </p>
         </div>
-        <div className="overflow-x-auto">
-          <InforContact />
-        </div>
       </div>
-
+      <div className="px-24">
+        <APP1 />
+      </div>
+      <div className="p-6"></div>
       <div className="w-full flex items-center px-28 py-24 bg-indigo-50">
         <div>
           {/* Infor update */}
@@ -369,5 +368,4 @@ const TogglePage: FC = () => {
     // <ClassDocument />
   );
 };
-
 export default TogglePage;
