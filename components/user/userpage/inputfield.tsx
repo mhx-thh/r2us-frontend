@@ -13,12 +13,10 @@ function InputField(props: {
   const [isActive, setIsActive] = useState(false);
   const onSubmit = () => {
     setIsActive(!!!isActive);
-    console.log(data);
     // Push Api
   };
   const handleChange = (e) => {
     setData(e.target.value);
-    console.log(data);
   };
 
   return (
