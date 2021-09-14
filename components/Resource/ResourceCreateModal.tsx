@@ -24,7 +24,7 @@ type enrollStatus = "enrolled" | "notEnrolled";
 type createStatus = "loading" | "done";
 type dataCreate = {
   schoolyear: any;
-  falcuty: any;
+  faculty: any;
   course: any;
   teacher: any;
 };
@@ -39,14 +39,14 @@ const CreateResource = function () {
   useEffect(() => {
     async function fetchData() {
       const schoolyear = await AcademicAPI.getSchoolYears();
-      const falcuty = await AcademicAPI.getFalcuties();
+      const faculty = await AcademicAPI.getFalcuties();
 
       const res = await userApi.getMyClass(token);
       const myClass = res?.data?.data?.result;
 
       const data = {
         schoolyear: schoolyear.data.data,
-        falcuty: falcuty.data.data,
+        faculty: faculty.data.data,
         course: [],
         teacher: [],
       };
@@ -237,8 +237,8 @@ const CreateResource = function () {
 
   return (
     <form onSubmit={clickSend}>
-      <div className="absolute flex top-0 left-0 w-full h-full rounded-l-2xl">
-        <div className="bg-indigo-100 w-8/12">
+      <div className="absolute flex top-0 left-0 w-full h-full rounded-2xl">
+        <div className="bg-indigo-100 w-8/12 rounded-l-2xl">
           <div className="flex justify-between h-16 pt-12">
             {/* Title */}
             <div className="pl-16">
@@ -274,6 +274,7 @@ const CreateResource = function () {
               onChange={handleResourceName}
             />
           </div>
+
           {/* Link */}
           <div className="flex items-start pt-5 pl-16">
             <img src="/icons/link.svg" width="20" height="20" />
@@ -283,6 +284,7 @@ const CreateResource = function () {
               onChange={handleResourceLink}
             />
           </div>
+
           {/* Desc */}
           <div className="flex items-start pt-5 pl-16">
             <img src="/icons/descriptionIcon.svg" width="20" height="20" />
@@ -293,6 +295,7 @@ const CreateResource = function () {
               onChange={handleResourceDescription}
             />
           </div>
+
           {/* Button ResetData */}
           <div className="flex flex-row-reverse left-56 top-4 mb-4 mr-10 pt-7">
             <button type="reset" onClick={clickReset}>
@@ -313,6 +316,7 @@ const CreateResource = function () {
             <select
               className="px-2 bg-indigo-50 w-48 rounded-2xl h-10 border border-solid border-indigo-500"
               onChange={handleAcademicId}
+              value={schoolyear}
             >
               <option value="">Chọn năm học</option>
               {data?.schoolyear?.result?.map((val, key) => (
@@ -336,7 +340,7 @@ const CreateResource = function () {
               value={facultyId}
             >
               <option value="">Chọn khoa</option>
-              {data?.falcuty?.result?.map((val, key) => (
+              {data?.faculty?.result?.map((val, key) => (
                 <option value={val._id} key={key}>
                   {val.facultyName}
                 </option>

@@ -75,7 +75,7 @@ const GroupPage = function (props: any) {
 
         {isCreated === true && (
           <PopUp closepopup={setIsCreated}>
-            <GroupCreateModal data={props.props} />
+            <GroupCreateModal />
           </PopUp>
         )}
       </div>
