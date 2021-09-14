@@ -46,7 +46,12 @@ const ResourceEditModal = function (props: AppProps) {
     e.preventDefault();
     try {
       await GroupAPI.patchResource(data, eresource._id, token);
-      Swal.fire("Lưu thành công", "Đã chỉnh sửa tài liệu !", "success");
+      Swal.fire({
+        icon: "success",
+        title: "Lưu thành công",
+        showConfirmButton: false,
+        timer: 1500,
+      });
       router.push(`/group/${props.resource.classId.slug}/${title}`);
     } catch (error) {
       console.log(error);

@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+
 import { memberType, titleGroup } from "lib/models";
 import style from "./style.module.css";
 import useClickOutside from "components/clickOutside/clickOutside";
-import GroupAPI from "api/groupAPI";
-import { useAppSelector } from "redux/hooks";
-import { selectToken } from "redux/userSlice";
-import Swal from "sweetalert2";
 import Title from "components/class/Title/Title";
 import Sidebar from "components/class/Sidebar/Sidebar";
+
+import GroupAPI from "api/groupAPI";
+
+import { useAppSelector } from "redux/hooks";
+import { selectToken } from "redux/userSlice";
+
 import { useRouter } from "next/router";
 
 type AppProps = {
@@ -40,14 +44,6 @@ const MemberPage = function (props: AppProps) {
 
   useEffect(() => {
     async function fetchMembers() {
-      Swal.fire({
-        title: "Loading data",
-        icon: "info",
-        timerProgressBar: true,
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      });
       try {
         const res = await GroupAPI.getMembers(props.title._id, token);
         const data = res?.data?.data?.result;
@@ -55,14 +51,9 @@ const MemberPage = function (props: AppProps) {
       } catch (error) {
         console.log(error);
       }
-      Swal.close();
     }
     fetchMembers();
   }, [flag, props.members]);
-
-  const promoteRole = {
-    role: "provider",
-  };
 
   const demoteRole = {
     role: "member",
@@ -82,18 +73,20 @@ const MemberPage = function (props: AppProps) {
       setRole("member");
     };
 
+    const promoteRole = {
+      role: "provider",
+    };
     const ClickPromote = async () => {
       try {
         await GroupAPI.patchRole(promoteRole, member._id, token);
       } catch (error) {
         console.log(error);
       }
-      setRole("provider");
     };
 
-    const ClickDelete = async () => {
+    const ClickDelete = () => {
       try {
-        await Swal.fire({
+        Swal.fire({
           title: `Bạn chắc chắn muốn xóa
           ${member.userId.familyName} ${member.userId.givenName} ra khỏi lớp?`,
           text: "Bạn sẽ không thể hoàn tác lại nếu đã xóa!",
@@ -103,9 +96,9 @@ const MemberPage = function (props: AppProps) {
           cancelButtonColor: "#d33",
           confirmButtonText: "Tôi chắc chắn !",
           cancelButtonText: "Không, quay lại !",
-        }).then((result) => {
+        }).then(async function (result) {
           if (result.isConfirmed) {
-            GroupAPI.deleteMember(member._id, token);
+            await GroupAPI.deleteMember(member._id, token);
             setFlag(!flag);
             Swal.fire(
               "Xóa thành công",
@@ -120,7 +113,7 @@ const MemberPage = function (props: AppProps) {
     };
 
     return (
-      <div ref={ref} className="absolute my-8 -mx-24">
+      <div ref={ref} className="absolute my-8 -mx-24 bg-white">
         <ul className="w-32 text-base leading-6 font-normal shadow-xl rounded-xl bg-white border-2 border-solid border-blue-700">
           {role === "provider" ? (
             <li
@@ -192,7 +185,7 @@ const MemberPage = function (props: AppProps) {
           <button className={style.member__button} onClick={ClickThreeDot}>
             <img src="/icons/threedot.svg" />
           </button>
-          <div className="relative -top-6">
+          <div className="relative -top-12 left-32">
             {open === true && (
               <DropdownMember close={setOpen} member={member} role={role} />
             )}

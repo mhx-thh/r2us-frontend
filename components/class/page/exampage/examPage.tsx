@@ -34,14 +34,6 @@ const ExamPage = function (props: AppProps) {
 
   useEffect(() => {
     async function fetchResources() {
-      Swal.fire({
-        title: "Đang lấy dữ liệu",
-        icon: "info",
-        timerProgressBar: true,
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      });
       try {
         const res = await GroupAPI.getResources();
         const data = res?.data?.data?.result;
@@ -49,7 +41,6 @@ const ExamPage = function (props: AppProps) {
       } catch (error) {
         console.log(error);
       }
-      Swal.close();
     }
     fetchResources();
   }, [flag, props.exams]);
@@ -95,9 +86,9 @@ const ExamPage = function (props: AppProps) {
       setUpdate(true);
     };
 
-    const ClickDelete = async () => {
+    const ClickDelete = () => {
       try {
-        await Swal.fire({
+        Swal.fire({
           title: "Bạn chắc chắn muốn xóa ?",
           text: "Bạn sẽ không thể hoàn tác lại nếu đã xóa!",
           icon: "warning",
@@ -106,12 +97,12 @@ const ExamPage = function (props: AppProps) {
           cancelButtonColor: "#d33",
           confirmButtonText: "Tôi chắc chắn !",
           cancelButtonText: "Không, quay lại !",
-        }).then((result) => {
+        }).then(async function (result) {
           if (result.isConfirmed) {
-            GroupAPI.deleteResource(data.id, token);
+            await GroupAPI.deleteResource(data.id, token);
             Swal.fire(
               "Xóa thành công",
-              "Cảm nhận đã được xóa khỏi lớp",
+              "Đề thi đã được xóa khỏi lớp",
               "success"
             );
             setFlag(!flag);
@@ -130,7 +121,7 @@ const ExamPage = function (props: AppProps) {
         await GroupAPI.patchResource(Accept, data.id, token);
         Swal.fire({
           icon: "success",
-          title: "Đã duyệt tài liệu thành công",
+          title: "Đã duyệt đề thi thành công",
           showConfirmButton: false,
           timer: 1500,
         });
@@ -144,16 +135,12 @@ const ExamPage = function (props: AppProps) {
       <div ref={ref} className="absolute my-8 -mx-24">
         <ul className="w-28 text-base leading-6 font-normal shadow-xl rounded-xl bg-white border-2 border-solid border-blue-700">
           {/* {data.status === "pending" && props.role === "provider" && ( */}
-          {data.status === "pending" ? (
+          {data.status === "pending" && (
             <li
               className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-green-200 cursor-pointer"
               onClick={ClickAccept}
             >
               Duyệt
-            </li>
-          ) : (
-            <li className="flex w-full h-auto p-1.5 justify-center rounded-xl bg-green-200">
-              Đã duyệt <img src="/icons/tickIcon.svg" className="pl-2" />
             </li>
           )}
           {/* )} */}
@@ -161,15 +148,16 @@ const ExamPage = function (props: AppProps) {
             className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-red-300 cursor-pointer"
             onClick={ClickDelete}
           >
-            Xóa
+            {data.status === "accepted" ? "Xóa" : "Không duyệt"}
           </li>
-
-          <li
-            className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 cursor-pointer"
-            onClick={handleUpdate}
-          >
-            Chỉnh sửa
-          </li>
+          {data.status === "accepted" && (
+            <li
+              className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 cursor-pointer"
+              onClick={handleUpdate}
+            >
+              Chỉnh sửa
+            </li>
+          )}
         </ul>
         {update === true && (
           <PopUp closepopup={close}>

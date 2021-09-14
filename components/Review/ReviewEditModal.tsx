@@ -37,7 +37,12 @@ const ReviewEditModal = function (props: AppProps) {
     e.preventDefault();
     try {
       await GroupAPI.patchReview(data, ereview._id, token);
-      Swal.fire("Lưu thành công", "Đã chỉnh sửa tài liệu !", "success");
+      Swal.fire({
+        icon: "success",
+        title: "Lưu thành công",
+        showConfirmButton: false,
+        timer: 1500,
+      });
       router.push(`/group/${ereview.classId.slug}/${title}`);
     } catch (error) {
       console.log(error);

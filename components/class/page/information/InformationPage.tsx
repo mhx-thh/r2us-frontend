@@ -121,7 +121,8 @@ const InformationPage = function (props: AppProps) {
   const ClickDelete = async () => {
     try {
       await Swal.fire({
-        title: `Bạn chắc chắn muốn xóa lớp ${title.className}`,
+        title: `Bạn chắc chắn muốn xóa lớp 
+        ${title.className} ??`,
         text: "Bạn sẽ không thể hoàn tác nếu đã xóa lớp này !!",
         icon: "warning",
         showCancelButton: true,
@@ -129,16 +130,16 @@ const InformationPage = function (props: AppProps) {
         cancelButtonColor: "#d33",
         confirmButtonText: "Tôi chắc chắn!",
         cancelButtonText: "Quay lại",
-      }).then((result) => {
+      }).then(async function (result) {
         if (result.isConfirmed) {
-          GroupAPI.deleteClass(props.data._id, token);
+          await GroupAPI.deleteClass(props.data._id, token);
           Swal.fire(
             "Xóa thành công",
             `Lớp học "${title.className}"`,
             "success"
           );
+          router.push("/");
         }
-        router.push("/");
       });
     } catch (error) {
       console.log(error);
@@ -250,10 +251,13 @@ const InformationPage = function (props: AppProps) {
               props.role === "provider" && (
                 <div className={style.pbutton}>
                   <button className={style.button} onClick={ClickUpdate}>
-                    <img src="/icons/buttonSend.svg" />
+                    Chỉnh sửa
                   </button>
-                  <button className={style.button} onClick={ClickDelete}>
-                    <img src="/icons/buttonReset.svg" />
+                  <button
+                    className={style.button__delete}
+                    onClick={ClickDelete}
+                  >
+                    Xóa lớp
                   </button>
                 </div>
               )
