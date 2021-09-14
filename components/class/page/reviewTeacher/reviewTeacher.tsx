@@ -13,6 +13,7 @@ import { selectToken } from "redux/userSlice";
 
 import { Id, ReviewType } from "lib/models";
 import Swal from "sweetalert2";
+import CreateReview from "components/Review/ReviewCreateModal";
 
 type AppProps = {
   role: string;
@@ -28,19 +29,11 @@ type Review = {
 const ReviewTeacher = function (props: AppProps) {
   const [reviewArray, setReviewArray] = useState(props.review);
   const [flag, setFlag] = useState(false);
-
+  const [create, setCreate] = useState(false);
   const token = useAppSelector(selectToken);
 
   useEffect(() => {
     async function fetchReviews() {
-      Swal.fire({
-        title: "Đang lấy dữ liệu",
-        icon: "info",
-        timerProgressBar: true,
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      });
       try {
         const res = await GroupAPI.getReviews();
         const data = res?.data?.data?.result;
@@ -48,11 +41,13 @@ const ReviewTeacher = function (props: AppProps) {
       } catch (error) {
         console.log(error);
       }
-      Swal.close();
     }
     fetchReviews();
   }, [flag, props.review]);
 
+  const ClickCreate = () => {
+    setCreate(true);
+  };
   // Review Item
   const Review = function (props: Review) {
     const [open, setOpen] = useState(false);
@@ -91,9 +86,9 @@ const ReviewTeacher = function (props: AppProps) {
       setUpdate(true);
     };
 
-    const ClickDelete = async () => {
+    const ClickDelete = () => {
       try {
-        await Swal.fire({
+        Swal.fire({
           title: "Bạn chắc chắn muốn xóa ?",
           text: "Bạn sẽ không thể hoàn tác lại nếu đã xóa!",
           icon: "warning",
@@ -102,9 +97,9 @@ const ReviewTeacher = function (props: AppProps) {
           cancelButtonColor: "#d33",
           confirmButtonText: "Tôi chắc chắn !",
           cancelButtonText: "Không, quay lại !",
-        }).then((result) => {
+        }).then(async function (result) {
           if (result.isConfirmed) {
-            GroupAPI.deleteReview(data._id, token);
+            await GroupAPI.deleteReview(data._id, token);
             Swal.fire(
               "Xóa thành công",
               "Cảm nhận đã được xóa khỏi lớp",
@@ -139,18 +134,14 @@ const ReviewTeacher = function (props: AppProps) {
 
     return (
       <div ref={ref} className="absolute my-8 -mx-24 bg-white">
-        <ul className="w-28 text-base leading-6 font-normal shadow rounded-xl bg-white border-2 border-solid border-blue-700">
+        <ul className="w-28 text-base leading-6 font-normal shadow-xl rounded-xl bg-white border-2 border-solid border-blue-700">
           {/* {data.status === "pending" && props.role === "provider" && ( */}
-          {data.status === "pending" ? (
+          {data.status === "pending" && (
             <li
               className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-green-200 cursor-pointer"
               onClick={ClickAccept}
             >
               Duyệt
-            </li>
-          ) : (
-            <li className="flex w-full h-auto p-1.5 justify-center rounded-xl bg-green-200">
-              Đã duyệt <img src="/icons/tickIcon.svg" className="pl-2" />
             </li>
           )}
           {/* )} */}
@@ -158,14 +149,16 @@ const ReviewTeacher = function (props: AppProps) {
             className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-red-300 cursor-pointer"
             onClick={ClickDelete}
           >
-            Xóa
+            {data.status === "accepted" ? "Xóa" : "Không duyệt"}
           </li>
-          <li
-            className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 cursor-pointer"
-            onClick={ClickUpdate}
-          >
-            Chỉnh sửa
-          </li>
+          {data.status === "accepted" && (
+            <li
+              className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 cursor-pointer"
+              onClick={ClickUpdate}
+            >
+              Chỉnh sửa
+            </li>
+          )}
         </ul>
         {update === true && (
           <PopUp closepopup={close}>
@@ -181,10 +174,10 @@ const ReviewTeacher = function (props: AppProps) {
       <div>
         {/* Button Share Review */}
         <div className={style.buttonarea}>
-          <div className={style.head}>
+          <button className={style.head} onClick={ClickCreate}>
             <div className={style.head__text}>Chia sẻ cảm nhận</div>
             <img className={style.head__image} src="/icons/review.svg" />
-          </div>
+          </button>
         </div>
 
         {/* Document */}
@@ -226,6 +219,11 @@ const ReviewTeacher = function (props: AppProps) {
           )}
         </div>
       </div>
+      {create === true && (
+        <PopUp closepopup={setCreate}>
+          <CreateReview />
+        </PopUp>
+      )}
     </div>
   );
 };

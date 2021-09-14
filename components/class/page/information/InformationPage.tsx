@@ -47,14 +47,6 @@ const InformationPage = function (props: AppProps) {
 
   useEffect(() => {
     async function fetchSlug() {
-      Swal.fire({
-        title: "Đang lấy dữ liệu",
-        icon: "info",
-        timerProgressBar: true,
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      });
       try {
         const res = await GroupAPI.getGroups();
         const data = res?.data?.data;
@@ -72,7 +64,6 @@ const InformationPage = function (props: AppProps) {
       } catch (error) {
         console.log(error.message);
       }
-      Swal.close();
     }
     fetchSlug();
   }, [flag]);
@@ -92,8 +83,8 @@ const InformationPage = function (props: AppProps) {
 
   const ClickEnroll = async () => {
     try {
-      setEnroll(true);
       await userApi.postEnroll({ classId: props.data._id }, token);
+      setEnroll(true);
       Swal.fire(
         "Tham gia lớp học thành công",
         `Đã thêm bạn vào danh sách lớp ${dataPatch.className}`,
@@ -121,24 +112,25 @@ const InformationPage = function (props: AppProps) {
   const ClickDelete = async () => {
     try {
       await Swal.fire({
-        title: `Bạn chắc chắn muốn xóa lớp ${title.className}`,
+        title: `Bạn chắc chắn muốn xóa lớp 
+        ${title.className} ??`,
         text: "Bạn sẽ không thể hoàn tác nếu đã xóa lớp này !!",
-        icon: "warning",
+        icon: "error",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Tôi chắc chắn!",
         cancelButtonText: "Quay lại",
-      }).then((result) => {
+      }).then(async function (result) {
         if (result.isConfirmed) {
-          GroupAPI.deleteClass(props.data._id, token);
+          await GroupAPI.deleteClass(props.data._id, token);
           Swal.fire(
             "Xóa thành công",
             `Lớp học "${title.className}"`,
             "success"
           );
+          router.push("/");
         }
-        router.push("/");
       });
     } catch (error) {
       console.log(error);
@@ -250,10 +242,13 @@ const InformationPage = function (props: AppProps) {
               props.role === "provider" && (
                 <div className={style.pbutton}>
                   <button className={style.button} onClick={ClickUpdate}>
-                    <img src="/icons/buttonSend.svg" />
+                    Chỉnh sửa
                   </button>
-                  <button className={style.button} onClick={ClickDelete}>
-                    <img src="/icons/buttonReset.svg" />
+                  <button
+                    className={style.button__delete}
+                    onClick={ClickDelete}
+                  >
+                    Xóa lớp
                   </button>
                 </div>
               )

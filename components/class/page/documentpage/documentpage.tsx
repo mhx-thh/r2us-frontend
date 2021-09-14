@@ -13,6 +13,7 @@ import GroupAPI from "api/groupAPI";
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 import Swal from "sweetalert2";
+import CreateResource from "components/Resource/ResourceCreateModal";
 
 type documentType = {
   document: ResourceType;
@@ -28,19 +29,11 @@ type AppProps = {
 const DocumentPage = function (props: AppProps) {
   const [documentArray, setDocumentArray] = useState(props.document);
   const [flag, setFlag] = useState(false);
-
+  const [create, setCreate] = useState(false);
   const token = useAppSelector(selectToken);
 
   useEffect(() => {
     async function fetchResources() {
-      Swal.fire({
-        title: "Đang lấy dữ liệu",
-        icon: "info",
-        timerProgressBar: true,
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      });
       try {
         const res = await GroupAPI.getResources();
         const data = res?.data?.data?.result;
@@ -48,10 +41,13 @@ const DocumentPage = function (props: AppProps) {
       } catch (error) {
         console.log(error);
       }
-      Swal.close();
     }
     fetchResources();
   }, [flag, props.document]);
+
+  const ClickCreate = () => {
+    setCreate(true);
+  };
 
   // Document function
   const Document = function (props: documentType) {
@@ -94,9 +90,9 @@ const DocumentPage = function (props: AppProps) {
       setUpdate(true);
     };
 
-    const ClickDelete = async () => {
+    const ClickDelete = () => {
       try {
-        await Swal.fire({
+        Swal.fire({
           title: "Bạn chắc chắn muốn xóa ?",
           text: "Bạn sẽ không thể hoàn tác lại nếu đã xóa!",
           icon: "warning",
@@ -105,12 +101,12 @@ const DocumentPage = function (props: AppProps) {
           cancelButtonColor: "#d33",
           confirmButtonText: "Tôi chắc chắn !",
           cancelButtonText: "Không, quay lại !",
-        }).then((result) => {
+        }).then(async function (result) {
           if (result.isConfirmed) {
-            GroupAPI.deleteResource(data.id, token);
+            await GroupAPI.deleteResource(data.id, token);
             Swal.fire(
               "Xóa thành công",
-              "Cảm nhận đã được xóa khỏi lớp",
+              "Tài liệu đã được xóa khỏi lớp",
               "success"
             );
             setFlag(!flag);
@@ -143,16 +139,12 @@ const DocumentPage = function (props: AppProps) {
       <div ref={ref} className="absolute my-8 -mx-24">
         <ul className="w-28 text-base leading-6 font-normal shadow-xl rounded-xl bg-white border-2 border-solid border-blue-700">
           {/* {data.status === "pending" && props.role === "provider" && ( */}
-          {data.status === "pending" ? (
+          {data.status === "pending" && (
             <li
               className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-green-200 cursor-pointer"
               onClick={ClickAccept}
             >
               Duyệt
-            </li>
-          ) : (
-            <li className="flex w-full h-auto p-1.5 justify-center rounded-xl bg-green-200">
-              Đã duyệt <img src="/icons/tickIcon.svg" className="pl-2" />
             </li>
           )}
           {/* )} */}
@@ -160,14 +152,16 @@ const DocumentPage = function (props: AppProps) {
             className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-red-300 cursor-pointer"
             onClick={ClickDelete}
           >
-            Xóa
+            {data.status === "accepted" ? "Xóa" : "Không duyệt"}
           </li>
-          <li
-            className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 cursor-pointer"
-            onClick={handleUpdate}
-          >
-            Chỉnh sửa
-          </li>
+          {data.status === "accepted" && (
+            <li
+              className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 cursor-pointer"
+              onClick={handleUpdate}
+            >
+              Chỉnh sửa
+            </li>
+          )}
         </ul>
 
         {update === true && (
@@ -184,12 +178,12 @@ const DocumentPage = function (props: AppProps) {
       <div>
         {/* Button Share Resource */}
         <div className={style.buttonarea}>
-          <div className={style.head}>
+          <button className={style.head} onClick={ClickCreate}>
             <div className={style.head__text}>Chia sẻ tài liệu</div>
             <div className={style.head__image}>
               <img src="/icons/resource.svg" />
             </div>
-          </div>
+          </button>
         </div>
 
         {/* Accepted Resource */}
@@ -236,6 +230,11 @@ const DocumentPage = function (props: AppProps) {
         </div>
         {/* )} */}
       </div>
+      {create === true && (
+        <PopUp closepopup={setCreate}>
+          <CreateResource />
+        </PopUp>
+      )}
     </div>
   );
 };

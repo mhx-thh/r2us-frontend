@@ -4,6 +4,7 @@ import ReviewItem from "components/Review/ReviewItem";
 import PopUp from "components/class/PopUp/popup";
 import ReviewEditModal from "components/Review/ReviewEditModal";
 import useClickOutside from "components/clickOutside/clickOutside";
+import CreateReview from "components/Review/ReviewCreateModal";
 
 import style from "../groupPage.module.css";
 import { Id, ReviewType } from "lib/models";
@@ -28,19 +29,11 @@ type Review = {
 const ReviewCourse = function (props: AppProps) {
   const [reviewArray, setReviewArray] = useState(props.review);
   const [flag, setFlag] = useState(false);
-
+  const [create, setCreate] = useState(false);
   const token = useAppSelector(selectToken);
 
   useEffect(() => {
     async function fetchResources() {
-      Swal.fire({
-        title: "Đang lấy dữ liệu",
-        icon: "info",
-        timerProgressBar: true,
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      });
       try {
         const res = await GroupAPI.getReviews();
         const data = res?.data?.data?.result;
@@ -48,10 +41,13 @@ const ReviewCourse = function (props: AppProps) {
       } catch (error) {
         console.log(error);
       }
-      Swal.close();
     }
     fetchResources();
   }, [flag, props.review]);
+
+  const ClickCreate = () => {
+    setCreate(true);
+  };
 
   // Review Component
   const Review = function (props: Review) {
@@ -92,9 +88,9 @@ const ReviewCourse = function (props: AppProps) {
       setUpdate(true);
     };
 
-    const ClickDelete = async () => {
+    const ClickDelete = () => {
       try {
-        await Swal.fire({
+        Swal.fire({
           title: "Bạn chắc chắn muốn xóa ?",
           text: "Bạn sẽ không thể hoàn tác lại nếu đã xóa!",
           icon: "warning",
@@ -103,9 +99,9 @@ const ReviewCourse = function (props: AppProps) {
           cancelButtonColor: "#d33",
           confirmButtonText: "Tôi chắc chắn !",
           cancelButtonText: "Không, quay lại !",
-        }).then((result) => {
+        }).then(async function (result) {
           if (result.isConfirmed) {
-            GroupAPI.deleteReview(data._id, token);
+            await GroupAPI.deleteReview(data._id, token);
             Swal.fire(
               "Xóa thành công",
               "Cảm nhận đã được xóa khỏi lớp",
@@ -121,51 +117,51 @@ const ReviewCourse = function (props: AppProps) {
 
     const acceptedStatus = {
       status: "accepted",
+      reviewType: data.reviewType,
+      review: data.review,
+      reviewTitle: data.reviewTitle,
     };
     const ClickAccept = async () => {
       try {
         await GroupAPI.patchReview(acceptedStatus, data._id, token);
+        setFlag(!flag);
         Swal.fire({
           icon: "success",
           title: "Đã duyệt cảm nhận thành công",
           showConfirmButton: false,
           timer: 1500,
         });
-        setFlag(!flag);
       } catch (error) {
         console.log(error);
       }
     };
     return (
       <div ref={ref} className="absolute my-8 -mx-24 bg-white">
-        <ul className="w-28 text-base leading-6 font-normal shadow rounded-xl bg-white border-2 border-solid border-blue-700">
+        <ul className="w-28 text-base leading-6 font-normal shadow-xl rounded-xl bg-white border-2 border-solid border-blue-700">
           {/* {data.status === "pending" && props.role === "provider" && ( */}
-          {data.status === "pending" ? (
+          {data.status === "pending" && (
             <li
               className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-green-200 cursor-pointer"
               onClick={ClickAccept}
             >
               Duyệt
             </li>
-          ) : (
-            <li className="flex w-full h-auto p-1.5 justify-center rounded-xl bg-green-200">
-              Đã duyệt <img src="/icons/tickIcon.svg" className="pl-2" />
-            </li>
           )}
-          {/* )} */}
           {/* )} */}
           <li
             className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-red-300 cursor-pointer"
             onClick={ClickDelete}
           >
-            Xóa
+            {data.status === "accepted" ? "Xóa" : "Không duyệt"}
           </li>
-          <li
-            className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 cursor-pointer"
-            onClick={ClickUpdate}
-          >
-            Chỉnh sửa
-          </li>
+          {data.status === "accepted" && (
+            <li
+              className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 cursor-pointer"
+              onClick={ClickUpdate}
+            >
+              Chỉnh sửa
+            </li>
+          )}
         </ul>
         {update === true && (
           <PopUp closepopup={close}>
@@ -181,10 +177,10 @@ const ReviewCourse = function (props: AppProps) {
       <div>
         {/* Button Share Review */}
         <div className={style.buttonarea}>
-          <div className={style.head}>
+          <button className={style.head} onClick={ClickCreate}>
             <div className={style.head__text}>Chia sẻ cảm nhận</div>
             <img className={style.head__image} src="/icons/review.svg" />
-          </div>
+          </button>
         </div>
 
         {/* Document */}
@@ -226,6 +222,11 @@ const ReviewCourse = function (props: AppProps) {
           )}
         </div>
       </div>
+      {create === true && (
+        <PopUp closepopup={setCreate}>
+          <CreateReview />
+        </PopUp>
+      )}
     </div>
   );
 };
