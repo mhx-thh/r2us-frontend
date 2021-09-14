@@ -230,7 +230,7 @@ const CreateReview = function () {
   return (
     <form onSubmit={clickSend}>
       <div className="absolute flex top-0 left-0 w-full h-full rounded-l-2xl">
-      <div className="bg-indigo-100 w-8/12 rounded-l-2xl">
+        <div className="bg-indigo-100 w-8/12 rounded-l-2xl">
           <div className="flex justify-between h-16 pt-12">
             {/* Title */}
             <div className="pl-16">

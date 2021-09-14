@@ -101,6 +101,7 @@ const GroupCreateModal = function () {
       setClassStatus("done");
       setCreate({ ...create, className: group[0].className });
     }
+    console.log(group[0]);
   }, [group]);
 
   const handleAcademicId = (e) => {
@@ -333,28 +334,45 @@ const GroupCreateModal = function () {
         </div>
 
         {/* className */}
-        <div className="flex pl-48 top-0 mb-4">
-          <div className="flex">
-            <img
-              className="m-3 mt-4"
-              height="23"
-              width="24"
-              src="/icons/write_pencil.svg"
-            />
-            <input
-              className="px-2 m-2 bg-indigo-50 w-96 rounded-2xl h-10 border border-solid border-indigo-500"
-              placeholder="Nhập tên nhóm"
-              name="className"
-              onChange={handleClasssName}
-              value={create.className}
-              disabled={classStatus === "gotNone" ? false : true}
-            />
-            <img
-              className="m-3 mt-4"
-              height="26"
-              width="26"
-              src="/icons/information.svg"
-            />
+        <div className="pl-48 mb-4">
+          <div className="flex top-0">
+            <div className="flex">
+              <img
+                className="m-3 mt-4"
+                height="23"
+                width="24"
+                src="/icons/write_pencil.svg"
+              />
+              <input
+                className="px-2 m-2 bg-indigo-50 w-96 rounded-2xl h-10 border border-solid border-indigo-500"
+                placeholder="Nhập tên nhóm"
+                name="className"
+                onChange={handleClasssName}
+                value={create.className}
+                disabled={classStatus === "gotNone" ? false : true}
+              />
+              <img
+                className="m-3 mt-4"
+                height="26"
+                width="26"
+                src="/icons/information.svg"
+              />
+            </div>
+          </div>
+          <div className={classStatus === "done" ? "visible" : "invisible"}>
+            <div className="flex pl-12">
+              <img src="/icons/warning.svg" width="21" height="18" />
+              <p className="text-xs leading-none font-normal w-60 tracking-normal px-2">
+                {"Nhóm này đã tồn tại. Bạn có thể truy cập vào nhóm này tại "}
+                <a
+                  className="font-bold "
+                  href={`${process.env.NEXT_PUBLIC_WEB_URL}/group/${group[0]?.slug}`}
+                >
+                  đây
+                </a>
+                .
+              </p>
+            </div>
           </div>
         </div>
 
