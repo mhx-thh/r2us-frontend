@@ -106,7 +106,7 @@
     justify-content: center;
 }
 .button {
-    background: #e7e8f3;
+    background: #ffffff;
     margin-left: 40px;
     border: 2px solid #1414fa;
     box-sizing: border-box;
@@ -145,7 +145,7 @@
     font-weight: 600;
     font-size: 20px;
     line-height: 28px;
-    color: black;
+    color: white;
 }
 .button__delete:hover {
     background: #fff;

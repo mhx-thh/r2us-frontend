@@ -13,6 +13,7 @@ import GroupAPI from "api/groupAPI";
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 import Swal from "sweetalert2";
+import CreateResource from "components/Resource/ResourceCreateModal";
 
 type ExamData = {
   exam: ResourceType;
@@ -27,7 +28,7 @@ type AppProps = {
 
 const ExamPage = function (props: AppProps) {
   const [examArray, setExamArray] = useState(props.exams);
-
+  const [create, setCreate] = useState(false);
   const [flag, setFlag] = useState(false);
 
   const token = useAppSelector(selectToken);
@@ -45,6 +46,9 @@ const ExamPage = function (props: AppProps) {
     fetchResources();
   }, [flag, props.exams]);
 
+  const ClickCreateResource = () => {
+    setCreate(true);
+  };
   // Exam functions
   const Exam = function (props: ExamData) {
     const [open, setOpen] = useState(false);
@@ -173,7 +177,7 @@ const ExamPage = function (props: AppProps) {
       <div>
         {/* Button Share Resource */}
         <div className={style.buttonarea}>
-          <button className={style.head}>
+          <button className={style.head} onClick={ClickCreateResource}>
             <div className={style.head__text}>Chia sẻ tài liệu</div>
             <div className={style.head__image}>
               <img src="/icons/resource.svg" />
@@ -225,6 +229,11 @@ const ExamPage = function (props: AppProps) {
         </div>
         {/* )} */}
       </div>
+      {create === true && (
+        <PopUp closepopup={setCreate}>
+          <CreateResource />
+        </PopUp>
+      )}
     </div>
   );
 };

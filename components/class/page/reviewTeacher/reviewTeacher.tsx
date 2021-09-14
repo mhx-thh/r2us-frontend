@@ -13,6 +13,7 @@ import { selectToken } from "redux/userSlice";
 
 import { Id, ReviewType } from "lib/models";
 import Swal from "sweetalert2";
+import CreateReview from "components/Review/ReviewCreateModal";
 
 type AppProps = {
   role: string;
@@ -28,7 +29,7 @@ type Review = {
 const ReviewTeacher = function (props: AppProps) {
   const [reviewArray, setReviewArray] = useState(props.review);
   const [flag, setFlag] = useState(false);
-
+  const [create, setCreate] = useState(false);
   const token = useAppSelector(selectToken);
 
   useEffect(() => {
@@ -44,6 +45,9 @@ const ReviewTeacher = function (props: AppProps) {
     fetchReviews();
   }, [flag, props.review]);
 
+  const ClickCreate = () => {
+    setCreate(true);
+  };
   // Review Item
   const Review = function (props: Review) {
     const [open, setOpen] = useState(false);
@@ -170,10 +174,10 @@ const ReviewTeacher = function (props: AppProps) {
       <div>
         {/* Button Share Review */}
         <div className={style.buttonarea}>
-          <div className={style.head}>
+          <button className={style.head} onClick={ClickCreate}>
             <div className={style.head__text}>Chia sẻ cảm nhận</div>
             <img className={style.head__image} src="/icons/review.svg" />
-          </div>
+          </button>
         </div>
 
         {/* Document */}
@@ -215,6 +219,11 @@ const ReviewTeacher = function (props: AppProps) {
           )}
         </div>
       </div>
+      {create === true && (
+        <PopUp closepopup={setCreate}>
+          <CreateReview />
+        </PopUp>
+      )}
     </div>
   );
 };

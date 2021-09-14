@@ -66,7 +66,7 @@ const ReviewPage = function (props: any) {
 
         {create === true && (
           <PopUp closepopup={setCreate}>
-            <CreateReview data={props.props} classgroup={myClass} />
+            <CreateReview />
           </PopUp>
         )}
 

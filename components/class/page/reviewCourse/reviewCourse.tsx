@@ -4,6 +4,7 @@ import ReviewItem from "components/Review/ReviewItem";
 import PopUp from "components/class/PopUp/popup";
 import ReviewEditModal from "components/Review/ReviewEditModal";
 import useClickOutside from "components/clickOutside/clickOutside";
+import CreateReview from "components/Review/ReviewCreateModal";
 
 import style from "../groupPage.module.css";
 import { Id, ReviewType } from "lib/models";
@@ -28,7 +29,7 @@ type Review = {
 const ReviewCourse = function (props: AppProps) {
   const [reviewArray, setReviewArray] = useState(props.review);
   const [flag, setFlag] = useState(false);
-
+  const [create, setCreate] = useState(false);
   const token = useAppSelector(selectToken);
 
   useEffect(() => {
@@ -43,6 +44,10 @@ const ReviewCourse = function (props: AppProps) {
     }
     fetchResources();
   }, [flag, props.review]);
+
+  const ClickCreate = () => {
+    setCreate(true);
+  };
 
   // Review Component
   const Review = function (props: Review) {
@@ -118,7 +123,7 @@ const ReviewCourse = function (props: AppProps) {
     };
     const ClickAccept = async () => {
       try {
-        const res = await GroupAPI.patchReview(acceptedStatus, data._id, token);
+        await GroupAPI.patchReview(acceptedStatus, data._id, token);
         setFlag(!flag);
         Swal.fire({
           icon: "success",
@@ -172,10 +177,10 @@ const ReviewCourse = function (props: AppProps) {
       <div>
         {/* Button Share Review */}
         <div className={style.buttonarea}>
-          <div className={style.head}>
+          <button className={style.head} onClick={ClickCreate}>
             <div className={style.head__text}>Chia sẻ cảm nhận</div>
             <img className={style.head__image} src="/icons/review.svg" />
-          </div>
+          </button>
         </div>
 
         {/* Document */}
@@ -217,6 +222,11 @@ const ReviewCourse = function (props: AppProps) {
           )}
         </div>
       </div>
+      {create === true && (
+        <PopUp closepopup={setCreate}>
+          <CreateReview />
+        </PopUp>
+      )}
     </div>
   );
 };

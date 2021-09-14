@@ -47,14 +47,6 @@ const InformationPage = function (props: AppProps) {
 
   useEffect(() => {
     async function fetchSlug() {
-      Swal.fire({
-        title: "Đang lấy dữ liệu",
-        icon: "info",
-        timerProgressBar: true,
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      });
       try {
         const res = await GroupAPI.getGroups();
         const data = res?.data?.data;
@@ -72,7 +64,6 @@ const InformationPage = function (props: AppProps) {
       } catch (error) {
         console.log(error.message);
       }
-      Swal.close();
     }
     fetchSlug();
   }, [flag]);
@@ -92,8 +83,8 @@ const InformationPage = function (props: AppProps) {
 
   const ClickEnroll = async () => {
     try {
-      setEnroll(true);
       await userApi.postEnroll({ classId: props.data._id }, token);
+      setEnroll(true);
       Swal.fire(
         "Tham gia lớp học thành công",
         `Đã thêm bạn vào danh sách lớp ${dataPatch.className}`,
@@ -124,7 +115,7 @@ const InformationPage = function (props: AppProps) {
         title: `Bạn chắc chắn muốn xóa lớp 
         ${title.className} ??`,
         text: "Bạn sẽ không thể hoàn tác nếu đã xóa lớp này !!",
-        icon: "warning",
+        icon: "error",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",

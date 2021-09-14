@@ -13,6 +13,7 @@ import GroupAPI from "api/groupAPI";
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 import Swal from "sweetalert2";
+import CreateResource from "components/Resource/ResourceCreateModal";
 
 type outlineType = {
   outlineData: ResourceType;
@@ -28,7 +29,7 @@ type AppProps = {
 const OutlinePage = function (props: AppProps) {
   const [outlineArray, setOutlineArray] = useState(props.outline);
   const [flag, setFlag] = useState(false);
-
+  const [create, setCreate] = useState(false);
   const token = useAppSelector(selectToken);
 
   useEffect(() => {
@@ -44,6 +45,10 @@ const OutlinePage = function (props: AppProps) {
     }
     fetchResources();
   }, [flag, props.outline]);
+
+  const ClickCreate = () => {
+    setCreate(true);
+  };
 
   // Outline Item
   const Outline = function (props: outlineType) {
@@ -173,12 +178,12 @@ const OutlinePage = function (props: AppProps) {
       <div>
         {/* Button Share Resource */}
         <div className={style.buttonarea}>
-          <div className={style.head}>
+          <button className={style.head} onClick={ClickCreate}>
             <div className={style.head__text}>Chia sẻ tài liệu</div>
             <div className={style.head__image}>
               <img src="/icons/resource.svg" />
             </div>
-          </div>
+          </button>
         </div>
         {/* Accepted Resource */}
         <div className={style.documentsection}>
@@ -224,6 +229,11 @@ const OutlinePage = function (props: AppProps) {
         </div>
         {/* )} */}
       </div>
+      {create === true && (
+        <PopUp closepopup={setCreate}>
+          <CreateResource />
+        </PopUp>
+      )}
     </div>
   );
 };
