@@ -7,6 +7,7 @@ import { useAppSelector } from "redux/hooks";
 import Threedots from "./Threedots";
 import academicApi from "api/academicApi";
 import { isFulfilled } from "@reduxjs/toolkit";
+import Swal from "sweetalert2";
 
 // interface Props {
 //   getThreedots: any;
@@ -68,6 +69,14 @@ function AcademicTable(props) {
   const [academiclist, setacademiclist] = useState([]);
   useEffect(() => {
     async function fetchacademicList() {
+      Swal.fire({
+        title: "Loading data",
+        icon: "info",
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       try {
         const res = await academicApi.getSchoolYears();
         const data = res?.data?.data?.result;
@@ -77,6 +86,7 @@ function AcademicTable(props) {
       } catch (error) {
         console.log(error.message);
       }
+      Swal.close();
     }
     fetchacademicList();
   }, [reloading]);

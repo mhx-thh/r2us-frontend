@@ -6,6 +6,7 @@ import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 import { Stringifiable } from "query-string";
 import CourseRowFaculty from "./CourseRowFaculty";
+import Swal from "sweetalert2";
 
 type AppProps = {
   faculty: any;
@@ -45,7 +46,6 @@ function CourseTable({ faculty }: AppProps) {
     const val = e.target.value;
     setCreate({ ...create, courseName: e.target.value });
   };
-
   const hanldeSubmit = (e) => {
     e.preventDefault();
     create.courseName !== "" &&
@@ -54,9 +54,8 @@ function CourseTable({ faculty }: AppProps) {
     const newre = reloading + 1;
     setReloading(newre);
   };
-  const handleReloadingForDelete = (e) => {
-    const newre = reloading + 2;
-    setReloading(newre);
+  const handleReloadingForDelete = () => {
+    setReloading(reloading + 1);
   };
   const handleClickDelete = () => {
     courseApi.deleteCourse(faculty._id, token);
@@ -66,6 +65,14 @@ function CourseTable({ faculty }: AppProps) {
   const [courseList, setCourseList] = useState([]);
   useEffect(() => {
     async function fetchCourseList() {
+      Swal.fire({
+        title: "Loading data",
+        icon: "info",
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       try {
         const res = await courseApi.getCoursetoFaculty(faculty._id);
         const data = res?.data?.data?.result;
@@ -75,6 +82,7 @@ function CourseTable({ faculty }: AppProps) {
       } catch (error) {
         console.log(error.message);
       }
+      Swal.close();
     }
     fetchCourseList();
   }, [reloading]);
@@ -134,6 +142,7 @@ function CourseTable({ faculty }: AppProps) {
                 height={24}
                 width={24}
                 className="cursor-pointer"
+                onClick={hanldeSubmit}
               />
             </button>
           </td>

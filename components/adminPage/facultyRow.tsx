@@ -1,9 +1,9 @@
 import facultyApi from "api/facultyApi";
 import React, { useEffect, useRef, useState } from "react";
 import CourseTable from "./CourseTable";
-import Threedots from "./Threedots";
 import { selectToken } from "redux/userSlice";
 import { useAppSelector } from "redux/hooks";
+
 type AppProps = {
   faculty: any;
   setReloading: any;
@@ -25,7 +25,7 @@ function FacultyRow({ faculty, setReloading }: AppProps) {
   };
   const handleClickDelete = () => {
     facultyApi.deleteFaculty(faculty._id, token);
-    setReloading(1);
+    setReloading();
   };
   const changeName = (event) => {
     event.preventDefault();
@@ -40,7 +40,7 @@ function FacultyRow({ faculty, setReloading }: AppProps) {
     const obj = { facultyName: name };
     console.log(obj);
     facultyApi.updateFaculty(faculty._id, obj, token);
-    setReloading(1);
+    setReloading();
     setEdit(false);
     setCollapse(false);
   };
@@ -130,7 +130,6 @@ function FacultyRow({ faculty, setReloading }: AppProps) {
           </td>
         )) || (
           <td
-            ref={ref}
             className={`${
               threedots ? "relative" : " "
             } p-2 pt-3 bg-transparent pl-12 border-r flex justify-center`}
@@ -143,7 +142,10 @@ function FacultyRow({ faculty, setReloading }: AppProps) {
               onClick={clickthreedots}
             />
             {threedots && (
-              <div className="absolute flex items-center px-3 top-4 -left-2 border border-indigo-300 rounded-2xl w-28 h-16 bg-white">
+              <div
+                ref={ref}
+                className="absolute flex items-center px-3 top-4 -left-2 border border-indigo-300 rounded-2xl w-28 h-16 bg-white"
+              >
                 <ul className="w-full">
                   <li
                     className="mb-1 hover:bg-indigo-200 rounded-lg cursor-pointer"

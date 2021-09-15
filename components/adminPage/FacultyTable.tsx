@@ -25,7 +25,9 @@ function FacultyTable(props) {
   };
 
   const [create, setCreate] = useState<Api>(initCreate);
-
+  const loading = () => {
+    setReloading(reloading + 1);
+  };
   const clickcollapse = () => {
     setCollapse(!collapse);
     // getThreedots(threedots);
@@ -47,7 +49,7 @@ function FacultyTable(props) {
   };
   const handleReloadingForDelete = (e) => {
     const newre = reloading + 2;
-    setReloading(newre);
+    setReloading(reloading + 1);
   };
   useEffect(() => {
     console.log(create);

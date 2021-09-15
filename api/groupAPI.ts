@@ -10,7 +10,7 @@ const GroupAPI = {
     return get(url, "");
   },
   getGroup: function (id: string) {
-    const url = `${apiV1}/groups/class/${id}`;
+    const url = `${apiV1}/groups/class?${id}`;
     return get(url, "");
   },
   getInstructors: function () {
@@ -18,7 +18,7 @@ const GroupAPI = {
     return get(url, "");
   },
   getInstructor: function (id: string) {
-    const url = `${apiV1}/groups/instructors/${id}`;
+    const url = `${apiV1}/groups/instructors?${id}`;
     return get(url, "");
   },
   getNewResources: function () {
@@ -46,11 +46,11 @@ const GroupAPI = {
     return get(url, "");
   },
   patchResource: function (data: any, id: string, token: string) {
-    const url = `${apiV1}/groups/resources/${id}`;
+    const url = `${apiV1}/groups/resources?${id}`;
     return patch(url, data, token);
   },
   patchReview: function (data: any, id: string, token: string) {
-    const url = `${apiV1}/groups/reviews/${id}`;
+    const url = `${apiV1}/groups/reviews?${id}`;
     return patch(url, data, token);
   },
   postClass: function (data: any, token: string) {
@@ -66,11 +66,11 @@ const GroupAPI = {
     return post(url, data, token);
   },
   deleteResource: function (id: string, token: string) {
-    const url = `${apiV1}/groups/resources/${id}`;
+    const url = `${apiV1}/groups/resources?${id}`;
     return delele(url, token);
   },
   deleteReview: function (id: string, token: string) {
-    const url = `${apiV1}/groups/reviews/${id}`;
+    const url = `${apiV1}/groups/reviews?${id}`;
     return delele(url, token);
   },
   getRole: function (classId: string, token: string) {
@@ -78,11 +78,11 @@ const GroupAPI = {
     return get(url, token);
   },
   patchClass: function (data: any, id: string, token: string) {
-    const url = `${apiV1}/groups/class/${id}`;
+    const url = `${apiV1}/groups/class?${id}`;
     return patch(url, data, token);
   },
   deleteClass: function (id: string, token: string) {
-    const url = `${apiV1}/groups/class/${id}`;
+    const url = `${apiV1}/groups/class?${id}`;
     return delele(url, token);
   },
   getMembers: function (classId: any, token: string) {

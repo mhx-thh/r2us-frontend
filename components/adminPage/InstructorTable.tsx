@@ -1,7 +1,8 @@
 import instructorApi from "api/instructorApi";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
+import Swal from "sweetalert2";
 import InstructorRow from "./InstructorRow";
 
 // interface Props {
@@ -44,7 +45,7 @@ function InstructorTable(props) {
   };
   const handleReloadingForDelete = (e) => {
     const newre = reloading + 1;
-    setReloading(newre);
+    setReloading(reloading + 1);
   };
   useEffect(() => {
     console.log(create);
@@ -53,6 +54,14 @@ function InstructorTable(props) {
   const [instructorlist, setinstructorlist] = useState([]);
   useEffect(() => {
     async function fetchinstructorList() {
+      Swal.fire({
+        title: "Loading data",
+        icon: "info",
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       try {
         const res = await instructorApi.getAll();
         const data = res?.data?.data?.result;
@@ -62,6 +71,7 @@ function InstructorTable(props) {
       } catch (error) {
         console.log(error.message);
       }
+      Swal.close();
     }
     fetchinstructorList();
   }, []);

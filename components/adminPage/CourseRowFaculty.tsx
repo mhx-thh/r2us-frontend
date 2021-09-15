@@ -1,7 +1,7 @@
 import courseApi from "api/courseApi";
 import React, { useEffect, useRef, useState } from "react";
 import { useAppSelector } from "redux/hooks";
-import { selectUser } from "redux/userSlice";
+import { selectToken, selectUser } from "redux/userSlice";
 type AppProps = {
   course: any;
   setReloading: any;
@@ -12,7 +12,7 @@ function FacultyRow({ course, setReloading }: AppProps) {
   const [threedots, setThreedots] = useState(false);
   const [name, setName] = useState(course.courseName);
   const [edit, setEdit] = useState(false);
-  const token = useAppSelector(selectUser);
+  const token = useAppSelector(selectToken);
 
   const clickcollapse = () => {
     setCollapse(!collapse);
@@ -33,8 +33,10 @@ function FacultyRow({ course, setReloading }: AppProps) {
   const clickEdit = () => {
     setEdit(!edit);
   };
+  console.log(token);
   const updateName = () => {
-    const obj = { facultyName: name };
+    const obj = { courseName: name };
+    courseApi.updateCourse(course._id, obj, token);
     console.log(obj);
     setReloading(1);
     setEdit(false);
