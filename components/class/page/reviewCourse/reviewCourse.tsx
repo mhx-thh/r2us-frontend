@@ -95,8 +95,8 @@ const ReviewCourse = function (props: AppProps) {
           text: "Bạn sẽ không thể hoàn tác lại nếu đã xóa!",
           icon: "warning",
           showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
           confirmButtonText: "Tôi chắc chắn !",
           cancelButtonText: "Không, quay lại !",
         }).then(async function (result) {
@@ -123,6 +123,14 @@ const ReviewCourse = function (props: AppProps) {
     };
     const ClickAccept = async () => {
       try {
+        Swal.fire({
+          title: "Đang cập nhập dữ liệu",
+          icon: "info",
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
         await GroupAPI.patchReview(acceptedStatus, data._id, token);
         setFlag(!flag);
         Swal.fire({
@@ -199,28 +207,32 @@ const ReviewCourse = function (props: AppProps) {
           )}
         </div>
 
-        {/* Request */}
-        <div className={style.prebox}>
-          <div className={style.box}>
-            <div className={style.box__text}>Yêu cầu</div>
-          </div>
-        </div>
+        {props.role === "provider" && (
+          <div>
+            {/* Request */}
+            <div className={style.prebox}>
+              <div className={style.box}>
+                <div className={style.box__text}>Yêu cầu</div>
+              </div>
+            </div>
 
-        {/* Request document */}
-        <div className={style.documentsection}>
-          {reviewArray.map((data) =>
-            data.classId._id === props.id.classId &&
-            data.classId.courseId._id === props.id.courseId &&
-            data.classId.instructorId.id === props.id.instructorId &&
-            data.classId.academicId._id === props.id.academicId &&
-            data.reviewType === "Class" &&
-            data.status === "pending" ? (
-              <Review reviewData={data} role={props.role} key={data._id} />
-            ) : (
-              <div key={data._id}></div>
-            )
-          )}
-        </div>
+            {/* Request document */}
+            <div className={style.documentsection}>
+              {reviewArray.map((data) =>
+                data.classId._id === props.id.classId &&
+                data.classId.courseId._id === props.id.courseId &&
+                data.classId.instructorId.id === props.id.instructorId &&
+                data.classId.academicId._id === props.id.academicId &&
+                data.reviewType === "Class" &&
+                data.status === "pending" ? (
+                  <Review reviewData={data} role={props.role} key={data._id} />
+                ) : (
+                  <div key={data._id}></div>
+                )
+              )}
+            </div>
+          </div>
+        )}
       </div>
       {create === true && (
         <PopUp closepopup={setCreate}>

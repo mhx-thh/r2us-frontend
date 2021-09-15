@@ -10,7 +10,7 @@ import Sidebar from "components/class/Sidebar/Sidebar";
 import GroupAPI from "api/groupAPI";
 
 import { useAppSelector } from "redux/hooks";
-import { selectToken } from "redux/userSlice";
+import { selectToken, selectUser } from "redux/userSlice";
 
 import { useRouter } from "next/router";
 
@@ -32,14 +32,15 @@ type memberSector = {
 
 const MemberPage = function (props: AppProps) {
   const [memberArray, setMemberArray] = useState(props.members);
-  const [role, setRole] = useState(props.role);
+  const [myRole, setMyRole] = useState(props.role);
   const token = useAppSelector(selectToken);
+  const user = useAppSelector(selectUser);
   const [flag, setFlag] = useState(false);
   const router = useRouter();
   const path = router.asPath;
 
   useEffect(() => {
-    setRole(props.role);
+    setMyRole(props.role);
   }, [props.role]);
 
   useEffect(() => {
@@ -55,22 +56,36 @@ const MemberPage = function (props: AppProps) {
     fetchMembers();
   }, [flag, props.members]);
 
-  const demoteRole = {
-    role: "member",
-  };
   // Function dropdown
   const DropdownMember = function ({ close, member, role }: any) {
     const ref = useClickOutside(() => {
       close(0);
     });
 
+    const demoteRole = {
+      role: "member",
+    };
     const ClickDemote = async () => {
       try {
+        Swal.fire({
+          title: "Đang cập nhập dữ liệu",
+          icon: "info",
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
         await GroupAPI.patchRole(demoteRole, member._id, token);
+        Swal.fire({
+          icon: "success",
+          title: `Đã hạ chức thành viên cho ${member.userId.familyName} ${member.userId.givenName}`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        setFlag(!flag);
       } catch (error) {
         console.log(error);
       }
-      setRole("member");
     };
 
     const promoteRole = {
@@ -78,7 +93,22 @@ const MemberPage = function (props: AppProps) {
     };
     const ClickPromote = async () => {
       try {
+        Swal.fire({
+          title: "Đang cập nhập dữ liệu",
+          icon: "info",
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
         await GroupAPI.patchRole(promoteRole, member._id, token);
+        Swal.fire({
+          icon: "success",
+          title: `Đã thăng chức Quản trị viên cho ${member.userId.familyName} ${member.userId.givenName}`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        setFlag(!flag);
       } catch (error) {
         console.log(error);
       }
@@ -92,8 +122,8 @@ const MemberPage = function (props: AppProps) {
           text: "Bạn sẽ không thể hoàn tác lại nếu đã xóa!",
           icon: "warning",
           showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
           confirmButtonText: "Tôi chắc chắn !",
           cancelButtonText: "Không, quay lại !",
         }).then(async function (result) {
@@ -113,32 +143,34 @@ const MemberPage = function (props: AppProps) {
     };
 
     return (
-      <div ref={ref} className="absolute my-8 -mx-24 bg-white">
-        <ul className="w-32 text-base leading-6 font-normal shadow-xl rounded-xl bg-white border-2 border-solid border-blue-700">
-          {role === "provider" ? (
-            <li
-              className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-red-300 cursor-pointer"
-              onClick={ClickDemote}
-            >
-              Hạ chức
-            </li>
-          ) : (
-            <li
-              className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-green-200 cursor-pointer"
-              onClick={ClickPromote}
-            >
-              Thăng chức
-            </li>
-          )}
-          {role === "member" && (
-            <li
-              className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-red-300 cursor-pointer"
-              onClick={ClickDelete}
-            >
-              Xóa thành viên
-            </li>
-          )}
-        </ul>
+      <div>
+        <div ref={ref} className="absolute my-8 -mx-24 bg-white">
+          <ul className="w-32 text-base leading-6 font-normal shadow-xl rounded-xl bg-white border-2 border-solid border-blue-700">
+            {member.userId._id === user._id ? (
+              <li
+                className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-red-300 cursor-pointer"
+                onClick={ClickDemote}
+              >
+                Hạ chức
+              </li>
+            ) : (
+              <li
+                className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-green-200 cursor-pointer"
+                onClick={ClickPromote}
+              >
+                Thăng chức
+              </li>
+            )}
+            {role === "member" && (
+              <li
+                className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-red-300 cursor-pointer"
+                onClick={ClickDelete}
+              >
+                Xóa thành viên
+              </li>
+            )}
+          </ul>
+        </div>
       </div>
     );
   };
@@ -180,18 +212,19 @@ const MemberPage = function (props: AppProps) {
             />
           </div>
         </div>
-        {/* {props.role === "provider" && ( */}
-        <div>
-          <button className={style.member__button} onClick={ClickThreeDot}>
-            <img src="/icons/threedot.svg" />
-          </button>
-          <div className="relative -top-12 left-32">
-            {open === true && (
-              <DropdownMember close={setOpen} member={member} role={role} />
-            )}
-          </div>
-        </div>
-        {/* )}  */}
+        {myRole === "provider" &&
+          (member.role === "member" || member.userId._id === user._id) && (
+            <div>
+              <button className={style.member__button} onClick={ClickThreeDot}>
+                <img src="/icons/threedot.svg" />
+              </button>
+              <div className="relative -top-12 left-32">
+                {open === true && (
+                  <DropdownMember close={setOpen} member={member} role={role} />
+                )}
+              </div>
+            </div>
+          )}
       </div>
     );
   };
@@ -221,7 +254,7 @@ const MemberPage = function (props: AppProps) {
 
   return (
     <div>
-      <Title initTitle={props.title} role={role} />
+      <Title initTitle={props.title} role={myRole} />
       <Sidebar param={path} id={props.title.slug} />
       <hr />
       <div className={style.page}>

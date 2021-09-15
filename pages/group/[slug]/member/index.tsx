@@ -44,7 +44,7 @@ const Item = function (props: propApi) {
   useEffect(() => {
     async function fetchRole() {
       Swal.fire({
-        title: "Loading data",
+        title: "Đang lấy dữ liệu",
         icon: "info",
         timerProgressBar: true,
         didOpen: () => {

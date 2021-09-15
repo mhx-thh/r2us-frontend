@@ -28,7 +28,7 @@
     padding-bottom: 20px;
 }
 .field__input_unactive {
-    background: rgba(238, 242, 255, 1);
+    background: #fff;
     border: 1px solid #6366f1;
     box-sizing: border-box;
     padding-top: 8px;
@@ -41,7 +41,7 @@
     resize: none;
 }
 .field__input_active {
-    background: #ffffff;
+    background: rgba(238, 242, 255, 1);
     border: 1px solid #6366f1;
     box-sizing: border-box;
     padding-top: 8px;
@@ -131,7 +131,7 @@
     font-weight: 600;
     font-size: 20px;
     line-height: 28px;
-    color: rgb(0, 0, 0);
+    color: #fff;
 }
 
 .button:hover {

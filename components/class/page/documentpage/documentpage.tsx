@@ -97,8 +97,8 @@ const DocumentPage = function (props: AppProps) {
           text: "Bạn sẽ không thể hoàn tác lại nếu đã xóa!",
           icon: "warning",
           showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
           confirmButtonText: "Tôi chắc chắn !",
           cancelButtonText: "Không, quay lại !",
         }).then(async function (result) {
@@ -122,6 +122,14 @@ const DocumentPage = function (props: AppProps) {
     };
     const ClickAccept = async () => {
       try {
+        Swal.fire({
+          title: "Đang cập nhập dữ liệu",
+          icon: "info",
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
         await GroupAPI.patchResource(Accept, data.id, token);
         Swal.fire({
           icon: "success",
@@ -138,8 +146,7 @@ const DocumentPage = function (props: AppProps) {
     return (
       <div ref={ref} className="absolute my-8 -mx-24">
         <ul className="w-28 text-base leading-6 font-normal shadow-xl rounded-xl bg-white border-2 border-solid border-blue-700">
-          {/* {data.status === "pending" && props.role === "provider" && ( */}
-          {data.status === "pending" && (
+          {data.status === "pending" && props.role === "provider" && (
             <li
               className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-green-200 cursor-pointer"
               onClick={ClickAccept}
@@ -203,32 +210,32 @@ const DocumentPage = function (props: AppProps) {
         </div>
 
         {/* Check role */}
-        {/* {props.role === "provider" && ( */}
-        <div>
-          {/* Request */}
-          <div className={style.prebox}>
-            <div className={style.box}>
-              <div className={style.box__text}>Yêu cầu</div>
+        {props.role === "provider" && (
+          <div>
+            {/* Request */}
+            <div className={style.prebox}>
+              <div className={style.box}>
+                <div className={style.box__text}>Yêu cầu</div>
+              </div>
+            </div>
+
+            {/* Request Resource */}
+            <div className={style.documentsection}>
+              {documentArray.map((data) =>
+                data.classId._id === props.id.classId &&
+                data.classId.courseId._id === props.id.courseId &&
+                data.classId.instructorId.id === props.id.instructorId &&
+                data.classId.academicId._id === props.id.academicId &&
+                data.resourceType === "Resources" &&
+                data.status === "pending" ? (
+                  <Document key={data._id} document={data} role={props.role} />
+                ) : (
+                  <div key={data._id}></div>
+                )
+              )}
             </div>
           </div>
-
-          {/* Request Resource */}
-          <div className={style.documentsection}>
-            {documentArray.map((data) =>
-              data.classId._id === props.id.classId &&
-              data.classId.courseId._id === props.id.courseId &&
-              data.classId.instructorId.id === props.id.instructorId &&
-              data.classId.academicId._id === props.id.academicId &&
-              data.resourceType === "Resources" &&
-              data.status === "pending" ? (
-                <Document key={data._id} document={data} role={props.role} />
-              ) : (
-                <div key={data._id}></div>
-              )
-            )}
-          </div>
-        </div>
-        {/* )} */}
+        )}
       </div>
       {create === true && (
         <PopUp closepopup={setCreate}>

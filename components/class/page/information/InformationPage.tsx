@@ -83,6 +83,14 @@ const InformationPage = function (props: AppProps) {
 
   const ClickEnroll = async () => {
     try {
+      Swal.fire({
+        title: "Đang cập nhập dữ liệu",
+        icon: "info",
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       await userApi.postEnroll({ classId: props.data._id }, token);
       setEnroll(true);
       Swal.fire(
@@ -97,6 +105,14 @@ const InformationPage = function (props: AppProps) {
 
   const ClickUpdate = async () => {
     try {
+      Swal.fire({
+        title: "Đang cập nhập dữ liệu",
+        icon: "info",
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       await GroupAPI.patchClass(dataPatch, props.data._id, token);
       setFlag(!flag);
       Swal.fire(
@@ -111,25 +127,29 @@ const InformationPage = function (props: AppProps) {
 
   const ClickDelete = async () => {
     try {
-      await Swal.fire({
-        title: `Bạn chắc chắn muốn xóa lớp 
-        ${title.className} ??`,
-        text: "Bạn sẽ không thể hoàn tác nếu đã xóa lớp này !!",
-        icon: "error",
+      Swal.fire({
+        title: `Xác nhận bạn muốn xóa lớp ${title.className} ?`,
+        text: `Hãy gõ "${title.className}"`,
+        input: "text",
+        inputAttributes: {
+          autocapitalize: "off",
+        },
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Tôi chắc chắn!",
-        cancelButtonText: "Quay lại",
+        confirmButtonText: "Xác nhận",
+        showLoaderOnConfirm: true,
       }).then(async function (result) {
         if (result.isConfirmed) {
-          await GroupAPI.deleteClass(props.data._id, token);
-          Swal.fire(
-            "Xóa thành công",
-            `Lớp học "${title.className}"`,
-            "success"
-          );
-          router.push("/");
+          if (result.value === title.className) {
+            await GroupAPI.deleteClass(props.data._id, token);
+            Swal.fire(
+              "Xóa thành công",
+              `Lớp học "${title.className}"`,
+              "success"
+            );
+            router.push("/");
+          } else {
+            Swal.fire("Xác nhận không đúng", "", "error");
+          }
         }
       });
     } catch (error) {

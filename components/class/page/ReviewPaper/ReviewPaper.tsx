@@ -98,8 +98,8 @@ const OutlinePage = function (props: AppProps) {
           text: "Bạn sẽ không thể hoàn tác lại nếu đã xóa!",
           icon: "warning",
           showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
           confirmButtonText: "Tôi chắc chắn !",
           cancelButtonText: "Không, quay lại !",
         }).then(async function (result) {
@@ -123,6 +123,14 @@ const OutlinePage = function (props: AppProps) {
     };
     const ClickAccept = async () => {
       try {
+        Swal.fire({
+          title: "Đang cập nhập dữ liệu",
+          icon: "info",
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
         await GroupAPI.patchReview(acceptedStatus, data._id, token);
         Swal.fire({
           icon: "success",
@@ -202,32 +210,36 @@ const OutlinePage = function (props: AppProps) {
         </div>
 
         {/* Check role */}
-        {/* {props.role === "provider" && ( */}
-        <div>
-          {/* Request */}
-          <div className={style.prebox}>
-            <div className={style.box}>
-              <div className={style.box__text}>Yêu cầu</div>
+        {props.role === "provider" && (
+          <div>
+            {/* Request */}
+            <div className={style.prebox}>
+              <div className={style.box}>
+                <div className={style.box__text}>Yêu cầu</div>
+              </div>
+            </div>
+
+            {/* Request Resource */}
+            <div className={style.documentsection}>
+              {outlineArray.map((data) =>
+                data.classId._id === props.id.classId &&
+                data.classId.courseId._id === props.id.courseId &&
+                data.classId.instructorId.id === props.id.instructorId &&
+                data.classId.academicId._id === props.id.academicId &&
+                data.resourceType === "Review Paper" &&
+                data.status === "pending" ? (
+                  <Outline
+                    key={data._id}
+                    outlineData={data}
+                    role={props.role}
+                  />
+                ) : (
+                  <div key={data._id}></div>
+                )
+              )}
             </div>
           </div>
-
-          {/* Request Resource */}
-          <div className={style.documentsection}>
-            {outlineArray.map((data) =>
-              data.classId._id === props.id.classId &&
-              data.classId.courseId._id === props.id.courseId &&
-              data.classId.instructorId.id === props.id.instructorId &&
-              data.classId.academicId._id === props.id.academicId &&
-              data.resourceType === "Review Paper" &&
-              data.status === "pending" ? (
-                <Outline key={data._id} outlineData={data} role={props.role} />
-              ) : (
-                <div key={data._id}></div>
-              )
-            )}
-          </div>
-        </div>
-        {/* )} */}
+        )}
       </div>
       {create === true && (
         <PopUp closepopup={setCreate}>

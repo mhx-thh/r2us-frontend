@@ -45,7 +45,16 @@ const ResourceEditModal = function (props: AppProps) {
   const handleSend = async (e) => {
     e.preventDefault();
     try {
+      Swal.fire({
+        title: "Đang cập nhập dữ liệu",
+        icon: "info",
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       await GroupAPI.patchResource(data, eresource._id, token);
+      Swal.close();
       Swal.fire({
         icon: "success",
         title: "Lưu thành công",
@@ -69,6 +78,8 @@ const ResourceEditModal = function (props: AppProps) {
               <input
                 className="w-full px-2 text-2xl leading-9 font-medium text-indigo-500 bg-indigo-100 border border-solid rounded-xl border-2 border-solid border-indigo-500"
                 value={data.resourceName}
+                minLength={10}
+                maxLength={50}
                 name="resourceName"
                 onChange={handleChange}
               />

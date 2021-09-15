@@ -36,7 +36,16 @@ const ReviewEditModal = function (props: AppProps) {
   const handleSend = async (e) => {
     e.preventDefault();
     try {
+      Swal.fire({
+        title: "Đang cập nhập dữ liệu",
+        icon: "info",
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       await GroupAPI.patchReview(data, ereview._id, token);
+      Swal.close();
       Swal.fire({
         icon: "success",
         title: "Lưu thành công",
