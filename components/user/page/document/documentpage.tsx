@@ -56,7 +56,7 @@ const DocumentPage = function () {
 
         {/* Document */}
         <div className={style.documentsection}>
-          <div className="w-full grid grid-cols-4 gap-11 justify-around">
+          <div className="-pl-10 grid grid-cols-4 gap-x-80 mr-24">
             {data.map((val, key) => (
               <ResourceItem aresource={val} key={key} />
             ))}

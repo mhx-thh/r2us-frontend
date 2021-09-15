@@ -207,7 +207,6 @@ const CreateReview = function () {
     async function postReview() {
       setCreateStatus("loading");
       const res = await GroupAPI.postReview(create, token);
-      console.log("Res: ", res);
       setCreateStatus("done");
       if (res?.data?.status === "success") {
         Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thành công." });
@@ -230,7 +229,7 @@ const CreateReview = function () {
   return (
     <form onSubmit={clickSend}>
       <div className="absolute flex top-0 left-0 w-full h-full rounded-l-2xl">
-        <div className="bg-indigo-100 w-8/12">
+        <div className="bg-indigo-100 w-8/12 rounded-l-2xl">
           <div className="flex justify-between h-16 pt-12">
             {/* Title */}
             <div className="pl-16">
@@ -294,6 +293,7 @@ const CreateReview = function () {
             <select
               className="px-2 bg-indigo-50 w-48 rounded-2xl h-10 border border-solid border-indigo-500"
               onChange={handleAcademicId}
+              value={schoolyear}
             >
               <option value="">Chọn năm học</option>
               {data?.schoolyear?.result?.map((val, key) => (

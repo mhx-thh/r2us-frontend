@@ -9,8 +9,9 @@ import { useAppSelector } from "redux/hooks";
 import { selectStatus, selectToken } from "redux/userSlice";
 
 import userApi from "api/userApi";
+import Swal from "sweetalert2";
 
-const ReviewPage = function (props: any) {
+const ReviewPage = function () {
   const token = useAppSelector(selectToken);
   const status = useAppSelector(selectStatus);
 
@@ -32,22 +33,6 @@ const ReviewPage = function (props: any) {
     }
     if (status === "logined") {
       getMyReviews();
-    }
-  }, [status]);
-
-  const [myClass, setMyClass] = useState([]);
-  useEffect(() => {
-    async function fetchMyClass() {
-      try {
-        const res = await userApi.getMyClass(token);
-        const myClass = res?.data?.data?.result;
-        setMyClass(myClass);
-      } catch (error) {
-        console.log(error.message);
-      }
-    }
-    if (status === "logined") {
-      fetchMyClass();
     }
   }, [status]);
 
