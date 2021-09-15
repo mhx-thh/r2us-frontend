@@ -207,7 +207,6 @@ const CreateReview = function () {
     async function postReview() {
       setCreateStatus("loading");
       const res = await GroupAPI.postReview(create, token);
-      console.log("Res: ", res);
       setCreateStatus("done");
       if (res?.data?.status === "success") {
         Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thành công." });

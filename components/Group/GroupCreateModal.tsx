@@ -3,7 +3,6 @@ import Swal from "sweetalert2";
 
 import GroupAPI from "api/groupAPI";
 import AcademicAPI from "api/academicApi";
-import userApi from "api/userApi";
 import { apiV1, get } from "api/generic";
 import InstructorAPI from "api/instructorApi";
 import courseApi from "api/courseApi";
@@ -19,6 +18,7 @@ type Api = {
 };
 
 type classStatus = "loading" | "done" | "gotNone";
+type createStatus = "loading" | "done";
 type dataCreate = {
   schoolyear: any;
   faculty: any;
@@ -54,6 +54,7 @@ const GroupCreateModal = function () {
 
   const [classStatus, setClassStatus] = useState<classStatus>("loading");
   const [group, setGroup] = useState([]);
+  const [createStatus, setCreateStatus] = useState<createStatus>("done");
 
   const initCreate: Api = {
     academicId: "",
@@ -183,25 +184,24 @@ const GroupCreateModal = function () {
 
   const ClickSend = (e) => {
     async function postGroup() {
-      // setCreateStatus("loading");
-      e.preventDefault();
+      setCreateStatus("loading");
       console.log(create);
       const res = await GroupAPI.postClass(create, token);
-      // setCreateStatus("done");
-      // if (res?.data?.status === "success") {
-      //   Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thành công." });
-      // } else {
-      //   Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thất bại." });
-      //   e.preventDefault();
-      // }
+      setCreateStatus("done");
+      if (res?.data?.status === "success") {
+        Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thành công." });
+      } else {
+        Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thất bại." });
+        e.preventDefault();
+      }
     }
 
     if (
       create.academicId !== "" &&
       create.className !== "" &&
       create.courseId !== "" &&
-      create.instructorId !== ""
-      // createStatus === "done"
+      create.instructorId !== "" &&
+      createStatus === "done"
     ) {
       postGroup();
     }

@@ -215,6 +215,7 @@ const CreateResource = function () {
     async function postResource() {
       setCreateStatus("loading");
       const res = await GroupAPI.postResource(create, token);
+      console.log("Res: ", res);
       setCreateStatus("done");
       if (res?.data?.status === "success") {
         Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thành công." });

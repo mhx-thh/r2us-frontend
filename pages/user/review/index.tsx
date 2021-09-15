@@ -50,7 +50,7 @@ const User = function (props) {
   }, []);
   return (
     <LayoutUser>
-      <ReviewPage props={props} />;
+      <ReviewPage />;
     </LayoutUser>
   );
 };
