@@ -1,14 +1,12 @@
 import Link from "next/link";
-import React, { useState } from "react";
-import { useAppSelector } from "redux/hooks";
-import { selectStatus, selectUser } from "redux/userSlice";
+import React from "react";
 import style from "./style.module.css";
 
-interface Props {
+type AppProps = {
   param: string;
-}
+};
 
-function Sidebar(props: { param: string }) {
+function Sidebar(props: AppProps) {
   const SideBarData = [
     {
       Title: "Thông tin",

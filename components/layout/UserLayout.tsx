@@ -40,7 +40,7 @@ const LayoutUser = ({ children }: Props) => {
         <link rel="canonical" href={`${url}${path}`} />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <UserHeader user={user} />
+      <UserHeader />
       <Sidebar param={path} />
       <div className="h-[12px]"></div>
       <hr></hr>

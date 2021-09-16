@@ -1,15 +1,17 @@
 import React from "react";
+
+import { useAppSelector } from "redux/hooks";
+import { selectUser } from "redux/userSlice";
+
 import style from "./style.module.css";
 
-interface Props {
-  user: any;
-}
-
-function UserHeader({ user }: Props) {
+function UserHeader() {
+  const user = useAppSelector(selectUser);
   const studentID =
     user.studentCardNumber === ""
       ? "Chưa cập nhập MSSV"
       : user.studentCardNumber;
+
   return (
     <div className={style.title}>
       <div className={style.page}>
