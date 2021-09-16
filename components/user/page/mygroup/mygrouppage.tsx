@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import PopUp from "components/class/PopUp/popup";
 import GroupCreateModal from "components/Group/GroupCreateModal";
 import GroupItem from "components/Group/GroupItem";
+import GroupLoading from "components/user/Loading/GroupLoading";
 import style from "./style.module.css";
 
 import { useAppSelector } from "redux/hooks";
@@ -10,9 +11,12 @@ import { selectStatus, selectToken } from "redux/userSlice";
 
 import userApi from "api/userApi";
 
-const GroupPage = function (props: any) {
+type pageStatus = "loading" | "done";
+
+const GroupPage = function () {
   const token = useAppSelector(selectToken);
   const status = useAppSelector(selectStatus);
+  const [pageStatus, setPageStatus] = useState<pageStatus>("loading");
 
   const [isCreated, setIsCreated] = useState(false);
   const handleClick = function () {
@@ -26,13 +30,12 @@ const GroupPage = function (props: any) {
         const res = await userApi.getMyClass(token);
         const myClass = res?.data?.data?.result;
         setMyClass(myClass);
+        setPageStatus("done");
       } catch (error) {
         console.log(error.message);
       }
     }
-    if (status === "logined") {
-      fetchMyClass();
-    }
+    fetchMyClass();
   }, [status]);
 
   return (
@@ -66,17 +69,28 @@ const GroupPage = function (props: any) {
           </button>
         </div>
 
-        {/* Group */}
-        <div className="w-full grid grid-cols-4 gap-11 justify-around">
-          {myClass.map((val, key) => (
-            <GroupItem key={key} agroup={val.classId} />
-          ))}
-        </div>
-
         {isCreated === true && (
           <PopUp closepopup={setIsCreated}>
             <GroupCreateModal />
           </PopUp>
+        )}
+
+        {/* Group */}
+        {pageStatus === "done" ? (
+          <div className="grid lg:grid-cols-4 gap-12 md:grid-cols-3 sm:grid-cols-2">
+            {myClass.map((val, key) => (
+              <GroupItem key={key} agroup={val.classId} />
+            ))}
+          </div>
+        ) : (
+          <div className="grid lg:grid-cols-4 gap-12 md:grid-cols-3 sm:grid-cols-2">
+            <GroupLoading />
+            <GroupLoading />
+            <GroupLoading />
+            <GroupLoading />
+            <GroupLoading />
+            <GroupLoading />
+          </div>
         )}
       </div>
     </div>

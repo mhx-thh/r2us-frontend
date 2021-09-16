@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import CreateResource from "components/Resource/ResourceCreateModal";
 import PopUp from "components/class/PopUp/popup";
 import ResourceItem from "components/Resource/ResourceItem";
+import ResourceLoading from "components/user/Loading/ResourceLoading";
 import style from "./style.module.css";
 
 import { useAppSelector } from "redux/hooks";
@@ -10,9 +11,12 @@ import { selectStatus, selectToken } from "redux/userSlice";
 
 import userApi from "api/userApi";
 
+type pageStatus = "loading" | "done";
+
 const DocumentPage = function () {
   const token = useAppSelector(selectToken);
   const status = useAppSelector(selectStatus);
+  const [pageStatus, setPageStatus] = useState<pageStatus>("loading");
 
   const [create, setCreate] = useState(false);
   const handleClick = () => {
@@ -26,13 +30,12 @@ const DocumentPage = function () {
         const res = await userApi.getMyResources(token);
         const data = res?.data?.data?.result;
         setData(data);
+        setPageStatus("done");
       } catch (error) {
         console.log(error.message);
       }
     }
-    if (status === "logined") {
-      getData();
-    }
+    getData();
   }, [status]);
 
   return (
@@ -55,13 +58,22 @@ const DocumentPage = function () {
         )}
 
         {/* Document */}
-        <div className={style.documentsection}>
-          <div className="-pl-10 grid grid-cols-4 gap-x-80 mr-24">
+        {pageStatus === "done" ? (
+          <div className="grid lg:grid-cols-4 gap-12 md:grid-cols-3 sm:grid-cols-2">
             {data.map((val, key) => (
               <ResourceItem aresource={val} key={key} />
             ))}
           </div>
-        </div>
+        ) : (
+          <div className="grid lg:grid-cols-4 gap-12 md:grid-cols-3 sm:grid-cols-2">
+            <ResourceLoading />
+            <ResourceLoading />
+            <ResourceLoading />
+            <ResourceLoading />
+            <ResourceLoading />
+            <ResourceLoading />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -212,16 +212,31 @@ const CreateResource = function () {
   };
 
   const clickSend = (ev) => {
+    // async function postResource() {
+    //   setCreateStatus("loading");
+    //   const res = await GroupAPI.postResource(create, token);
+    //   console.log("Res: ", res);
+    //   setCreateStatus("done");
+    //   if (res?.data?.status === "success") {
+    //     Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thành công." });
+    //   } else {
+    //     Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thất bại." });
+    //     ev.preventDefault();
+    //   }
+    // }
+
+    // Temporary reload
     async function postResource() {
+      ev.preventDefault();
       setCreateStatus("loading");
       const res = await GroupAPI.postResource(create, token);
       console.log("Res: ", res);
       setCreateStatus("done");
       if (res?.data?.status === "success") {
         Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thành công." });
+        window.location.reload();
       } else {
         Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thất bại." });
-        ev.preventDefault();
       }
     }
 
