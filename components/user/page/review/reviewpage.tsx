@@ -9,7 +9,6 @@ import { useAppSelector } from "redux/hooks";
 import { selectStatus, selectToken } from "redux/userSlice";
 
 import userApi from "api/userApi";
-import Swal from "sweetalert2";
 
 const ReviewPage = function () {
   const token = useAppSelector(selectToken);

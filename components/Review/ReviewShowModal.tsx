@@ -30,18 +30,22 @@ function ReviewShowModal({ sreview }: AppProps) {
       {/* course */}
       <div className="flex pl-56 pb-3 pr-20">
         <img className="my-1" width="20" src="/icons/course.svg" />
-        <div className="ml-8 my-1">{sreview?.classId?.courseId?.courseName}</div>
+        <div className="ml-8 my-1">
+          {sreview?.classId?.courseId?.courseName}
+        </div>
       </div>
 
       {/* class */}
       <div className="flex pl-56 pr-20">
         <img className="my-3" width="20" src="/icons/destination_group.svg" />
         <div className="pl-8 my-3">{sreview?.classId?.className}</div>
-        <Link href={url}>
-          <a>
-            <img className="pl-10 pt-2.5" src="/icons/gotoGroup.svg" />
-          </a>
-        </Link>
+        <div className="absolute right-40 top-60">
+          <Link href={url}>
+            <a>
+              <img src="/icons/gotoGroup.svg" />
+            </a>
+          </Link>
+        </div>
       </div>
 
       {/* Review */}

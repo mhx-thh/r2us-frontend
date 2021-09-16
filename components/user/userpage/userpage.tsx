@@ -1,11 +1,12 @@
-import InputField from "components/user/userpage/inputfield";
 import React from "react";
 
-type AppProps = {
-  user: any;
-};
+import InputField from "components/user/userpage/inputfield";
 
-const UserPage = function ({ user }: AppProps) {
+import { useAppSelector } from "redux/hooks";
+import { selectUser } from "redux/userSlice";
+
+const UserPage = function () {
+  const user = useAppSelector(selectUser);
   console.log(user);
   return (
     <div className="pl-56 grid grid-cols-12">
@@ -24,12 +25,7 @@ const UserPage = function ({ user }: AppProps) {
             data={`${user.givenName}`}
             multiline={false}
           />
-          <InputField
-            name="Biệt danh"
-            editable
-            data={user.bio}
-            multiline={false}
-          />
+          {/* <InputField name="Biệt danh" editable data="" multiline={false} /> */}
           <InputField
             name="MSSV"
             editable
@@ -42,7 +38,7 @@ const UserPage = function ({ user }: AppProps) {
             data={user.email}
             multiline={false}
           />
-          <InputField name="Mô tả" editable data={user.role} multiline={true} />
+          <InputField name="Mô tả" editable data={user.bio} multiline={true} />
         </div>
       </div>
       <div className="relative w-52 h-48 bg-white shadow-md rounded-2xl left-48 top-28">
