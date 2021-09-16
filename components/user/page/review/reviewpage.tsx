@@ -25,10 +25,6 @@ const ReviewPage = function () {
 
   const [data, setData] = useState([]);
 
-  if (status == "nologin") {
-    window.location.assign(process.env.NEXT_PUBLIC_WEB_URL);
-  }
-
   useEffect(() => {
     async function getMyReviews() {
       try {
