@@ -4,7 +4,7 @@
     padding-right: 100px;
 }
 .m{
-    padding-bottom: 20px;
+    padding-bottom: 25px;
 }
 .grid{
     display: grid;
@@ -62,4 +62,95 @@
     font-size: 16px;
     line-height: 24px;
     color: #000000;
+}
+.pbutton {
+    padding-top: 30px;
+    padding-right: 30px;
+    display: flex;
+    grid-column: 1 / span 4;
+    align-items: center;
+    justify-content: center;
+}
+.button__update {
+    background: #979797;
+    margin-left: 40px;
+    border: 2px solid #979797;
+    box-sizing: border-box;
+    border-radius: 8px;
+    width: 125px;
+    height: 44px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 28px;
+    color: white;
+}
+.button__update:hover {
+    background: #676768;
+    border: 1px solid #c8c8c9;
+    box-sizing: border-box;
+    border-radius: 8px;
+    width: 125px;
+    height: 44px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 28px;
+    color: white;
+}
+
+.button__submit {
+    background: #03bb3a;
+    margin-left: 40px;
+    border: 2px solid #03bb3a;
+    box-sizing: border-box;
+    border-radius: 8px;
+    width: 125px;
+    height: 44px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 28px;
+    color: rgb(255, 255, 255);
+}
+.button__submit:hover {
+    background: #3df765;
+    border: 1px solid #eef2ff;
+    box-sizing: border-box;
+    border-radius: 8px;
+    width: 125px;
+    height: 44px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 28px;
+    color: white;
+}
+
+.button__cancel {
+    background: #9c9c9c;
+    margin-left: 40px;
+    border: 2px solid #9c9c9c;
+    box-sizing: border-box;
+    border-radius: 8px;
+    width: 125px;
+    height: 44px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 28px;
+    color: rgb(255, 255, 255);
+}
+.button__cancel:hover {
+    background: #c7c7c7;
+    border: 1px solid #c7c7c7;
+    box-sizing: border-box;
+    border-radius: 8px;
+    width: 125px;
+    height: 44px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 28px;
+    color: white;
 }

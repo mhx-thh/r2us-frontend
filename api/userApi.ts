@@ -1,4 +1,4 @@
-import { apiV1, get, post } from "api/generic";
+import { apiV1, get, patch, post } from "api/generic";
 
 const userApi = {
   getInfo: function (token: string) {
@@ -24,6 +24,10 @@ const userApi = {
   postEnroll: function (classId: any, token: string) {
     const url = `${apiV1}/groups/enrollment`;
     return post(url, classId, token);
+  },
+  patchUser: function (data: any, token: string) {
+    const url = `${apiV1}/user/updateMe`;
+    return patch(url, data, token);
   },
 };
 export default userApi;

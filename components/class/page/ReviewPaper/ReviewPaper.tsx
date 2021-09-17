@@ -39,6 +39,7 @@ const OutlinePage = function (props: AppProps) {
         const data = res?.data?.data?.result;
         setOutlineArray(data);
       } catch (error) {
+        Swal.fire("Đã xảy ra lỗi", "", "error");
         console.log(error);
       }
       Swal.close();
@@ -114,6 +115,7 @@ const OutlinePage = function (props: AppProps) {
           }
         });
       } catch (error) {
+        Swal.fire("Đã xảy ra lỗi", "", "error");
         console.log(error);
       }
     };
@@ -140,6 +142,7 @@ const OutlinePage = function (props: AppProps) {
         });
         setFlag(!flag);
       } catch (error) {
+        Swal.fire("Đã xảy ra lỗi", "", "error");
         console.log(error);
       }
     };

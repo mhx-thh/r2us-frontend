@@ -39,6 +39,7 @@ const DocumentPage = function (props: AppProps) {
         const data = res?.data?.data?.result;
         setDocumentArray(data);
       } catch (error) {
+        Swal.fire("Đã xảy ra lỗi", "", "error");
         console.log(error);
       }
     }
@@ -113,6 +114,7 @@ const DocumentPage = function (props: AppProps) {
           }
         });
       } catch (error) {
+        Swal.fire("Đã xảy ra lỗi", "", "error");
         console.log(error);
       }
     };
@@ -139,6 +141,7 @@ const DocumentPage = function (props: AppProps) {
         });
         setFlag(!flag);
       } catch (error) {
+        Swal.fire("Đã xảy ra lỗi", "", "error");
         console.log(error);
       }
     };

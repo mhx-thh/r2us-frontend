@@ -62,6 +62,7 @@ const InformationPage = function (props: AppProps) {
             router.push(`/group/${val.slug}`))
         );
       } catch (error) {
+        Swal.fire("Đã xảy ra lỗi", "", "error");
         console.log(error.message);
       }
     }
@@ -99,6 +100,7 @@ const InformationPage = function (props: AppProps) {
         "success"
       );
     } catch (error) {
+      Swal.fire("Đã xảy ra lỗi", "", "error");
       console.log(error);
     }
   };
@@ -121,6 +123,7 @@ const InformationPage = function (props: AppProps) {
         "success"
       );
     } catch (error) {
+      Swal.fire("Đã xảy ra lỗi", "", "error");
       console.log(error);
     }
   };
@@ -153,6 +156,7 @@ const InformationPage = function (props: AppProps) {
         }
       });
     } catch (error) {
+      Swal.fire("Đã xảy ra lỗi", "", "error");
       console.log(error);
     }
   };

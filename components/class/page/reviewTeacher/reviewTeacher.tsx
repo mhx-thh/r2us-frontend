@@ -40,6 +40,7 @@ const ReviewTeacher = function (props: AppProps) {
         const data = res?.data?.data?.result;
         setReviewArray(data);
       } catch (error) {
+        Swal.fire("Đã xảy ra lỗi", "", "error");
         console.log(error);
       }
     }
@@ -110,6 +111,7 @@ const ReviewTeacher = function (props: AppProps) {
           }
         });
       } catch (error) {
+        Swal.fire("Đã xảy ra lỗi", "", "error");
         console.log(error);
       }
     };
@@ -138,6 +140,7 @@ const ReviewTeacher = function (props: AppProps) {
         });
         setFlag(!flag);
       } catch (error) {
+        Swal.fire("Đã xảy ra lỗi", "", "error");
         console.log(error);
       }
     };

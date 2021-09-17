@@ -60,6 +60,7 @@ const Item = function (props: propApi) {
         const data = res?.data?.data?.result;
         data[0] !== undefined && setRole(data[0].role);
       } catch (error) {
+        Swal.fire("Đã xảy ra lỗi", "", "error");
         console.log(error.message);
       }
       Swal.close();

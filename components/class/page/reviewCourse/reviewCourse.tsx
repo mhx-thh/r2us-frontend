@@ -39,6 +39,7 @@ const ReviewCourse = function (props: AppProps) {
         const data = res?.data?.data?.result;
         setReviewArray(data);
       } catch (error) {
+        Swal.fire("Đã xảy ra lỗi", "", "error");
         console.log(error);
       }
     }
@@ -111,6 +112,7 @@ const ReviewCourse = function (props: AppProps) {
           }
         });
       } catch (error) {
+        Swal.fire("Đã xảy ra lỗi", "", "error");
         console.log(error);
       }
     };
@@ -140,6 +142,7 @@ const ReviewCourse = function (props: AppProps) {
           timer: 1500,
         });
       } catch (error) {
+        Swal.fire("Đã xảy ra lỗi", "", "error");
         console.log(error);
       }
     };

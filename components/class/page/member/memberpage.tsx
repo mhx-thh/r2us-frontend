@@ -50,6 +50,7 @@ const MemberPage = function (props: AppProps) {
         const data = res?.data?.data?.result;
         setMemberArray(data);
       } catch (error) {
+        Swal.fire("Đã xảy ra lỗi", "", "error");
         console.log(error);
       }
     }
@@ -84,6 +85,7 @@ const MemberPage = function (props: AppProps) {
         });
         setFlag(!flag);
       } catch (error) {
+        Swal.fire("Đã xảy ra lỗi", "", "error");
         console.log(error);
       }
     };
@@ -110,6 +112,7 @@ const MemberPage = function (props: AppProps) {
         });
         setFlag(!flag);
       } catch (error) {
+        Swal.fire("Đã xảy ra lỗi", "", "error");
         console.log(error);
       }
     };
@@ -138,6 +141,7 @@ const MemberPage = function (props: AppProps) {
           }
         });
       } catch (error) {
+        Swal.fire("Đã xảy ra lỗi", "", "error");
         console.log(error);
       }
     };
