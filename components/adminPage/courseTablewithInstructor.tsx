@@ -9,6 +9,7 @@ import CourseRowInstructor from "./CourseRowInstructor";
 import facultyApi from "api/facultyApi";
 import SelectOption from "components/adminPage/SelectOption";
 import InstructorAPI from "api/instructorApi";
+import Swal from "sweetalert2";
 
 type AppProps = {
   instructor: any;
@@ -71,6 +72,14 @@ function CourseTable({ instructor }: AppProps) {
   };
   useEffect(() => {
     async function fetchMyCourseList() {
+      Swal.fire({
+        title: "Loading data",
+        icon: "info",
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       try {
         const res = await intructorAPI.getInstructor(instructor._id);
         const data = res?.data?.data?.courseId;
@@ -81,6 +90,7 @@ function CourseTable({ instructor }: AppProps) {
       } catch (error) {
         console.log(error.message);
       }
+      Swal.close();
     }
     fetchMyCourseList();
   }, [reloading]);
@@ -188,7 +198,7 @@ function CourseTable({ instructor }: AppProps) {
             </button>
           </td>
         </tr>
-        {mycourseList?.map((data, index) => (
+        {instructor.courseId?.map((data, index) => (
           <CourseRowInstructor
             key={index}
             course={data}

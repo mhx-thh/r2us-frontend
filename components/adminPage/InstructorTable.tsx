@@ -65,6 +65,15 @@ function InstructorTable(props) {
       try {
         const res = await instructorApi.getAll();
         const data = res?.data?.data?.result;
+        data.sort(function (a, b) {
+          if (a.instructorName.toLowerCase() > b.instructorName.toLowerCase()) {
+            return 1;
+          }
+          if (a.instructorName.toLowerCase() < b.instructorName.toLowerCase()) {
+            return -1;
+          }
+          return 0;
+        });
         setTotal(res?.data?.data?.total);
         setinstructorlist(data);
         console.log("data", data[1]);
