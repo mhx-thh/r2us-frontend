@@ -8,6 +8,7 @@ import Threedots from "./Threedots";
 import academicApi from "api/academicApi";
 import { isFulfilled } from "@reduxjs/toolkit";
 import Swal from "sweetalert2";
+import SelectOption from "components/adminPage/SelectOption";
 
 // interface Props {
 //   getThreedots: any;
@@ -27,7 +28,7 @@ function AcademicTable(props) {
     schoolyear: "",
     semester: 0,
   };
-  const list = [1, 2, 3];
+  const list = [{ label: 1 }, { label: 2 }, { label: 3 }];
 
   const [create, setCreate] = useState<Api>(initCreate);
 
@@ -80,6 +81,11 @@ function AcademicTable(props) {
       try {
         const res = await academicApi.getSchoolYears();
         const data = res?.data?.data?.result;
+        const temObj = data.map((idx) => {
+          const newobj = {};
+          newobj["label"] = `${idx.schoolyear}/${idx.semester}`;
+          return newobj;
+        });
         setTotal(res?.data?.data?.total);
         setacademiclist(data);
         console.log("data", data);
@@ -129,13 +135,13 @@ function AcademicTable(props) {
             />
           </td>
           <td className="p-2 text-left">
-            <select name="Chọn học kỳ" onChange={handleChange}>
-              <option value="">Chọn học kỳ</option>
-              {list.map((value, idx) => {
-                // eslint-disable-next-line react/jsx-key
-                return <option value={value}>{value}</option>;
-              })}
-            </select>
+            <SelectOption
+              name="semester"
+              title="hocki"
+              onHandleChange={handleChange}
+              options={list}
+              placeholder="Chọn Môn hoc . . ."
+            />
           </td>
 
           <td className="p-2 pt-3 bg-transparent pl-12 border-r relative  flex justify-center">

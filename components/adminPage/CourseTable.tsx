@@ -4,7 +4,6 @@ import Image from "next/image";
 import courseApi from "api/courseApi";
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
-import { Stringifiable } from "query-string";
 import CourseRowFaculty from "./CourseRowFaculty";
 import Swal from "sweetalert2";
 
@@ -40,26 +39,26 @@ function CourseTable({ faculty }: AppProps) {
     setThreedots(!threedots);
   };
 
-  const [create, setCreate] = useState<Api>(initCreate);
+  const [create, setCreate] = useState("");
 
   const handleChange = (e) => {
     const val = e.target.value;
-    setCreate({ ...create, courseName: e.target.value });
+    setCreate(val);
   };
   const hanldeSubmit = (e) => {
     e.preventDefault();
-    create.courseName !== "" &&
-      create.facultyId !== {} &&
-      courseApi.postCourse(create, token);
-    const newre = reloading + 1;
-    setReloading(newre);
+    const obj = {
+      courseName: create,
+      facultyId: faculty._id,
+      courseDescription: "create by admin",
+    };
+    console.log(obj);
+    courseApi.postCourse(obj, token);
+    setReloading(reloading + 1);
+    setCreate("");
   };
   const handleReloadingForDelete = () => {
     setReloading(reloading + 1);
-  };
-  const handleClickDelete = () => {
-    courseApi.deleteCourse(faculty._id, token);
-    setReloading(1);
   };
   const [total, setTotal] = useState(0);
   const [courseList, setCourseList] = useState([]);
@@ -81,6 +80,7 @@ function CourseTable({ faculty }: AppProps) {
         console.log("data course", data);
       } catch (error) {
         console.log(error.message);
+        setCourseList([]);
       }
       Swal.close();
     }

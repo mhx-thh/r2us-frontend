@@ -69,6 +69,15 @@ function FacultyTable(props) {
       try {
         const res = await facultyApi.getAll();
         const data = res?.data?.data?.result;
+        data.sort(function (a, b) {
+          if (a.facultyName.toLowerCase() > b.facultyName.toLowerCase()) {
+            return 1;
+          }
+          if (a.facultyName.toLowerCase() < b.facultyName.toLowerCase()) {
+            return -1;
+          }
+          return 0;
+        });
         setFacultylist(data);
         setTotal(res?.data?.data?.total);
         console.log("data", data);

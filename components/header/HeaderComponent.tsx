@@ -175,21 +175,9 @@ const HeaderComponent: FC = () => {
                             />
                             User
                           </li>
-                          <li
-                            className="flex text-center px-2 cursor-pointer rounded-xl hover:bg-indigo-200"
-                            onClick={logOut}
-                          >
-                            <img
-                              src="/icons/logout.svg"
-                              height={16}
-                              width={16}
-                              className="mr-2"
-                            />
-                            Log out
-                          </li>
                           {isAdmin && (
                             <li
-                              className="flex relative text-center px-2 cursor-pointer rounded-xl hover:bg-indigo-200 mb-2"
+                              className="flex relative text-center px-2 cursor-pointer rounded-xl hover:bg-indigo-200"
                               onClick={admin}
                             >
                               <svg
@@ -249,6 +237,20 @@ const HeaderComponent: FC = () => {
                               Admin
                             </li>
                           )}
+                          <li
+                            className={`flex text-center px-2 cursor-pointer rounded-xl hover:bg-indigo-200 ${
+                              isAdmin ? "mb-2" : ""
+                            }`}
+                            onClick={logOut}
+                          >
+                            <img
+                              src="/icons/logout.svg"
+                              height={16}
+                              width={16}
+                              className="mr-2"
+                            />
+                            Log out
+                          </li>
                         </ul>
                       </div>
                     )}

@@ -67,7 +67,7 @@ function InstructorTable(props) {
         const data = res?.data?.data?.result;
         setTotal(res?.data?.data?.total);
         setinstructorlist(data);
-        console.log("data", data);
+        console.log("data", data[1]);
       } catch (error) {
         console.log(error.message);
       }

@@ -6,7 +6,7 @@ import InstructorTable from "components/adminPage/InstructorTable";
 const AdminPage: FC = () => {
   return (
     <AdminLayout>
-      <div className="mb-24 ml-12">
+      <div className="mb-20 ml-12">
         <InstructorTable />
       </div>
     </AdminLayout>

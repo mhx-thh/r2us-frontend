@@ -188,7 +188,7 @@ function CourseTable({ instructor }: AppProps) {
             </button>
           </td>
         </tr>
-        {mycourseList.map((data, index) => (
+        {mycourseList?.map((data, index) => (
           <CourseRowInstructor
             key={index}
             course={data}
@@ -197,7 +197,7 @@ function CourseTable({ instructor }: AppProps) {
         ))}
         <tr className="bg-gray-50 text-left  ">
           <td className="p-2 pl-8 bg-white Table Footer  " colSpan={4}>
-            Tổng cộng {mycourseList.length}
+            Tổng cộng {mycourseList?.length}
           </td>
         </tr>
       </tbody>

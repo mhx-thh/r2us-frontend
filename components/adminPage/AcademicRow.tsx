@@ -4,13 +4,14 @@ import Threedots from "./Threedots";
 import { selectToken, selectUser } from "redux/userSlice";
 import { useAppSelector } from "redux/hooks";
 import academicApi from "api/academicApi";
+import SelectOption from "components/adminPage/SelectOption";
 type AppProps = {
   academic: any;
   setReloading: any;
 };
 
 function academicRow({ academic, setReloading }: AppProps) {
-  const list = [1, 2, 3];
+  const list = [{ label: 1 }, { label: 2 }, { label: 3 }];
 
   const [collapse, setCollapse] = useState(false);
   const [threedots, setThreedots] = useState(false);
@@ -100,17 +101,13 @@ function academicRow({ academic, setReloading }: AppProps) {
       )}
       {(edit && (
         <td className="p-2 text-left">
-          <select
-            name="Chọn học kỳ"
-            onChange={changeSemester}
-            className="h-10 text-sm"
-          >
-            <option value="">Chọn học kỳ</option>
-            {list.map((value, idx) => {
-              // eslint-disable-next-line react/jsx-key
-              return <option value={value}>{value}</option>;
-            })}
-          </select>
+          <SelectOption
+            name="semester"
+            title="hocki"
+            onHandleChange={changeSemester}
+            options={list}
+            placeholder="Chọn Môn hoc . . ."
+          />
         </td>
       )) || (
         <td className="p-2 border-r border-transparent text-left text-base leading-6 font-normal">

@@ -40,7 +40,7 @@ function FacultyRow({ course, setReloading }: AppProps) {
     console.log(obj);
     setReloading(1);
     setEdit(false);
-    setCollapse(false);
+    setThreedots(!threedots);
   };
   function useClickOutside(ref) {
     useEffect(() => {
