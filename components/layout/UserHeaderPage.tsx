@@ -1,8 +1,6 @@
 import React from "react";
 
 import Footer from "components/footer/FooterComponent";
-import Sidebar from "components/user/Sidebar/UserSidebar";
-import UserHeader from "components/user/userheader/header";
 
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -14,7 +12,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const LayoutUser = ({ children }: Props) => {
+const UserHeaderPage = ({ children }: Props) => {
   const user = useAppSelector(selectUser);
   const router = useRouter();
   const url = process.env.NEXT_PUBLIC_WEB_URL;
@@ -40,14 +38,10 @@ const LayoutUser = ({ children }: Props) => {
         <link rel="canonical" href={`${url}${path}`} />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <UserHeader user={user} />
-      <Sidebar param={path} />
-      <div className="h-[12px]"></div>
-      <hr></hr>
       {children}
       <Footer />
     </React.Fragment>
   );
 };
 
-export default LayoutUser;
+export default UserHeaderPage;

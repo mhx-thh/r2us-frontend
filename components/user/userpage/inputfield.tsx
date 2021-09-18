@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import style from "./style.module.css";
 
@@ -11,6 +11,10 @@ function InputField(props: {
   const { handleSubmit } = useForm();
   const [data, setData] = useState(props.data);
   const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    setData(props.data);
+  }, [props.data]);
   const onSubmit = () => {
     setIsActive(!!!isActive);
     // Push Api

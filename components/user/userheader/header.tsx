@@ -1,12 +1,12 @@
 import React from "react";
-
-import { useAppSelector } from "redux/hooks";
-import { selectUser } from "redux/userSlice";
-
+import { user } from "lib/models";
 import style from "./style.module.css";
 
-function UserHeader() {
-  const user = useAppSelector(selectUser);
+type AppProps = {
+  user: user;
+};
+
+function UserHeader({ user }: AppProps) {
   const studentID =
     user.studentCardNumber === ""
       ? "Chưa cập nhập MSSV"

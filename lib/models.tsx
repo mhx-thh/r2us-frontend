@@ -170,3 +170,18 @@ export type memberType = {
   __v: string;
   id: string;
 };
+
+export type user = {
+  bio: string;
+  createdAt: string;
+  dateOfBirth: string;
+  email: string;
+  familyName: string;
+  givenName: string;
+  photo: string;
+  role: string;
+  studentCardNumber: string;
+  updatedAt: string;
+  __v: string;
+  _id: string;
+};
