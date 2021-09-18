@@ -1,10 +1,10 @@
 import React from "react";
 
-function IconContact(props) {
+function Infor_Van_Hao(props) {
   return (
     <div className=" px-16 flex items-center">
       <a
-        href="https://www.facebook.com/hongtan1422002/"
+        href="https://www.facebook.com/ngvanhao.22"
         target="_blank"
         rel="noreferrer"
       >
@@ -27,7 +27,7 @@ function IconContact(props) {
         </div>
       </a>
       <a
-        href="mailto:hongtan1422002@gmail.com?"
+        href="mailto:haonguyencp22@gmail.com?"
         target="_blank"
         rel="noreferrer"
       >
@@ -51,7 +51,7 @@ function IconContact(props) {
       </a>
       <a
         className="Header-link "
-        href="https://github.com/Hong-Tan"
+        href="https://github.com/Nguyen-Hao"
         target="_blank"
         data-hotkey="g d"
         aria-label="Homepage "
@@ -78,4 +78,4 @@ function IconContact(props) {
   );
 }
 
-export default IconContact;
+export default Infor_Van_Hao;
