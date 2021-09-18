@@ -204,6 +204,7 @@ const CreateReview = function () {
   };
 
   const clickSend = (ev) => {
+    ev.preventDefault();
     async function postReview() {
       setCreateStatus("loading");
       const res = await GroupAPI.postReview(create, token);
@@ -212,7 +213,6 @@ const CreateReview = function () {
         Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thành công." });
       } else {
         Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thất bại." });
-        ev.preventDefault();
       }
     }
 

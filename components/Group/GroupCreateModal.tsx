@@ -183,6 +183,7 @@ const GroupCreateModal = function () {
   };
 
   const ClickSend = (e) => {
+    e.preventDefault();
     async function postGroup() {
       setCreateStatus("loading");
       console.log(create);
@@ -192,7 +193,6 @@ const GroupCreateModal = function () {
         Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thành công." });
       } else {
         Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thất bại." });
-        e.preventDefault();
       }
     }
 
