@@ -118,7 +118,7 @@ function FilterBar({ getData, getPagination, setDone }: Props) {
       const response = await AcademicAPI.get();
       const newAcademic = response?.data?.data?.result.map((op) => {
         const newOp = {};
-        newOp["label"] = `${op.schoolyear} / học kì ${op.semester}`;
+        newOp["label"] = `${op.schoolyear} / Học kì ${op.semester}`;
         newOp["_id"] = op._id;
         return newOp;
       });
@@ -296,7 +296,7 @@ function FilterBar({ getData, getPagination, setDone }: Props) {
             <SearchBar
               register={register}
               name="t__search"
-              placeholder="Tìm kiếm..."
+              placeholder="Tìm kiếm . . ."
             />
           </div>
 
@@ -304,7 +304,7 @@ function FilterBar({ getData, getPagination, setDone }: Props) {
             <p className="text-xl leading-8 font-semibold">
               Gợi ý:{" "}
               <span className="text-lg text-indigo-500 leading-7 font-normal">
-                Đề cương Toán ứng dụng thống kê
+                Đề cương Toán ứng dụng thống kê, Đề giữa kì toán cao cấp A1, ...
               </span>
             </p>
           </div>

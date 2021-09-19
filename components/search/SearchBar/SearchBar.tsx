@@ -1,5 +1,7 @@
+/* eslint-disable react/jsx-key */
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import style from "../style.module.css";
 
 type typeInputText = {
   register: any;
@@ -15,7 +17,7 @@ function InputText(props: typeInputText) {
     { label: "Cảm nhận" },
     { label: "Lớp học" },
   ];
-  const [searchType, setSearchType] = useState("Tài liệu");
+  const [searchType, setSearchType] = useState("");
   const router = useRouter();
   const handleChange = (e) => {
     if (e.target.value === "Tài liệu") {
@@ -23,20 +25,21 @@ function InputText(props: typeInputText) {
         shallow: true,
         scroll: false,
       });
+      setSearchType("Tài liệu");
     }
     if (e.target.value === "Cảm nhận") {
+      setSearchType("Cảm nhận");
       router.replace("/search/review", "/search/review", {
         shallow: true,
         scroll: false,
       });
-      setSearchType("Cảm nhận");
     }
     if (e.target.value === "Lớp học") {
+      setSearchType("Lớp học");
       router.replace("/search/group", "/search/group", {
         shallow: true,
         scroll: false,
       });
-      setSearchType("Lớp học");
     }
   };
 
@@ -54,15 +57,14 @@ function InputText(props: typeInputText) {
 
   return (
     <div className="w-full flex justify-center">
-      <div className="w-2/5 relative  focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent ">
+      <div className="w-2/5 relative focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent ">
         <input
           {...register(name)}
           type="text"
           id="search"
-          className="rounded-full  shadow-xl border-transparent w-full appearance-none border border-gray-300 py-4 pl-16 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+          className="rounded rounded-2xl shadow-xl text-base border-transparent w-full leading-6 appearance-none py-4 pl-16 bg-white placeholder-black shadow-sm text-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
           placeholder={placeholder}
         />
-
         <div className="absolute top-4 left-4">
           <label htmlFor="search">
             <svg
@@ -80,18 +82,15 @@ function InputText(props: typeInputText) {
           </label>
         </div>
 
-        <div className="absolute top-2 right-4 ">
+        <div className="absolute top-2 right-0 ">
           <select
-            placeholder={a}
-            className="block text-gray-700 py-2 px-3 border  border-l-2 border-r-0 border-b-0 border-t-0 border-gray-300 bg-white text-lg leading-7  focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+            className="block text-black text-xl mb-5 font-bold items-center text-lg py-2 pr-8 pl-5 border border-l-2 rounded rounded-xl border-r-0 border-b-0 border-t-0 border-gray-300 bg-white leading-7 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
             name={name}
             onChange={handleChange}
           >
-            <optgroup label="selected">
-              <option>{searchType}</option>
-            </optgroup>
-            <optgroup label="_________">
-              {list.map((value, idx) => {
+            {searchType}
+            <optgroup className="mt-10 rounded rounded-lg">
+              {list.map((value) => {
                 // eslint-disable-next-line react/jsx-key
                 return <option value={value.label}>{value.label}</option>;
               })}
