@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
+import CalenderIcon from "components/Icons/Calender";
+
 import GroupAPI from "api/groupAPI";
 import AcademicAPI from "api/academicApi";
 import { apiV1, get } from "api/generic";
@@ -220,12 +222,9 @@ const GroupCreateModal = function () {
 
         {/* SchoolYear */}
         <div className="flex pl-48 mb-4">
-          <img
-            className="m-3 mt-4"
-            src="/icons/calender.svg"
-            width="23"
-            height="24"
-          />
+          <div className="m-3 mt-4">
+            <CalenderIcon width="24" height="24" />
+          </div>
           <select
             className="px-2 m-2 bg-indigo-50 w-96 rounded-2xl h-10 border border-solid border-indigo-500"
             name="academicId"
