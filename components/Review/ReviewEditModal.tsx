@@ -6,6 +6,7 @@ import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 import { ReviewType } from "lib/models";
 import { useRouter } from "next/router";
+import Swal from "sweetalert2";
 
 type AppProps = {
   review: ReviewType;
@@ -35,11 +36,25 @@ const ReviewEditModal = function (props: AppProps) {
   const handleSend = async (e) => {
     e.preventDefault();
     try {
+      Swal.fire({
+        title: "Đang cập nhập dữ liệu",
+        icon: "info",
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       await GroupAPI.patchReview(data, ereview._id, token);
+      Swal.close();
+      Swal.fire({
+        icon: "success",
+        title: "Lưu thành công",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      router.push(`/group/${ereview.classId.slug}/${title}`);
     } catch (error) {
       console.log(error);
-    } finally {
-      router.push(`/group/${ereview.classId.slug}/${title}`);
     }
   };
 

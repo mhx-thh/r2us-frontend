@@ -7,7 +7,7 @@ type AppProps = {
 };
 
 function GroupItem({ agroup }: AppProps) {
-  const classSlugUrl = `/group/${agroup.slug}`;
+  const classSlugUrl = `/group/${agroup?.slug}`;
 
   return (
     <Link href={classSlugUrl}>
@@ -19,7 +19,7 @@ function GroupItem({ agroup }: AppProps) {
             <div className="p-0 flex justify-start pl-7">
               <img src="/icons/facuty.svg" width="20" />
               <p className="pl-2 pt-1.5 text-sm leading-5 font-normal">
-                {agroup.courseId.facultyId.facultyName}
+                {agroup?.courseId?.facultyId?.facultyName}
               </p>
             </div>
 
@@ -27,7 +27,7 @@ function GroupItem({ agroup }: AppProps) {
             <div className="p-0 flex justify-start pl-7">
               <img src="/icons/course.svg" width="20" />
               <p className="pl-2 pt-1.5 text-sm leading-5 font-normal">
-                {agroup.courseId.courseName}
+                {agroup?.courseId?.courseName}
               </p>
             </div>
 
@@ -35,7 +35,7 @@ function GroupItem({ agroup }: AppProps) {
             <div className="p-0 flex justify-start pl-7">
               <img src="/icons/teacher.svg" width="20" />
               <p className="pl-2 pt-1.5 text-sm leading-5 font-normal">
-                {agroup.instructorId.instructorName}
+                {agroup?.instructorId?.instructorName}
               </p>
             </div>
 
@@ -43,7 +43,7 @@ function GroupItem({ agroup }: AppProps) {
             <div className="p-0 flex justify-start pl-7">
               <img src="/icons/calender.svg" width="20" />
               <p className="pl-2 pt-1.5 text-sm leading-5 font-normal">
-                {agroup.academicId.schoolyear}
+                {agroup?.academicId?.schoolyear}
               </p>
             </div>
           </div>
@@ -51,7 +51,7 @@ function GroupItem({ agroup }: AppProps) {
           {/* Tên lớp học */}
           <div className="absolute flex justify-center items-center top-10 -left-5 w-64 h-16 bg-indigo-500 rounded-xl text-left tracking-normal pl-3">
             <p className="text-lg leading-7 font-semibold text-white">
-              {agroup.className}
+              {agroup?.className}
             </p>
           </div>
         </div>

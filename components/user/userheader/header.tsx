@@ -1,15 +1,17 @@
 import React from "react";
+import { user } from "lib/models";
 import style from "./style.module.css";
 
-interface Props {
-  user: any;
-}
+type AppProps = {
+  user: user;
+};
 
-function UserHeader({ user }: Props) {
+function UserHeader({ user }: AppProps) {
   const studentID =
     user.studentCardNumber === ""
       ? "Chưa cập nhập MSSV"
       : user.studentCardNumber;
+
   return (
     <div className={style.title}>
       <div className={style.page}>

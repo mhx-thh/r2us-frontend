@@ -4,6 +4,7 @@ import ReviewItem from "components/Review/ReviewItem";
 import PopUp from "components/class/PopUp/popup";
 import ReviewEditModal from "components/Review/ReviewEditModal";
 import useClickOutside from "components/clickOutside/clickOutside";
+import CreateReview from "components/Review/ReviewCreateModal";
 
 import style from "../groupPage.module.css";
 import { Id, ReviewType } from "lib/models";
@@ -12,6 +13,7 @@ import GroupAPI from "api/groupAPI";
 
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
+import Swal from "sweetalert2";
 
 type AppProps = {
   role: string;
@@ -27,7 +29,7 @@ type Review = {
 const ReviewCourse = function (props: AppProps) {
   const [reviewArray, setReviewArray] = useState(props.review);
   const [flag, setFlag] = useState(false);
-
+  const [create, setCreate] = useState(false);
   const token = useAppSelector(selectToken);
 
   useEffect(() => {
@@ -37,11 +39,16 @@ const ReviewCourse = function (props: AppProps) {
         const data = res?.data?.data?.result;
         setReviewArray(data);
       } catch (error) {
+        Swal.fire("Đã xảy ra lỗi", "", "error");
         console.log(error);
       }
     }
     fetchResources();
   }, [flag, props.review]);
+
+  const ClickCreate = () => {
+    setCreate(true);
+  };
 
   // Review Component
   const Review = function (props: Review) {
@@ -57,7 +64,7 @@ const ReviewCourse = function (props: AppProps) {
             <button className={style.document__button} onClick={handleOpen}>
               <img src="/icons/threedot.svg" />
             </button>
-            <div className="absolute">
+            <div className="relative -top-6">
               {open === true && (
                 <DropdownReview close={setOpen} data={props.reviewData} />
               )}
@@ -82,29 +89,90 @@ const ReviewCourse = function (props: AppProps) {
       setUpdate(true);
     };
 
-    const ClickDelete = async () => {
+    const ClickDelete = () => {
       try {
-        await GroupAPI.deleteReview(data._id, token);
-        setFlag(!flag);
+        Swal.fire({
+          title: "Bạn chắc chắn muốn xóa ?",
+          text: "Bạn sẽ không thể hoàn tác lại nếu đã xóa!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "Tôi chắc chắn !",
+          cancelButtonText: "Không, quay lại !",
+        }).then(async function (result) {
+          if (result.isConfirmed) {
+            await GroupAPI.deleteReview(data._id, token);
+            Swal.fire(
+              "Xóa thành công",
+              "Cảm nhận đã được xóa khỏi lớp",
+              "success"
+            );
+            setFlag(!flag);
+          }
+        });
       } catch (error) {
+        Swal.fire("Đã xảy ra lỗi", "", "error");
         console.log(error);
       }
     };
 
+    const acceptedStatus = {
+      status: "accepted",
+      reviewType: data.reviewType,
+      review: data.review,
+      reviewTitle: data.reviewTitle,
+    };
+    const ClickAccept = async () => {
+      try {
+        Swal.fire({
+          title: "Đang cập nhập dữ liệu",
+          icon: "info",
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+        await GroupAPI.patchReview(acceptedStatus, data._id, token);
+        setFlag(!flag);
+        Swal.fire({
+          icon: "success",
+          title: "Đã duyệt cảm nhận thành công",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      } catch (error) {
+        Swal.fire("Đã xảy ra lỗi", "", "error");
+        console.log(error);
+      }
+    };
     return (
       <div ref={ref} className="absolute my-8 -mx-24 bg-white">
-        <ul className="w-28 text-base leading-6 font-normal shadow rounded-xl bg-white">
-          {data.status === "pending" && props.role === "provider" && (
-            <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 ">
-              <button>Duyệt</button>
+        <ul className="w-28 text-base leading-6 font-normal shadow-xl rounded-xl bg-white border-2 border-solid border-blue-700">
+          {/* {data.status === "pending" && props.role === "provider" && ( */}
+          {data.status === "pending" && (
+            <li
+              className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-green-200 cursor-pointer"
+              onClick={ClickAccept}
+            >
+              Duyệt
             </li>
           )}
-          <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 ">
-            <button onClick={ClickDelete}>Xóa</button>
+          {/* )} */}
+          <li
+            className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-red-300 cursor-pointer"
+            onClick={ClickDelete}
+          >
+            {data.status === "accepted" ? "Xóa" : "Không duyệt"}
           </li>
-          <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200">
-            <button onClick={ClickUpdate}>Chỉnh sửa</button>
-          </li>
+          {data.status === "accepted" && (
+            <li
+              className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 cursor-pointer"
+              onClick={ClickUpdate}
+            >
+              Chỉnh sửa
+            </li>
+          )}
         </ul>
         {update === true && (
           <PopUp closepopup={close}>
@@ -120,10 +188,10 @@ const ReviewCourse = function (props: AppProps) {
       <div>
         {/* Button Share Review */}
         <div className={style.buttonarea}>
-          <div className={style.head}>
+          <button className={style.head} onClick={ClickCreate}>
             <div className={style.head__text}>Chia sẻ cảm nhận</div>
             <img className={style.head__image} src="/icons/review.svg" />
-          </div>
+          </button>
         </div>
 
         {/* Document */}
@@ -133,7 +201,8 @@ const ReviewCourse = function (props: AppProps) {
             data.classId.courseId._id === props.id.courseId &&
             data.classId.instructorId.id === props.id.instructorId &&
             data.classId.academicId._id === props.id.academicId &&
-            data.reviewType === "Class" ? (
+            data.reviewType === "Class" &&
+            data.status === "accepted" ? (
               <Review reviewData={data} role={props.role} key={data._id} />
             ) : (
               <div key={data._id}></div>
@@ -141,27 +210,38 @@ const ReviewCourse = function (props: AppProps) {
           )}
         </div>
 
-        {/* Request */}
-        {/* <div className={style.prebox}>
-          <div className={style.box}>
-            <div className={style.box__text}>Yêu cầu</div>
-          </div>
-        </div> */}
+        {props.role === "provider" && (
+          <div>
+            {/* Request */}
+            <div className={style.prebox}>
+              <div className={style.box}>
+                <div className={style.box__text}>Yêu cầu</div>
+              </div>
+            </div>
 
-        {/* Request document */}
-        {/* <div className={style.documentsection}>
-          {data.result.map((data) =>
-            data.classId.className === id.className &&
-            data.classId.courseId.courseName === id.courseName &&
-            data.classId.instructorId.instructorName === id.instructorName &&
-            data.classId.academicId.academicName === id.academicName ? (
-              <Review key={data._id} data={data} />
-            ) : (
-              <div></div>
-            )
-          )}
-        </div> */}
+            {/* Request document */}
+            <div className={style.documentsection}>
+              {reviewArray.map((data) =>
+                data.classId._id === props.id.classId &&
+                data.classId.courseId._id === props.id.courseId &&
+                data.classId.instructorId.id === props.id.instructorId &&
+                data.classId.academicId._id === props.id.academicId &&
+                data.reviewType === "Class" &&
+                data.status === "pending" ? (
+                  <Review reviewData={data} role={props.role} key={data._id} />
+                ) : (
+                  <div key={data._id}></div>
+                )
+              )}
+            </div>
+          </div>
+        )}
       </div>
+      {create === true && (
+        <PopUp closepopup={setCreate}>
+          <CreateReview />
+        </PopUp>
+      )}
     </div>
   );
 };

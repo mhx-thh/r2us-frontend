@@ -12,7 +12,7 @@ function ResourceItem({ aresource }: AppProps) {
   const handleOpen = () => {
     setOpen(true);
   };
-  if (!aresource.resourceName) {
+  if (!aresource?.resourceName) {
     return <div>Resource mẫu</div>;
   }
   return (
@@ -24,9 +24,9 @@ function ResourceItem({ aresource }: AppProps) {
         <div className="absolute -top-4 right-3 rounded-3xl border border-indigo-500 bg-white">
           <div className="px-2 py-0.5 text-center">
             <p>
-              {aresource.resourceType === "Examination Paper"
+              {aresource?.resourceType === "Examination Paper"
                 ? "Đề thi"
-                : aresource.resourceType === "Resources"
+                : aresource?.resourceType === "Resources"
                 ? "Tài liệu"
                 : "Đề cương"}
             </p>
@@ -35,7 +35,7 @@ function ResourceItem({ aresource }: AppProps) {
 
         <div className="h-14 w-60 text-left justify-center items-center">
           <p className="text-lg leading-7 font-semibold">
-            {aresource.resourceName}
+            {aresource?.resourceName}
           </p>
         </div>
 
@@ -43,21 +43,21 @@ function ResourceItem({ aresource }: AppProps) {
           <div className="flex items-center">
             <img src="/icons/teacher.svg" width="18" />
             <p className="ml-2.5 text-sm leading-7 font-normal">
-              {aresource.classId.instructorId.instructorName}
+              {aresource?.classId?.instructorId?.instructorName}
             </p>
           </div>
 
           <div className="flex items-center">
             <img src="/icons/course.svg" width="18" />
             <p className="ml-2.5 text-sm leading-7 font-normal">
-              {aresource.classId.courseId.courseName}
+              {aresource?.classId?.courseId?.courseName}
             </p>
           </div>
 
           <div className="flex items-center text-top">
             <img src="/icons/destination_group.svg" width="18" />
             <p className="ml-2.5 text-sm md:leading-5 font-normal text-top">
-              {aresource.classId.className}
+              {aresource?.classId?.className}
             </p>
           </div>
         </div>

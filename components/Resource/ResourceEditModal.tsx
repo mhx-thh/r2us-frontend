@@ -8,6 +8,7 @@ import { selectToken } from "redux/userSlice";
 import { ResourceType } from "lib/models";
 
 import { useRouter } from "next/router";
+import Swal from "sweetalert2";
 
 type AppProps = {
   resource: ResourceType;
@@ -44,11 +45,25 @@ const ResourceEditModal = function (props: AppProps) {
   const handleSend = async (e) => {
     e.preventDefault();
     try {
+      Swal.fire({
+        title: "Đang cập nhập dữ liệu",
+        icon: "info",
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       await GroupAPI.patchResource(data, eresource._id, token);
+      Swal.close();
+      Swal.fire({
+        icon: "success",
+        title: "Lưu thành công",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      router.push(`/group/${props.resource.classId.slug}/${title}`);
     } catch (error) {
       console.log(error);
-    } finally {
-      router.push(`/group/${props.resource.classId.slug}/${title}`);
     }
   };
 
@@ -63,6 +78,8 @@ const ResourceEditModal = function (props: AppProps) {
               <input
                 className="w-full px-2 text-2xl leading-9 font-medium text-indigo-500 bg-indigo-100 border border-solid rounded-xl border-2 border-solid border-indigo-500"
                 value={data.resourceName}
+                minLength={10}
+                maxLength={50}
                 name="resourceName"
                 onChange={handleChange}
               />

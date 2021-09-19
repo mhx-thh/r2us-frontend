@@ -1,38 +1,24 @@
-import React from "react";
-import { GetServerSideProps } from "next";
+import React, { useEffect } from "react";
 
 import LayoutUser from "components/layout/UserLayout";
 import DocumentPage from "components/user/page/document/documentpage";
 
-import AcademicAPI from "api/academicApi";
+import { useAppSelector } from "redux/hooks";
+import { selectStatus } from "redux/userSlice";
 
-type AppProps = {
-  schoolyear: any;
-  falcuty: any;
-  course: any;
-  teacher: any;
-};
+import { useRouter } from "next/router";
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const schoolyear = await AcademicAPI.getSchoolYears();
-  const falcuty = await AcademicAPI.getFalcuties();
-  const course = await AcademicAPI.getCourses();
-  const teacher = await AcademicAPI.getIntructors();
+const User = function () {
+  const status = useAppSelector(selectStatus);
+  const router = useRouter();
 
-  return {
-    props: {
-      schoolyear: schoolyear.data.data,
-      falcuty: falcuty.data.data,
-      course: course.data.data,
-      teacher: teacher.data,
-    },
-  };
-};
+  useEffect(() => {
+    status === "nologin" && router.push("/");
+  }, []);
 
-const User = function (props: AppProps) {
   return (
     <LayoutUser>
-      <DocumentPage props={props} />;
+      <DocumentPage />;
     </LayoutUser>
   );
 };

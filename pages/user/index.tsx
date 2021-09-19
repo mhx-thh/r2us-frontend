@@ -1,36 +1,51 @@
-import React from "react";
-import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 
 import UserPage from "components/user/userpage/userpage";
-import LayoutUser from "components/layout/UserLayout";
 
+import { selectStatus, selectToken, selectUser } from "redux/userSlice";
+import { useRouter } from "next/router";
 import { useAppSelector } from "redux/hooks";
-import { selectUser } from "redux/userSlice";
+import UserHeaderPage from "components/layout/UserHeaderPage";
+import userApi from "api/userApi";
+import Swal from "sweetalert2";
 
-// export const getServerSideProps: GetServerSideProps = async (params) => {
-//   const res = await NewClassAPI.getGroup(temp);
-//   const schoolyear = await AcademicAPI.getAcademic(res.data.data.academicId);
-//   const instructorName = await InstructorAPI.getInstructor(
-//     res.data.data.instructorId
-//   );
-
-//   return {
-//     props: {
-//       status: res.data.status,
-//       data: res.data.data,
-//     },
-//   };
-// };
-
-// type propApi = {};
-
-const User = function (props) {
+const User = function () {
+  const status = useAppSelector(selectStatus);
+  const router = useRouter();
+  const token = useAppSelector(selectToken);
   const user = useAppSelector(selectUser);
+  const [userData, setUserData] = useState(user);
+
+  useEffect(() => {
+    status === "nologin" && router.push("/");
+  }, []);
+
+  useEffect(() => {
+    async function getUser() {
+      try {
+        Swal.fire({
+          title: "Đang lấy dữ liệu",
+          icon: "info",
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+        const res = await userApi.getInfo(token);
+        const data = res?.data?.data;
+        setUserData(data);
+        Swal.close();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getUser();
+  }, []);
 
   return (
-    <LayoutUser>
-      <UserPage user={user} />
-    </LayoutUser>
+    <UserHeaderPage>
+      <UserPage user={userData} />
+    </UserHeaderPage>
   );
 };
 

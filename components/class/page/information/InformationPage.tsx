@@ -5,13 +5,14 @@ import Title from "components/class/Title/Title";
 import Sidebar from "components/class/Sidebar/Sidebar";
 import TitleField from "./titlefield";
 
+import Swal from "sweetalert2";
+
 import style from "./style.module.css";
 import { classInfo, titleGroup } from "lib/models";
 
 import userApi from "api/userApi";
 import GroupAPI from "api/groupAPI";
 
-import Link from "next/link";
 import { useRouter } from "next/router";
 
 import { useAppSelector } from "redux/hooks";
@@ -61,6 +62,7 @@ const InformationPage = function (props: AppProps) {
             router.push(`/group/${val.slug}`))
         );
       } catch (error) {
+        Swal.fire("Đã xảy ra lỗi", "", "error");
         console.log(error.message);
       }
     }
@@ -82,26 +84,79 @@ const InformationPage = function (props: AppProps) {
 
   const ClickEnroll = async () => {
     try {
-      setEnroll(true);
+      Swal.fire({
+        title: "Đang cập nhập dữ liệu",
+        icon: "info",
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       await userApi.postEnroll({ classId: props.data._id }, token);
+      setEnroll(true);
+      Swal.fire(
+        "Tham gia lớp học thành công",
+        `Đã thêm bạn vào danh sách lớp ${dataPatch.className}`,
+        "success"
+      );
     } catch (error) {
+      Swal.fire("Đã xảy ra lỗi", "", "error");
       console.log(error);
     }
   };
 
   const ClickUpdate = async () => {
     try {
+      Swal.fire({
+        title: "Đang cập nhập dữ liệu",
+        icon: "info",
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       await GroupAPI.patchClass(dataPatch, props.data._id, token);
       setFlag(!flag);
+      Swal.fire(
+        "Cập nhập thành công",
+        `Đã cập nhập thông tin lớp ${dataPatch.className}`,
+        "success"
+      );
     } catch (error) {
+      Swal.fire("Đã xảy ra lỗi", "", "error");
       console.log(error);
     }
   };
 
   const ClickDelete = async () => {
     try {
-      await GroupAPI.deleteClass(props.data._id, token);
+      Swal.fire({
+        title: `Xác nhận bạn muốn xóa lớp ${title.className} ?`,
+        text: `Hãy gõ "${title.className}"`,
+        input: "text",
+        inputAttributes: {
+          autocapitalize: "off",
+        },
+        showCancelButton: true,
+        confirmButtonText: "Xác nhận",
+        showLoaderOnConfirm: true,
+      }).then(async function (result) {
+        if (result.isConfirmed) {
+          if (result.value === title.className) {
+            await GroupAPI.deleteClass(props.data._id, token);
+            Swal.fire(
+              "Xóa thành công",
+              `Lớp học "${title.className}"`,
+              "success"
+            );
+            router.push("/");
+          } else {
+            Swal.fire("Xác nhận không đúng", "", "error");
+          }
+        }
+      });
     } catch (error) {
+      Swal.fire("Đã xảy ra lỗi", "", "error");
       console.log(error);
     }
   };
@@ -211,14 +266,13 @@ const InformationPage = function (props: AppProps) {
               props.role === "provider" && (
                 <div className={style.pbutton}>
                   <button className={style.button} onClick={ClickUpdate}>
-                    <img src="/icons/buttonSend.svg" />
+                    Chỉnh sửa
                   </button>
-                  <button className={style.button} onClick={ClickDelete}>
-                    <Link href="/">
-                      <a>
-                        <img src="/icons/buttonReset.svg" />
-                      </a>
-                    </Link>
+                  <button
+                    className={style.button__delete}
+                    onClick={ClickDelete}
+                  >
+                    Xóa lớp
                   </button>
                 </div>
               )

@@ -12,6 +12,8 @@ import GroupAPI from "api/groupAPI";
 
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
+import Swal from "sweetalert2";
+import CreateResource from "components/Resource/ResourceCreateModal";
 
 type outlineType = {
   outlineData: ResourceType;
@@ -27,7 +29,7 @@ type AppProps = {
 const OutlinePage = function (props: AppProps) {
   const [outlineArray, setOutlineArray] = useState(props.outline);
   const [flag, setFlag] = useState(false);
-
+  const [create, setCreate] = useState(false);
   const token = useAppSelector(selectToken);
 
   useEffect(() => {
@@ -37,11 +39,17 @@ const OutlinePage = function (props: AppProps) {
         const data = res?.data?.data?.result;
         setOutlineArray(data);
       } catch (error) {
+        Swal.fire("Đã xảy ra lỗi", "", "error");
         console.log(error);
       }
+      Swal.close();
     }
     fetchResources();
   }, [flag, props.outline]);
+
+  const ClickCreate = () => {
+    setCreate(true);
+  };
 
   // Outline Item
   const Outline = function (props: outlineType) {
@@ -57,7 +65,7 @@ const OutlinePage = function (props: AppProps) {
               <img src="/icons/threedot.svg" />
             </button>
 
-            <div className="absolute">
+            <div className="relative -top-6">
               {open === true ? (
                 <DropdownResource close={setOpen} data={props.outlineData} />
               ) : (
@@ -80,34 +88,92 @@ const OutlinePage = function (props: AppProps) {
     });
 
     const [update, setUpdate] = useState(false);
-    const handleUpdate = () => {
+    const ClickUpdate = () => {
       setUpdate(true);
     };
 
-    const ClickDelete = async () => {
+    const ClickDelete = () => {
       try {
-        await GroupAPI.deleteResource(data.id, token);
+        Swal.fire({
+          title: "Bạn chắc chắn muốn xóa ?",
+          text: "Bạn sẽ không thể hoàn tác lại nếu đã xóa!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "Tôi chắc chắn !",
+          cancelButtonText: "Không, quay lại !",
+        }).then(async function (result) {
+          if (result.isConfirmed) {
+            await GroupAPI.deleteResource(data.id, token);
+            Swal.fire(
+              "Xóa thành công",
+              "Đề cương đã được xóa khỏi lớp",
+              "success"
+            );
+            setFlag(!flag);
+          }
+        });
+      } catch (error) {
+        Swal.fire("Đã xảy ra lỗi", "", "error");
+        console.log(error);
+      }
+    };
+
+    const acceptedStatus = {
+      status: "accepted",
+    };
+    const ClickAccept = async () => {
+      try {
+        Swal.fire({
+          title: "Đang cập nhập dữ liệu",
+          icon: "info",
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+        await GroupAPI.patchReview(acceptedStatus, data._id, token);
+        Swal.fire({
+          icon: "success",
+          title: "Duyệt thành công",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         setFlag(!flag);
       } catch (error) {
+        Swal.fire("Đã xảy ra lỗi", "", "error");
         console.log(error);
       }
     };
 
     return (
       <div ref={ref} className="absolute my-8 -mx-24">
-        <ul className="w-28 text-base leading-6 font-normal shadow rounded-xl bg-white">
-          {data.status === "pending" && props.role === "provider" && (
-            <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 ">
-              <button>Duyệt</button>
+        <ul className="w-28 text-base leading-6 font-normal shadow-xl rounded-xl bg-white border-2 border-solid border-blue-700">
+          {/* {data.status === "pending" && props.role === "provider" && ( */}
+          {data.status === "pending" && (
+            <li
+              className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-green-200 cursor-pointer"
+              onClick={ClickAccept}
+            >
+              Duyệt
             </li>
           )}
-          <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 ">
-            <button onClick={ClickDelete}>Xóa</button>
+          {/* )} */}
+          <li
+            className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-red-300 cursor-pointer"
+            onClick={ClickDelete}
+          >
+            {data.status === "accepted" ? "Xóa" : "Không duyệt"}
           </li>
-
-          <li className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200">
-            <button onClick={handleUpdate}>Chỉnh sửa</button>
-          </li>
+          {data.status === "accepted" && (
+            <li
+              className="w-full h-auto p-1.5 text-center rounded-xl hover:bg-blue-200 cursor-pointer"
+              onClick={ClickUpdate}
+            >
+              Chỉnh sửa
+            </li>
+          )}
         </ul>
         {update === true && (
           <PopUp closepopup={close}>
@@ -123,12 +189,12 @@ const OutlinePage = function (props: AppProps) {
       <div>
         {/* Button Share Resource */}
         <div className={style.buttonarea}>
-          <div className={style.head}>
+          <button className={style.head} onClick={ClickCreate}>
             <div className={style.head__text}>Chia sẻ tài liệu</div>
             <div className={style.head__image}>
               <img src="/icons/resource.svg" />
             </div>
-          </div>
+          </button>
         </div>
         {/* Accepted Resource */}
         <div className={style.documentsection}>
@@ -138,7 +204,7 @@ const OutlinePage = function (props: AppProps) {
             data.classId.instructorId.id === props.id.instructorId &&
             data.classId.academicId._id === props.id.academicId &&
             data.resourceType === "Review Paper" &&
-            data.status === "accept" ? (
+            data.status === "accepted" ? (
               <Outline key={data._id} outlineData={data} role={props.role} />
             ) : (
               <div key={data._id}></div>
@@ -147,33 +213,42 @@ const OutlinePage = function (props: AppProps) {
         </div>
 
         {/* Check role */}
-        {/* {props.role === "provider" && ( */}
-        <div>
-          {/* Request */}
-          <div className={style.prebox}>
-            <div className={style.box}>
-              <div className={style.box__text}>Yêu cầu</div>
+        {props.role === "provider" && (
+          <div>
+            {/* Request */}
+            <div className={style.prebox}>
+              <div className={style.box}>
+                <div className={style.box__text}>Yêu cầu</div>
+              </div>
+            </div>
+
+            {/* Request Resource */}
+            <div className={style.documentsection}>
+              {outlineArray.map((data) =>
+                data.classId._id === props.id.classId &&
+                data.classId.courseId._id === props.id.courseId &&
+                data.classId.instructorId.id === props.id.instructorId &&
+                data.classId.academicId._id === props.id.academicId &&
+                data.resourceType === "Review Paper" &&
+                data.status === "pending" ? (
+                  <Outline
+                    key={data._id}
+                    outlineData={data}
+                    role={props.role}
+                  />
+                ) : (
+                  <div key={data._id}></div>
+                )
+              )}
             </div>
           </div>
-
-          {/* Request Resource */}
-          <div className={style.documentsection}>
-            {outlineArray.map((data) =>
-              data.classId._id === props.id.classId &&
-              data.classId.courseId._id === props.id.courseId &&
-              data.classId.instructorId.id === props.id.instructorId &&
-              data.classId.academicId._id === props.id.academicId &&
-              data.resourceType === "Review Paper" &&
-              data.status === "pending" ? (
-                <Outline key={data._id} outlineData={data} role={props.role} />
-              ) : (
-                <div key={data._id}></div>
-              )
-            )}
-          </div>
-        </div>
-        {/* )} */}
+        )}
       </div>
+      {create === true && (
+        <PopUp closepopup={setCreate}>
+          <CreateResource />
+        </PopUp>
+      )}
     </div>
   );
 };

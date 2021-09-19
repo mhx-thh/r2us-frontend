@@ -17,6 +17,10 @@ const InstructorAPI = {
     const url = `${apiV1}/academic/intructors`;
     return get(url, "");
   },
+  getInstructortoCourse(id: string) {
+    const url = `${apiV1}/academic/intructors?courseId__eq=${id}`;
+    return get(url, "");
+  },
   postInstructor: function (data: any, token: string) {
     const url = `${apiV1}/academic/intructors/create`;
     return post(url, data, token);

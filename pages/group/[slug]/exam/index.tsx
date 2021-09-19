@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 import ExamPage from "components/class/page/exampage/examPage";
+import Swal from "sweetalert2";
 
 type propApi = {
   status: string;
@@ -43,13 +44,23 @@ const Item = function (props: propApi) {
   const token = useAppSelector(selectToken);
   useEffect(() => {
     async function fetchRole() {
+      Swal.fire({
+        title: "Đang lấy dữ liệu",
+        icon: "info",
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       try {
         const res = await GroupAPI.getRole(props.class._id, token);
         const data = res?.data?.data?.result;
         data[0] !== undefined && setRole(data[0].role);
       } catch (error) {
+        Swal.fire("Đã xảy ra lỗi", "", "error");
         console.log(error.message);
       }
+      Swal.close();
     }
     fetchRole();
   }, []);

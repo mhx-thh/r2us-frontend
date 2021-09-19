@@ -21,20 +21,20 @@ function ReviewItem({ areview }: AppProps) {
       >
         <div className="absolute -top-4 right-3 rounded-3xl border border-indigo-500 bg-white">
           <div className="px-2 py-0.5 text-center">
-            <p>{areview.reviewType === "Class" ? "Môn học" : "Giáo viên"}</p>
+            <p>{areview?.reviewType === "Class" ? "Môn học" : "Giáo viên"}</p>
           </div>
         </div>
 
         <div className="h-14 w-60 text-left justify-center">
           <p className="text-lg leading-7 font-semibold items-center">
-            {areview.reviewTitle}
+            {areview?.reviewTitle}
           </p>
         </div>
 
         <div className="flex items-center">
           <img src="/icons/destination_group.svg" />
           <p className="ml-2.5 text-sm leading-5 font-normal">
-            {areview.classId.className}
+            {areview?.classId.className}
           </p>
         </div>
       </div>
