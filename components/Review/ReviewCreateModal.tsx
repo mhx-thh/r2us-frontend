@@ -28,7 +28,7 @@ type dataCreate = {
   teacher: any;
 };
 
-const CreateReview = function () {
+const CreateReview = function (handleCreate: any) {
   const token = useAppSelector(selectToken);
 
   // Get data for create modal
@@ -211,6 +211,7 @@ const CreateReview = function () {
       setCreateStatus("done");
       if (res?.data?.status === "success") {
         Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thành công." });
+        handleCreate;
       } else {
         Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thất bại." });
       }

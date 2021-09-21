@@ -45,10 +45,10 @@ const ReviewTeacher = function (props: AppProps) {
       }
     }
     fetchReviews();
-  }, [flag, props.review]);
+  }, [flag, props.review, create]);
 
   const ClickCreate = () => {
-    setCreate(true);
+    setCreate(!create);
   };
   // Review Item
   const Review = function (props: Review) {
@@ -237,7 +237,7 @@ const ReviewTeacher = function (props: AppProps) {
       </div>
       {create === true && (
         <PopUp closepopup={setCreate}>
-          <CreateResource />
+          <CreateResource handleCreate={ClickCreate} />
         </PopUp>
       )}
     </div>

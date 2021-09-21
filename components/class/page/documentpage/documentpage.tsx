@@ -44,10 +44,10 @@ const DocumentPage = function (props: AppProps) {
       }
     }
     fetchResources();
-  }, [flag, props.document]);
+  }, [flag, props.document, create]);
 
   const ClickCreate = () => {
-    setCreate(true);
+    setCreate(!create);
   };
 
   // Document function
@@ -242,7 +242,7 @@ const DocumentPage = function (props: AppProps) {
       </div>
       {create === true && (
         <PopUp closepopup={setCreate}>
-          <CreateResource />
+          <CreateResource handleCreate={ClickCreate} />
         </PopUp>
       )}
     </div>

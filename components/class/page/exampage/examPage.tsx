@@ -45,10 +45,10 @@ const ExamPage = function (props: AppProps) {
       }
     }
     fetchResources();
-  }, [flag, props.exams]);
+  }, [flag, props.exams, create]);
 
   const ClickCreateResource = () => {
-    setCreate(true);
+    setCreate(!create);
   };
   // Exam functions
   const Exam = function (props: ExamData) {
@@ -242,7 +242,7 @@ const ExamPage = function (props: AppProps) {
       </div>
       {create === true && (
         <PopUp closepopup={setCreate}>
-          <CreateResource />
+          <CreateResource handleCreate={ClickCreateResource} />
         </PopUp>
       )}
     </div>

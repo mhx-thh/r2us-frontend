@@ -29,7 +29,7 @@ type dataCreate = {
   teacher: any;
 };
 
-const CreateResource = function () {
+const CreateResource = function (handleCreate: any) {
   const token = useAppSelector(selectToken);
 
   // Get data for create modal
@@ -219,9 +219,10 @@ const CreateResource = function () {
       console.log("Res: ", res);
       setCreateStatus("done");
       if (res?.data?.status === "success") {
-        Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thành công." });
+        Swal.fire({ title: "Thông báo", text: "Tạo tài liệu thành công." });
+        handleCreate;
       } else {
-        Swal.fire({ title: "Thông báo", text: "Tạo cảm nhận thất bại." });
+        Swal.fire({ title: "Thông báo", text: "Tạo tài liệu thất bại." });
       }
     }
 

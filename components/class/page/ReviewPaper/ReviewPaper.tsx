@@ -45,10 +45,10 @@ const OutlinePage = function (props: AppProps) {
       Swal.close();
     }
     fetchResources();
-  }, [flag, props.outline]);
+  }, [flag, props.outline, create]);
 
   const ClickCreate = () => {
-    setCreate(true);
+    setCreate(!create);
   };
 
   // Outline Item
@@ -246,7 +246,7 @@ const OutlinePage = function (props: AppProps) {
       </div>
       {create === true && (
         <PopUp closepopup={setCreate}>
-          <CreateResource />
+          <CreateResource handleCreate={ClickCreate} />
         </PopUp>
       )}
     </div>
