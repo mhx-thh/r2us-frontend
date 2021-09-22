@@ -13,6 +13,7 @@ import Swal from "sweetalert2";
 
 type AppProps = {
   instructor: any;
+  reloading: any;
 };
 type Keys = string;
 type Values = string;
@@ -21,10 +22,10 @@ type Api = {
   instructorName: string;
   courseIds: Array<T>;
 };
-function CourseTable({ instructor }: AppProps) {
+function CourseTable({ instructor, reloading }: AppProps) {
   const [collapse, setCollapse] = useState(false);
   const [threedots, setThreedots] = useState(false);
-  const [reloading, setReloading] = useState(0);
+  // const [reloading, setReloading] = useState(0);
   const token = useAppSelector(selectToken);
   const [total, setTotal] = useState(0);
   const [mycourseList, setMyCourseList] = useState([]);
@@ -32,13 +33,29 @@ function CourseTable({ instructor }: AppProps) {
   const [courseList, setCourseList] = useState([]);
   const [arraycourse, setArraycourse] = useState([]);
   const [mycourseId, setMyCourseId] = useState("");
-
+  const [name, setName] = useState("");
+  const [facultyId, setFacultyId] = useState({
+    facultyName: "",
+    _id: "",
+  });
+  const [courseId, setCourseId] = useState({
+    _id: "",
+    courseName: "",
+  });
+  const [temp, setTemp] = useState("");
   const initCreate: Api = {
     instructorName: instructor.instructorName,
     courseIds: instructor.courseId,
   };
   const [create, setCreate] = useState<Api>(initCreate);
-
+  const [obj, setObj] = useState({
+    courseName: "",
+    facultyId: {
+      facultyName: "",
+      _id: "",
+    },
+    _id: "",
+  });
   const clickcollapse = () => {
     setCollapse(!collapse);
   };
@@ -57,19 +74,31 @@ function CourseTable({ instructor }: AppProps) {
     e.preventDefault();
     arraycourse.push(mycourseId);
     setCreate({ ...create, courseIds: arraycourse });
-    InstructorAPI.patchInstructor(create, instructor._id, token);
     const newre = reloading + 1;
-    console.log("now create", create);
-    setReloading(newre);
+    console.log("now create");
+    console.log(facultyId, courseId);
+    const obj = {
+      courseName: courseId.courseName,
+      facultyId: {
+        facultyName: facultyId.facultyName,
+        _id: facultyId._id,
+      },
+      _id: courseId._id,
+    };
+    const array = [...instructor.courseId];
+    const data = {
+      courseId: array.concat(obj),
+    };
+    console.log("array:", data);
+    InstructorAPI.updateInstructor(instructor._id, data, token);
+    console.log("obj", obj);
+    reloading();
   };
   const handleReloadingForDelete = (e) => {
     const newre = reloading + 2;
-    setReloading(newre);
+    reloading();
   };
-  const handleClickDelete = () => {
-    // courseApi.deleteCourse(faculty._id, token);
-    // setReloading(1);
-  };
+
   useEffect(() => {
     async function fetchMyCourseList() {
       Swal.fire({
@@ -88,7 +117,7 @@ function CourseTable({ instructor }: AppProps) {
         setTotal(data.length);
         console.log("data course", data);
       } catch (error) {
-        console.log(error.message);
+        console.log("error");
       }
       Swal.close();
     }
@@ -100,12 +129,22 @@ function CourseTable({ instructor }: AppProps) {
   };
 
   const handleSearchChange = (e) => {
-    const name = e.target.name;
+    const Name = e.target.name;
     const value = e.target.value;
-    const api = filterListApi[name];
+    console.log(e.target.key);
+    const api = filterListApi[Name];
     const fetchData = async (api) => {
-      switch (name) {
+      switch (Name) {
         case "facultyId":
+          facultylist.map((idx) => {
+            if (idx._id == value) {
+              setFacultyId({
+                facultyName: idx.label,
+                _id: value,
+              });
+            }
+          });
+          console.log(facultyId);
           const res = await courseApi.getCoursetoFaculty(value);
           const options = res?.data?.data?.result;
           const newCourses = options?.map((op) => {
@@ -118,11 +157,36 @@ function CourseTable({ instructor }: AppProps) {
           console.log("now courses", newCourses);
           break;
         case "courseId":
-          setMyCourseId(value);
+          console.log(value);
+          courseList.map((idx) => {
+            if (idx._id == value) {
+              setCourseId({
+                _id: value,
+                courseName: idx.label,
+              });
+            }
+          });
+          // setMyCourseId(value);
           break;
       }
     };
 
+    // const obj = {
+    //   courseIds: [
+    //     [
+    //       ...create.courseIds,
+    //       {
+    //         _id: courseId._id,
+    //         courseName: courseId.courseName,
+    //         facultyId: {
+    //           facultyName: facultyId.facultyName,
+    //           _id: facultyId._id,
+    //         },
+    //       },
+    //     ],
+    //   ],
+    // };
+    console.log(facultyId, courseId);
     if (api) fetchData(api);
   };
 
@@ -137,8 +201,11 @@ function CourseTable({ instructor }: AppProps) {
           newOp["_id"] = op._id;
           return newOp;
         });
+        newFaculties.map((index, data) => {
+          index = data._id;
+        });
         setFacultylist(newFaculties);
-        console.log("data faculties", data);
+        console.log("data faculties", facultylist);
       } catch (error) {
         console.log(error.message);
       }

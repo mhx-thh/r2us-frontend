@@ -37,7 +37,7 @@ function FacultyRow({ course, setReloading }: AppProps) {
     const obj = { courseName: name };
     console.log(obj);
     courseApi.updateCourse(course._id, obj, token);
-    setReloading(1);
+    setReloading();
     setEdit(false);
     setCollapse(false);
   };

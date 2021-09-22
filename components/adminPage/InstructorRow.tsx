@@ -170,7 +170,10 @@ function InstructorRow({ instructor, setReloading }: AppProps) {
         <tr className="bg-white">
           <td></td>
           <td className="" colSpan={3}>
-            <CourseTablewithInstructor instructor={instructor} />
+            <CourseTablewithInstructor
+              instructor={instructor}
+              reloading={setReloading}
+            />
           </td>
         </tr>
       )}

@@ -1,4 +1,5 @@
 import instructorApi from "api/instructorApi";
+import SearchBar from "components/search/SearchBar/SearchBar";
 import React, { useEffect, useRef, useState } from "react";
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
@@ -15,6 +16,7 @@ type Api = {
 function InstructorTable(props) {
   const [collapse, setCollapse] = useState(false);
   const [threedots, setThreedots] = useState(false);
+  const [search, setSearch] = useState("");
   const [reloading, setReloading] = useState(0);
   const token = useAppSelector(selectToken);
   const [total, setTotal] = useState(0);
@@ -37,6 +39,10 @@ function InstructorTable(props) {
     const val = e.target.value;
     setCreate({ ...create, instructorName: e.target.value });
   };
+  const handleChangeSearch = (e) => {
+    const val = e.target.value;
+    setSearch(val);
+  };
   const hanldeSubmit = (e) => {
     e.preventDefault();
     create.instructorName !== "" && instructorApi.postInstructor(create, token);
@@ -47,11 +53,9 @@ function InstructorTable(props) {
     const newre = reloading + 1;
     setReloading(reloading + 1);
   };
-  useEffect(() => {
-    console.log(create);
-  }, [create]);
 
   const [instructorlist, setinstructorlist] = useState([]);
+  const [datafilted, setDatafilted] = useState([]);
   useEffect(() => {
     async function fetchinstructorList() {
       Swal.fire({
@@ -76,6 +80,7 @@ function InstructorTable(props) {
         });
         setTotal(res?.data?.data?.total);
         setinstructorlist(data);
+        setDatafilted(data);
         console.log("data", data[1]);
       } catch (error) {
         console.log(error.message);
@@ -83,62 +88,88 @@ function InstructorTable(props) {
       Swal.close();
     }
     fetchinstructorList();
-  }, []);
+    console.log("reload");
+  }, [reloading]);
+
+  useEffect(() => {
+    const array = instructorlist.filter(
+      (idx) =>
+        idx.instructorName.toLowerCase().indexOf(search.toLowerCase()) > -1
+    );
+    setDatafilted(array);
+    console.log("array:", array);
+    console.log(
+      instructorlist.filter((idx) => {
+        console.log(idx.instructorname);
+        idx.instructorName.indexOf(search) >= -1;
+      })
+    );
+    if (search == "") {
+      setDatafilted(instructorlist);
+    }
+  }, [search]);
 
   return (
-    <table className=" w-11/12 p-2 border">
-      <thead className="">
-        <tr className=" border-b border-indigo-500 bg-indigo-200 py-4">
-          <th className=" p-2 py-4 rounded-tl-xl">
-            <input type="checkbox" />
-          </th>
-          <th className="p-2 py-4">
-            <div className="flex items-center justify-center"></div>
-          </th>
-          <th className="p-2 py-4">
-            <div className="flex items-center text-left pl-8 text-xl leading-7 font-medium uppercase">
-              TÊN GIÁO VIÊN
-            </div>
-          </th>
-          <th className="p-2 py-4 rounded-tr-xl">
-            <div className="flex items-center justify-center"></div>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr className="bg-gray-50 text-center border-b border-indigo-400">
-          <td className="p-2 "></td>
-          <td className="p-2 "></td>
-          <td className="p-2 text-left">
-            <input
-              type="text"
-              onChange={handleChange}
-              className="border border-indigo-200 p-1 w-full h-8 rounded-lg"
-              placeholder="Nhập tên giáo viên . . . "
-            />
-          </td>
-
-          <td className="p-2 pt-3 bg-transparent pl-12 border-r relative  flex justify-center">
-            <button type="submit" onClick={hanldeSubmit}>
-              <img
-                src="/icons/adminpage/check.svg"
-                height={24}
-                width={24}
-                className="cursor-pointer"
+    <>
+      <input
+        type="text"
+        onChange={handleChangeSearch}
+        className="border border-indigo-200 p-1 w-72 mb-4 h-8 rounded-lg"
+        placeholder="Tìm kiếm giáo viên . . . "
+      />
+      <table className=" w-11/12 p-2 border">
+        <thead className="">
+          <tr className=" border-b border-indigo-500 bg-indigo-200 py-4">
+            <th className=" p-2 py-4 rounded-tl-xl">
+              <input type="checkbox" />
+            </th>
+            <th className="p-2 py-4">
+              <div className="flex items-center justify-center"></div>
+            </th>
+            <th className="p-2 py-4">
+              <div className="flex items-center text-left pl-8 text-xl leading-7 font-medium uppercase">
+                TÊN GIÁO VIÊN
+              </div>
+            </th>
+            <th className="p-2 py-4 rounded-tr-xl">
+              <div className="flex items-center justify-center"></div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr className="bg-gray-50 text-center border-b border-indigo-400">
+            <td className="p-2 "></td>
+            <td className="p-2 "></td>
+            <td className="p-2 text-left">
+              <input
+                type="text"
+                onChange={handleChange}
+                className="border border-indigo-200 p-1 w-full h-8 rounded-lg"
+                placeholder="Nhập tên giáo viên . . . "
               />
-            </button>
-          </td>
-        </tr>
-        {/* // Khoa công nghệ thông tin */}
-        {instructorlist.map((data, index) => (
-          <InstructorRow
-            key={index}
-            instructor={data}
-            setReloading={handleReloadingForDelete}
-          />
-        ))}
+            </td>
 
-        {/* {collapse && (
+            <td className="p-2 pt-3 bg-transparent pl-12 border-r relative  flex justify-center">
+              <button type="submit" onClick={hanldeSubmit}>
+                <img
+                  src="/icons/adminpage/check.svg"
+                  height={24}
+                  width={24}
+                  className="cursor-pointer"
+                />
+              </button>
+            </td>
+          </tr>
+          {/* // Khoa công nghệ thông tin */}
+          {datafilted.map((data, index) => (
+            <InstructorRow
+              key={index}
+              instructor={data}
+              setReloading={handleReloadingForDelete}
+            />
+          ))}
+
+          {/* {collapse && (
           <tr className="bg-white">
             <td></td>
             <td className="" colSpan={3}>
@@ -146,16 +177,17 @@ function InstructorTable(props) {
             </td>
           </tr>
         )} */}
-        <tr className="bg-gray-50 text-left  ">
-          <td
-            className="p-2 pl-8 bg-white Table Footer rounded-b-2xl "
-            colSpan={4}
-          >
-            Tổng cộng {total}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          <tr className="bg-gray-50 text-left  ">
+            <td
+              className="p-2 pl-8 bg-white Table Footer rounded-b-2xl "
+              colSpan={4}
+            >
+              Tổng cộng {datafilted.length}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </>
   );
 }
 
