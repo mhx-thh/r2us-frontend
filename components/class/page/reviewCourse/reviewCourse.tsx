@@ -239,7 +239,11 @@ const ReviewCourse = function (props: AppProps) {
       </div>
       {create === true && (
         <PopUp closepopup={setCreate}>
-          <CreateReview handleCreate={ClickCreate} />
+          <CreateReview
+            handleCreate={ClickCreate}
+            iD={props?.id}
+            reviewType="Class"
+          />
         </PopUp>
       )}
     </div>

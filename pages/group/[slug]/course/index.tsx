@@ -71,6 +71,7 @@ const Item = function (props: propApi) {
 
   const Id = {
     academicId: initProps.academicId._id,
+    facultyId: initProps.courseId.facultyId._id,
     courseId: initProps.courseId._id,
     instructorId: initProps.instructorId.id,
     classId: initProps._id,

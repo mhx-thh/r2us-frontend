@@ -123,7 +123,16 @@ const DocumentPage = function () {
 
         {create === true && (
           <PopUp closepopup={setCreate}>
-            <CreateResource handleCreate={handleClick} />
+            <CreateResource
+              handleCreate={handleClick}
+              iD={{
+                academicId: "",
+                facultyId: "",
+                courseId: "",
+                instructorId: "",
+                classId: "",
+              }}
+            />
           </PopUp>
         )}
 

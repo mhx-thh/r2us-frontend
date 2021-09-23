@@ -23,45 +23,30 @@ type enrollStatus = "enrolled" | "notEnrolled";
 type createStatus = "loading" | "done";
 type dataCreate = {
   schoolyear: any;
-  falcuty: any;
+  faculty: any;
   course: any;
   teacher: any;
 };
 
-const CreateReview = function (handleCreate: any) {
+const CreateReview = function ({ handleCreate, iD, reviewType }: any) {
   const token = useAppSelector(selectToken);
 
   // Get data for create modal
-  const [data, setData] = useState<dataCreate>();
+  const [data, setData] = useState<dataCreate>({
+    schoolyear: [],
+    faculty: [],
+    course: [],
+    teacher: [],
+  });
   const [myClass, setMyClass] = useState([]);
 
-  useEffect(() => {
-    async function fetchData() {
-      const schoolyear = await AcademicAPI.getSchoolYears();
-      const falcuty = await AcademicAPI.getFalcuties();
+  // Data to get class and create Create
+  const [schoolyear, setSchoolyear] = useState(iD?.academicId);
+  const [facultyId, setFacultyId] = useState(iD?.facultyId);
+  const [courseId, setCourseId] = useState(iD?.courseId);
+  const [instructorId, setInstructorId] = useState(iD?.instructorId);
 
-      const res = await userApi.getMyClass(token);
-      const myClass = res?.data?.data?.result;
-
-      const data = {
-        schoolyear: schoolyear.data.data,
-        falcuty: falcuty.data.data,
-        course: [],
-        teacher: [],
-      };
-
-      setData(data);
-      setMyClass(myClass);
-    }
-
-    fetchData();
-  }, []);
-
-  const [schoolyear, setSchoolyear] = useState("");
-  const [facultyId, setFacultyId] = useState("");
-  const [courseId, setCourseId] = useState("");
-  const [instructorId, setInstructorId] = useState("");
-
+  // Data for class: Get class and process class
   const [className, setClassName] = useState("");
   const [classStatus, setClassStatus] = useState<classStatus>("loading");
   const [group, setGroup] = useState([]);
@@ -69,16 +54,9 @@ const CreateReview = function (handleCreate: any) {
 
   const [createStatus, setCreateStatus] = useState<createStatus>("done");
 
-  const handleClassName = () => {
-    setClassName(group[0].className);
-    setCreate({
-      ...create,
-      classId: group[0]._id,
-    });
-  };
-
+  // And finally, data to create data Api
   const initCreate: Api = {
-    reviewType: "Class",
+    reviewType: reviewType,
     reviewTitle: "",
     review: "",
     classId: "",
@@ -86,6 +64,60 @@ const CreateReview = function (handleCreate: any) {
 
   const [create, setCreate] = useState<Api>(initCreate);
 
+  // Get init data/data for schoolyear and faculty
+  async function fetchData() {
+    const schoolyear = await AcademicAPI.getSchoolYears();
+    const faculty = await AcademicAPI.getFalcuties();
+
+    const res = await userApi.getMyClass(token);
+    const myClass = res?.data?.data?.result;
+
+    const data = {
+      schoolyear: schoolyear?.data?.data,
+      faculty: faculty?.data?.data,
+      course: [],
+      teacher: [],
+    };
+
+    setData(data);
+    setMyClass(myClass);
+  }
+
+  async function fetchCourse(iD: string) {
+    const course = await courseApi.getCoursetoFaculty(iD);
+
+    setData({
+      ...data,
+      course: course?.data?.data,
+      teacher: [],
+    });
+  }
+
+  async function fetchInstructor(iD: string) {
+    const instructor = await InstructorAPI.getInstructortoCourse(iD);
+
+    setData({
+      ...data,
+      teacher: instructor?.data?.data,
+    });
+  }
+
+  // Init modal data/data from group
+  useEffect(() => {
+    async function fetchInitData() {
+      await fetchData();
+      if (iD?.courseId !== "") {
+        await fetchCourse(iD?.courseId);
+      }
+      if (iD?.instructorId !== "") {
+        await fetchInstructor(iD?.instructorId);
+      }
+    }
+
+    fetchInitData();
+  }, []);
+
+  // Get data for class/group modal
   useEffect(() => {
     async function fetchGroup({ courseId, instructorId, academicId }: any) {
       const url = `${apiV1}/groups/class?courseId__eq=${courseId}&instructorId__eq=${instructorId}&academicId__eq=${academicId}`;
@@ -105,6 +137,7 @@ const CreateReview = function (handleCreate: any) {
     }
   }, [schoolyear, courseId, instructorId]);
 
+  // Process group/class status
   useEffect(() => {
     if (!(schoolyear !== "" && courseId !== "" && instructorId !== "")) {
       setClassStatus("loading");
@@ -115,13 +148,28 @@ const CreateReview = function (handleCreate: any) {
       setClassStatus("done");
       setEnrollStatus("notEnrolled");
       myClass.map((val) => {
-        console.log(val, " ", group[0]);
         if (val.classId._id === group[0]._id) {
           setEnrollStatus("enrolled");
         }
       });
     }
   }, [group]);
+
+  // For fun
+  useEffect(() => {
+    console.log("Id: ", iD);
+    console.log("Data: ", data);
+  }, [data]);
+
+  //
+  // Below here is process modal selection and their... kind...?
+  const handleClassName = () => {
+    setClassName(group[0].className);
+    setCreate({
+      ...create,
+      classId: group[0]._id,
+    });
+  };
 
   const handleTypeReview = (e) => {
     setCreate({
@@ -151,40 +199,18 @@ const CreateReview = function (handleCreate: any) {
   const handleFacultyId = (e) => {
     setFacultyId(e.target.value);
     setCourseId("");
-    data.course = [];
     setInstructorId("");
-    data.teacher = [];
+    setData({ ...data, teacher: [], course: [] });
 
-    async function fetchCourse() {
-      const course = await courseApi.getCoursetoFaculty(e.target.value);
-
-      setData({
-        ...data,
-        course: course?.data?.data,
-        teacher: [],
-      });
-    }
-
-    fetchCourse();
+    fetchCourse(e.target.value);
   };
 
   const handleCourseId = (e) => {
     setCourseId(e.target.value);
     setInstructorId("");
-    data.teacher = [];
+    setData({ ...data, teacher: [] });
 
-    async function fetchInstructor() {
-      const instructor = await InstructorAPI.getInstructortoCourse(
-        e.target.value
-      );
-
-      setData({
-        ...data,
-        teacher: instructor?.data?.data,
-      });
-    }
-
-    fetchInstructor();
+    fetchInstructor(e.target.value);
   };
 
   const handleInstructor = (e) => {
@@ -194,13 +220,9 @@ const CreateReview = function (handleCreate: any) {
   const clickReset = () => {
     setFacultyId("");
     setCourseId("");
-    data.course = [];
     setInstructorId("");
-    data.teacher = [];
-    setCreate({
-      ...create,
-      classId: initCreate.classId,
-    });
+    setData({ ...data, course: [], teacher: [] });
+    setCreate(initCreate);
   };
 
   const clickSend = (ev) => {
@@ -318,7 +340,7 @@ const CreateReview = function (handleCreate: any) {
               value={facultyId}
             >
               <option value="">Chọn khoa</option>
-              {data?.falcuty?.result?.map((val, key) => (
+              {data?.faculty?.result?.map((val, key) => (
                 <option value={val._id} key={key}>
                   {val.facultyName}
                 </option>
