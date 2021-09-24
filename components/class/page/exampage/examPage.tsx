@@ -47,7 +47,7 @@ const ExamPage = function (props: AppProps) {
     fetchResources();
   }, [flag, props.exams, create]);
 
-  const ClickCreateResource = () => {
+  const ClickCreate = () => {
     setCreate(!create);
   };
   // Exam functions
@@ -188,7 +188,7 @@ const ExamPage = function (props: AppProps) {
       <div>
         {/* Button Share Resource */}
         <div className={style.buttonarea}>
-          <button className={style.head} onClick={ClickCreateResource}>
+          <button className={style.head} onClick={ClickCreate}>
             <div className={style.head__text}>Chia sẻ tài liệu</div>
             <div className={style.head__image}>
               <img src="/icons/resource.svg" />
@@ -242,7 +242,11 @@ const ExamPage = function (props: AppProps) {
       </div>
       {create === true && (
         <PopUp closepopup={setCreate}>
-          <CreateResource handleCreate={ClickCreateResource} />
+          <CreateResource
+            handleCreate={ClickCreate}
+            iD={props?.id}
+            resourceType="Examination Paper"
+          />
         </PopUp>
       )}
     </div>

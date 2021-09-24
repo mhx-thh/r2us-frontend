@@ -42,6 +42,8 @@ export const getServerSideProps: GetServerSideProps = async (params) => {
 };
 
 const Item = function (props: propApi) {
+  const initProps = props.class;
+
   const [role, setRole] = useState("");
   const token = useAppSelector(selectToken);
 
@@ -69,10 +71,11 @@ const Item = function (props: propApi) {
   }, []);
 
   const Id = {
-    academicId: props.class.academicId._id,
-    courseId: props.class.courseId._id,
-    instructorId: props.class.instructorId.id,
-    classId: props.class._id,
+    academicId: initProps.academicId._id,
+    facultyId: initProps.courseId.facultyId._id,
+    courseId: initProps.courseId._id,
+    instructorId: initProps.instructorId.id,
+    classId: initProps._id,
   };
 
   const router = useRouter();

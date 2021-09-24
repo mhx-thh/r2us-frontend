@@ -242,7 +242,11 @@ const DocumentPage = function (props: AppProps) {
       </div>
       {create === true && (
         <PopUp closepopup={setCreate}>
-          <CreateResource handleCreate={ClickCreate} />
+          <CreateResource
+            handleCreate={ClickCreate}
+            iD={props?.id}
+            resourceType="Resources"
+          />
         </PopUp>
       )}
     </div>

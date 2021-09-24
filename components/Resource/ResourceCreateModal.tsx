@@ -29,40 +29,20 @@ type dataCreate = {
   teacher: any;
 };
 
-const CreateResource = function (handleCreate: any) {
+const CreateResource = function ({ handleCreate, iD, resourceType }: any) {
   const token = useAppSelector(selectToken);
 
   // Get data for create modal
   const [data, setData] = useState<dataCreate>();
   const [myClass, setMyClass] = useState([]);
 
-  useEffect(() => {
-    async function fetchData() {
-      const schoolyear = await AcademicAPI.getSchoolYears();
-      const faculty = await AcademicAPI.getFalcuties();
-
-      const res = await userApi.getMyClass(token);
-      const myClass = res?.data?.data?.result;
-
-      const data = {
-        schoolyear: schoolyear.data.data,
-        faculty: faculty.data.data,
-        course: [],
-        teacher: [],
-      };
-
-      setData(data);
-      setMyClass(myClass);
-    }
-
-    fetchData();
-  }, []);
-
+  // Data to get class and create Create
   const [schoolyear, setSchoolyear] = useState("");
   const [facultyId, setFacultyId] = useState("");
   const [courseId, setCourseId] = useState("");
   const [instructorId, setInstructorId] = useState("");
 
+  // Data for class: Get class and process class
   const [className, setClassName] = useState("");
   const [classStatus, setClassStatus] = useState<classStatus>("loading");
   const [group, setGroup] = useState([]);
@@ -70,14 +50,7 @@ const CreateResource = function (handleCreate: any) {
 
   const [createStatus, setCreateStatus] = useState<createStatus>("done");
 
-  const handleClassName = () => {
-    setClassName(group[0].className);
-    setCreate({
-      ...create,
-      classId: group[0]._id,
-    });
-  };
-
+  // And finally, data to create data Api
   const initCreate: Api = {
     resourceType: "Resources",
     resourceName: "",
@@ -88,6 +61,68 @@ const CreateResource = function (handleCreate: any) {
 
   const [create, setCreate] = useState<Api>(initCreate);
 
+  // Init modal data/data from group
+  useEffect(() => {
+    async function fetchData() {
+      Swal.fire({
+        title: "Đang lấy dữ liệu",
+        icon: "info",
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
+      const schoolyear = await AcademicAPI.getSchoolYears();
+      const faculty = await AcademicAPI.getFalcuties();
+
+      const res = await userApi.getMyClass(token);
+      const myClass = res?.data?.data?.result;
+
+      const data = {
+        schoolyear: schoolyear?.data?.data,
+        faculty: faculty?.data?.data,
+        course: [],
+        teacher: [],
+      };
+
+      setData(data);
+      setMyClass(myClass);
+
+      if (iD?.courseId !== "") {
+        setSchoolyear(iD?.academicId);
+
+        // Faculty => Course...
+        setFacultyId(iD?.facultyId);
+        setData({ ...data, teacher: [], course: [] });
+
+        const course = await courseApi.getCoursetoFaculty(iD?.facultyId);
+        const instructor = await InstructorAPI.getInstructortoCourse(
+          iD?.courseId
+        );
+
+        setData({
+          ...data,
+          course: course?.data?.data,
+          teacher: instructor?.data?.data,
+        });
+
+        // Course => Instructor
+        setCourseId(iD?.courseId);
+
+        // Instructor
+        setInstructorId(iD?.instructorId);
+
+        setCreate({ ...create, resourceType: resourceType });
+      }
+
+      Swal.close();
+    }
+
+    fetchData();
+  }, []);
+
+  // Get data for class/group modal
   useEffect(() => {
     async function fetchGroup({ courseId, instructorId, academicId }: any) {
       const url = `${apiV1}/groups/class?courseId__eq=${courseId}&instructorId__eq=${instructorId}&academicId__eq=${academicId}`;
@@ -107,6 +142,7 @@ const CreateResource = function (handleCreate: any) {
     }
   }, [schoolyear, courseId, instructorId]);
 
+  // Process group/class status
   useEffect(() => {
     if (!(schoolyear !== "" && courseId !== "" && instructorId !== "")) {
       setClassStatus("loading");
@@ -117,12 +153,22 @@ const CreateResource = function (handleCreate: any) {
       setClassStatus("done");
       setEnrollStatus("notEnrolled");
       myClass.map((val) => {
-        if (val.classId._id === group[0]._id) {
+        if (val?.classId?._id === group[0]?._id) {
           setEnrollStatus("enrolled");
         }
       });
     }
   }, [group]);
+
+  //
+  // Below here is process modal selection and their... kind...?
+  const handleClassName = () => {
+    setClassName(group[0].className);
+    setCreate({
+      ...create,
+      classId: group[0]?._id,
+    });
+  };
 
   const handleTypeResource = (e) => {
     setCreate({
@@ -159,9 +205,8 @@ const CreateResource = function (handleCreate: any) {
   const handleFacultyId = (e) => {
     setFacultyId(e.target.value);
     setCourseId("");
-    data.course = [];
     setInstructorId("");
-    data.teacher = [];
+    setData({ ...data, teacher: [], course: [] });
 
     async function fetchCourse() {
       const course = await courseApi.getCoursetoFaculty(e.target.value);
@@ -179,7 +224,7 @@ const CreateResource = function (handleCreate: any) {
   const handleCourseId = (e) => {
     setCourseId(e.target.value);
     setInstructorId("");
-    data.teacher = [];
+    setData({ ...data, teacher: [] });
 
     async function fetchInstructor() {
       const instructor = await InstructorAPI.getInstructortoCourse(
@@ -202,13 +247,9 @@ const CreateResource = function (handleCreate: any) {
   const clickReset = () => {
     setFacultyId("");
     setCourseId("");
-    data.course = [];
     setInstructorId("");
-    data.teacher = [];
-    setCreate({
-      ...create,
-      classId: initCreate.classId,
-    });
+    setData({ ...data, course: [], teacher: [] });
+    setCreate(initCreate);
   };
 
   const clickSend = (ev) => {
@@ -258,6 +299,7 @@ const CreateResource = function (handleCreate: any) {
               <select
                 className="bg-indigo-50 w-48 rounded-2xl border border-solid border-indigo-500"
                 onChange={handleTypeResource}
+                value={create.resourceType}
               >
                 <option value="Examination Paper">Đề thi</option>
                 <option value="Review Paper">Đề cương</option>

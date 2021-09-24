@@ -32,19 +32,14 @@ const CreateReview = function ({ handleCreate, iD, reviewType }: any) {
   const token = useAppSelector(selectToken);
 
   // Get data for create modal
-  const [data, setData] = useState<dataCreate>({
-    schoolyear: [],
-    faculty: [],
-    course: [],
-    teacher: [],
-  });
+  const [data, setData] = useState<dataCreate>();
   const [myClass, setMyClass] = useState([]);
 
   // Data to get class and create Create
-  const [schoolyear, setSchoolyear] = useState(iD?.academicId);
-  const [facultyId, setFacultyId] = useState(iD?.facultyId);
-  const [courseId, setCourseId] = useState(iD?.courseId);
-  const [instructorId, setInstructorId] = useState(iD?.instructorId);
+  const [schoolyear, setSchoolyear] = useState("");
+  const [facultyId, setFacultyId] = useState("");
+  const [courseId, setCourseId] = useState("");
+  const [instructorId, setInstructorId] = useState("");
 
   // Data for class: Get class and process class
   const [className, setClassName] = useState("");
@@ -56,7 +51,7 @@ const CreateReview = function ({ handleCreate, iD, reviewType }: any) {
 
   // And finally, data to create data Api
   const initCreate: Api = {
-    reviewType: reviewType,
+    reviewType: "Class",
     reviewTitle: "",
     review: "",
     classId: "",
@@ -64,57 +59,65 @@ const CreateReview = function ({ handleCreate, iD, reviewType }: any) {
 
   const [create, setCreate] = useState<Api>(initCreate);
 
-  // Get init data/data for schoolyear and faculty
-  async function fetchData() {
-    const schoolyear = await AcademicAPI.getSchoolYears();
-    const faculty = await AcademicAPI.getFalcuties();
-
-    const res = await userApi.getMyClass(token);
-    const myClass = res?.data?.data?.result;
-
-    const data = {
-      schoolyear: schoolyear?.data?.data,
-      faculty: faculty?.data?.data,
-      course: [],
-      teacher: [],
-    };
-
-    setData(data);
-    setMyClass(myClass);
-  }
-
-  async function fetchCourse(iD: string) {
-    const course = await courseApi.getCoursetoFaculty(iD);
-
-    setData({
-      ...data,
-      course: course?.data?.data,
-      teacher: [],
-    });
-  }
-
-  async function fetchInstructor(iD: string) {
-    const instructor = await InstructorAPI.getInstructortoCourse(iD);
-
-    setData({
-      ...data,
-      teacher: instructor?.data?.data,
-    });
-  }
-
   // Init modal data/data from group
   useEffect(() => {
-    async function fetchInitData() {
-      await fetchData();
+    async function fetchData() {
+      Swal.fire({
+        title: "Đang lấy dữ liệu",
+        icon: "info",
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
+      const schoolyear = await AcademicAPI.getSchoolYears();
+      const faculty = await AcademicAPI.getFalcuties();
+
+      const res = await userApi.getMyClass(token);
+      const myClass = res?.data?.data?.result;
+
+      const data = {
+        schoolyear: schoolyear?.data?.data,
+        faculty: faculty?.data?.data,
+        course: [],
+        teacher: [],
+      };
+
+      setData(data);
+      setMyClass(myClass);
+
       if (iD?.courseId !== "") {
-        await fetchCourse(iD?.courseId);
+        setSchoolyear(iD?.academicId);
+
+        // Faculty => Course...
+        setFacultyId(iD?.facultyId);
+        setData({ ...data, teacher: [], course: [] });
+
+        const course = await courseApi.getCoursetoFaculty(iD?.facultyId);
+        const instructor = await InstructorAPI.getInstructortoCourse(
+          iD?.courseId
+        );
+
+        setData({
+          ...data,
+          course: course?.data?.data,
+          teacher: instructor?.data?.data,
+        });
+
+        // Course => Instructor
+        setCourseId(iD?.courseId);
+
+        // Instructor
+        setInstructorId(iD?.instructorId);
+
+        setCreate({ ...create, reviewType: reviewType });
       }
-      if (iD?.instructorId !== "") {
-        await fetchInstructor(iD?.instructorId);
-      }
+
+      Swal.close();
     }
 
-    fetchInitData();
+    fetchData();
   }, []);
 
   // Get data for class/group modal
@@ -148,18 +151,12 @@ const CreateReview = function ({ handleCreate, iD, reviewType }: any) {
       setClassStatus("done");
       setEnrollStatus("notEnrolled");
       myClass.map((val) => {
-        if (val.classId._id === group[0]._id) {
+        if (val?.classId?._id === group[0]?._id) {
           setEnrollStatus("enrolled");
         }
       });
     }
   }, [group]);
-
-  // For fun
-  useEffect(() => {
-    console.log("Id: ", iD);
-    console.log("Data: ", data);
-  }, [data]);
 
   //
   // Below here is process modal selection and their... kind...?
@@ -167,7 +164,7 @@ const CreateReview = function ({ handleCreate, iD, reviewType }: any) {
     setClassName(group[0].className);
     setCreate({
       ...create,
-      classId: group[0]._id,
+      classId: group[0]?._id,
     });
   };
 
@@ -202,7 +199,17 @@ const CreateReview = function ({ handleCreate, iD, reviewType }: any) {
     setInstructorId("");
     setData({ ...data, teacher: [], course: [] });
 
-    fetchCourse(e.target.value);
+    async function fetchCourse() {
+      const course = await courseApi.getCoursetoFaculty(e.target.value);
+
+      setData({
+        ...data,
+        course: course?.data?.data,
+        teacher: [],
+      });
+    }
+
+    fetchCourse();
   };
 
   const handleCourseId = (e) => {
@@ -210,7 +217,18 @@ const CreateReview = function ({ handleCreate, iD, reviewType }: any) {
     setInstructorId("");
     setData({ ...data, teacher: [] });
 
-    fetchInstructor(e.target.value);
+    async function fetchInstructor() {
+      const instructor = await InstructorAPI.getInstructortoCourse(
+        e.target.value
+      );
+
+      setData({
+        ...data,
+        teacher: instructor?.data?.data,
+      });
+    }
+
+    fetchInstructor();
   };
 
   const handleInstructor = (e) => {
@@ -270,6 +288,7 @@ const CreateReview = function ({ handleCreate, iD, reviewType }: any) {
               <select
                 className="bg-indigo-50 w-48 rounded-2xl border border-solid border-indigo-500"
                 onChange={handleTypeReview}
+                value={create.reviewType}
               >
                 <option value="Class">Môn học</option>
                 <option value="Instructor">Giáo viên</option>

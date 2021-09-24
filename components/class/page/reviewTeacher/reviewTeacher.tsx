@@ -4,7 +4,7 @@ import ReviewItem from "components/Review/ReviewItem";
 import PopUp from "components/class/PopUp/popup";
 import ReviewEditModal from "components/Review/ReviewEditModal";
 import useClickOutside from "components/clickOutside/clickOutside";
-import CreateResource from "components/Resource/ResourceCreateModal";
+import CreateReview from "components/Review/ReviewCreateModal";
 
 import style from "../groupPage.module.css";
 
@@ -237,7 +237,11 @@ const ReviewTeacher = function (props: AppProps) {
       </div>
       {create === true && (
         <PopUp closepopup={setCreate}>
-          <CreateResource handleCreate={ClickCreate} />
+          <CreateReview
+            handleCreate={ClickCreate}
+            iD={props?.id}
+            reviewType="Instructor"
+          />
         </PopUp>
       )}
     </div>

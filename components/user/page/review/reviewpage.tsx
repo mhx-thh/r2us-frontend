@@ -124,7 +124,17 @@ const ReviewPage = function () {
 
         {create === true && (
           <PopUp closepopup={setCreate}>
-            <CreateReview handleCreate={handleClick} />
+            <CreateReview
+              handleCreate={handleClick}
+              iD={{
+                academicId: "",
+                facultyId: "",
+                courseId: "",
+                instructorId: "",
+                classId: "",
+              }}
+              reviewType="Class"
+            />
           </PopUp>
         )}
 
