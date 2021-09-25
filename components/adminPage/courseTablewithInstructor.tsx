@@ -1,19 +1,19 @@
-import courseApi from "api/courseApi";
-import intructorAPI from "api/instructorApi";
-import Image from "next/image";
-import router from "next/router";
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
-import CourseRowInstructor from "./CourseRowInstructor";
-import facultyApi from "api/facultyApi";
-import SelectOption from "components/adminPage/SelectOption";
-import InstructorAPI from "api/instructorApi";
 import Swal from "sweetalert2";
+
+import facultyApi from "api/facultyApi";
+import InstructorAPI from "api/instructorApi";
+import courseApi from "api/courseApi";
+import intructorAPI from "api/instructorApi";
+
+import CourseRowInstructor from "./CourseRowInstructor";
+import SelectOption from "components/adminPage/SelectOption";
 
 type AppProps = {
   instructor: any;
-  reloading: any;
 };
 type Keys = string;
 type Values = string;
@@ -22,18 +22,13 @@ type Api = {
   instructorName: string;
   courseIds: Array<T>;
 };
-function CourseTable({ instructor, reloading }: AppProps) {
-  const [collapse, setCollapse] = useState(false);
-  const [threedots, setThreedots] = useState(false);
-  // const [reloading, setReloading] = useState(0);
+function CourseTable({ instructor }: AppProps) {
+  //declare variable
+  const [reloading, setReloading] = useState(0);
   const token = useAppSelector(selectToken);
-  const [total, setTotal] = useState(0);
   const [mycourseList, setMyCourseList] = useState([]);
   const [facultylist, setFacultylist] = useState([]);
   const [courseList, setCourseList] = useState([]);
-  const [arraycourse, setArraycourse] = useState([]);
-  const [mycourseId, setMyCourseId] = useState("");
-  const [name, setName] = useState("");
   const [facultyId, setFacultyId] = useState({
     facultyName: "",
     _id: "",
@@ -42,41 +37,10 @@ function CourseTable({ instructor, reloading }: AppProps) {
     _id: "",
     courseName: "",
   });
-  const [temp, setTemp] = useState("");
-  const initCreate: Api = {
-    instructorName: instructor.instructorName,
-    courseIds: instructor.courseId,
-  };
-  const [create, setCreate] = useState<Api>(initCreate);
-  const [obj, setObj] = useState({
-    courseName: "",
-    facultyId: {
-      facultyName: "",
-      _id: "",
-    },
-    _id: "",
-  });
-  const clickcollapse = () => {
-    setCollapse(!collapse);
-  };
-  const clickthreedots = () => {
-    setThreedots(!threedots);
-  };
-  const handleGetCourseName = (e) => {
-    mycourseList.push(e.target.value);
-  };
-  const handleChange = (e) => {
-    // const val = e.target.value;
-    // setCreate({ ...create, courseName: e.target.value });
-  };
 
+  //function
   const hanldeSubmit = (e) => {
     e.preventDefault();
-    arraycourse.push(mycourseId);
-    setCreate({ ...create, courseIds: arraycourse });
-    const newre = reloading + 1;
-    console.log("now create");
-    console.log(facultyId, courseId);
     const obj = {
       courseName: courseId.courseName,
       facultyId: {
@@ -89,14 +53,12 @@ function CourseTable({ instructor, reloading }: AppProps) {
     const data = {
       courseId: array.concat(obj),
     };
-    console.log("array:", data);
     InstructorAPI.updateInstructor(instructor._id, data, token);
-    console.log("obj", obj);
-    reloading();
+    setReloading(reloading + 1);
   };
+
   const handleReloadingForDelete = (e) => {
-    const newre = reloading + 2;
-    reloading();
+    setReloading(reloading + 1);
   };
 
   useEffect(() => {
@@ -112,10 +74,7 @@ function CourseTable({ instructor, reloading }: AppProps) {
       try {
         const res = await intructorAPI.getInstructor(instructor._id);
         const data = res?.data?.data?.courseId;
-        console.log("here", data);
         setMyCourseList(data);
-        setTotal(data.length);
-        console.log("data course", data);
       } catch (error) {
         console.log("error");
       }
@@ -166,27 +125,9 @@ function CourseTable({ instructor, reloading }: AppProps) {
               });
             }
           });
-          // setMyCourseId(value);
           break;
       }
     };
-
-    // const obj = {
-    //   courseIds: [
-    //     [
-    //       ...create.courseIds,
-    //       {
-    //         _id: courseId._id,
-    //         courseName: courseId.courseName,
-    //         facultyId: {
-    //           facultyName: facultyId.facultyName,
-    //           _id: facultyId._id,
-    //         },
-    //       },
-    //     ],
-    //   ],
-    // };
-    console.log(facultyId, courseId);
     if (api) fetchData(api);
   };
 
@@ -212,6 +153,7 @@ function CourseTable({ instructor, reloading }: AppProps) {
     }
     fetchFacultyList();
   }, []);
+
   return (
     <table className=" w-full p-2 border">
       <thead className="">

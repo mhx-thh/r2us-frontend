@@ -1,61 +1,49 @@
-import instructorApi from "api/instructorApi";
-import SearchBar from "components/search/SearchBar/SearchBar";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
 import Swal from "sweetalert2";
+
+import instructorApi from "api/instructorApi";
+
 import InstructorRow from "./InstructorRow";
 
-// interface Props {
-//   getThreedots: any;
-//   getCollapse: any;
-// }
 type Api = {
   instructorName: string;
 };
-function InstructorTable(props) {
-  const [collapse, setCollapse] = useState(false);
-  const [threedots, setThreedots] = useState(false);
+function InstructorTable() {
+  //declare
+  const [instructorlist, setinstructorlist] = useState([]);
+  const [datafilted, setDatafilted] = useState([]);
   const [search, setSearch] = useState("");
   const [reloading, setReloading] = useState(0);
   const token = useAppSelector(selectToken);
-  const [total, setTotal] = useState(0);
   const initCreate: Api = {
     instructorName: "",
   };
-
   const [create, setCreate] = useState<Api>(initCreate);
 
-  const clickcollapse = () => {
-    setCollapse(!collapse);
-    // getThreedots(threedots);
-  };
-  const clickthreedots = () => {
-    setThreedots(!threedots);
-    // getCollapse(collapse);
-  };
-
+  //function
   const handleChange = (e) => {
-    const val = e.target.value;
     setCreate({ ...create, instructorName: e.target.value });
   };
+
   const handleChangeSearch = (e) => {
     const val = e.target.value;
     setSearch(val);
   };
+
   const hanldeSubmit = (e) => {
     e.preventDefault();
     create.instructorName !== "" && instructorApi.postInstructor(create, token);
     const newre = reloading + 1;
     setReloading(newre);
   };
-  const handleReloadingForDelete = (e) => {
-    const newre = reloading + 1;
+
+  const handleReloadingForDelete = () => {
     setReloading(reloading + 1);
   };
 
-  const [instructorlist, setinstructorlist] = useState([]);
-  const [datafilted, setDatafilted] = useState([]);
+  //fetch data
   useEffect(() => {
     async function fetchinstructorList() {
       Swal.fire({
@@ -78,19 +66,17 @@ function InstructorTable(props) {
           }
           return 0;
         });
-        setTotal(res?.data?.data?.total);
         setinstructorlist(data);
         setDatafilted(data);
-        console.log("data", data[1]);
       } catch (error) {
         console.log(error.message);
       }
       Swal.close();
     }
     fetchinstructorList();
-    console.log("reload");
   }, [reloading]);
 
+  //Hàm search giáo viên
   useEffect(() => {
     const array = instructorlist.filter(
       (idx) =>

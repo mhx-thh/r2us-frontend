@@ -1,62 +1,45 @@
 import facultyApi from "api/facultyApi";
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import CourseTable from "./CourseTable";
-import FacultyRow from "./facultyRow";
-import { selectToken, selectUser } from "redux/userSlice";
+import { selectToken } from "redux/userSlice";
 import { useAppSelector } from "redux/hooks";
-import Threedots from "./Threedots";
 
-// interface Props {
-//   getThreedots: any;
-//   getCollapse: any;
-// }
+import FacultyRow from "./facultyRow";
+
 type Api = {
   facultyName: string;
 };
-function FacultyTable(props) {
-  const [collapse, setCollapse] = useState(false);
-  const [threedots, setThreedots] = useState(false);
+function FacultyTable() {
+  //declare hooks
   const [reloading, setReloading] = useState(0);
-  const token = useAppSelector(selectToken);
+  const [facultylist, setFacultylist] = useState([]);
   const [total, setTotal] = useState(0);
+  const token = useAppSelector(selectToken);
+
+  //Tạo object submit khoa mới
   const initCreate: Api = {
     facultyName: "",
   };
-
   const [create, setCreate] = useState<Api>(initCreate);
-  const loading = () => {
-    setReloading(reloading + 1);
-  };
-  const clickcollapse = () => {
-    setCollapse(!collapse);
-    // getThreedots(threedots);
-  };
-  const clickthreedots = () => {
-    setThreedots(!threedots);
-    // getCollapse(collapse);
-  };
 
+  //function
+  //Tất cả các hàm logic nằm ở dưới
   const handleChange = (e) => {
-    const val = e.target.value;
     setCreate({ ...create, facultyName: e.target.value });
   };
   const hanldeSubmit = (e) => {
     e.preventDefault();
     create.facultyName !== "" && facultyApi.postFaculty(create, token);
+    setReloading(reloading + 1);
+  };
+  //Reload mỗi khi xóa
+  const handleReloadingForDelete = () => {
     const newre = reloading + 1;
     setReloading(newre);
   };
-  const handleReloadingForDelete = (e) => {
-    const newre = reloading + 2;
-    setReloading(reloading + 1);
-  };
-  useEffect(() => {
-    console.log(create);
-  }, [create]);
 
-  const [facultylist, setFacultylist] = useState([]);
   useEffect(() => {
+    console.log("realoading: ", reloading);
     async function fetchFacultyList() {
       Swal.fire({
         title: "Loading data",
@@ -80,7 +63,6 @@ function FacultyTable(props) {
         });
         setFacultylist(data);
         setTotal(res?.data?.data?.total);
-        console.log("data", data);
       } catch (error) {
         console.log(error.message);
       }
@@ -133,7 +115,6 @@ function FacultyTable(props) {
             </button>
           </td>
         </tr>
-        {/* // Khoa công nghệ thông tin */}
         {facultylist.map((data, index) => (
           <FacultyRow
             key={index}
@@ -141,15 +122,6 @@ function FacultyTable(props) {
             setReloading={handleReloadingForDelete}
           />
         ))}
-
-        {/* {collapse && (
-          <tr className="bg-white">
-            <td></td>
-            <td className="" colSpan={3}>
-              <CourseTable />
-            </td>
-          </tr>
-        )} */}
         <tr className="bg-gray-50 text-left ">
           <td
             className="p-2 pl-8 bg-white Table Footer rounded-b-2xl "

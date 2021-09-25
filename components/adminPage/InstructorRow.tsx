@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import CourseTable from "./CourseTable";
-import Threedots from "./Threedots";
-import { selectToken, selectUser } from "redux/userSlice";
+import { selectToken } from "redux/userSlice";
 import { useAppSelector } from "redux/hooks";
+
 import instructorApi from "api/instructorApi";
+
 import CourseTablewithInstructor from "./courseTablewithInstructor";
 type AppProps = {
   instructor: any;
@@ -11,32 +11,38 @@ type AppProps = {
 };
 
 function InstructorRow({ instructor, setReloading }: AppProps) {
+  //declare
   const [collapse, setCollapse] = useState(false);
   const [threedots, setThreedots] = useState(false);
   const [edit, setEdit] = useState(false);
   const [name, setName] = useState(instructor.instructorName);
-
   const token = useAppSelector(selectToken);
 
+  //function
   const clickcollapse = () => {
     setCollapse(!collapse);
   };
+
   const clickthreedots = () => {
     setThreedots(!threedots);
   };
+
   const handleClickDelete = () => {
     instructorApi.deleteInstructor(instructor._id, token);
     setReloading();
+    setThreedots(!threedots);
   };
+
   const changeName = (event) => {
     event.preventDefault();
-
     const newName = event.target.value;
     setName(newName);
   };
+
   const clickEdit = () => {
     setEdit(!edit);
   };
+
   const updateName = () => {
     const obj = { instructorName: name };
     console.log(obj);
@@ -44,7 +50,10 @@ function InstructorRow({ instructor, setReloading }: AppProps) {
     setReloading();
     setEdit(false);
     setCollapse(false);
+    setThreedots(!threedots);
   };
+
+  //Custom Hooks detect click outside of a component
   function useClickOutside(ref) {
     useEffect(() => {
       function handleclickoutside(event: Event) {
@@ -52,17 +61,15 @@ function InstructorRow({ instructor, setReloading }: AppProps) {
           setThreedots(threedots);
         }
       }
-
       document.addEventListener("mousedown", handleclickoutside);
-
       return () => {
         document.removeEventListener("mousedown", handleclickoutside);
       };
     }, [ref]);
   }
-
   const ref = useRef(null);
   useClickOutside(ref);
+
   return (
     <React.Fragment>
       <tr className="bg-white text-center border-b border-indigo-300 text-sm ">
@@ -170,10 +177,7 @@ function InstructorRow({ instructor, setReloading }: AppProps) {
         <tr className="bg-white">
           <td></td>
           <td className="" colSpan={3}>
-            <CourseTablewithInstructor
-              instructor={instructor}
-              reloading={setReloading}
-            />
+            <CourseTablewithInstructor instructor={instructor} />
           </td>
         </tr>
       )}

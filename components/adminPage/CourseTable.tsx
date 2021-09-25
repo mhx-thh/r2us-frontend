@@ -1,27 +1,29 @@
 import router from "next/router";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import courseApi from "api/courseApi";
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
-import CourseRowFaculty from "./CourseRowFaculty";
 import Swal from "sweetalert2";
+
+import courseApi from "api/courseApi";
+
+import CourseRowFaculty from "./CourseRowFaculty";
 
 type AppProps = {
   faculty: any;
 };
 type Keys = string;
 type Values = string;
-
 type Api = {
   courseName: string;
   facultyId: Record<Keys, Values>;
   courseDescription: string;
 };
 function CourseTable({ faculty }: AppProps) {
-  const [collapse, setCollapse] = useState(false);
-  const [threedots, setThreedots] = useState(false);
-  const [reloading, setReloading] = useState(0);
+  //declare
+  const [total, setTotal] = useState(0);
+  const [courseList, setCourseList] = useState([]);
+  const [reloading1, setReloading1] = useState(0);
   const token = useAppSelector(selectToken);
   const currentfaculty: Record<Keys, Values> = {
     facultyName: faculty.facultyName,
@@ -32,36 +34,30 @@ function CourseTable({ faculty }: AppProps) {
     facultyId: currentfaculty,
     courseDescription: "create by admin",
   };
-  const clickcollapse = () => {
-    setCollapse(!collapse);
-  };
-  const clickthreedots = () => {
-    setThreedots(!threedots);
-  };
+  const [create, setCreate] = useState<Api>(initCreate);
 
-  const [create, setCreate] = useState("");
-
+  //function
+  //Tất cả các hàm logic nằm ở dưới
   const handleChange = (e) => {
-    const val = e.target.value;
-    setCreate(val);
-  };
-  const hanldeSubmit = (e) => {
     e.preventDefault();
-    const obj = {
-      courseName: create,
+    setCreate({
+      ...create,
+      courseName: e.target.value,
       facultyId: faculty._id,
       courseDescription: "create by admin",
-    };
-    console.log(obj);
-    courseApi.postCourse(obj, token);
-    setReloading(reloading + 1);
-    setCreate("");
+    });
   };
+
+  const hanldeSubmit = (e) => {
+    e.preventDefault();
+    courseApi.postCourse(create, token);
+    setReloading1(reloading1 + 1);
+  };
+
   const handleReloadingForDelete = () => {
-    setReloading(reloading + 1);
+    setReloading1(reloading1 + 1);
   };
-  const [total, setTotal] = useState(0);
-  const [courseList, setCourseList] = useState([]);
+
   useEffect(() => {
     async function fetchCourseList() {
       Swal.fire({
@@ -77,15 +73,14 @@ function CourseTable({ faculty }: AppProps) {
         const data = res?.data?.data?.result;
         setCourseList(data);
         setTotal(res?.data?.data?.total);
-        console.log("data course", data);
       } catch (error) {
         console.log(error.message);
-        setCourseList([]);
       }
       Swal.close();
     }
     fetchCourseList();
-  }, [reloading]);
+  }, [reloading1]);
+
   return (
     <table className=" w-full p-2 border">
       <thead className="">
@@ -110,33 +105,17 @@ function CourseTable({ faculty }: AppProps) {
         <tr className="bg-gray-50 text-center border-b border-indigo-400">
           <td className="p-2 "></td>
           <td className="p-2 "></td>
-          {(router.pathname === "/admin/general/courses" && (
-            <td className="p-2 text-left">
-              <input
-                type="text"
-                onChange={handleChange}
-                className="border border-indigo-200 p-1 w-full h-8 rounded-lg"
-                placeholder="Nhập tên môn mới . . . "
-              />
-            </td>
-          )) || (
-            <td className="p-2 text-left grid grid-cols-2 gap-4">
-              <select className="border border-indigo-200 p-1 w-3/4 h-8 rounded-lg">
-                <option value="" disabled selected>
-                  Chọn Khoa . . .{" "}
-                </option>
-                <option value="">Toan-Tin hoc</option>
-              </select>
-              <select className="border border-indigo-200 p-1 w-3/4 h-8 rounded-lg">
-                <option value="" disabled selected>
-                  Chọn Môn học . . .
-                </option>
-                <option value="">Dai so tuyen tinh</option>
-              </select>
-            </td>
-          )}
+          <td className="p-2 text-left">
+            <input
+              type="text"
+              onChange={handleChange}
+              className="border border-indigo-200 p-1 w-full h-8 rounded-lg"
+              placeholder="Nhập tên môn mới . . . "
+            />
+          </td>
+
           <td className="p-2 pt-3 bg-transparent pl-12 border-r relative ">
-            <button type="submit" onClick={hanldeSubmit}>
+            <button type="submit">
               <Image
                 src="/icons/adminpage/check.svg"
                 height={24}

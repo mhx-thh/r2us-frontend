@@ -1,41 +1,50 @@
-import facultyApi from "api/facultyApi";
 import React, { useEffect, useRef, useState } from "react";
-import CourseTable from "./CourseTable";
 import { selectToken } from "redux/userSlice";
 import { useAppSelector } from "redux/hooks";
 
+import facultyApi from "api/facultyApi";
+
+import CourseTable from "./CourseTable";
 type AppProps = {
   faculty: any;
   setReloading: any;
 };
 
 function FacultyRow({ faculty, setReloading }: AppProps) {
+  //declare variable
   const [name, setName] = useState(faculty.facultyName);
   const [collapse, setCollapse] = useState(false);
   const [threedots, setThreedots] = useState(false);
   const [edit, setEdit] = useState(false);
-
   const token = useAppSelector(selectToken);
 
+  //function
+  //Tất cả các hàm logic nằm ở dưới
   const clickcollapse = () => {
     setCollapse(!collapse);
   };
+
   const clickthreedots = () => {
     setThreedots(!threedots);
   };
-  const handleClickDelete = () => {
+
+  const handleClickDelete = (e) => {
+    e.preventDefault();
     facultyApi.deleteFaculty(faculty._id, token);
     setReloading();
+    setThreedots(!threedots);
   };
+
   const changeName = (event) => {
     event.preventDefault();
-
     const newName = event.target.value;
     setName(newName);
   };
+
   const clickEdit = () => {
     setEdit(!edit);
   };
+
   const updateName = () => {
     const obj = { facultyName: name };
     console.log(obj);
@@ -44,6 +53,8 @@ function FacultyRow({ faculty, setReloading }: AppProps) {
     setEdit(false);
     setCollapse(false);
   };
+
+  //Custom Hooks detect click outside of a component
   function useClickOutside(ref) {
     useEffect(() => {
       function handleclickoutside(event: Event) {
@@ -59,9 +70,9 @@ function FacultyRow({ faculty, setReloading }: AppProps) {
       };
     }, [ref]);
   }
-
   const ref = useRef(null);
   useClickOutside(ref);
+
   return (
     <React.Fragment>
       <tr className="bg-white text-center border-b border-indigo-300 text-sm ">
