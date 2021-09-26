@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-import ReactQuill from "react-quill";
-import "../../../node_modules/react-quill/dist/quill.snow.css";
+import React from "react";
 
 import AdminLayout from "components/layout/AdminLayout";
 import InstructionTable from "components/adminPage/Instruction";
