@@ -381,17 +381,17 @@ export default function Sidebar() {
               </a>
             </Link>
             {/* Instruction */}
-            <Link href="/admin/instruction">
+            <Link href="/admin/Blog">
               <a href="#">
                 <button
                   className={`md:min-w-full rounded-xl  ${
-                    router.pathname === "/admin/instruction"
+                    router.pathname.indexOf("/admin/Blog") > -1
                       ? "bg-indigo-500"
                       : "bg-white hover:bg-indigo-50"
                   }`}
                 >
                   <div className="flex p-0">
-                    {(router.pathname === "/admin/instruction" && (
+                    {(router.pathname.indexOf("/admin/Blog") > -1 && (
                       <img
                         src="/icons/adminpage/instruction_active.svg"
                         height={24}
@@ -408,12 +408,12 @@ export default function Sidebar() {
                     )}
                     <p
                       className={`md:min-full text-left text-xl leading-8 font-semibold uppercase  pt-2 pb-2 ml-4 ${
-                        router.pathname === "/admin/instruction"
+                        router.pathname.indexOf("/admin/Blog") > -1
                           ? "text-white"
                           : "text-black"
                       }`}
                     >
-                      Instruction
+                      Blog
                     </p>
                   </div>
                 </button>
