@@ -50,7 +50,7 @@ function ResourceItem({ aresource }: AppProps) {
           <div className="flex items-center">
             <img src="/icons/course.svg" width="18" />
             <p className="ml-2.5 text-sm leading-7 font-normal">
-              {aresource?.classId?.courseId?.courseName}
+              {aresource.classId.courseId?.courseName}
             </p>
           </div>
 

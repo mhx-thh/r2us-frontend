@@ -1,49 +1,60 @@
-import facultyApi from "api/facultyApi";
 import React, { useEffect, useRef, useState } from "react";
-import CourseTable from "./CourseTable";
-import Threedots from "./Threedots";
 import { selectToken } from "redux/userSlice";
 import { useAppSelector } from "redux/hooks";
+
+import facultyApi from "api/facultyApi";
+
+import CourseTable from "./CourseTable";
 type AppProps = {
   faculty: any;
   setReloading: any;
 };
 
 function FacultyRow({ faculty, setReloading }: AppProps) {
+  //declare variable
   const [name, setName] = useState(faculty.facultyName);
   const [collapse, setCollapse] = useState(false);
   const [threedots, setThreedots] = useState(false);
   const [edit, setEdit] = useState(false);
-
   const token = useAppSelector(selectToken);
 
+  //function
+  //Tất cả các hàm logic nằm ở dưới
   const clickcollapse = () => {
     setCollapse(!collapse);
   };
+
   const clickthreedots = () => {
     setThreedots(!threedots);
   };
-  const handleClickDelete = () => {
+
+  const handleClickDelete = (e) => {
+    e.preventDefault();
     facultyApi.deleteFaculty(faculty._id, token);
-    setReloading(1);
+    setReloading();
+    setThreedots(!threedots);
   };
+
   const changeName = (event) => {
     event.preventDefault();
-
     const newName = event.target.value;
     setName(newName);
   };
+
   const clickEdit = () => {
     setEdit(!edit);
   };
+
   const updateName = () => {
     const obj = { facultyName: name };
     console.log(obj);
     facultyApi.updateFaculty(faculty._id, obj, token);
-    setReloading(1);
+    setReloading();
     setEdit(false);
     setCollapse(false);
   };
+
+  //Custom Hooks detect click outside of a component
   function useClickOutside(ref) {
     useEffect(() => {
       function handleclickoutside(event: Event) {
@@ -59,9 +70,9 @@ function FacultyRow({ faculty, setReloading }: AppProps) {
       };
     }, [ref]);
   }
-
   const ref = useRef(null);
   useClickOutside(ref);
+
   return (
     <React.Fragment>
       <tr className="bg-white text-center border-b border-indigo-300 text-sm ">
@@ -130,7 +141,6 @@ function FacultyRow({ faculty, setReloading }: AppProps) {
           </td>
         )) || (
           <td
-            ref={ref}
             className={`${
               threedots ? "relative" : " "
             } p-2 pt-3 bg-transparent pl-12 border-r flex justify-center`}
@@ -143,7 +153,10 @@ function FacultyRow({ faculty, setReloading }: AppProps) {
               onClick={clickthreedots}
             />
             {threedots && (
-              <div className="absolute flex items-center px-3 top-4 -left-2 border border-indigo-300 rounded-2xl w-28 h-16 bg-white">
+              <div
+                ref={ref}
+                className="absolute flex items-center px-3 top-4 -left-2 border border-indigo-300 rounded-2xl w-28 h-16 bg-white"
+              >
                 <ul className="w-full">
                   <li
                     className="mb-1 hover:bg-indigo-200 rounded-lg cursor-pointer"

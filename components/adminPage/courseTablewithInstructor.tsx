@@ -1,14 +1,16 @@
-import courseApi from "api/courseApi";
-import intructorAPI from "api/instructorApi";
-import Image from "next/image";
-import router from "next/router";
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
-import CourseRowInstructor from "./CourseRowInstructor";
+import Swal from "sweetalert2";
+
 import facultyApi from "api/facultyApi";
-import SelectOption from "components/adminPage/SelectOption";
 import InstructorAPI from "api/instructorApi";
+import courseApi from "api/courseApi";
+import intructorAPI from "api/instructorApi";
+
+import CourseRowInstructor from "./CourseRowInstructor";
+import SelectOption from "components/adminPage/SelectOption";
 
 type AppProps = {
   instructor: any;
@@ -21,66 +23,62 @@ type Api = {
   courseIds: Array<T>;
 };
 function CourseTable({ instructor }: AppProps) {
-  const [collapse, setCollapse] = useState(false);
-  const [threedots, setThreedots] = useState(false);
+  //declare variable
   const [reloading, setReloading] = useState(0);
   const token = useAppSelector(selectToken);
-  const [total, setTotal] = useState(0);
   const [mycourseList, setMyCourseList] = useState([]);
   const [facultylist, setFacultylist] = useState([]);
   const [courseList, setCourseList] = useState([]);
-  const [arraycourse, setArraycourse] = useState([]);
-  const [mycourseId, setMyCourseId] = useState("");
+  const [facultyId, setFacultyId] = useState({
+    facultyName: "",
+    _id: "",
+  });
+  const [courseId, setCourseId] = useState({
+    _id: "",
+    courseName: "",
+  });
 
-  const initCreate: Api = {
-    instructorName: instructor.instructorName,
-    courseIds: instructor.courseId,
-  };
-  const [create, setCreate] = useState<Api>(initCreate);
-
-  const clickcollapse = () => {
-    setCollapse(!collapse);
-  };
-  const clickthreedots = () => {
-    setThreedots(!threedots);
-  };
-  const handleGetCourseName = (e) => {
-    mycourseList.push(e.target.value);
-  };
-  const handleChange = (e) => {
-    // const val = e.target.value;
-    // setCreate({ ...create, courseName: e.target.value });
-  };
-
+  //function
   const hanldeSubmit = (e) => {
     e.preventDefault();
-    arraycourse.push(mycourseId);
-    setCreate({ ...create, courseIds: arraycourse });
-    InstructorAPI.patchInstructor(create, instructor._id, token);
-    const newre = reloading + 1;
-    console.log("now create", create);
-    setReloading(newre);
+    const obj = {
+      courseName: courseId.courseName,
+      facultyId: {
+        facultyName: facultyId.facultyName,
+        _id: facultyId._id,
+      },
+      _id: courseId._id,
+    };
+    const array = [...instructor.courseId];
+    const data = {
+      courseId: array.concat(obj),
+    };
+    InstructorAPI.updateInstructor(instructor._id, data, token);
+    setReloading(reloading + 1);
   };
+
   const handleReloadingForDelete = (e) => {
-    const newre = reloading + 2;
-    setReloading(newre);
+    setReloading(reloading + 1);
   };
-  const handleClickDelete = () => {
-    // courseApi.deleteCourse(faculty._id, token);
-    // setReloading(1);
-  };
+
   useEffect(() => {
     async function fetchMyCourseList() {
+      Swal.fire({
+        title: "Loading data",
+        icon: "info",
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       try {
         const res = await intructorAPI.getInstructor(instructor._id);
         const data = res?.data?.data?.courseId;
-        console.log("here", data);
         setMyCourseList(data);
-        setTotal(data.length);
-        console.log("data course", data);
       } catch (error) {
-        console.log(error.message);
+        console.log("error");
       }
+      Swal.close();
     }
     fetchMyCourseList();
   }, [reloading]);
@@ -90,12 +88,22 @@ function CourseTable({ instructor }: AppProps) {
   };
 
   const handleSearchChange = (e) => {
-    const name = e.target.name;
+    const Name = e.target.name;
     const value = e.target.value;
-    const api = filterListApi[name];
+    console.log(e.target.key);
+    const api = filterListApi[Name];
     const fetchData = async (api) => {
-      switch (name) {
+      switch (Name) {
         case "facultyId":
+          facultylist.map((idx) => {
+            if (idx._id == value) {
+              setFacultyId({
+                facultyName: idx.label,
+                _id: value,
+              });
+            }
+          });
+          console.log(facultyId);
           const res = await courseApi.getCoursetoFaculty(value);
           const options = res?.data?.data?.result;
           const newCourses = options?.map((op) => {
@@ -108,11 +116,18 @@ function CourseTable({ instructor }: AppProps) {
           console.log("now courses", newCourses);
           break;
         case "courseId":
-          setMyCourseId(value);
+          console.log(value);
+          courseList.map((idx) => {
+            if (idx._id == value) {
+              setCourseId({
+                _id: value,
+                courseName: idx.label,
+              });
+            }
+          });
           break;
       }
     };
-
     if (api) fetchData(api);
   };
 
@@ -127,14 +142,18 @@ function CourseTable({ instructor }: AppProps) {
           newOp["_id"] = op._id;
           return newOp;
         });
+        newFaculties.map((index, data) => {
+          index = data._id;
+        });
         setFacultylist(newFaculties);
-        console.log("data faculties", data);
+        console.log("data faculties", facultylist);
       } catch (error) {
         console.log(error.message);
       }
     }
     fetchFacultyList();
   }, []);
+
   return (
     <table className=" w-full p-2 border">
       <thead className="">
@@ -188,7 +207,7 @@ function CourseTable({ instructor }: AppProps) {
             </button>
           </td>
         </tr>
-        {mycourseList.map((data, index) => (
+        {instructor.courseId?.map((data, index) => (
           <CourseRowInstructor
             key={index}
             course={data}
@@ -197,7 +216,7 @@ function CourseTable({ instructor }: AppProps) {
         ))}
         <tr className="bg-gray-50 text-left  ">
           <td className="p-2 pl-8 bg-white Table Footer  " colSpan={4}>
-            Tổng cộng {mycourseList.length}
+            Tổng cộng {mycourseList?.length}
           </td>
         </tr>
       </tbody>

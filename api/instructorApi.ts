@@ -10,7 +10,7 @@ const InstructorAPI = {
     return get(url, "");
   },
   getInstructor: function (id: string) {
-    const url = `${apiV1}/academic/intructors/${id}`;
+    const url = `${apiV1}/academic/intructors?${id}`;
     return get(url, "");
   },
   getInstructors: function () {
@@ -28,6 +28,10 @@ const InstructorAPI = {
   deleteInstructor: function (id: string, token: string) {
     const url = `${apiV1}/academic/intructors/delete/${id}`;
     return delele(url, token);
+  },
+  updateInstructor: function (id: any, data: any, token: string) {
+    const url = `${apiV1}/academic/intructors/update/${id}`;
+    return patch(url, data, token);
   },
   patchInstructor: function (data: any, id: string, token: string) {
     const url = `${apiV1}/academic/intructors/update/${id}`;
