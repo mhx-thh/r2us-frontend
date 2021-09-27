@@ -38,6 +38,7 @@ export const getServerSideProps: GetServerSideProps = async (params) => {
 };
 
 const Item = function (props: propApi) {
+  console.log(props);
   const [role, setRole] = useState("");
   const token = useAppSelector(selectToken);
 

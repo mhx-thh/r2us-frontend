@@ -8,6 +8,7 @@ type AppProps = {
 
 function GroupItem({ agroup }: AppProps) {
   const classSlugUrl = `/group/${agroup?.slug}`;
+  console.log("A group: ", agroup);
 
   return (
     <Link href={classSlugUrl}>
@@ -27,7 +28,7 @@ function GroupItem({ agroup }: AppProps) {
             <div className="p-0 flex justify-start pl-7">
               <img src="/icons/course.svg" width="20" />
               <p className="pl-2 pt-1.5 text-sm leading-5 font-normal">
-                {agroup.courseId?.courseName}
+                {agroup?.courseId?.courseName}
               </p>
             </div>
 

@@ -107,6 +107,7 @@ const GroupPage = function () {
     (currentPage - 1) * pageSize,
     currentPage * pageSize
   );
+  console.log("Data page: ", dataPage);
 
   return (
     <div className={style.page}>
@@ -132,7 +133,7 @@ const GroupPage = function () {
           <div>
             <div className="grid py-10 w-full lg:grid-cols-4 gap-12 md:grid-cols-3 sm:grid-cols-2">
               {dataPage.map((val, key) => (
-                <GroupItem key={key} agroup={val.classId} />
+                <GroupItem key={key} agroup={val?.classId} />
               ))}
             </div>
 
