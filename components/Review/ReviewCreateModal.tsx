@@ -62,15 +62,6 @@ const CreateReview = function ({ handleCreate, iD, reviewType }: any) {
   // Init modal data/data from group
   useEffect(() => {
     async function fetchData() {
-      Swal.fire({
-        title: "Đang lấy dữ liệu",
-        icon: "info",
-        timerProgressBar: true,
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      });
-
       const schoolyear = await AcademicAPI.getSchoolYears();
       const faculty = await AcademicAPI.getFalcuties();
 
@@ -113,8 +104,6 @@ const CreateReview = function ({ handleCreate, iD, reviewType }: any) {
 
         setCreate({ ...create, reviewType: reviewType });
       }
-
-      Swal.close();
     }
 
     fetchData();
@@ -461,7 +450,15 @@ const CreateReview = function ({ handleCreate, iD, reviewType }: any) {
 
           {/* Submit */}
           <div className="flex left-56 top-4 mb-4">
-            <button type="submit" className="mb-[35px] ml-10">
+            <button
+              type="submit"
+              disabled={classStatus !== "done"}
+              className={
+                classStatus === "done"
+                  ? "mb-[35px] ml-10"
+                  : "mb-[35px] ml-10 opacity-50"
+              }
+            >
               <img src="/icons/buttonSend.svg" width="125" height="41" />
             </button>
           </div>
