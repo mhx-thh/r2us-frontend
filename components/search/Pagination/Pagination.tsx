@@ -11,7 +11,7 @@ function Pagination(props: typePagination) {
   const { selected, pagination, onPageChange } = props;
   const { _limitperPage, _totalRows } = pagination;
   const _page = selected;
-  const totalPages = _totalRows - 1;
+  const totalPages = Math.ceil(_totalRows / _limitperPage);
 
   const handlePageChange = (newPage) => {
     if (onPageChange) onPageChange(newPage);
@@ -47,10 +47,10 @@ function Pagination(props: typePagination) {
       <div className="flex items-center justify-center mx-auto my-10">
         <button
           type="button"
-          disabled={_page <= 0}
+          disabled={_page <= 1}
           className={`w-12 h-12 flex items-center justify-center
             ${
-              _page <= 0
+              _page <= 1
                 ? " border border-gray-300 text-base rounded-xl  text-gray-600 bg-white mr-6"
                 : " border border-indigo-500 text-base rounded-xl hover:active:bg-gray-100 text-gray-600 bg-white mr-6"
             }`}
@@ -58,7 +58,7 @@ function Pagination(props: typePagination) {
             handlePageChange(_page - 1);
           }}
         >
-          {(_page <= 0 && (
+          {(_page <= 1 && (
             <Image
               src="/icons/pagiLeft_disable.svg"
               height={20}
@@ -79,16 +79,16 @@ function Pagination(props: typePagination) {
           type="button"
           className={`w-12 h-12 flex items-center justify-center
           ${
-            _page >= _totalRows - 1
+            _page >= totalPages
               ? " border border-gray-300 text-base rounded-xl  text-gray-600 bg-white mr-6"
               : " border border-indigo-500 text-base rounded-xl hover:active:bg-gray-100 text-gray-600 bg-white mr-6"
           }`}
           onClick={() => {
             handlePageChange(_page + 1);
           }}
-          disabled={_page >= _totalRows - 1}
+          disabled={_page >= totalPages}
         >
-          {(_page >= _totalRows - 1 && (
+          {(_page >= totalPages && (
             <Image
               src="/icons/pagiRight_disable.svg"
               height={20}

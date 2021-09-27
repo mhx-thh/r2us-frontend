@@ -11,7 +11,7 @@ const Review = () => {
   //declare variable
   const [pagination, setPagination] = useState({
     _limitperPage: 20,
-    _totalRows: 21,
+    _totalRows: 0,
   });
   const [selected, setSelected] = useState(1);
   const [documents, setDocuments] = useState([]);

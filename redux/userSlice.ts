@@ -47,7 +47,9 @@ export const userSlice = createSlice({
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
-      state = initialState;
+      state.user = {};
+      state.token = "";
+      state.status = "nologin";
     },
     // Use the PayloadAction type to declare the contents of `action.payload`
     initToken: (state, action: PayloadAction<string>) => {

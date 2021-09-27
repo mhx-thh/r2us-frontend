@@ -4,16 +4,15 @@ import Swal from "sweetalert2";
 import { selectToken } from "redux/userSlice";
 import { useAppSelector } from "redux/hooks";
 
-import FacultyRow from "./facultyRow";
-
 type Api = {
   facultyName: string;
 };
-function FacultyTable() {
+type AppProps = {
+  setAdd: any;
+};
+function InstructionTable({ setAdd }: AppProps) {
   //declare hooks
   const [reloading, setReloading] = useState(0);
-  const [facultylist, setFacultylist] = useState([]);
-  const [total, setTotal] = useState(0);
   const token = useAppSelector(selectToken);
 
   //Tạo object submit khoa mới
@@ -37,39 +36,6 @@ function FacultyTable() {
     const newre = reloading + 1;
     setReloading(newre);
   };
-
-  useEffect(() => {
-    console.log("realoading: ", reloading);
-    async function fetchFacultyList() {
-      Swal.fire({
-        title: "Loading data",
-        icon: "info",
-        timerProgressBar: true,
-        didOpen: () => {
-          Swal.showLoading();
-        },
-      });
-      try {
-        const res = await facultyApi.getAll();
-        const data = res?.data?.data?.result;
-        data.sort(function (a, b) {
-          if (a.facultyName.toLowerCase() > b.facultyName.toLowerCase()) {
-            return 1;
-          }
-          if (a.facultyName.toLowerCase() < b.facultyName.toLowerCase()) {
-            return -1;
-          }
-          return 0;
-        });
-        setFacultylist(data);
-        setTotal(res?.data?.data?.total);
-      } catch (error) {
-        console.log(error.message);
-      }
-      Swal.close();
-    }
-    fetchFacultyList();
-  }, [reloading]);
 
   return (
     <table className=" w-11/12 p-2 border">
@@ -96,38 +62,30 @@ function FacultyTable() {
           <td className="p-2 "></td>
           <td className="p-2 "></td>
           <td className="p-2 text-left">
-            <input
-              type="text"
-              onChange={handleChange}
-              className="border border-indigo-200 p-1 w-full h-8 rounded-lg"
-              placeholder="Nhập tên khoa mới . . . "
-            />
+            <button className="" onClick={setAdd}>
+              <svg
+                height="14pt"
+                viewBox="0 0 448 448"
+                width="14pt"
+                xmlns="http://www.w3.org/2000/svg"
+                color="#ffffff"
+                className={`transform hover:scale-50 transition duration-200`}
+              >
+                <path d="m408 184h-136c-4.417969 0-8-3.582031-8-8v-136c0-22.089844-17.910156-40-40-40s-40 17.910156-40 40v136c0 4.417969-3.582031 8-8 8h-136c-22.089844 0-40 17.910156-40 40s17.910156 40 40 40h136c4.417969 0 8 3.582031 8 8v136c0 22.089844 17.910156 40 40 40s40-17.910156 40-40v-136c0-4.417969 3.582031-8 8-8h136c22.089844 0 40-17.910156 40-40s-17.910156-40-40-40zm0 0" />
+              </svg>
+            </button>
           </td>
 
           <td className="p-2 pt-3 bg-transparent pl-12 border-r relative  flex justify-center">
-            <button type="submit" onClick={hanldeSubmit}>
-              <img
-                src="/icons/adminpage/check.svg"
-                height={24}
-                width={24}
-                className="cursor-pointer"
-              />
-            </button>
+            <button type="submit" onClick={hanldeSubmit}></button>
           </td>
         </tr>
-        {facultylist.map((data, index) => (
-          <FacultyRow
-            key={index}
-            faculty={data}
-            setReloading={handleReloadingForDelete}
-          />
-        ))}
         <tr className="bg-gray-50 text-left ">
           <td
             className="p-2 pl-8 bg-white Table Footer rounded-b-2xl "
             colSpan={4}
           >
-            Tổng cộng {total}
+            Tổng cộng 0
           </td>
         </tr>
       </tbody>
@@ -135,4 +93,4 @@ function FacultyTable() {
   );
 }
 
-export default FacultyTable;
+export default InstructionTable;

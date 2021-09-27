@@ -1,4 +1,4 @@
-import { apiV1, config, delele, get, post } from "api/generic";
+import { apiV1, config, delele, get, patch, post } from "api/generic";
 
 const AcademicAPI = {
   get: function () {
@@ -6,7 +6,7 @@ const AcademicAPI = {
     return get(url, "");
   },
   getAcademic: function (id: string) {
-    const url = `${apiV1}/academic/semesters/${id}`;
+    const url = `${apiV1}/academic/semesters?${id}`;
     return get(url, "");
   },
   getSchoolYears: function () {
@@ -28,6 +28,10 @@ const AcademicAPI = {
   postSemester: function (data: any, token: string) {
     const url = `${apiV1}/academic/semesters/create`;
     return post(url, data, token);
+  },
+  updateAcademic(id: any, data: any, token: string) {
+    const url = `${apiV1}/academic/semesters/update/${id}`;
+    return patch(url, data, token);
   },
   deleteSemester: function (id: string, token: string) {
     const url = `${apiV1}/academic/semesters/delete/${id}`;

@@ -1,45 +1,49 @@
-import courseApi from "api/courseApi";
 import React, { useEffect, useRef, useState } from "react";
 import { useAppSelector } from "redux/hooks";
-import { selectUser } from "redux/userSlice";
+import { selectToken } from "redux/userSlice";
+
+import courseApi from "api/courseApi";
+
 type AppProps = {
   course: any;
   setReloading: any;
 };
 
 function FacultyRow({ course, setReloading }: AppProps) {
-  const [collapse, setCollapse] = useState(false);
+  //declare
   const [threedots, setThreedots] = useState(false);
   const [name, setName] = useState(course.courseName);
   const [edit, setEdit] = useState(false);
-  const token = useAppSelector(selectUser);
+  const token = useAppSelector(selectToken);
 
-  const clickcollapse = () => {
-    setCollapse(!collapse);
-  };
+  //function
+  //Tất cả các hàm logic nằm ở dưới
   const clickthreedots = () => {
     setThreedots(!threedots);
   };
+
   const handleClickDelete = () => {
     courseApi.deleteCourse(course._id, token);
-    setReloading(1);
+    setReloading();
+    setThreedots(!threedots);
   };
+
   const changeName = (event) => {
     event.preventDefault();
-
     const newName = event.target.value;
     setName(newName);
   };
-  const clickEdit = () => {
-    setEdit(!edit);
-  };
+
   const updateName = () => {
-    const obj = { facultyName: name };
+    const obj = { courseName: name };
+    courseApi.updateCourse(course._id, obj, token);
     console.log(obj);
-    setReloading(1);
+    setReloading();
     setEdit(false);
-    setCollapse(false);
+    setThreedots(!threedots);
   };
+
+  //Custom Hooks detect click outside of a component
   function useClickOutside(ref) {
     useEffect(() => {
       function handleclickoutside(event: Event) {
@@ -55,9 +59,9 @@ function FacultyRow({ course, setReloading }: AppProps) {
       };
     }, [ref]);
   }
-
   const ref = useRef(null);
   useClickOutside(ref);
+
   return (
     <React.Fragment>
       <tr className="bg-white text-center border-b border-indigo-300 text-sm ">
@@ -125,7 +129,9 @@ function FacultyRow({ course, setReloading }: AppProps) {
                 <ul className="w-full">
                   <li
                     className="mb-1 hover:bg-indigo-200 rounded-lg cursor-pointer"
-                    onClick={clickEdit}
+                    onClick={() => {
+                      setEdit(!edit);
+                    }}
                   >
                     Sửa
                   </li>

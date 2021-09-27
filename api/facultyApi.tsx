@@ -1,4 +1,4 @@
-import { apiV1, config, delele, get, patch, post } from "api/generic";
+import { apiV1, config, delele, get, patch, post, put } from "api/generic";
 
 const facultyApi = {
   getAll() {
@@ -7,7 +7,7 @@ const facultyApi = {
   },
 
   get(id) {
-    const url = `${apiV1}/${id}`;
+    const url = `${apiV1}?${id}`;
     return get(url, "");
   },
 

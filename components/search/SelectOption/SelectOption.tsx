@@ -19,7 +19,7 @@ function SelectOption(props: typeSelectOption) {
         <div className="w-56 h-24 relative">
           <p className="text-lg leading-7 font-semibold">{title}</p>
           <select
-            className="block w-48 text-gray-700 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+            className="block w-48 text-gray-700 py-2 px-3 bg-white border-0  rounded-md shadow-md focus:outline-none focus:ring-primary-500 focus:border-primary-500"
             name={name}
             onChange={onHandleChange}
           >
@@ -30,16 +30,13 @@ function SelectOption(props: typeSelectOption) {
               </option>
             ))}
           </select>
-          <p className="absolute top-8 -right-14 text-gray-300">
-            ______________
-          </p>
         </div>
       )}
       {title !== "Khoa" && (
         <div className="w-48">
           <p className="text-lg leading-7 font-semibold">{title}</p>
           <select
-            className="block w-48 text-gray-700 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+            className="block w-48 text-gray-700 py-2 px-3 bg-white border-0  rounded-md shadow-md focus:outline-none focus:ring-primary-500 focus:border-primary-500"
             {...register(name)}
             name={name}
             onChange={onHandleChange}
