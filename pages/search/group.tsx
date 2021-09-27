@@ -13,7 +13,7 @@ const Group = () => {
     _limitperPage: 20,
     _totalRows: 0,
   });
-  const [selected, setSelected] = useState(1);
+  const [selected, setSelected] = useState(0);
   const [documents, setDocuments] = useState([]);
   const router = useRouter();
   const [data, setData] = useState([]);
@@ -76,12 +76,7 @@ const Group = () => {
                 <span className="mx-24 text-xl leading-8 mr-2">
                   Không có lớp nào rồi
                 </span>
-                <img
-                  className="inline-block pb-2"
-                  src="/icons/crying.svg"
-                  width="50"
-                  height="50"
-                />
+                <img src="/icons/crying.svg" width="50" height="50" />
               </div>
             )}
 
