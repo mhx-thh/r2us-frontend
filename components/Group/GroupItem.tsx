@@ -8,7 +8,6 @@ type AppProps = {
 
 function GroupItem({ agroup }: AppProps) {
   const classSlugUrl = `/group/${agroup?.slug}`;
-  console.log("A group: ", agroup);
 
   return (
     <Link href={classSlugUrl}>

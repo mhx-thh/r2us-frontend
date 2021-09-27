@@ -107,7 +107,6 @@ const GroupPage = function () {
     (currentPage - 1) * pageSize,
     currentPage * pageSize
   );
-  console.log("Data page: ", dataPage);
 
   return (
     <div className={style.page}>
