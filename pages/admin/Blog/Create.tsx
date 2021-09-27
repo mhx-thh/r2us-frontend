@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import "../../../node_modules/react-quill/dist/quill.snow.css";
+import parse from "html-react-parser";
 
 import AdminLayout from "components/layout/AdminLayout";
 import InstructionTable from "components/adminPage/Instruction";
+import CKEditor from "@ckeditor/ckeditor5-build-classic";
+import ClassicEditor from "@ckeditor/ckeditor5-react";
 import { useRouter } from "next/router";
 import { selectToken, selectUser } from "redux/userSlice";
 import { useAppSelector } from "redux/hooks";
@@ -94,9 +97,6 @@ function MyComponent() {
     return str;
   };
   const router = useRouter();
-  const handleChange = (e) => {
-    console.log(e.target.value);
-  };
   const back = () => {
     router.push("/admin/Blog");
   };
@@ -108,6 +108,13 @@ function MyComponent() {
       createBy: user.familyName,
     };
     console.log(obj);
+  };
+
+  const change = (content, delta, source, editor) => {
+    console.log(editor.getHTML()); // HTML/rich text
+    setValue(editor.getHTML());
+    console.log(editor.getText()); // plain text
+    console.log(editor.getLength()); // number of characters
   };
   return (
     <AdminLayout>
@@ -127,11 +134,19 @@ function MyComponent() {
       <ReactQuill
         theme="snow"
         value={value}
-        onChange={handleChange}
         formats={formats}
+        onChange={change}
         placeholder={"Enter new content here..."}
         className="bg-white w-11/12 h-max mb-4"
       />
+      {/* <CKEditor
+        editor={ClassicEditor}
+        data={value}
+        onChange={(event, editor) => {
+          const data = editor.getData();
+          setValue(data);
+        }}
+      /> */}
       <div className="w-11/12 flex justify-center ">
         <button
           className="text-white bg-indigo-500 rounded-lg px-4 py-2 mr-4 hover:bg-indigo-800"
@@ -146,6 +161,7 @@ function MyComponent() {
           Submit
         </button>
       </div>
+      {parse(value)}
       <div className="w-full h-2"></div>
     </AdminLayout>
   );
