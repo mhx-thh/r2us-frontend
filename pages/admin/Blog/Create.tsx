@@ -162,6 +162,7 @@ function MyComponent() {
         </button>
       </div>
       {parse(value)}
+      <div dangerouslySetInnerHTML={{ __html: value }}></div>
       <div className="w-full h-2"></div>
     </AdminLayout>
   );
