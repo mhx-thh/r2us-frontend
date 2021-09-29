@@ -55,6 +55,7 @@ function MyComponent() {
   const submit = () => {
     console.log(value);
     blogApi.update(value, value._id, token);
+    setEditblog(!editblog);
   };
   const [editblog, setEditblog] = useState(true);
   const create = () => {
@@ -130,7 +131,6 @@ function MyComponent() {
           </div>
         </div>
       )}
-      {parse(value.content)}
       <div className="w-full h-2"></div>
     </AdminLayout>
   );

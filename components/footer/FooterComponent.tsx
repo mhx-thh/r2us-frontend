@@ -3,10 +3,22 @@ import Link from "next/link";
 
 import { useAppSelector } from "redux/hooks";
 import { selectIsAdmin } from "redux/userSlice";
+import { useRouter } from "next/router";
 
 const Footer = () => {
   const isAdmin = useAppSelector(selectIsAdmin);
+  const router = useRouter();
+  const click1 = () => {
+    router.push("/huong-dan-chia-se-tai-lieu");
+  };
 
+  const click2 = () => {
+    router.push("/huong-dan-chia-se-cam-nhan");
+  };
+
+  const click3 = () => {
+    router.push("/huong-dan-tham-gia-lop-hoc");
+  };
   return (
     <footer className="mb-0 mt-32">
       <div className="w-full bg-white px-28 flex justify-between py-0 mb-6">
@@ -60,13 +72,19 @@ const Footer = () => {
           </p>
           <ul className="text-black text-sm leading-5 font-medium underline">
             <li>
-              <a href="#">Hướng dẫn chia sẻ tài liệu</a>
+              <a href="/huong-dan-chia-se-tai-lieu" onClick={click1}>
+                Hướng dẫn chia sẻ tài liệu
+              </a>
             </li>
             <li>
-              <a href="#">Hướng dẫn chia sẻ cảm nhận</a>
+              <a href="/huong-dan-chia-se-cam-nhan" onClick={click2}>
+                Hướng dẫn chia sẻ cảm nhận
+              </a>
             </li>
             <li>
-              <a href="#">Hướng dẫn tham gia lớp</a>
+              <a href="/huong-dan-tham-gia-lop-hoc" onClick={click3}>
+                Hướng dẫn tham gia lớp học
+              </a>
             </li>
           </ul>
         </div>
