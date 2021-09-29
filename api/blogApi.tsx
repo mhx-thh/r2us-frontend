@@ -1,8 +1,8 @@
 import { apiV1, config, delele, get, patch, post } from "api/generic";
 
 const courseApi = {
-  get(id) {
-    const url = `${apiV1}/academic/courses?facultyId=${id}`;
+  get(id: string) {
+    const url = `${apiV1}/blog/${id}`;
     return get(url, "");
   },
   getAll() {

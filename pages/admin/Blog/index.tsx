@@ -6,10 +6,15 @@ import ClassicEditor from "@ckeditor/ckeditor5-react";
 import AdminLayout from "components/layout/AdminLayout";
 import InstructionTable from "components/adminPage/Instruction";
 import { useRouter } from "next/router";
+import blogApi from "api/blogApi";
+import { selectToken } from "redux/userSlice";
+import { useAppSelector } from "redux/hooks";
+import parse from "html-react-parser";
 
 function MyComponent() {
   const router = useRouter();
   const [title, setTitle] = useState("");
+  const token = useAppSelector(selectToken);
   const [value, setValue] = useState({
     blogTitle: "",
     content: "",
@@ -47,6 +52,10 @@ function MyComponent() {
     console.log(editor.getText()); // plain text
     console.log(editor.getLength()); // number of characters
   };
+  const submit = () => {
+    console.log(value);
+    blogApi.update(value, value._id, token);
+  };
   const [editblog, setEditblog] = useState(true);
   const create = () => {
     router.push("/admin/Blog/Create");
@@ -59,6 +68,7 @@ function MyComponent() {
     console.log(data);
     console.log("value:", value);
   };
+  console.log(typeof value.content);
   return (
     <AdminLayout>
       {(editblog && (
@@ -113,13 +123,14 @@ function MyComponent() {
             </button>
             <button
               className="text-white bg-indigo-500 rounded-lg px-4 py-2 hover:bg-indigo-800"
-              //   onClick={submit}
+              onClick={submit}
             >
               Submit
             </button>
           </div>
         </div>
       )}
+      {parse(value.content)}
       <div className="w-full h-2"></div>
     </AdminLayout>
   );

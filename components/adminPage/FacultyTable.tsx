@@ -25,7 +25,7 @@ function FacultyTable() {
   //function
   //Tất cả các hàm logic nằm ở dưới
   const handleChange = (e) => {
-    setCreate({ ...create, facultyName: e.target.value });
+    setCreate({ ...create, facultyName: e.targetal.vue });
   };
   const hanldeSubmit = (e) => {
     e.preventDefault();
