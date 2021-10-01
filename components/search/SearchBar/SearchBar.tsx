@@ -12,48 +12,29 @@ type typeInputText = {
 function InputText(props: typeInputText) {
   const a = "picked";
   const { register, name, placeholder } = props;
-  const list = [
-    { label: "Tài liệu" },
-    { label: "Cảm nhận" },
-    { label: "Lớp học" },
-  ];
-  const [searchType, setSearchType] = useState("");
+
   const router = useRouter();
+
   const handleChange = (e) => {
-    if (e.target.value === "Tài liệu") {
+    if (e.target.value === "Tài liệu") {
       router.replace("/search/resource", "/search/resource", {
         shallow: true,
         scroll: false,
       });
-      setSearchType("Tài liệu");
     }
-    if (e.target.value === "Cảm nhận") {
-      setSearchType("Cảm nhận");
+    if (e.target.value === "Cảm nhận") {
       router.replace("/search/review", "/search/review", {
         shallow: true,
         scroll: false,
       });
     }
-    if (e.target.value === "Lớp học") {
-      setSearchType("Lớp học");
+    if (e.target.value === "Nhóm lớp") {
       router.replace("/search/group", "/search/group", {
         shallow: true,
         scroll: false,
       });
     }
   };
-
-  useEffect(() => {
-    if (router.pathname === "/search/resource") {
-      setSearchType("Tài liệu");
-    }
-    if (router.pathname === "/search/review") {
-      setSearchType("Cảm nhận");
-    }
-    if (router.pathname === "/search/group") {
-      setSearchType("Lớp học");
-    }
-  }, [router.pathname]);
 
   return (
     <div className="w-full flex justify-center">
@@ -84,17 +65,38 @@ function InputText(props: typeInputText) {
 
         <div className="absolute top-2 right-0 ">
           <select
-            className="block text-black text-xl mb-5 font-bold items-center text-lg py-2 pr-8 pl-5 border border-l-2 rounded rounded-xl border-r-0 border-b-0 border-t-0 border-gray-300 bg-white leading-7 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+            className="block text-black text-xl mb-5 font-bold items-center text-lg py-2 pr-10 pl-2 border border-l-2 rounded rounded-xl border-r-0 border-b-0 border-t-0 border-gray-300 bg-white leading-7 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
             name={name}
             onChange={handleChange}
+            id="type"
           >
-            {searchType}
-            <optgroup className="mt-10 rounded rounded-lg">
-              {list.map((value) => {
-                // eslint-disable-next-line react/jsx-key
-                return <option value={value.label}>{value.label}</option>;
-              })}
-            </optgroup>
+            {(router.pathname === "/search/resource" && (
+              <>
+                <option value="Tài liệu" selected>
+                  Tài liệu
+                </option>
+                <option value="Cảm nhận">Cảm nhận</option>
+                <option value="Nhóm lớp">Nhóm lớp</option>
+              </>
+            )) ||
+              (router.pathname === "/search/review" && (
+                <>
+                  <option value="Tài liệu">Tài liệu</option>
+                  <option value="Cảm nhận" selected>
+                    Cảm nhận
+                  </option>
+                  <option value="Nhóm lớp">Nhóm lớp</option>
+                </>
+              )) ||
+              (router.pathname === "/search/group" && (
+                <>
+                  <option value="Tài liệu">Tài liệu</option>
+                  <option value="Cảm nhận">Cảm nhận</option>
+                  <option value="Nhóm lớp" selected>
+                    Nhóm lớp
+                  </option>
+                </>
+              ))}
           </select>
         </div>
       </div>
