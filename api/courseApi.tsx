@@ -18,7 +18,7 @@ const courseApi = {
     return delele(url, token);
   },
   getACourse(id: string) {
-    const url = `${apiV1}/academic/courses?${id}`;
+    const url = `${apiV1}/academic/courses/${id}`;
     return get(url, "");
   },
   updateCourse: function (id: string, data: any, token: string) {

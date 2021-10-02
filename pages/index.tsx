@@ -28,7 +28,6 @@ const TogglePage: FC = () => {
       try {
         const res = await GroupAPI.getNewResources();
         const data = res?.data?.data?.result;
-        console.log(data);
         setNewResource(data);
       } catch (error) {
         console.log(error.message);
@@ -38,7 +37,6 @@ const TogglePage: FC = () => {
       try {
         const res = await GroupAPI.getNewReviews();
         const data = res?.data?.data?.result;
-        console.log(data);
         setNewReview(data);
       } catch (error) {
         console.log(error.message);

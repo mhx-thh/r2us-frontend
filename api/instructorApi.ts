@@ -10,7 +10,7 @@ const InstructorAPI = {
     return get(url, "");
   },
   getInstructor: function (id: string) {
-    const url = `${apiV1}/academic/intructors?${id}`;
+    const url = `${apiV1}/academic/intructors/${id}`;
     return get(url, "");
   },
   getInstructors: function () {
