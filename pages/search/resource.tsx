@@ -13,7 +13,7 @@ const Resource = () => {
     _limitperPage: 20,
     _totalRows: 0,
   });
-  const [selected, setSelected] = useState(1);
+  const [selected, setSelected] = useState(0);
   const [documents, setDocuments] = useState([]);
   const router = useRouter();
   const [done, setDone] = useState(false);

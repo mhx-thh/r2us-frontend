@@ -67,15 +67,6 @@ export const userSlice = createSlice({
         state.status = "logined";
         state.user = action.payload.user;
         state.token = action.payload.token;
-      })
-      .addCase(getInfoAsync.rejected, (state, action) => {
-        state.status = "nologin";
-        Swal.fire({
-          timer: 2000,
-          icon: "warning",
-          title: "Lấy thông tin thất bại",
-          text: action.payload.toString(),
-        });
       });
   },
 });

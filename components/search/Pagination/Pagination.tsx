@@ -20,7 +20,7 @@ function Pagination(props: typePagination) {
   //render số trang
   const createPagerButton = () => {
     const arrayElement = [];
-    for (let i = 1; i <= totalPages; i++) {
+    for (let i = 0; i < totalPages; i++) {
       arrayElement.push(
         <button
           key={i}
@@ -35,7 +35,7 @@ function Pagination(props: typePagination) {
             if (i !== _page) handlePageChange(i);
           }}
         >
-          {i}
+          {i + 1}
         </button>
       );
     }
@@ -47,10 +47,10 @@ function Pagination(props: typePagination) {
       <div className="flex items-center justify-center mx-auto my-10">
         <button
           type="button"
-          disabled={_page <= 1}
+          disabled={_page <= 0}
           className={`w-12 h-12 flex items-center justify-center
             ${
-              _page <= 1
+              _page <= 0
                 ? " border border-gray-300 text-base rounded-xl  text-gray-600 bg-white mr-6"
                 : " border border-indigo-500 text-base rounded-xl hover:active:bg-gray-100 text-gray-600 bg-white mr-6"
             }`}
@@ -58,7 +58,7 @@ function Pagination(props: typePagination) {
             handlePageChange(_page - 1);
           }}
         >
-          {(_page <= 1 && (
+          {(_page <= 0 && (
             <Image
               src="/icons/pagiLeft_disable.svg"
               height={20}
@@ -79,16 +79,16 @@ function Pagination(props: typePagination) {
           type="button"
           className={`w-12 h-12 flex items-center justify-center
           ${
-            _page >= totalPages
+            _page >= totalPages - 1
               ? " border border-gray-300 text-base rounded-xl  text-gray-600 bg-white mr-6"
               : " border border-indigo-500 text-base rounded-xl hover:active:bg-gray-100 text-gray-600 bg-white mr-6"
           }`}
           onClick={() => {
             handlePageChange(_page + 1);
           }}
-          disabled={_page >= totalPages}
+          disabled={_page >= totalPages - 1}
         >
-          {(_page >= totalPages && (
+          {(_page >= totalPages - 1 && (
             <Image
               src="/icons/pagiRight_disable.svg"
               height={20}

@@ -51,16 +51,16 @@ export const adminSlice = createSlice({
         state.status = "done";
         // return follow action
         state.isAdmin = true;
-      })
-      .addCase(checkIsAdminAsync.rejected, (state, action) => {
-        state.status = "done";
-        Swal.fire({
-          timer: 2000,
-          icon: "error",
-          title: "Bạn không đủ quyền để truy cập vào đây",
-          text: action.payload.toString(),
-        });
       });
+    // .addCase(checkIsAdminAsync.rejected, (state, action) => {
+    //   state.status = "done";
+    //   Swal.fire({
+    //     timer: 2000,
+    //     icon: "error",
+    //     title: "Bạn không đủ quyền để truy cập vào đây",
+    //     text: action.payload.toString(),
+    //   });
+    // });
   },
 });
 
