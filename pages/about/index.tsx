@@ -2,27 +2,29 @@ import Footer from "components/footer/FooterComponent";
 import React, { FC, useEffect, useState } from "react";
 import InforContact from "./InforContact/InforContact";
 import APP1 from "./carouselInfor";
+import style from "./style.module.css";
+import Cover from "./cover";
 const TogglePage: FC = () => {
   return (
     <React.Fragment>
-      <div className="overflow-hidden">
-        {/* sentence */}
-        <div className="w-full  items-center px-28 py-24  ">
-          <p className="px-40 py-2 pt-4 text-3xl">_ABOUT US </p>
-          <p className="text-indigo-500 text-5xl leading-7 px-60 w-475px  font-bold pt-6">
-            Resources and Review
+      {/* sentence */}
+      <div className="overflow-x-hidden">
+        <div className="  m-10 items-center justify-between ">
+          <p className="ml-28 not-italic font-normal text-base leading-6 ">
+            _ABOUT US{" "}
           </p>
-          <p className="text-indigo-500 text-5xl leading-7 px-60 font-bold pt-6">
-            Trải nghiệm với cách nghĩ
+          <p className="ml-40 mt-4 text-indigo-500 text-4xl font-extrabold tracking-tight max-w-7xl">
+            {" "}
+            Resouces and Review{" "}
+            <p className="break-words "> Trải nghiệm với cách nghĩ </p>{" "}
+            <p className="break-words">của riêng bạn. </p>
           </p>
-          <p className="text-indigo-500 text-5xl leading-7 px-60 font-bold  pt-6">
-            của riêng bạn
-          </p>
+          <div className="items-center">
+            <Cover />
+          </div>
         </div>
 
-        {/* Image */}
-        <img src="picture/about.png" alt="about picture" className="w-full" />
-        <div className="w-full flex items-center  py-24 ">
+        <div className=" flex items-center mt-40 ">
           <div>
             <svg
               width="639"
@@ -205,7 +207,7 @@ const TogglePage: FC = () => {
                   x="20"
                   y="106"
                 >
-                  ẻ những cảm nhận về các môn
+                  sẻ những cảm nhận về các môn
                 </text>
                 <text
                   className=" font-semibold text-lg "
@@ -226,15 +228,15 @@ const TogglePage: FC = () => {
               </text>
             </svg>
           </div>
-          <p className=" text-2xl px-40 pt-3 leading-none  tracking-tight ">
+          <p className="pl-24 ">
             <p className="text-indigo-500 text-6xl leading-none font-extrabold tracking-tight">
               R2US
             </p>
-            <p className=" text-3xl font-inter mb-6  pt-6">
+            <p className="text-3xl font-inter py-6 pr-4">
               Nền tảng chia sẻ tài liệu và cảm nhận R2US dành riêng cho sinh
               viên trường ĐH KHTN, ĐHQG-HCM
             </p>
-            <p className="  font-inter text-xl  leading-6 font-normal pt-3">
+            <p className="font-inter text-xl leading-6 font-normal pr-2">
               Với nhu cầu về tìm kiếm và liên kết tài liệu học tập lớn như hiện
               nay, R2US là nơi tổng hợp các tài liệu và cảm nhận về những môn
               học của sinh viên các trường đại học nói chung hay trường Đại học
@@ -319,7 +321,8 @@ const TogglePage: FC = () => {
         </div>
 
         {/* Infor members R2US */}
-        <div className="w-full  items-center px-28 py-24 ">
+
+        <div className="items-center pt-20 ">
           <div>
             <p className="text-indigo-500 text-4xl leading-none font-extrabold tracking-tight flex justify-center ">
               Thành viên đội ngũ thành lập R2US
@@ -329,11 +332,10 @@ const TogglePage: FC = () => {
             </p>
           </div>
         </div>
-        <div className="px-24">
-          <APP1 />
-        </div>
-        <div className="p-24"></div>
-        <div className="w-full flex items-center px-28 py-24 bg-indigo-50">
+
+        <APP1 />
+
+        <div className="w-full flex items-center px-28 py-24 bg-indigo-50 mt-20">
           <div>
             {/* Infor update */}
             <p className="text-indigo-500 text-4xl leading-none font-extrabold tracking-tight">
@@ -361,8 +363,8 @@ const TogglePage: FC = () => {
             </form>
           </div>
         </div>
-        <Footer />
       </div>
+      <Footer />
     </React.Fragment>
     // <ClassDocument />
   );

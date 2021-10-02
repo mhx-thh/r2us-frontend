@@ -4,8 +4,8 @@ import Infor_Minh_Nhut from "./ContainInforContact/Minh_Nhut";
 
 function InforContact(props) {
   return (
-    <div className=" flex  px-26 py-0.5 ">
-      <div className=" w-auto flex px-3  py-22 ">
+    <div className=" flex  items-center justify-center mb-0">
+      <div className=" w-auto flex  py-22 ">
         <div className="w-2  px-8  py-20">
           <p className="text-indigo-500 text-5xl leading-none font-extrabold tracking-tight ">
             <p className="border-2 border-blue-500 p-2 w-72 h-96  rounded-xl pt-4 text-center">
@@ -41,7 +41,7 @@ function InforContact(props) {
                 Huỳnh Thị Bảo Trân
               </p>
               <p className="  text-black text-2xl leading-6 font-normal ">
-                Supper Leader
+                Sub Leader
               </p>
             </p>
           </p>
@@ -59,7 +59,7 @@ function InforContact(props) {
           </div>
         </div>
       </div>
-      <div className=" w-auto flex px-3  py-22 ">
+      <div className=" w-auto flex   py-22 ">
         <div className="w-2  px-8  py-20">
           <p className="text-indigo-500 text-5xl leading-none font-extrabold tracking-tight ">
             <p className="border-2 border-blue-500 p-2 w-72 h-96  rounded-xl pt-4 text-center">
@@ -84,7 +84,7 @@ function InforContact(props) {
           </div>
         </div>
       </div>
-      <div className=" w-auto flex px-3  py-22 ">
+      <div className=" w-auto flex px-3 py-22 ">
         <div className="w-2  px-8  py-20">
           <p className="text-indigo-500 text-5xl leading-none font-extrabold tracking-tight ">
             <p className="border-2 border-blue-500 p-2 w-72 h-96  rounded-xl pt-4 text-center">
@@ -109,6 +109,14 @@ function InforContact(props) {
           <div className="py-20">
             <Infor_Minh_Nhut />
           </div>
+        </div>
+      </div>
+      <div className=" w-auto flex  py-22 ">
+        <div className="w-2    py-20">
+          <p className="text-indigo-500 text-5xl leading-none font-extrabold tracking-tight "></p>
+        </div>
+        <div className="w-12  py-12 ">
+          <div className="py-20"></div>
         </div>
       </div>
     </div>

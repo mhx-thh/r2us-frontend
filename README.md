@@ -43,11 +43,14 @@ Present only the important files and need to know in the project:
    - generic.cs : instead of having to rewrite the functions, write the functions in the function in generic, then the ipa call that function and use it.
    -  groupAPI.ts gets a group information about : group information, instructors, documents and reviews. Get information about a lecturer, create a new group information
    -  userApi.ts : collect api calls to the backend
-2. Redux: seek to redux, user Slice.ts: tập hợp các mã thông báo chọn lọc, chọn người dùng, chọn trạng thái, đồng bộ. store.ts: store of reduxtoolit share toàn ứng dụng
+2. Redux: seek to redux, user Slice.ts: select set of tokens, select user, select state, sync. store.ts: store of redux toolkit share app-wide
 3. public : Files about icons and images used in the website interface, images can be viewed on the website by the url of that image.
-4. Page : contains the program's pages including: home , login , search , sv5t , user , admin , about . The main function is to bundle all the code together at __app.tsx using a react-redux provider, each page calls multiple components from the Component file. There is an important file in the Page, the group, every time we click on the document, the url will be different, we can't create it in the code but have to access the database, the purpose of the group is that, other pages will find it. to the group that uses the plug.
-5. Component :  Component : includes the component functions used in the Pages file, in which the component files are shared, and some special files.
-adminPage : includes the components of the admin page
-class : includes the components of the group function, create reviews, review teachers,...
-footer,header: component of header and footer
-HomePage : components of the Home page
+4. Page : contains the program's pages including: home , login , search , sv5t , user , admin , about, admin . The main function is to bundle all the code together at __app.tsx using a react-redux provider, each page calls multiple components from the Component file. There is an important file in the Page, the group, every time we click on the document, the url will be different, we can't create it in the code but have to access the database, the purpose of the group is that, other pages will find it. to the group that uses the plug.
+5. Component :  Includes the component functions used in the Pages file, in which the component files are shared, and some special files.
+   - AdminPage : includes the components of the admin page
+   - class : includes the components of the group function, create reviews, review teachers,...
+   - footer,header: component of header and footer
+   - HomePage : components of the Home page
+   - Icon : contains icon as svg
+   - Review : Review related functions such as creating review, review editing modal, handling when there is an event, show review model.
+   - Search : perform search document, feel, class grouping. Use when clicking search. Allows selectively displaying documents by faculty, subject, teacher, school year.
