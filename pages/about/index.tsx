@@ -1,9 +1,7 @@
 import Footer from "components/footer/FooterComponent";
 import React, { FC, useEffect, useState } from "react";
-import InforContact from "./InforContact/InforContact";
 import APP1 from "./carouselInfor";
-import style from "./style.module.css";
-import Cover from "./cover";
+// import Cover from "./cover";
 const TogglePage: FC = () => {
   return (
     <React.Fragment>
@@ -20,7 +18,7 @@ const TogglePage: FC = () => {
             <p className="break-words">của riêng bạn. </p>
           </p>
           <div className="items-center">
-            <Cover />
+            {/* <Cover /> */}
           </div>
         </div>
 
