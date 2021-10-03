@@ -12,23 +12,25 @@ class APP1 extends Component {
   render() {
     const settings = {
       dots: true,
-      fade: false,
+      fade: true,
       infinite: true,
       speed: 500,
       slidesToShow: 1,
       arrow: false,
       autoplay: true,
-      autoplaySpeed: 4000,
+      autoplaySpeed: 2000,
       appendDots: (dots) => {
         return <MagicSliderDots dots={dots} numDotsToShow={4} dotWidth={30} />;
       },
     };
     return (
-      <div className="w-full">
+      <div className="h-full">
         <Slider {...settings}>
           <InforContact />
           <InforContact2 />
           <InforContact3 />
+          {/* <InforContact2 />
+          <InforContact3 /> */}
         </Slider>
       </div>
     );

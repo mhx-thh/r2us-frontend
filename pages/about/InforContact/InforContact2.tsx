@@ -7,8 +7,8 @@ import Infor_Van_Hao from "./ContainInforContact/Van_Hao";
 
 function InforContact2(props) {
   return (
-    <div className=" w-full flex  px-26 py-0.5 ">
-      <div className=" w-auto flex px-3  py-22 ">
+    <div className=" flex  items-center justify-center mb-0">
+      <div className=" w-auto flex  py-22 ">
         <div className="w-2  px-8  py-20">
           <p className="text-indigo-500 text-5xl leading-none font-extrabold tracking-tight ">
             <p className="border-2 border-blue-500 p-2 w-72 h-96  rounded-xl pt-4 text-center">
@@ -62,7 +62,7 @@ function InforContact2(props) {
           </div>
         </div>
       </div>
-      <div className=" w-auto flex px-3  py-22 ">
+      <div className=" w-auto flex   py-22 ">
         <div className="w-2  px-8  py-20">
           <p className="text-indigo-500 text-5xl leading-none font-extrabold tracking-tight ">
             <p className="border-2 border-blue-500 p-2 w-72 h-96  rounded-xl pt-4 text-center">
@@ -81,15 +81,13 @@ function InforContact2(props) {
             className="rounded-lg"
             src="picture/avatar/Hong_Tan.png"
             alt="about picture"
-            width="260"
-            height="220"
           />
           <div className="py-20">
             <Infor_Hong_Tan />
           </div>
         </div>
       </div>
-      <div className=" w-auto flex px-3  py-22 ">
+      <div className=" w-auto flex px-3 py-22 ">
         <div className="w-2  px-8  py-20">
           <p className="text-indigo-500 text-5xl leading-none font-extrabold tracking-tight ">
             <p className="border-2 border-blue-500 p-2 w-72 h-96  rounded-xl pt-4 text-center">
@@ -107,12 +105,21 @@ function InforContact2(props) {
           <img
             className="rounded-lg"
             src="picture/avatar/Van_Hao.png"
+            alt="about picture"
             width="260"
             height="220"
           />
           <div className="py-20">
             <Infor_Van_Hao />
           </div>
+        </div>
+      </div>
+      <div className=" w-auto flex  py-22 ">
+        <div className="w-2    py-20">
+          <p className="text-indigo-500 text-5xl leading-none font-extrabold tracking-tight "></p>
+        </div>
+        <div className="w-12  py-12 ">
+          <div className="py-20"></div>
         </div>
       </div>
     </div>
