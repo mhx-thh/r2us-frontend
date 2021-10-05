@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
+import style from "./style.module.css";
+
 import GroupAPI from "api/groupAPI";
 import { apiV1, get } from "api/generic";
 import AcademicAPI from "api/academicApi";
@@ -307,7 +309,10 @@ const CreateReview = function ({ handleCreate, iD, reviewType }: any) {
           {/* Button ResetData */}
           <div className="flex flex-row-reverse left-56 top-4 mb-4 mr-10 pt-10">
             <button type="reset" onClick={clickReset}>
-              <img src="/icons/buttonReset.svg" width="125" height="41" />
+              <div className={style.button}>
+                <div className={style.button__text}>Đặt lại</div>
+                <img src="/icons/cancel.svg" />
+              </div>
             </button>
           </div>
         </div>
@@ -459,7 +464,10 @@ const CreateReview = function ({ handleCreate, iD, reviewType }: any) {
                   : "mb-[35px] ml-10 opacity-50"
               }
             >
-              <img src="/icons/buttonSend.svg" width="125" height="41" />
+              <div className={style.button}>
+                <div className={style.button__text}>Gửi</div>
+                <img src="/icons/send.svg" />
+              </div>
             </button>
           </div>
         </div>
