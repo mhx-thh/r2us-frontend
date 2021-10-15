@@ -20,8 +20,7 @@ type Api = {
   classId: string;
 };
 
-type classStatus = "loading" | "done" | "gotNone";
-type enrollStatus = "enrolled" | "notEnrolled";
+type classStatus = "loading" | "enrolled" | "gotNone" | "notEnrolled";
 type createStatus = "loading" | "done";
 type dataCreate = {
   schoolyear: any;
@@ -47,7 +46,6 @@ const CreateReview = function ({ handleCreate, iD, reviewType }: any) {
   const [className, setClassName] = useState("");
   const [classStatus, setClassStatus] = useState<classStatus>("loading");
   const [group, setGroup] = useState([]);
-  const [enrollStatus, setEnrollStatus] = useState<enrollStatus>("enrolled");
 
   const [createStatus, setCreateStatus] = useState<createStatus>("done");
 
@@ -119,7 +117,6 @@ const CreateReview = function ({ handleCreate, iD, reviewType }: any) {
       setGroup(data.data.data.result);
     }
 
-    setEnrollStatus("enrolled");
     setClassStatus("loading");
 
     if (schoolyear !== "" && courseId !== "" && instructorId !== "") {
@@ -139,11 +136,10 @@ const CreateReview = function ({ handleCreate, iD, reviewType }: any) {
       setClassStatus("gotNone");
     } else {
       handleClassName();
-      setClassStatus("done");
-      setEnrollStatus("notEnrolled");
+      setClassStatus("notEnrolled");
       myClass.map((val) => {
         if (val?.classId?._id === group[0]?._id) {
-          setEnrollStatus("enrolled");
+          setClassStatus("enrolled");
         }
       });
     }
@@ -182,6 +178,9 @@ const CreateReview = function ({ handleCreate, iD, reviewType }: any) {
 
   const handleAcademicId = (e) => {
     setSchoolyear(e.target.value);
+    setCourseId("");
+    setInstructorId("");
+    setData({ ...data, teacher: [], course: [] });
   };
 
   const handleFacultyId = (e) => {
@@ -421,7 +420,9 @@ const CreateReview = function ({ handleCreate, iD, reviewType }: any) {
           {/* Location */}
           <div className="left-48 top-0 mb-4">
             {/* Input Classname Field */}
-            <div className={classStatus === "done" ? "visible" : "invisible"}>
+            <div
+              className={classStatus !== "loading" ? "visible" : "invisible"}
+            >
               <div className="flex">
                 <img
                   className="m-3"
@@ -440,7 +441,7 @@ const CreateReview = function ({ handleCreate, iD, reviewType }: any) {
             {/* Not enroll in class */}
             <div
               className={
-                enrollStatus === "notEnrolled" ? "visible" : "invisible"
+                classStatus === "notEnrolled" ? "visible" : "invisible"
               }
             >
               <div className="flex pl-12">
@@ -457,9 +458,9 @@ const CreateReview = function ({ handleCreate, iD, reviewType }: any) {
           <div className="flex left-56 top-4 mb-4">
             <button
               type="submit"
-              disabled={classStatus !== "done"}
+              disabled={classStatus !== "enrolled"}
               className={
-                classStatus === "done"
+                classStatus === "enrolled"
                   ? "mb-[35px] ml-10"
                   : "mb-[35px] ml-10 opacity-50"
               }
