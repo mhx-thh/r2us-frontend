@@ -12,6 +12,7 @@ import dynamic from "next/dynamic";
 import NoSSR from "react-no-ssr";
 import { convert } from "html-to-text";
 import QuillEditor from "components/editor/QuillEditor";
+import { decode } from "html-entities";
 
 function MyComponent() {
   const router = useRouter();
@@ -39,6 +40,22 @@ function MyComponent() {
   const onFilesChange = (files) => {
     console.log(files);
   };
+  const formats = [
+    "header",
+    "font",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "indent",
+    "link",
+    "image",
+    "video",
+  ];
   const submit = (e) => {
     e.preventDefault();
     console.log(value);
@@ -106,7 +123,7 @@ function MyComponent() {
           <QuillEditor
             className="bg-white"
             placeholder={"..."}
-            content={value.content}
+            content={decode(value.content)}
             onEditorChange={onEditorChange}
             onFilesChange={onFilesChange}
           />

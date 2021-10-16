@@ -3,11 +3,17 @@ import { GetServerSideProps } from "next";
 import blogApi from "api/blogApi";
 import HeaderComponent from "components/header/HeaderComponent";
 import Footer from "components/footer/FooterComponent";
+import { decode } from "html-entities";
 
 function index(props) {
+  //doan nay là modify nè
   const modifyContent = (str) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    str = str.replace(/&lt;/g, "<");
+    str =
+      "<p>&lt;h2&gt;abcccc&lt;/h2&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</p>".replace(
+        /&lt;/g,
+        "<"
+      );
   };
   const html = modifyContent(props.content);
   console.log(modifyContent(props.content));
@@ -20,7 +26,8 @@ function index(props) {
         {props.title}
       </p>
       <div className="mx-16">
-        <div dangerouslySetInnerHTML={{ __html: props.content }} />
+        {/* Cái này là parse từ code html ra text */}
+        <div dangerouslySetInnerHTML={{ __html: decode(props.content) }} />
       </div>
       <Footer />
     </React.Fragment>

@@ -1,6 +1,11 @@
 import React from "react";
-import ReactQuill, { Quill } from "react-quill";
+import { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import dynamic from "next/dynamic";
+
+const ReactQuill = dynamic(import("react-quill"), {
+  ssr: false,
+});
 
 import axios from "axios";
 const __ISMSIE__ = navigator.userAgent.match(/Trident/i) ? true : false;
@@ -258,6 +263,7 @@ class QuillEditor extends React.Component {
           <button className="ql-bold" />
           <button className="ql-italic" />
           <button className="ql-underline" />
+          <button className="ql-list">L</button>
           <button className="ql-strike" />
           <button className="ql-link" />
           <button className="ql-code-block" />
@@ -301,6 +307,7 @@ class QuillEditor extends React.Component {
     "bold",
     "italic",
     "underline",
+    "list",
     "strike",
     "image",
     "video",
