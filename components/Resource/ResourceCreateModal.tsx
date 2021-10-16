@@ -64,7 +64,8 @@ const CreateResource = function ({ handleCreate, iD, resourceType }: any) {
 
   // Init modal data/data from group
   useEffect(() => {
-    async function fetchData() {
+    async function fetchInitData() {
+      setApiSpinner("loading");
       const schoolyear = await AcademicAPI.getSchoolYears();
       const faculty = await AcademicAPI.getFalcuties();
 
@@ -107,14 +108,14 @@ const CreateResource = function ({ handleCreate, iD, resourceType }: any) {
         setInstructorId(iD?.instructorId);
 
         setCreate({ ...create, resourceType: resourceType });
-        setApiSpinner("done");
       }
+      setApiSpinner("done");
     }
 
-    fetchData();
+    fetchInitData();
   }, []);
 
-  // Get data for class/group modal
+  // Update data
   useEffect(() => {
     async function fetchGroup({ courseId, instructorId, academicId }: any) {
       setApiSpinner("loading");
@@ -124,16 +125,49 @@ const CreateResource = function ({ handleCreate, iD, resourceType }: any) {
       setApiSpinner("done");
     }
 
-    setClassStatus("loading");
+    async function fetchCourse(facultyId) {
+      setApiSpinner("loading");
+      const course = await courseApi.getCoursetoFaculty(facultyId);
 
-    if (schoolyear !== "" && courseId !== "" && instructorId !== "") {
-      fetchGroup({
-        courseId: courseId,
-        instructorId: instructorId,
-        academicId: schoolyear,
+      setData({
+        ...data,
+        course: course?.data?.data,
+        teacher: [],
       });
+      setApiSpinner("done");
     }
-  }, [schoolyear, courseId, instructorId]);
+
+    async function fetchInstructor(courseId) {
+      setApiSpinner("loading");
+      const instructor = await InstructorAPI.getInstructortoCourse(courseId);
+
+      setData({
+        ...data,
+        teacher: instructor?.data?.data,
+      });
+      setApiSpinner("done");
+    }
+
+    async function fetchData() {
+      if (facultyId !== "" && schoolyear !== "") {
+        if (courseId === "") {
+          fetchCourse(facultyId);
+        } else {
+          if (instructorId === "") {
+            fetchInstructor(courseId);
+          } else {
+            fetchGroup({
+              courseId: courseId,
+              instructorId: instructorId,
+              academicId: schoolyear,
+            });
+          }
+        }
+      }
+    }
+
+    fetchData();
+  }, [courseId, instructorId, schoolyear, facultyId]);
 
   // Process group/class status
   useEffect(() => {
@@ -192,6 +226,7 @@ const CreateResource = function ({ handleCreate, iD, resourceType }: any) {
 
   const handleAcademicId = (e) => {
     setSchoolyear(e.target.value);
+    setFacultyId("");
     setCourseId("");
     setInstructorId("");
     setData({ ...data, teacher: [], course: [] });
@@ -202,41 +237,12 @@ const CreateResource = function ({ handleCreate, iD, resourceType }: any) {
     setCourseId("");
     setInstructorId("");
     setData({ ...data, teacher: [], course: [] });
-
-    async function fetchCourse() {
-      setApiSpinner("loading");
-      const course = await courseApi.getCoursetoFaculty(e.target.value);
-
-      setData({
-        ...data,
-        course: course?.data?.data,
-        teacher: [],
-      });
-      setApiSpinner("done");
-    }
-
-    fetchCourse();
   };
 
   const handleCourseId = (e) => {
     setCourseId(e.target.value);
     setInstructorId("");
     setData({ ...data, teacher: [] });
-
-    async function fetchInstructor() {
-      setApiSpinner("loading");
-      const instructor = await InstructorAPI.getInstructortoCourse(
-        e.target.value
-      );
-
-      setData({
-        ...data,
-        teacher: instructor?.data?.data,
-      });
-      setApiSpinner("done");
-    }
-
-    fetchInstructor();
   };
 
   const handleInstructor = (e) => {
@@ -244,6 +250,7 @@ const CreateResource = function ({ handleCreate, iD, resourceType }: any) {
   };
 
   const clickReset = () => {
+    setSchoolyear("");
     setFacultyId("");
     setCourseId("");
     setInstructorId("");

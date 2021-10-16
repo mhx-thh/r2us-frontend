@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 
 import UserPage from "components/user/userpage/userpage";
+import UserHeaderPage from "components/layout/UserHeaderPage";
 
 import { selectStatus, selectToken, selectUser } from "redux/userSlice";
-import { useRouter } from "next/router";
 import { useAppSelector } from "redux/hooks";
-import UserHeaderPage from "components/layout/UserHeaderPage";
+
+import { useRouter } from "next/router";
+
 import userApi from "api/userApi";
+
 import Swal from "sweetalert2";
 
 const User = function () {

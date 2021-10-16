@@ -18,13 +18,9 @@ const HeaderComponent: FC = () => {
   const defaultstatus = useAppSelector(selectStatus);
   const user = useAppSelector(selectUser);
   const isAdmin = useAppSelector(selectIsAdmin);
-  console.log(isAdmin);
-  // status = "logined";
-  // console.log(status);
 
   const router = useRouter();
   const path = router.pathname;
-  console.log(defaultstatus);
   const logOut = () => {
     localStorage.removeItem("token");
     const action = logout();
