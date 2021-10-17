@@ -1,5 +1,5 @@
 /* eslint-disable no-var */
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import "../../../node_modules/react-quill/dist/quill.snow.css";
 import AdminLayout from "components/layout/AdminLayout";
 import InstructionTable from "components/adminPage/Instruction";
@@ -7,16 +7,14 @@ import { useRouter } from "next/router";
 import blogApi from "api/blogApi";
 import { selectToken } from "redux/userSlice";
 import { useAppSelector } from "redux/hooks";
-import parse from "html-react-parser";
 import dynamic from "next/dynamic";
-import NoSSR from "react-no-ssr";
-import { convert } from "html-to-text";
-import QuillEditor from "components/editor/QuillEditor";
+// import QuillEditor from "components/editor/QuillEditor";
 import { decode } from "html-entities";
-
+const ReactQuill = dynamic(import("react-quill"), { ssr: false });
+// const ReactQuill =
+//   typeof window === "object" ? require("react-quill") : () => false;
 function MyComponent() {
   const router = useRouter();
-  const [reactQuill, setReactQuill] = useState(false);
   const [id, setId] = useState("");
   const [title, setTitle] = useState("");
   const token = useAppSelector(selectToken);
@@ -120,13 +118,14 @@ function MyComponent() {
           <label>
             <h1>Description</h1>
           </label>
-          <QuillEditor
+          {/* <QuillEditor
             className="bg-white"
             placeholder={"..."}
             content={decode(value.content)}
             onEditorChange={onEditorChange}
             onFilesChange={onFilesChange}
-          />
+          /> */}
+          <ReactQuill value={decode(value.content)} />)
           <div className="w-11/12 flex justify-center ">
             <button
               className="text-white bg-indigo-500 rounded-lg px-4 py-2 mr-4 hover:bg-indigo-800"
