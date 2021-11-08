@@ -284,9 +284,9 @@ const CreateResource = function ({ handleCreate, iD, resourceType }: any) {
 
   return (
     <form onSubmit={clickSend}>
-      <div className="absolute flex top-0 left-0 w-full h-full rounded-2xl">
-        <div className="bg-indigo-100 w-8/12 rounded-l-2xl">
-          <div className="flex justify-between h-16 pt-12">
+      <div className="absolute top-0 left-0 w-full h-full rounded-2xl xl:flex">
+        <div className="xl:bg-indigo-100 w-8/12 rounded-l-2xl">
+          <div className="xl:flex justify-between h-16 pt-12">
             {/* Title */}
             <div className="pl-16">
               {/* Prevent img from shrink */}
@@ -299,7 +299,7 @@ const CreateResource = function ({ handleCreate, iD, resourceType }: any) {
             </div>
 
             {/* Type Document */}
-            <div className="mr-10">
+            <div className="pr-10">
               <select
                 className="bg-indigo-50 w-48 rounded-2xl border border-solid border-indigo-500"
                 onChange={handleTypeResource}

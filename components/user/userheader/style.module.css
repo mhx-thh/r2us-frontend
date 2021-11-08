@@ -1,5 +1,6 @@
-.title{
-    height: 175px;
+.title_span{
+    padding-top: 20px;
+    padding-bottom: 20px;
     width: 100%;
     background: #EEF2FF;
 }
@@ -13,7 +14,7 @@
     grid-template-columns: repeat(12, 1fr);
     height: 100%;
 }
-.title__m{
+.title{
     grid-column: 4 / span 9;
     display: flex;
     align-items: center;
@@ -42,4 +43,29 @@
     line-height: 24px;
     color: #000000;
     padding-bottom: 10px;
+}
+
+@media screen and (max-width: 640px) {
+    .page {
+        padding-left: 0px;
+        padding-right: 0px;
+        height: 100%;
+    }
+    .grid{
+
+    }
+    .title{
+        width: 100vw;
+        display: block;
+    }
+    .image{
+        border-radius: 100%;
+        width: 80px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .text {
+        padding-top: 20px;
+        text-align: center;
+    }
 }

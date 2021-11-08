@@ -22,6 +22,11 @@
     display: grid;
     grid-template-columns: repeat(6, 1fr);
 }
+@media all and (max-width: 640px) {
+    .user__input__grid {
+
+    }
+}
 .user__input__titletext{
     grid-column: 1;
     display: flex;
@@ -63,6 +68,7 @@
     line-height: 24px;
     color: #000000;
 }
+
 .pbutton {
     padding-top: 30px;
     padding-right: 30px;

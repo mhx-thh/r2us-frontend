@@ -139,7 +139,7 @@ const DocumentPage = function () {
         {/* Document */}
         {pageStatus === "done" ? (
           <div>
-            <div className="grid py-10 w-full lg:grid-cols-4 gap-12 md:grid-cols-3 sm:grid-cols-2">
+            <div className="grid py-10 w-full lg:grid-cols-4 gap-12 md:grid-cols-2 sm:grid-cols-1">
               {dataPage.map((val, key) => (
                 <ResourceItem aresource={val} key={key} />
               ))}
