@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 
 import style from "../userpage/style.module.css";
-import UserHeader from "../../userheader/header";
-import Sidebar from "../../Sidebar/UserSidebar";
 import { user } from "lib/models";
 import Swal from "sweetalert2";
 
@@ -169,11 +167,18 @@ const UserPage = function ({ user }: AppProps) {
       }
     });
   };
+  // Note idea để đi ngủ: Chuyển thành chia nửa trang, vào trong mới dùng grid-column...
+  // Tạm thời thì dãy thông tin bên trái cũng ổn rồi...
+  // Auto margin cho bên phải, khi xuống dưới thì padding hoặc margin thuần...
+  // Button chắc không cần...
+
+  // Header tạm thời bỏ cái vụ căn giữa, từ từ làm tiếp...
+
   return (
     <div>
-      <div className="pl-12 xl:pl-48 grid grid-cols-12">
+      <div className="pl-12 sm:pl-48 grid grid-cols-12">
         {/* User field */}
-        <div className="pt-16 flex col-span-6">
+        <div className="pt-16 flex col-span-11 sm:col-span-6">
           <div className="flex-grow">
             <div onChange={handleChangeFamilyName}>
               <InputField

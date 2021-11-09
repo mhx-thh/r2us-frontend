@@ -20,31 +20,31 @@ const User = function () {
   const user = useAppSelector(selectUser);
   const [userData, setUserData] = useState(user);
 
-  useEffect(() => {
-    status === "nologin" && router.push("/");
-  }, []);
+  // useEffect(() => {
+  //   status === "nologin" && router.push("/");
+  // }, []);
 
-  useEffect(() => {
-    async function getUser() {
-      try {
-        Swal.fire({
-          title: "Đang lấy dữ liệu",
-          icon: "info",
-          timerProgressBar: true,
-          didOpen: () => {
-            Swal.showLoading();
-          },
-        });
-        const res = await userApi.getInfo(token);
-        const data = res?.data?.data;
-        setUserData(data);
-        Swal.close();
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getUser();
-  }, []);
+  // useEffect(() => {
+  //   async function getUser() {
+  //     try {
+  //       Swal.fire({
+  //         title: "Đang lấy dữ liệu",
+  //         icon: "info",
+  //         timerProgressBar: true,
+  //         didOpen: () => {
+  //           Swal.showLoading();
+  //         },
+  //       });
+  //       const res = await userApi.getInfo(token);
+  //       const data = res?.data?.data;
+  //       setUserData(data);
+  //       Swal.close();
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   getUser();
+  // }, []);
 
   return (
     <LayoutUser>
