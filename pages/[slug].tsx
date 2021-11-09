@@ -50,37 +50,39 @@ function index(props) {
               />
             </div>
           </div>
-          <div className="hidden-md-down px-0 ml-0 col-span-1 h-full divide-y-2 divide-indigo-500">
-            <div className="border-2 rounded-2xl border-indigo-500 bg-white px-8 py-2 mb-4">
-              <div className="flex justify-center">
-                <img
-                  src={props.photo}
-                  alt="avatar"
-                  className="w-16 h-16 object-cover cursor-pointer rounded-full mr-4"
-                />
-                <div className="mt-2">
-                  <p>Author: </p>
-                  <p className="text-xl leading-none font-bold">
-                    {props.author}
-                  </p>
+          <div className="hidden-md-down px-0 ml-0 col-span-1 h-full divide-y-2 divide-indigo-500 ">
+            <div className="fixed">
+              <div className="border-2 rounded-2xl border-indigo-500 bg-white px-8 py-2 mb-4">
+                <div className="flex justify-center">
+                  <img
+                    src={props.photo}
+                    alt="avatar"
+                    className="w-16 h-16 object-cover cursor-pointer rounded-full mr-4"
+                  />
+                  <div className="mt-2">
+                    <p>Author: </p>
+                    <p className="text-xl leading-none font-bold">
+                      {props.author}
+                    </p>
+                  </div>
                 </div>
+                <p className="text-sm leading-none italic mt-4">{props.time}</p>
               </div>
-              <p className="text-sm leading-none italic mt-4">{props.time}</p>
-            </div>
-            <div className="pt-4">
-              {newBlogs.map((blogs) => (
-                // eslint-disable-next-line react/jsx-key
-                <p
-                  className="text-sm leading-none mb-2  hover:text-indigo-500 hover:cursor-pointer hover:underline hover:text-lg transition delay-50 duration-300 ease-in-out"
-                  onClick={() => {
-                    const currentpath = router.basePath;
-                    console.log(router);
-                    router.push(`${currentpath}/${blogs.slug}`);
-                  }}
-                >
-                  {blogs.blogTitle}
-                </p>
-              ))}
+              <div className="pt-4">
+                {newBlogs.map((blogs) => (
+                  // eslint-disable-next-line react/jsx-key
+                  <p
+                    className="text-sm leading-none mb-2  hover:text-indigo-500 hover:cursor-pointer hover:underline hover:text-lg transition delay-50 duration-300 ease-in-out"
+                    onClick={() => {
+                      const currentpath = router.basePath;
+                      console.log(router);
+                      router.push(`${currentpath}/${blogs.slug}`);
+                    }}
+                  >
+                    {blogs.blogTitle}
+                  </p>
+                ))}
+              </div>
             </div>
           </div>
         </div>
