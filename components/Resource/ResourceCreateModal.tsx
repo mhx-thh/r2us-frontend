@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
+import style from "./style.module.css";
+
 import GroupAPI from "api/groupAPI";
 import { apiV1, get } from "api/generic";
 import AcademicAPI from "api/academicApi";
@@ -19,9 +21,8 @@ type Api = {
   classId: string;
 };
 
-type classStatus = "loading" | "done" | "gotNone";
-type enrollStatus = "enrolled" | "notEnrolled";
-type createStatus = "loading" | "done";
+type classStatus = "loading" | "enrolled" | "gotNone" | "notEnrolled"; // Show some component relate to class
+type createStatus = "loading" | "done"; // Prevent repeative post
 type dataCreate = {
   schoolyear: any;
   faculty: any;
@@ -46,9 +47,9 @@ const CreateResource = function ({ handleCreate, iD, resourceType }: any) {
   const [className, setClassName] = useState("");
   const [classStatus, setClassStatus] = useState<classStatus>("loading");
   const [group, setGroup] = useState([]);
-  const [enrollStatus, setEnrollStatus] = useState<enrollStatus>("enrolled");
 
   const [createStatus, setCreateStatus] = useState<createStatus>("done");
+  const [apiSpinner, setApiSpinner] = useState<createStatus>("done");
 
   // And finally, data to create data Api
   const initCreate: Api = {
@@ -63,7 +64,8 @@ const CreateResource = function ({ handleCreate, iD, resourceType }: any) {
 
   // Init modal data/data from group
   useEffect(() => {
-    async function fetchData() {
+    async function fetchInitData() {
+      setApiSpinner("loading");
       const schoolyear = await AcademicAPI.getSchoolYears();
       const faculty = await AcademicAPI.getFalcuties();
 
@@ -81,6 +83,7 @@ const CreateResource = function ({ handleCreate, iD, resourceType }: any) {
       setMyClass(myClass);
 
       if (iD?.courseId !== "") {
+        setApiSpinner("loading");
         setSchoolyear(iD?.academicId);
 
         // Faculty => Course...
@@ -106,30 +109,65 @@ const CreateResource = function ({ handleCreate, iD, resourceType }: any) {
 
         setCreate({ ...create, resourceType: resourceType });
       }
+      setApiSpinner("done");
     }
 
-    fetchData();
+    fetchInitData();
   }, []);
 
-  // Get data for class/group modal
+  // Update data
   useEffect(() => {
     async function fetchGroup({ courseId, instructorId, academicId }: any) {
+      setApiSpinner("loading");
       const url = `${apiV1}/groups/class?courseId__eq=${courseId}&instructorId__eq=${instructorId}&academicId__eq=${academicId}`;
       const data = await get(url, "");
       setGroup(data.data.data.result);
+      setApiSpinner("done");
     }
 
-    setEnrollStatus("enrolled");
-    setClassStatus("loading");
+    async function fetchCourse(facultyId) {
+      setApiSpinner("loading");
+      const course = await courseApi.getCoursetoFaculty(facultyId);
 
-    if (schoolyear !== "" && courseId !== "" && instructorId !== "") {
-      fetchGroup({
-        courseId: courseId,
-        instructorId: instructorId,
-        academicId: schoolyear,
+      setData({
+        ...data,
+        course: course?.data?.data,
+        teacher: [],
       });
+      setApiSpinner("done");
     }
-  }, [schoolyear, courseId, instructorId]);
+
+    async function fetchInstructor(courseId) {
+      setApiSpinner("loading");
+      const instructor = await InstructorAPI.getInstructortoCourse(courseId);
+
+      setData({
+        ...data,
+        teacher: instructor?.data?.data,
+      });
+      setApiSpinner("done");
+    }
+
+    async function fetchData() {
+      if (facultyId !== "" && schoolyear !== "") {
+        if (courseId === "") {
+          fetchCourse(facultyId);
+        } else {
+          if (instructorId === "") {
+            fetchInstructor(courseId);
+          } else {
+            fetchGroup({
+              courseId: courseId,
+              instructorId: instructorId,
+              academicId: schoolyear,
+            });
+          }
+        }
+      }
+    }
+
+    fetchData();
+  }, [courseId, instructorId, schoolyear, facultyId]);
 
   // Process group/class status
   useEffect(() => {
@@ -139,11 +177,10 @@ const CreateResource = function ({ handleCreate, iD, resourceType }: any) {
       setClassStatus("gotNone");
     } else {
       handleClassName();
-      setClassStatus("done");
-      setEnrollStatus("notEnrolled");
+      setClassStatus("notEnrolled");
       myClass.map((val) => {
         if (val?.classId?._id === group[0]?._id) {
-          setEnrollStatus("enrolled");
+          setClassStatus("enrolled");
         }
       });
     }
@@ -189,6 +226,10 @@ const CreateResource = function ({ handleCreate, iD, resourceType }: any) {
 
   const handleAcademicId = (e) => {
     setSchoolyear(e.target.value);
+    setFacultyId("");
+    setCourseId("");
+    setInstructorId("");
+    setData({ ...data, teacher: [], course: [] });
   };
 
   const handleFacultyId = (e) => {
@@ -196,37 +237,12 @@ const CreateResource = function ({ handleCreate, iD, resourceType }: any) {
     setCourseId("");
     setInstructorId("");
     setData({ ...data, teacher: [], course: [] });
-
-    async function fetchCourse() {
-      const course = await courseApi.getCoursetoFaculty(e.target.value);
-
-      setData({
-        ...data,
-        course: course?.data?.data,
-        teacher: [],
-      });
-    }
-
-    fetchCourse();
   };
 
   const handleCourseId = (e) => {
     setCourseId(e.target.value);
     setInstructorId("");
     setData({ ...data, teacher: [] });
-
-    async function fetchInstructor() {
-      const instructor = await InstructorAPI.getInstructortoCourse(
-        e.target.value
-      );
-
-      setData({
-        ...data,
-        teacher: instructor?.data?.data,
-      });
-    }
-
-    fetchInstructor();
   };
 
   const handleInstructor = (e) => {
@@ -234,6 +250,7 @@ const CreateResource = function ({ handleCreate, iD, resourceType }: any) {
   };
 
   const clickReset = () => {
+    setSchoolyear("");
     setFacultyId("");
     setCourseId("");
     setInstructorId("");
@@ -244,9 +261,7 @@ const CreateResource = function ({ handleCreate, iD, resourceType }: any) {
   const clickSend = (ev) => {
     ev.preventDefault();
     async function postResource() {
-      setCreateStatus("loading");
       const res = await GroupAPI.postResource(create, token);
-      console.log("Res: ", res);
       setCreateStatus("done");
       if (res?.data?.status === "success") {
         Swal.fire({ title: "Thông báo", text: "Tạo tài liệu thành công." });
@@ -269,9 +284,9 @@ const CreateResource = function ({ handleCreate, iD, resourceType }: any) {
 
   return (
     <form onSubmit={clickSend}>
-      <div className="absolute flex top-0 left-0 w-full h-full rounded-2xl">
-        <div className="bg-indigo-100 w-8/12 rounded-l-2xl">
-          <div className="flex justify-between h-16 pt-12">
+      <div className="absolute top-0 left-0 w-full h-full rounded-2xl xl:flex">
+        <div className="xl:bg-indigo-100 w-8/12 rounded-l-2xl">
+          <div className="xl:flex justify-between h-16 pt-12">
             {/* Title */}
             <div className="pl-16">
               {/* Prevent img from shrink */}
@@ -284,7 +299,7 @@ const CreateResource = function ({ handleCreate, iD, resourceType }: any) {
             </div>
 
             {/* Type Document */}
-            <div className="mr-10">
+            <div className="pr-10">
               <select
                 className="bg-indigo-50 w-48 rounded-2xl border border-solid border-indigo-500"
                 onChange={handleTypeResource}
@@ -332,7 +347,10 @@ const CreateResource = function ({ handleCreate, iD, resourceType }: any) {
           {/* Button ResetData */}
           <div className="flex flex-row-reverse left-56 top-4 mb-4 mr-10 pt-7">
             <button type="reset" onClick={clickReset}>
-              <img src="/icons/buttonReset.svg" width="125" height="41" />
+              <div className={style.button}>
+                <div className={style.button__text}>Đặt lại</div>
+                <img src="/icons/cancel.svg" />
+              </div>
             </button>
           </div>
         </div>
@@ -441,7 +459,9 @@ const CreateResource = function ({ handleCreate, iD, resourceType }: any) {
           {/* Location */}
           <div className="left-48 top-0 mb-4">
             {/* Input Classname Field */}
-            <div className={classStatus === "done" ? "visible" : "invisible"}>
+            <div
+              className={classStatus !== "loading" ? "visible" : "invisible"}
+            >
               <div className="flex">
                 <img
                   className="m-3"
@@ -460,7 +480,7 @@ const CreateResource = function ({ handleCreate, iD, resourceType }: any) {
             {/* Not enroll in class */}
             <div
               className={
-                enrollStatus === "notEnrolled" ? "visible" : "invisible"
+                classStatus === "notEnrolled" ? "visible" : "invisible"
               }
             >
               <div className="flex pl-12">
@@ -477,14 +497,40 @@ const CreateResource = function ({ handleCreate, iD, resourceType }: any) {
           <div className="flex left-56 top-4 mb-4">
             <button
               type="submit"
-              disabled={classStatus !== "done"}
+              disabled={classStatus !== "enrolled"}
               className={
-                classStatus === "done"
+                classStatus === "enrolled"
                   ? "mb-[35px] ml-10"
                   : "mb-[35px] ml-10 opacity-50"
               }
             >
-              <img src="/icons/buttonSend.svg" width="125" height="41" />
+              <div className={style.button}>
+                <div className={style.button__text}>Gửi</div>
+                {apiSpinner === "loading" ? (
+                  <svg
+                    className="animate-spin -ml-1 mr-3 h-5 w-5"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                ) : (
+                  <img src="/icons/send.svg" />
+                )}
+              </div>
             </button>
           </div>
         </div>

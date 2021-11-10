@@ -76,17 +76,14 @@ function InputField(props: {
                   id={props.name}
                   disabled
                   value={data}
-                  // onChange={isActive ? handleChange : undefined}
                   rows={4}
                 />
               ) : (
                 <input
                   className={style.user__input__field_normal}
                   id={props.name}
-                  // disabled={!!!isActive}
                   disabled
                   value={data}
-                  // onChange={isActive ? handleChange : undefined}
                 />
               )}
             </div>

@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 
-import UserPage from "components/user/userpage/userpage";
+import UserPage from "components/user/page/userpage/userpage";
+import UserHeaderPage from "components/layout/UserHeaderPage";
 
 import { selectStatus, selectToken, selectUser } from "redux/userSlice";
-import { useRouter } from "next/router";
 import { useAppSelector } from "redux/hooks";
-import UserHeaderPage from "components/layout/UserHeaderPage";
+
+import { useRouter } from "next/router";
+
 import userApi from "api/userApi";
+
 import Swal from "sweetalert2";
+import LayoutUser from "components/layout/UserLayout";
 
 const User = function () {
   const status = useAppSelector(selectStatus);
@@ -43,9 +47,9 @@ const User = function () {
   }, []);
 
   return (
-    <UserHeaderPage>
+    <LayoutUser>
       <UserPage user={userData} />
-    </UserHeaderPage>
+    </LayoutUser>
   );
 };
 

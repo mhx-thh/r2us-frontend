@@ -139,7 +139,7 @@ const DocumentPage = function () {
         {/* Document */}
         {pageStatus === "done" ? (
           <div>
-            <div className="grid py-10 w-full lg:grid-cols-4 gap-12 md:grid-cols-3 sm:grid-cols-2">
+            <div className="grid py-10 w-full lg:grid-cols-4 gap-12 md:grid-cols-2 sm:grid-cols-1">
               {dataPage.map((val, key) => (
                 <ResourceItem aresource={val} key={key} />
               ))}
@@ -172,9 +172,9 @@ const DocumentPage = function () {
                   />
                 </button>
 
-                {pageRange.map((page) =>
+                {pageRange.map((page, key) =>
                   page === -1 ? (
-                    <div>...</div>
+                    <div key={key}>...</div>
                   ) : (
                     <button
                       className={`w-12 h-12 px-5 py-3 border border-indigo-500 rounded-xl items-center justify-center text-base mx-3
@@ -186,6 +186,7 @@ const DocumentPage = function () {
                       onClick={() => {
                         onPageChange(page);
                       }}
+                      key={key}
                     >{` ${page} `}</button>
                   )
                 )}

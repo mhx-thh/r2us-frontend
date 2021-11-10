@@ -13,10 +13,10 @@ function UserHeader({ user }: AppProps) {
       : user.studentCardNumber;
 
   return (
-    <div className={style.title}>
+    <div className={style.title_span}>
       <div className={style.page}>
         <div className={style.grid}>
-          <div className={style.title__m}>
+          <div className={style.title}>
             <img className={style.image} src={user.photo}></img>
             <div className={style.text}>
               <div className={style.text__1}>

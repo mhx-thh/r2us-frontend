@@ -1,0 +1,28 @@
+.button {
+    width: 125px;
+    height: 41px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #EEF2FF;
+    /* indigo/500 */
+
+    border: 1px solid #6366F1;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+
+.button__text {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 28px;
+
+    /* indigo/500 */
+    color: #6366F1;
+
+    /* padding */
+    padding: 12px;
+}

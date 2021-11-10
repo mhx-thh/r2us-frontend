@@ -163,7 +163,7 @@ const GroupPage = function () {
                   />
                 </button>
 
-                {pageRange.map((page) =>
+                {pageRange.map((page, key) =>
                   page === -1 ? (
                     <div>...</div>
                   ) : (
@@ -177,6 +177,7 @@ const GroupPage = function () {
                       onClick={() => {
                         onPageChange(page);
                       }}
+                      key={key}
                     >{` ${page} `}</button>
                   )
                 )}

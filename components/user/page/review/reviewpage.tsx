@@ -174,7 +174,7 @@ const ReviewPage = function () {
                   />
                 </button>
 
-                {pageRange.map((page) =>
+                {pageRange.map((page, key) =>
                   page === -1 ? (
                     <div>...</div>
                   ) : (
@@ -188,6 +188,7 @@ const ReviewPage = function () {
                       onClick={() => {
                         onPageChange(page);
                       }}
+                      key={key}
                     >{` ${page} `}</button>
                   )
                 )}

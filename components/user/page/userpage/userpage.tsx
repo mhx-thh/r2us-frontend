@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 
 import style from "../userpage/style.module.css";
-import UserHeader from "../userheader/header";
-import Sidebar from "../Sidebar/UserSidebar";
+import UserHeader from "../../userheader/header";
+import Sidebar from "../../Sidebar/UserSidebar";
 import { user } from "lib/models";
 import Swal from "sweetalert2";
 
-import InputField from "components/user/userpage/inputfield";
+import InputField from "components/user/page/userpage/inputfield";
 
 import { useAppSelector } from "redux/hooks";
 import { selectToken } from "redux/userSlice";
@@ -22,8 +22,6 @@ type AppProps = {
 const UserPage = function ({ user }: AppProps) {
   const [userData, setUserData] = useState(user);
   const token = useAppSelector(selectToken);
-  const router = useRouter();
-  const path = router.asPath;
   const [flag, setFlag] = useState(false);
   const [userDataUpdate, setUserDataUpdate] = useState({
     familyName: userData.familyName,
@@ -173,11 +171,7 @@ const UserPage = function ({ user }: AppProps) {
   };
   return (
     <div>
-      <UserHeader user={userData} />
-      <Sidebar param={path} />
-      <div className="h-[12px]"></div>
-      <hr></hr>
-      <div className="pl-48 grid grid-cols-12">
+      <div className="pl-12 xl:pl-48 grid grid-cols-12">
         {/* User field */}
         <div className="pt-16 flex col-span-6">
           <div className="flex-grow">

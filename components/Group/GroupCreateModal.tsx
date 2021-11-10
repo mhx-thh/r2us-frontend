@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 import CalenderIcon from "components/Icons/Calender";
+import style from "./style.module.css";
 
 import GroupAPI from "api/groupAPI";
 import AcademicAPI from "api/academicApi";
@@ -104,7 +105,6 @@ const GroupCreateModal = function () {
       setClassStatus("done");
       setCreate({ ...create, className: group[0].className });
     }
-    console.log(group[0]);
   }, [group]);
 
   const handleAcademicId = (e) => {
@@ -188,7 +188,6 @@ const GroupCreateModal = function () {
     e.preventDefault();
     async function postGroup() {
       setCreateStatus("loading");
-      console.log(create);
       const res = await GroupAPI.postClass(create, token);
       setCreateStatus("done");
       if (res?.data?.status === "success") {
@@ -400,7 +399,10 @@ const GroupCreateModal = function () {
         <div className="flex m-3 pl-64 pt-5">
           {/* Button Reset */}
           <button type="reset" className="relative left-8" onClick={ClickReset}>
-            <img src="/icons/buttonReset.svg" />
+            <div className={style.button}>
+              <div className={style.button__text}>Đặt lại</div>
+              <img src="/icons/cancel.svg" />
+            </div>
           </button>
           {/* Button submit */}
           <button
@@ -408,7 +410,10 @@ const GroupCreateModal = function () {
             className="relative left-16"
             disabled={classStatus === "gotNone" ? false : true}
           >
-            <img src="/icons/buttonSend.svg" />
+            <div className={style.button}>
+              <div className={style.button__text}>Gửi</div>
+              <img src="/icons/send.svg" />
+            </div>
           </button>
         </div>
       </div>
