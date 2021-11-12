@@ -176,9 +176,9 @@ const UserPage = function ({ user }: AppProps) {
 
   return (
     <div>
-      <div className="pl-12 sm:pl-48 grid grid-cols-12">
+      <div className="px-12 w-full sm:px-48 sm:flex">
         {/* User field */}
-        <div className="pt-16 flex col-span-11 sm:col-span-6">
+        <div className="pt-16 w-full sm:w-1/2">
           <div className="flex-grow">
             <div onChange={handleChangeFamilyName}>
               <InputField
@@ -222,36 +222,45 @@ const UserPage = function ({ user }: AppProps) {
             </div>
           </div>
         </div>
-        <div className="relative w-52 h-48 bg-white shadow-md rounded-2xl left-48 top-28">
-          <div className="text-base leading-6 font-semibold text-indigo-500 pl-4 pt-3 tracking-normal">
-            Ảnh đại diện
-          </div>
-          <img
-            src={userData.photo}
-            width="80"
-            className="rounded-full m-auto my-3"
-          />
-          <button
-            onClick={ClickChangePhoto}
-            className=" ml-16 p-2 shadow-sm border border-blue-500 rounded-xl tracking-normal mb-12 hover:bg-blue-600 hover:text-white"
-          >
-            Cập nhập
-          </button>
-          <div className={style.pbutton}>
-            {!active ? (
-              <button className={style.button__update} onClick={ClickUpdate}>
-                Chỉnh sửa
-              </button>
-            ) : (
-              <div className="flex">
-                <button className={style.button__submit} onClick={ClickSubmit}>
-                  Xác nhận
+        {/* Right block */}
+        <div className="flex w-full h-auto items-center justify-center sm:w-1/2">
+          <div className="w-52 h-48 bg-white shadow-md rounded-2xl">
+            <div className="text-base leading-6 font-semibold text-indigo-500 pl-4 pt-3 tracking-normal">
+              Ảnh đại diện
+            </div>
+            <img
+              src={userData.photo}
+              width="80"
+              className="rounded-full m-auto my-3"
+            />
+            <button
+              onClick={ClickChangePhoto}
+              className=" ml-16 p-2 shadow-sm border border-blue-500 rounded-xl tracking-normal mb-12 hover:bg-blue-600 hover:text-white"
+            >
+              Cập nhập
+            </button>
+            <div className={style.pbutton}>
+              {!active ? (
+                <button className={style.button__update} onClick={ClickUpdate}>
+                  Chỉnh sửa
                 </button>
-                <button className={style.button__cancel} onClick={ClickCancel}>
-                  Quay lại
-                </button>
-              </div>
-            )}
+              ) : (
+                <div className="flex">
+                  <button
+                    className={style.button__submit}
+                    onClick={ClickSubmit}
+                  >
+                    Xác nhận
+                  </button>
+                  <button
+                    className={style.button__cancel}
+                    onClick={ClickCancel}
+                  >
+                    Quay lại
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

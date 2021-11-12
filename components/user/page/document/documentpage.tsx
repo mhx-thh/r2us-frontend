@@ -139,82 +139,82 @@ const DocumentPage = function () {
         {/* Document */}
         {pageStatus === "done" ? (
           <div>
-            <div className="grid py-10 w-full lg:grid-cols-4 gap-12 md:grid-cols-2 sm:grid-cols-1">
+            <div className="py-10 w-full grid md:grid-cols-2 lg:grid-cols-4 gap-12">
               {dataPage.map((val, key) => (
-                <ResourceItem aresource={val} key={key} />
+                <div className="flex items-center justify-center" key={key}>
+                  <ResourceItem aresource={val} />
+                </div>
               ))}
             </div>
 
             {/* Pagination */}
-            <div>
-              <div className="flex items-center justify-center mx-auto my-10">
-                <button
-                  className={`w-12 h-12 flex items-center justify-center
-            ${
-              currentPage <= 1
-                ? " border border-gray-300 text-base rounded-xl  text-gray-600 bg-white mx-3"
-                : " border border-indigo-500 text-base rounded-xl hover:active:bg-gray-100 text-gray-600 bg-white mx-3"
-            }`}
-                  disabled={currentPage <= 1}
-                  onClick={() => {
-                    onPageChange(currentPage - 1);
-                  }}
-                >
-                  <Image
-                    src={
-                      currentPage <= 1
-                        ? "/icons/pagiLeft_disable.svg"
-                        : "/icons/pagiLeft.svg"
-                    }
-                    height={20}
-                    width={12}
-                    alt="Prev button"
-                  />
-                </button>
+            <div className="flex items-center justify-center mx-auto my-10">
+              <button
+                className={`w-12 h-12 flex items-center justify-center
+       ${
+         currentPage <= 1
+           ? " border border-gray-300 text-base rounded-xl  text-gray-600 bg-white mx-3"
+           : " border border-indigo-500 text-base rounded-xl hover:active:bg-gray-100 text-gray-600 bg-white mx-3"
+       }`}
+                disabled={currentPage <= 1}
+                onClick={() => {
+                  onPageChange(currentPage - 1);
+                }}
+              >
+                <Image
+                  src={
+                    currentPage <= 1
+                      ? "/icons/pagiLeft_disable.svg"
+                      : "/icons/pagiLeft.svg"
+                  }
+                  height={20}
+                  width={12}
+                  alt="Prev button"
+                />
+              </button>
 
-                {pageRange.map((page, key) =>
-                  page === -1 ? (
-                    <div key={key}>...</div>
-                  ) : (
-                    <button
-                      className={`w-12 h-12 px-5 py-3 border border-indigo-500 rounded-xl items-center justify-center text-base mx-3
-              ${
-                currentPage === page
-                  ? "bg-indigo-500 text-white"
-                  : "text-gray-600 hover:bg-gray-100"
-              }`}
-                      onClick={() => {
-                        onPageChange(page);
-                      }}
-                      key={key}
-                    >{` ${page} `}</button>
-                  )
-                )}
+              {pageRange.map((page, key) =>
+                page === -1 ? (
+                  <div key={key}>...</div>
+                ) : (
+                  <button
+                    className={`w-12 h-12 px-5 py-3 border border-indigo-500 rounded-xl items-center justify-center text-base mx-3
+         ${
+           currentPage === page
+             ? "bg-indigo-500 text-white"
+             : "text-gray-600 hover:bg-gray-100"
+         }`}
+                    onClick={() => {
+                      onPageChange(page);
+                    }}
+                    key={key}
+                  >{` ${page} `}</button>
+                )
+              )}
 
-                <button
-                  className={`w-12 h-12 flex items-center justify-center
-            ${
-              currentPage >= totalPageCount
-                ? " border border-gray-300 text-base rounded-xl  text-gray-600 bg-white mx-3"
-                : " border border-indigo-500 text-base rounded-xl hover:active:bg-gray-100 text-gray-600 bg-white mx-3"
-            }`}
-                  disabled={currentPage >= totalPageCount}
-                  onClick={() => {
-                    onPageChange(currentPage + 1);
-                  }}
-                >
-                  <Image
-                    src={
-                      currentPage <= 1
-                        ? "/icons/pagiRight_disable.svg"
-                        : "/icons/pagiRight.svg"
-                    }
-                    height={20}
-                    width={12}
-                    alt="Prev button"
-                  />
-                </button>
-              </div>
+              <button
+                className={`w-12 h-12 flex items-center justify-center
+       ${
+         currentPage >= totalPageCount
+           ? " border border-gray-300 text-base rounded-xl  text-gray-600 bg-white mx-3"
+           : " border border-indigo-500 text-base rounded-xl hover:active:bg-gray-100 text-gray-600 bg-white mx-3"
+       }`}
+                disabled={currentPage >= totalPageCount}
+                onClick={() => {
+                  onPageChange(currentPage + 1);
+                }}
+              >
+                <Image
+                  src={
+                    currentPage <= 1
+                      ? "/icons/pagiRight_disable.svg"
+                      : "/icons/pagiRight.svg"
+                  }
+                  height={20}
+                  width={12}
+                  alt="Prev button"
+                />
+              </button>
             </div>
           </div>
         ) : (

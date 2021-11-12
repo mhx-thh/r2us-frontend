@@ -141,9 +141,11 @@ const ReviewPage = function () {
         {/* Review */}
         {pageStatus === "done" ? (
           <div>
-            <div className="grid py-10 w-full lg:grid-cols-4 gap-12 md:grid-cols-3 sm:grid-cols-2">
+            <div className="py-10 w-full grid md:grid-cols-2 lg:grid-cols-4 gap-12">
               {dataPage.map((val, key) => (
-                <ReviewItem areview={val} key={key} />
+                <div className="flex items-center justify-center" key={key}>
+                  <ReviewItem areview={val} />
+                </div>
               ))}
             </div>
 
